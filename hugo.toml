@@ -1,0 +1,13 @@
+baseURL = 'https://example.org/'
+languageCode = 'zh-cn'
+title = 'Devflow'
+theme = "hugo-book"
+[params]
+   BookTheme = 'auto'
+   BookToC = false
+   BookSection = 'docs'
+   BookDateFormat = '2006-01-02'
+   BookSearch = false
+   BookComments = false
+   weight = 20
+   bookHidden = false

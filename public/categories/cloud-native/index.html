@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/categories/cloud-native/">
+  <meta property="og:site_name" content="Devflow">
+  <meta property="og:title" content="Cloud Native">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="website">
+
+
+  <meta itemprop="name" content="Cloud Native">
+  <meta itemprop="datePublished" content="2026-01-04T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2026-01-04T00:00:00+00:00">
+
+<title>Cloud Native | Devflow</title>
+<link rel="icon" href="/favicon.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/categories/cloud-native/">
+<link rel="stylesheet" href="/book.min.6970156cec683193d93c9c4edaf0d56574e4361df2e0c1be4f697ae81c3ba55f.css" integrity="sha256-aXAVbOxoMZPZPJxO2vDVZXTkNh3y4MG&#43;T2l66Bw7pV8=" crossorigin="anonymous">
+
+
+
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/categories/cloud-native/index.xml" title="Devflow" />
+
+  
+</head>
+<body dir="ltr" class="book-kind-term book-type-categories">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>Devflow</span>
+  </a>
+</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-6884c320646745efe1e09831aa35ad5b" class="toggle"  />
+    <label for="section-6884c320646745efe1e09831aa35ad5b" class="flex">
+      <a role="button" class="">
+        observability</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/observability/component/" class="">
+      云原生平台组件能力与定位总览</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/observability/attributes/" class="">
+      Attributes</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/observability/standard/" class="">
+      Standard</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Cloud Native</h3>
+
+  <label for="toc-control">
+    
+  </label>
+</div>
+
+
+  
+ 
+      </header>
+
+      
+      
+  
+  <article class="markdown book-post">
+    <h2>
+      <a href="/docs/observability/component/">云原生平台组件能力与定位总览</a>
+    </h2>
+    
+  <div class="flex align-center text-small book-post-date">
+    <img src="/icons/calendar.svg" class="book-icon" alt="Calendar" />
+    <span>2026-01-04</span>
+  </div>
+
+
+
+  
+  <div class="text-small">
+    
+      <a href="/categories/cloud-native/">Cloud Native</a>, 
+      <a href="/categories/devops/">DevOps</a>
+  </div>
+  
+
+  
+  <div class="text-small">
+    
+      <a href="/tags/kubernetes/">Kubernetes</a>, 
+      <a href="/tags/devops/">DevOps</a>, 
+      <a href="/tags/observability/">Observability</a>
+  </div>
+  
+
+
+    <div class="book-post-content"><h2 id="一平台与应用层platform--application">一、平台与应用层（Platform / Application）<a class="anchor" href="#%e4%b8%80%e5%b9%b3%e5%8f%b0%e4%b8%8e%e5%ba%94%e7%94%a8%e5%b1%82platform--application">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>组件</th>
+          <th>云原生领域</th>
+          <th>解决的问题</th>
+          <th>架构定位</th>
+          <th>是否必选</th>
+          <th>可替代方案</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>DevFlow Controller</td>
+          <td>平台工程 / 控制面</td>
+          <td>监听并汇总 Tekton CI 与 Argo CD CD 的执行状态，统一编排发布流程与状态机</td>
+          <td>平台控制面（Orchestrator / Operator）</td>
+          <td>❌（平台自研）</td>
+          <td>Spinnaker、Harness、自研 Operator</td>
+      </tr>
+      <tr>
+          <td>DevFlow</td>
+          <td>应用管理</td>
+          <td>应用 / 发布 / 流程状态管理</td>
+          <td>平台 API 层</td>
+          <td>❌</td>
+          <td>GitLab API、Backstage Backend</td>
+      </tr>
+      <tr>
+          <td>DevFlow Console</td>
+          <td>开发者体验</td>
+          <td>提供统一 Web UI</td>
+          <td>平台入口</td>
+          <td>❌</td>
+          <td>Backstage、GitLab UI</td>
+      </tr>
+      <tr>
+          <td>Document Service</td>
+          <td>知识管理</td>
+          <td>平台文档与规范沉淀</td>
+          <td>辅助服务</td>
+          <td>❌</td>
+          <td>Confluence、Wiki</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="二持续集成ci">二、持续集成（CI）<a class="anchor" href="#%e4%ba%8c%e6%8c%81%e7%bb%ad%e9%9b%86%e6%88%90ci">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>组件</th>
+          <th>云原生领域</th>
+          <th>解决的问题</th>
+          <th>架构定位</th>
+          <th>是否必选</th>
+          <th>可替代方案</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Tekton Pipelines</td>
+          <td>CI</td>
+          <td>声明式、K8s 原生 CI 执行</td>
+          <td>CI 执行引擎</td>
+          <td>❌</td>
+          <td>GitLab CI、Jenkins、GitHub Actions</td>
+      </tr>
+      <tr>
+          <td>Tekton Triggers</td>
+          <td>CI</td>
+          <td>Git / Webhook 触发 Pipeline</td>
+          <td>CI 事件入口</td>
+          <td>❌</td>
+          <td>GitLab Webhook、Argo Events</td>
+      </tr>
+      <tr>
+          <td>Tekton Dashboard</td>
+          <td>CI</td>
+          <td>CI 可视化</td>
+          <td>CI UI</td>
+          <td>❌</td>
+          <td>Jenkins UI、GitLab UI</td>
+      </tr>
+      <tr>
+          <td>Buildah</td>
+          <td>镜像构建</td>
+          <td>无需 Docker Daemon 构建镜像</td>
+          <td>构建工具</td>
+          <td>❌</td>
+          <td>Docker、Kaniko</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="三持续交付cd--发布">三、持续交付（CD &amp; 发布）<a class="anchor" href="#%e4%b8%89%e6%8c%81%e7%bb%ad%e4%ba%a4%e4%bb%98cd--%e5%8f%91%e5%b8%83">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>组件</th>
+          <th>云原生领域</th>
+          <th>解决的问题</th>
+          <th>架构定位</th>
+          <th>是否必选</th>
+          <th>可替代方案</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Argo CD</td>
+          <td>CD / GitOps</td>
+          <td>Git 驱动的声明式部署</td>
+          <td>CD 控制平面</td>
+          <td>✅</td>
+          <td>FluxCD</td>
+      </tr>
+      <tr>
+          <td>Argo ApplicationSet</td>
+          <td>CD</td>
+          <td>多环境 / 多集群应用生成</td>
+          <td>CD 扩展能力</td>
+          <td>❌</td>
+          <td>Helmfile、自研脚本</td>
+      </tr>
+      <tr>
+          <td>Argo Rollouts</td>
+          <td>发布策略</td>
+          <td>灰度 / 蓝绿发布</td>
+          <td>高级 Deployment 控制器</td>
+          <td>❌</td>
+          <td>Flagger、Spinnaker</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="四流量治理与服务网格">四、流量治理与服务网格<a class="anchor" href="#%e5%9b%9b%e6%b5%81%e9%87%8f%e6%b2%bb%e7%90%86%e4%b8%8e%e6%9c%8d%e5%8a%a1%e7%bd%91%e6%a0%bc">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>组件</th>
+          <th>云原生领域</th>
+          <th>解决的问题</th>
+          <th>架构定位</th>
+          <th>是否必选</th>
+          <th>可替代方案</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Istio</td>
+          <td>Service Mesh</td>
+          <td>流量治理、mTLS、可观测</td>
+          <td>服务网格控制面</td>
+          <td>❌</td>
+          <td>Linkerd、Consul Mesh</td>
+      </tr>
+      <tr>
+          <td>Istio Ingress Gateway</td>
+          <td>流量入口</td>
+          <td>统一流量入口</td>
+          <td>南北向网关</td>
+          <td>❌</td>
+          <td>Nginx Ingress、Traefik</td>
+      </tr>
+      <tr>
+          <td>VirtualService / Gateway</td>
+          <td>流量控制</td>
+          <td>路由、权重、故障注入</td>
+          <td>流量规则层</td>
+          <td>❌</td>
+          <td>Nginx 配置</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="五网络cni">五、网络（CNI）<a class="anchor" href="#%e4%ba%94%e7%bd%91%e7%bb%9ccni">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>组件</th>
+          <th>云原生领域</th>
+          <th>解决的问题</th>
+          <th>架构定位</th>
+          <th>是否必选</th>
+          <th>可替代方案</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Cilium</td>
+          <td>容器网络</td>
+          <td>高性能网络 + 安全策略</td>
+          <td>CNI 插件</td>
+          <td>❌</td>
+          <td>Calico、Flannel</td>
+      </tr>
+      <tr>
+          <td>Hubble</td>
+          <td>网络可观测</td>
+          <td>可视化网络流量</td>
+          <td>网络观测层</td>
+          <td>❌</td>
+          <td>Istio Kiali</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="六可观测性observability">六、可观测性（Observability）<a class="anchor" href="#%e5%85%ad%e5%8f%af%e8%a7%82%e6%b5%8b%e6%80%a7observability">#</a></h2>
+<h3 id="metrics">Metrics<a class="anchor" href="#metrics">#</a></h3>
+<table>
+  <thead>
+      <tr>
+          <th>组件</th>
+          <th>领域</th>
+          <th>解决的问题</th>
+          <th>定位</th>
+          <th>是否必选</th>
+          <th>替代方案</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Prometheus</td>
+          <td>Metrics</td>
+          <td>指标采集与查询</td>
+          <td>指标引擎</td>
+          <td>✅</td>
+          <td>VictoriaMetrics</td>
+      </tr>
+      <tr>
+          <td>Prometheus Operator</td>
+          <td>运维自动化</td>
+          <td>Prometheus 生命周期管理</td>
+          <td>控制器</td>
+          <td>❌</td>
+          <td>手动部署</td>
+      </tr>
+      <tr>
+          <td>kube-state-metrics</td>
+          <td>K8s Metrics</td>
+          <td>Kubernetes 状态指标</td>
+          <td>指标源</td>
+          <td>✅</td>
+          <td>无</td>
+      </tr>
+      <tr>
+          <td>node-exporter</td>
+          <td>主机监控</td>
+          <td>Node 资源指标</td>
+          <td>指标采集器</td>
+          <td>✅</td>
+          <td>无</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="logs">Logs<a class="anchor" href="#logs">#</a></h3>
+<table>
+  <thead>
+      <tr>
+          <th>组件</th>
+          <th>领域</th>
+          <th>解决的问题</th>
+          <th>定位</th>
+          <th>是否必选</th>
+          <th>替代方案</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Loki</td>
+          <td>Logs</td>
+          <td>低成本日志存储与查询</td>
+          <td>日志系统</td>
+          <td>❌</td>
+          <td>ELK、OpenSearch</td>
+      </tr>
+      <tr>
+          <td>Alloy / Agent</td>
+          <td>Logs</td>
+          <td>日志采集</td>
+          <td>采集 Agent</td>
+          <td>❌</td>
+          <td>Fluent Bit、Vector</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="tracing">Tracing<a class="anchor" href="#tracing">#</a></h3>
+<table>
+  <thead>
+      <tr>
+          <th>组件</th>
+          <th>领域</th>
+          <th>解决的问题</th>
+          <th>定位</th>
+          <th>是否必选</th>
+          <th>替代方案</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Tempo</td>
+          <td>Tracing</td>
+          <td>分布式追踪</td>
+          <td>Trace 存储</td>
+          <td>❌</td>
+          <td>Jaeger</td>
+      </tr>
+      <tr>
+          <td>OpenTelemetry</td>
+          <td>Telemetry</td>
+          <td>统一采集标准</td>
+          <td>采集规范</td>
+          <td>✅</td>
+          <td>OpenTracing（过时）</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="visualization">Visualization<a class="anchor" href="#visualization">#</a></h3>
+<table>
+  <thead>
+      <tr>
+          <th>组件</th>
+          <th>领域</th>
+          <th>解决的问题</th>
+          <th>定位</th>
+          <th>是否必选</th>
+          <th>替代方案</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Grafana</td>
+          <td>可视化</td>
+          <td>Metrics / Logs / Traces 展示</td>
+          <td>统一观测入口</td>
+          <td>✅</td>
+          <td>Kibana</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="七身份认证与安全">七、身份认证与安全<a class="anchor" href="#%e4%b8%83%e8%ba%ab%e4%bb%bd%e8%ae%a4%e8%af%81%e4%b8%8e%e5%ae%89%e5%85%a8">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>组件</th>
+          <th>云原生领域</th>
+          <th>解决的问题</th>
+          <th>架构定位</th>
+          <th>是否必选</th>
+          <th>可替代方案</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Dex</td>
+          <td>认证</td>
+          <td>OIDC / OAuth2 身份统一</td>
+          <td>认证中心</td>
+          <td>❌</td>
+          <td>Keycloak</td>
+      </tr>
+      <tr>
+          <td>OAuth2 Proxy</td>
+          <td>访问控制</td>
+          <td>Web 服务统一鉴权</td>
+          <td>访问代理</td>
+          <td>❌</td>
+          <td>Istio Auth、Nginx Auth</td>
+      </tr>
+      <tr>
+          <td>cert-manager</td>
+          <td>证书管理</td>
+          <td>自动签发 / 续期证书</td>
+          <td>证书控制器</td>
+          <td>✅</td>
+          <td>Vault PKI</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="八数据与存储">八、数据与存储<a class="anchor" href="#%e5%85%ab%e6%95%b0%e6%8d%ae%e4%b8%8e%e5%ad%98%e5%82%a8">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>组件</th>
+          <th>云原生领域</th>
+          <th>解决的问题</th>
+          <th>架构定位</th>
+          <th>是否必选</th>
+          <th>可替代方案</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>MongoDB</td>
+          <td>数据存储</td>
+          <td>平台元数据存储</td>
+          <td>数据库</td>
+          <td>❌</td>
+          <td>PostgreSQL</td>
+      </tr>
+      <tr>
+          <td>MinIO</td>
+          <td>对象存储</td>
+          <td>构建产物 / 日志 / Trace</td>
+          <td>S3 存储</td>
+          <td>❌</td>
+          <td>Ceph、云厂商 OSS</td>
+      </tr>
+      <tr>
+          <td>local-path-provisioner</td>
+          <td>存储</td>
+          <td>本地 PV 管理</td>
+          <td>StorageClass</td>
+          <td>❌</td>
+          <td>Longhorn</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="九核心总结">九、核心总结<a class="anchor" href="#%e4%b9%9d%e6%a0%b8%e5%bf%83%e6%80%bb%e7%bb%93">#</a></h2>
+<ul>
+<li><strong>Kubernetes</strong> 负责资源调度</li>
+<li><strong>Tekton</strong> 负责 CI</li>
+<li><strong>Argo CD / Rollouts</strong> 负责 CD 与发布</li>
+<li><strong>Istio + Cilium</strong> 负责网络与流量</li>
+<li><strong>Prometheus / Loki / Tempo</strong> 负责可观测</li>
+<li><strong>DevFlow</strong> 负责把一切「工程化、平台化」</li>
+</ul>
+<blockquote class='book-hint '>
+<p>这不是组件堆叠，而是一套 <strong>有清晰分层和职责边界的云原生工程体系</strong></p></div>
+  </article>
+  
+
+  
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+
+
+ 
+        
+  
+ 
+        
+        
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+<aside class="book-toc">
+  <div class="book-toc-content">
+    
+  <nav>
+  <ul>
+  
+    
+    <li class="book-section-flat">
+      <a>Categories</a>
+      <ul>
+      
+        <li class="flex align-center">
+          <a href="/categories/cloud-native/">Cloud Native</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex align-center">
+          <a href="/categories/devops/">DevOps</a>
+          <span>1</span>
+        </li>
+      
+      </ul>
+    </li>
+    
+  
+    
+    <li class="book-section-flat">
+      <a>Tags</a>
+      <ul>
+      
+        <li class="flex align-center">
+          <a href="/tags/devops/">DevOps</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex align-center">
+          <a href="/tags/kubernetes/">Kubernetes</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex align-center">
+          <a href="/tags/observability/">Observability</a>
+          <span>1</span>
+        </li>
+      
+      </ul>
+    </li>
+    
+  
+  </ul>
+</nav>
+
+
+  </div>
+</aside>
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

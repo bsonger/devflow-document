@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="一、持续交付（CD &amp; 发布）# 组件 云原生领域 解决的问题 架构定位 是否必选 可替代方案 Argo CD CD / GitOps Git 驱动的声明式部署 CD 控制平面 ✅ FluxCD Argo ApplicationSet CD 多环境 / 多集群应用生成 CD 扩展能力 ❌ Helmfile、自研脚本 Argo Rollouts 发布策略 灰度 / 蓝绿发布 高级 Deployment 控制器 ❌ Flagger、Spinnaker 二、流量治理与服务网格# 组件 云原生领域 解决的问题 架构定位 是否必选 可替代方案 Istio Service Mesh 流量治理、mTLS、可观测 服务网格控制面 ❌ Linkerd、Consul Mesh Istio Ingress Gateway 流量入口 统一流量入口 南北向网关 ❌ Nginx Ingress、Traefik VirtualService / Gateway 流量控制 路由、权重、故障注入 流量规则层 ❌ Nginx 配置 ">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/cd/component/">
+  <meta property="og:site_name" content="Devflow">
+  <meta property="og:title" content="Components">
+  <meta property="og:description" content="一、持续交付（CD &amp; 发布）# 组件 云原生领域 解决的问题 架构定位 是否必选 可替代方案 Argo CD CD / GitOps Git 驱动的声明式部署 CD 控制平面 ✅ FluxCD Argo ApplicationSet CD 多环境 / 多集群应用生成 CD 扩展能力 ❌ Helmfile、自研脚本 Argo Rollouts 发布策略 灰度 / 蓝绿发布 高级 Deployment 控制器 ❌ Flagger、Spinnaker 二、流量治理与服务网格# 组件 云原生领域 解决的问题 架构定位 是否必选 可替代方案 Istio Service Mesh 流量治理、mTLS、可观测 服务网格控制面 ❌ Linkerd、Consul Mesh Istio Ingress Gateway 流量入口 统一流量入口 南北向网关 ❌ Nginx Ingress、Traefik VirtualService / Gateway 流量控制 路由、权重、故障注入 流量规则层 ❌ Nginx 配置">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+
+
+  <meta itemprop="name" content="Components">
+  <meta itemprop="description" content="一、持续交付（CD &amp; 发布）# 组件 云原生领域 解决的问题 架构定位 是否必选 可替代方案 Argo CD CD / GitOps Git 驱动的声明式部署 CD 控制平面 ✅ FluxCD Argo ApplicationSet CD 多环境 / 多集群应用生成 CD 扩展能力 ❌ Helmfile、自研脚本 Argo Rollouts 发布策略 灰度 / 蓝绿发布 高级 Deployment 控制器 ❌ Flagger、Spinnaker 二、流量治理与服务网格# 组件 云原生领域 解决的问题 架构定位 是否必选 可替代方案 Istio Service Mesh 流量治理、mTLS、可观测 服务网格控制面 ❌ Linkerd、Consul Mesh Istio Ingress Gateway 流量入口 统一流量入口 南北向网关 ❌ Nginx Ingress、Traefik VirtualService / Gateway 流量控制 路由、权重、故障注入 流量规则层 ❌ Nginx 配置">
+  <meta itemprop="wordCount" content="74">
+
+<title>Components | Devflow</title>
+<link rel="icon" href="/favicon.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/cd/component/">
+<link rel="stylesheet" href="/book.min.6970156cec683193d93c9c4edaf0d56574e4361df2e0c1be4f697ae81c3ba55f.css" integrity="sha256-aXAVbOxoMZPZPJxO2vDVZXTkNh3y4MG&#43;T2l66Bw7pV8=" crossorigin="anonymous">
+
+
+
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>Devflow</span>
+  </a>
+</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-4bd032e4e5fe1323a134583cafeecf06" class="toggle"  />
+    <label for="section-4bd032e4e5fe1323a134583cafeecf06" class="flex">
+      <a role="button" class="">
+        CI</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/ci/standard/" class="">
+      Standard</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/ci/component/" class="">
+      Components</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-0fc280a0e74cc087db99dcd67aadd7bb" class="toggle" checked />
+    <label for="section-0fc280a0e74cc087db99dcd67aadd7bb" class="flex">
+      <a role="button" class="">
+        CD</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cd/component/" class="active">
+      Components</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-6884c320646745efe1e09831aa35ad5b" class="toggle"  />
+    <label for="section-6884c320646745efe1e09831aa35ad5b" class="flex">
+      <a role="button" class="">
+        observability</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/observability/component/" class="">
+      Component</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/observability/attributes/" class="">
+      Attributes</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/observability/standard/" class="">
+      Standard</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/component/" class="">
+      All Components</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Components</h3>
+
+  <label for="toc-control">
+    
+  </label>
+</div>
+
+
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h2 id="一持续交付cd--发布">一、持续交付（CD &amp; 发布）<a class="anchor" href="#%e4%b8%80%e6%8c%81%e7%bb%ad%e4%ba%a4%e4%bb%98cd--%e5%8f%91%e5%b8%83">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>组件</th>
+          <th>云原生领域</th>
+          <th>解决的问题</th>
+          <th>架构定位</th>
+          <th>是否必选</th>
+          <th>可替代方案</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Argo CD</td>
+          <td>CD / GitOps</td>
+          <td>Git 驱动的声明式部署</td>
+          <td>CD 控制平面</td>
+          <td>✅</td>
+          <td>FluxCD</td>
+      </tr>
+      <tr>
+          <td>Argo ApplicationSet</td>
+          <td>CD</td>
+          <td>多环境 / 多集群应用生成</td>
+          <td>CD 扩展能力</td>
+          <td>❌</td>
+          <td>Helmfile、自研脚本</td>
+      </tr>
+      <tr>
+          <td>Argo Rollouts</td>
+          <td>发布策略</td>
+          <td>灰度 / 蓝绿发布</td>
+          <td>高级 Deployment 控制器</td>
+          <td>❌</td>
+          <td>Flagger、Spinnaker</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="二流量治理与服务网格">二、流量治理与服务网格<a class="anchor" href="#%e4%ba%8c%e6%b5%81%e9%87%8f%e6%b2%bb%e7%90%86%e4%b8%8e%e6%9c%8d%e5%8a%a1%e7%bd%91%e6%a0%bc">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>组件</th>
+          <th>云原生领域</th>
+          <th>解决的问题</th>
+          <th>架构定位</th>
+          <th>是否必选</th>
+          <th>可替代方案</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Istio</td>
+          <td>Service Mesh</td>
+          <td>流量治理、mTLS、可观测</td>
+          <td>服务网格控制面</td>
+          <td>❌</td>
+          <td>Linkerd、Consul Mesh</td>
+      </tr>
+      <tr>
+          <td>Istio Ingress Gateway</td>
+          <td>流量入口</td>
+          <td>统一流量入口</td>
+          <td>南北向网关</td>
+          <td>❌</td>
+          <td>Nginx Ingress、Traefik</td>
+      </tr>
+      <tr>
+          <td>VirtualService / Gateway</td>
+          <td>流量控制</td>
+          <td>路由、权重、故障注入</td>
+          <td>流量规则层</td>
+          <td>❌</td>
+          <td>Nginx 配置</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/docs/ci/component/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>Components</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/docs/observability/component/" class="flex align-center">
+        <span>Component</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+ 
+        
+        
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

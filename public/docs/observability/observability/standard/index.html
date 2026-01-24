@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Observability Standard# 本文档定义了 Metric / Log / Trace 在 Observability 系统中的标准 Labels / Attributes，用于统一收集、查询和关联数据。
+3. Metric / Trace / Log 公共 Attributes# Key 类型 说明 示例 适用类型 trace_id string Trace ID，用于关联 Trace / Log / Metric 2e71abb92e031efc2a7a1c4280959f4b Trace / Log http.method string HTTP 方法 GET Metric / Trace / Log http.route string 路由模板 /users/:id Metric / Trace / Log http.status_code int HTTP 状态码 200 Metric / Trace / Log http.server.duration duration 请求耗时 120ms Metric / Trace / Log 4. Trace / Log 特有 Attributes# Key 类型 说明 示例 适用类型 span_id string Span ID，仅 Trace 使用 abc123def456 Trace parent_span_id string 父 Span ID，仅 Trace 使用 xyz789ghi012 Trace error.message string 错误信息（如有） database timeout Trace / Log client.ip string 客户端 IP 地址 10.0.0.1 Trace / Log user_agent.original string User-Agent curl/7.68.0 Trace / Log 5. Metric 特有 Attributes# Key 类型 说明 示例 metric.name string 指标名称 http_request_duration_seconds metric.unit string 单位 ms / requests metric.type string 类型 gauge / counter / histogram 注意：HTTP 字段 (http.method / http.route / http.status_code / http.server.duration) 可作为 Metric Label 使用，方便拆分指标。
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/observability/observability/standard/">
+  <meta property="og:site_name" content="Devflow">
+  <meta property="og:title" content="Devflow">
+  <meta property="og:description" content="Observability Standard# 本文档定义了 Metric / Log / Trace 在 Observability 系统中的标准 Labels / Attributes，用于统一收集、查询和关联数据。
+3. Metric / Trace / Log 公共 Attributes# Key 类型 说明 示例 适用类型 trace_id string Trace ID，用于关联 Trace / Log / Metric 2e71abb92e031efc2a7a1c4280959f4b Trace / Log http.method string HTTP 方法 GET Metric / Trace / Log http.route string 路由模板 /users/:id Metric / Trace / Log http.status_code int HTTP 状态码 200 Metric / Trace / Log http.server.duration duration 请求耗时 120ms Metric / Trace / Log 4. Trace / Log 特有 Attributes# Key 类型 说明 示例 适用类型 span_id string Span ID，仅 Trace 使用 abc123def456 Trace parent_span_id string 父 Span ID，仅 Trace 使用 xyz789ghi012 Trace error.message string 错误信息（如有） database timeout Trace / Log client.ip string 客户端 IP 地址 10.0.0.1 Trace / Log user_agent.original string User-Agent curl/7.68.0 Trace / Log 5. Metric 特有 Attributes# Key 类型 说明 示例 metric.name string 指标名称 http_request_duration_seconds metric.unit string 单位 ms / requests metric.type string 类型 gauge / counter / histogram 注意：HTTP 字段 (http.method / http.route / http.status_code / http.server.duration) 可作为 Metric Label 使用，方便拆分指标。">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+
+
+  <meta itemprop="name" content="Devflow">
+  <meta itemprop="description" content="Observability Standard# 本文档定义了 Metric / Log / Trace 在 Observability 系统中的标准 Labels / Attributes，用于统一收集、查询和关联数据。
+3. Metric / Trace / Log 公共 Attributes# Key 类型 说明 示例 适用类型 trace_id string Trace ID，用于关联 Trace / Log / Metric 2e71abb92e031efc2a7a1c4280959f4b Trace / Log http.method string HTTP 方法 GET Metric / Trace / Log http.route string 路由模板 /users/:id Metric / Trace / Log http.status_code int HTTP 状态码 200 Metric / Trace / Log http.server.duration duration 请求耗时 120ms Metric / Trace / Log 4. Trace / Log 特有 Attributes# Key 类型 说明 示例 适用类型 span_id string Span ID，仅 Trace 使用 abc123def456 Trace parent_span_id string 父 Span ID，仅 Trace 使用 xyz789ghi012 Trace error.message string 错误信息（如有） database timeout Trace / Log client.ip string 客户端 IP 地址 10.0.0.1 Trace / Log user_agent.original string User-Agent curl/7.68.0 Trace / Log 5. Metric 特有 Attributes# Key 类型 说明 示例 metric.name string 指标名称 http_request_duration_seconds metric.unit string 单位 ms / requests metric.type string 类型 gauge / counter / histogram 注意：HTTP 字段 (http.method / http.route / http.status_code / http.server.duration) 可作为 Metric Label 使用，方便拆分指标。">
+  <meta itemprop="wordCount" content="275">
+
+<title>Standard | Devflow</title>
+<link rel="icon" href="/favicon.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/observability/observability/standard/">
+<link rel="stylesheet" href="/book.min.cc2c524ed250aac81b23d1f4af87344917b325208841feca0968fe450f570575.css" integrity="sha256-zCxSTtJQqsgbI9H0r4c0SRezJSCIQf7KCWj&#43;RQ9XBXU=" crossorigin="anonymous">
+
+
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.8225f1a2ac54295759af0ed7bb9c7ab809afb69b086e0c0d58b2d5165d400b22.js" integrity="sha256-giXxoqxUKVdZrw7Xu5x6uAmvtpsIbgwNWLLVFl1ACyI=" crossorigin="anonymous"></script>
+
+
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>Devflow</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-850779667a5a6eec06e9f8c9676ced74" class="toggle" checked />
+    <label for="section-850779667a5a6eec06e9f8c9676ced74" class="flex">
+      <a role="button" class="">
+        observability</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/observability/observability/attributes/" class="">
+      Attributes</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/observability/observability/standard/" class="active">
+      Standard</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Standard</h3>
+
+  <label for="toc-control">
+    
+    <img src="/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#3-metric--trace--log-公共-attributes">3. Metric / Trace / Log 公共 Attributes</a></li>
+    <li><a href="#4-trace--log-特有-attributes">4. Trace / Log 特有 Attributes</a></li>
+    <li><a href="#5-metric-特有-attributes">5. Metric 特有 Attributes</a></li>
+    <li><a href="#6-log-特有-attributes">6. Log 特有 Attributes</a></li>
+    <li><a href="#7-trace-特有-attributes">7. Trace 特有 Attributes</a></li>
+    <li><a href="#8-统一规范">8. 统一规范</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="observability-standard">Observability Standard<a class="anchor" href="#observability-standard">#</a></h1>
+<p>本文档定义了 <strong>Metric / Log / Trace</strong> 在 Observability 系统中的标准 Labels / Attributes，用于统一收集、查询和关联数据。</p>
+<hr>
+<h2 id="3-metric--trace--log-公共-attributes">3. Metric / Trace / Log 公共 Attributes<a class="anchor" href="#3-metric--trace--log-%e5%85%ac%e5%85%b1-attributes">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>Key</th>
+          <th>类型</th>
+          <th>说明</th>
+          <th>示例</th>
+          <th>适用类型</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>trace_id</code></td>
+          <td>string</td>
+          <td>Trace ID，用于关联 Trace / Log / Metric</td>
+          <td><code>2e71abb92e031efc2a7a1c4280959f4b</code></td>
+          <td>Trace / Log</td>
+      </tr>
+      <tr>
+          <td><code>http.method</code></td>
+          <td>string</td>
+          <td>HTTP 方法</td>
+          <td><code>GET</code></td>
+          <td>Metric / Trace / Log</td>
+      </tr>
+      <tr>
+          <td><code>http.route</code></td>
+          <td>string</td>
+          <td>路由模板</td>
+          <td><code>/users/:id</code></td>
+          <td>Metric / Trace / Log</td>
+      </tr>
+      <tr>
+          <td><code>http.status_code</code></td>
+          <td>int</td>
+          <td>HTTP 状态码</td>
+          <td><code>200</code></td>
+          <td>Metric / Trace / Log</td>
+      </tr>
+      <tr>
+          <td><code>http.server.duration</code></td>
+          <td>duration</td>
+          <td>请求耗时</td>
+          <td><code>120ms</code></td>
+          <td>Metric / Trace / Log</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="4-trace--log-特有-attributes">4. Trace / Log 特有 Attributes<a class="anchor" href="#4-trace--log-%e7%89%b9%e6%9c%89-attributes">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>Key</th>
+          <th>类型</th>
+          <th>说明</th>
+          <th>示例</th>
+          <th>适用类型</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>span_id</code></td>
+          <td>string</td>
+          <td>Span ID，仅 Trace 使用</td>
+          <td><code>abc123def456</code></td>
+          <td>Trace</td>
+      </tr>
+      <tr>
+          <td><code>parent_span_id</code></td>
+          <td>string</td>
+          <td>父 Span ID，仅 Trace 使用</td>
+          <td><code>xyz789ghi012</code></td>
+          <td>Trace</td>
+      </tr>
+      <tr>
+          <td><code>error.message</code></td>
+          <td>string</td>
+          <td>错误信息（如有）</td>
+          <td><code>database timeout</code></td>
+          <td>Trace / Log</td>
+      </tr>
+      <tr>
+          <td><code>client.ip</code></td>
+          <td>string</td>
+          <td>客户端 IP 地址</td>
+          <td><code>10.0.0.1</code></td>
+          <td>Trace / Log</td>
+      </tr>
+      <tr>
+          <td><code>user_agent.original</code></td>
+          <td>string</td>
+          <td>User-Agent</td>
+          <td><code>curl/7.68.0</code></td>
+          <td>Trace / Log</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="5-metric-特有-attributes">5. Metric 特有 Attributes<a class="anchor" href="#5-metric-%e7%89%b9%e6%9c%89-attributes">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>Key</th>
+          <th>类型</th>
+          <th>说明</th>
+          <th>示例</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>metric.name</code></td>
+          <td>string</td>
+          <td>指标名称</td>
+          <td><code>http_request_duration_seconds</code></td>
+      </tr>
+      <tr>
+          <td><code>metric.unit</code></td>
+          <td>string</td>
+          <td>单位</td>
+          <td><code>ms</code> / <code>requests</code></td>
+      </tr>
+      <tr>
+          <td><code>metric.type</code></td>
+          <td>string</td>
+          <td>类型</td>
+          <td><code>gauge</code> / <code>counter</code> / <code>histogram</code></td>
+      </tr>
+  </tbody>
+</table>
+<blockquote class='book-hint '>
+<p>注意：HTTP 字段 (<code>http.method</code> / <code>http.route</code> / <code>http.status_code</code> / <code>http.server.duration</code>) 可作为 Metric Label 使用，方便拆分指标。</p>
+</blockquote><hr>
+<h2 id="6-log-特有-attributes">6. Log 特有 Attributes<a class="anchor" href="#6-log-%e7%89%b9%e6%9c%89-attributes">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>Key</th>
+          <th>类型</th>
+          <th>说明</th>
+          <th>示例</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>log.level</code></td>
+          <td>string</td>
+          <td>日志级别</td>
+          <td><code>INFO</code> / <code>WARN</code> / <code>ERROR</code></td>
+      </tr>
+      <tr>
+          <td><code>log.logger</code></td>
+          <td>string</td>
+          <td>日志记录器名称</td>
+          <td><code>gin</code> / <code>otelzap</code></td>
+      </tr>
+      <tr>
+          <td><code>log.message</code></td>
+          <td>string</td>
+          <td>日志文本</td>
+          <td><code>http request completed</code></td>
+      </tr>
+      <tr>
+          <td><code>log.stacktrace</code></td>
+          <td>string</td>
+          <td>可选，错误堆栈</td>
+          <td><code>at main.go:45</code></td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="7-trace-特有-attributes">7. Trace 特有 Attributes<a class="anchor" href="#7-trace-%e7%89%b9%e6%9c%89-attributes">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>Key</th>
+          <th>类型</th>
+          <th>说明</th>
+          <th>示例</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>span.name</code></td>
+          <td>string</td>
+          <td>Span 名称</td>
+          <td><code>Tekton.CreatePipelineRun</code></td>
+      </tr>
+      <tr>
+          <td><code>span.kind</code></td>
+          <td>string</td>
+          <td>Span 类型</td>
+          <td><code>server</code> / <code>client</code> / <code>producer</code> / <code>consumer</code></td>
+      </tr>
+      <tr>
+          <td><code>span.status</code></td>
+          <td>string</td>
+          <td>Span 状态</td>
+          <td><code>ok</code> / <code>error</code></td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="8-统一规范">8. 统一规范<a class="anchor" href="#8-%e7%bb%9f%e4%b8%80%e8%a7%84%e8%8c%83">#</a></h2>
+<ol>
+<li>
+<p><strong>同一请求生命周期</strong>内的 <strong>Metric / Log / Trace</strong> 应共享以下 Attributes：</p>
+<ul>
+<li><code>service.name</code></li>
+<li><code>service.version</code></li>
+<li><code>service.instance.id</code></li>
+<li><code>deployment.environment</code></li>
+<li><code>k8s.pod.name</code></li>
+<li><code>trace_id</code>（如果有 Trace）</li>
+</ul>
+</li>
+<li>
+<p><strong>命名规范</strong>：</p>
+<ul>
+<li>Attribute 使用 <strong>小写 + 点号分隔</strong> (<code>service.name</code>)</li>
+<li>Kubernetes 相关字段加前缀 <code>k8s.</code></li>
+<li>HTTP 相关字段加前缀 <code>http.</code></li>
+<li>日志相关字段加前缀 <code>log.</code></li>
+<li>Span 相关字段加前缀 <code>span.</code></li>
+</ul>
+</li>
+<li>
+<p><strong>来源要求</strong>：</p>
+<ul>
+<li>所有 Attribute 应来源于 <strong>环境变量</strong> 或 <strong>资源信息</strong>，避免硬编码。</li>
+</ul>
+</li>
+</ol>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/docs/observability/observability/attributes/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>Attributes</span>
+      </a>
+    
+    </span>
+    <span>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+        
+        
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#3-metric--trace--log-公共-attributes">3. Metric / Trace / Log 公共 Attributes</a></li>
+    <li><a href="#4-trace--log-特有-attributes">4. Trace / Log 特有 Attributes</a></li>
+    <li><a href="#5-metric-特有-attributes">5. Metric 特有 Attributes</a></li>
+    <li><a href="#6-log-特有-attributes">6. Log 特有 Attributes</a></li>
+    <li><a href="#7-trace-特有-attributes">7. Trace 特有 Attributes</a></li>
+    <li><a href="#8-统一规范">8. 统一规范</a></li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

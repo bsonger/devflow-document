@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Observability Labels / Attributes 规范# 本文档定义了 Metric / Trace / Log 的标准 Labels / Attributes，用于统一收集、查询和关联数据。
+其中 Labels / Attributes 主要分为两类：
+必选：核心维度，用于聚合和拆分指标 可选：辅助维度，可用于多集群、多环境、灰度或团队统计 1️⃣ Metric# 用于统计和聚合指标数据
+必选 Labels# Key 类型 说明 示例 metric.name string 指标名称 http_request_duration_seconds service.name string 服务名称 user-service http.method string HTTP 方法 GET http.route string 路由模板 /users/:id http.status_code int HTTP 状态码 200 k8s.cluster.name string 集群名称或 ID k8s-prod-01 可选 Labels(强烈)# Key 类型 说明 示例 deployment.environment string 部署环境 prod / staging trace_id string Trace ID（可选，用于关联 Metric 和 Trace） 2e71abb92e031efc2a7a1c4280959f4b k8s.namespace.name string K8s 命名空间 applications k8s.pod.name string Pod 名称 user-service-5c7d8b9d7f-xyz12 k8s.container.name string 容器名称 user-service k8s.node.name string 节点名称 node-01 region / zone string 地域 / 可用区 ap-southeast-1a Metric Value / Measurement# Key 类型 说明 示例 http.server.duration duration 请求耗时 120ms http.request.size bytes 请求大小 2KB http.response.size bytes 响应大小 10KB 2️⃣ Trace# 用于分布式请求链路追踪
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/observability/standard/">
+  <meta property="og:site_name" content="Devflow">
+  <meta property="og:title" content="Devflow">
+  <meta property="og:description" content="Observability Labels / Attributes 规范# 本文档定义了 Metric / Trace / Log 的标准 Labels / Attributes，用于统一收集、查询和关联数据。
+其中 Labels / Attributes 主要分为两类：
+必选：核心维度，用于聚合和拆分指标 可选：辅助维度，可用于多集群、多环境、灰度或团队统计 1️⃣ Metric# 用于统计和聚合指标数据
+必选 Labels# Key 类型 说明 示例 metric.name string 指标名称 http_request_duration_seconds service.name string 服务名称 user-service http.method string HTTP 方法 GET http.route string 路由模板 /users/:id http.status_code int HTTP 状态码 200 k8s.cluster.name string 集群名称或 ID k8s-prod-01 可选 Labels(强烈)# Key 类型 说明 示例 deployment.environment string 部署环境 prod / staging trace_id string Trace ID（可选，用于关联 Metric 和 Trace） 2e71abb92e031efc2a7a1c4280959f4b k8s.namespace.name string K8s 命名空间 applications k8s.pod.name string Pod 名称 user-service-5c7d8b9d7f-xyz12 k8s.container.name string 容器名称 user-service k8s.node.name string 节点名称 node-01 region / zone string 地域 / 可用区 ap-southeast-1a Metric Value / Measurement# Key 类型 说明 示例 http.server.duration duration 请求耗时 120ms http.request.size bytes 请求大小 2KB http.response.size bytes 响应大小 10KB 2️⃣ Trace# 用于分布式请求链路追踪">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+
+
+  <meta itemprop="name" content="Devflow">
+  <meta itemprop="description" content="Observability Labels / Attributes 规范# 本文档定义了 Metric / Trace / Log 的标准 Labels / Attributes，用于统一收集、查询和关联数据。
+其中 Labels / Attributes 主要分为两类：
+必选：核心维度，用于聚合和拆分指标 可选：辅助维度，可用于多集群、多环境、灰度或团队统计 1️⃣ Metric# 用于统计和聚合指标数据
+必选 Labels# Key 类型 说明 示例 metric.name string 指标名称 http_request_duration_seconds service.name string 服务名称 user-service http.method string HTTP 方法 GET http.route string 路由模板 /users/:id http.status_code int HTTP 状态码 200 k8s.cluster.name string 集群名称或 ID k8s-prod-01 可选 Labels(强烈)# Key 类型 说明 示例 deployment.environment string 部署环境 prod / staging trace_id string Trace ID（可选，用于关联 Metric 和 Trace） 2e71abb92e031efc2a7a1c4280959f4b k8s.namespace.name string K8s 命名空间 applications k8s.pod.name string Pod 名称 user-service-5c7d8b9d7f-xyz12 k8s.container.name string 容器名称 user-service k8s.node.name string 节点名称 node-01 region / zone string 地域 / 可用区 ap-southeast-1a Metric Value / Measurement# Key 类型 说明 示例 http.server.duration duration 请求耗时 120ms http.request.size bytes 请求大小 2KB http.response.size bytes 响应大小 10KB 2️⃣ Trace# 用于分布式请求链路追踪">
+  <meta itemprop="wordCount" content="457">
+
+<title>Standard | Devflow</title>
+<link rel="icon" href="/favicon.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/observability/standard/">
+<link rel="stylesheet" href="/book.min.6970156cec683193d93c9c4edaf0d56574e4361df2e0c1be4f697ae81c3ba55f.css" integrity="sha256-aXAVbOxoMZPZPJxO2vDVZXTkNh3y4MG&#43;T2l66Bw7pV8=" crossorigin="anonymous">
+
+
+
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>Devflow</span>
+  </a>
+</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-4bd032e4e5fe1323a134583cafeecf06" class="toggle"  />
+    <label for="section-4bd032e4e5fe1323a134583cafeecf06" class="flex">
+      <a role="button" class="">
+        CI</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/ci/standard/" class="">
+      Standard</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/ci/component/" class="">
+      Components</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-0fc280a0e74cc087db99dcd67aadd7bb" class="toggle"  />
+    <label for="section-0fc280a0e74cc087db99dcd67aadd7bb" class="flex">
+      <a role="button" class="">
+        CD</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cd/component/" class="">
+      Components</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-6884c320646745efe1e09831aa35ad5b" class="toggle" checked />
+    <label for="section-6884c320646745efe1e09831aa35ad5b" class="flex">
+      <a role="button" class="">
+        observability</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/observability/component/" class="">
+      Component</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/observability/attributes/" class="">
+      Attributes</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/observability/standard/" class="active">
+      Standard</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/component/" class="">
+      All Components</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Standard</h3>
+
+  <label for="toc-control">
+    
+  </label>
+</div>
+
+
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="observability-labels--attributes-规范">Observability Labels / Attributes 规范<a class="anchor" href="#observability-labels--attributes-%e8%a7%84%e8%8c%83">#</a></h1>
+<p>本文档定义了 <strong>Metric / Trace / Log</strong> 的标准 Labels / Attributes，用于统一收集、查询和关联数据。<br>
+其中 Labels / Attributes 主要分为两类：</p>
+<ul>
+<li><strong>必选</strong>：核心维度，用于聚合和拆分指标</li>
+<li><strong>可选</strong>：辅助维度，可用于多集群、多环境、灰度或团队统计</li>
+</ul>
+<hr>
+<h2 id="1-metric">1️⃣ Metric<a class="anchor" href="#1-metric">#</a></h2>
+<p><strong>用于统计和聚合指标数据</strong></p>
+<h3 id="必选-labels">必选 Labels<a class="anchor" href="#%e5%bf%85%e9%80%89-labels">#</a></h3>
+<table>
+  <thead>
+      <tr>
+          <th>Key</th>
+          <th>类型</th>
+          <th>说明</th>
+          <th>示例</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>metric.name</code></td>
+          <td>string</td>
+          <td>指标名称</td>
+          <td><code>http_request_duration_seconds</code></td>
+      </tr>
+      <tr>
+          <td><code>service.name</code></td>
+          <td>string</td>
+          <td>服务名称</td>
+          <td><code>user-service</code></td>
+      </tr>
+      <tr>
+          <td><code>http.method</code></td>
+          <td>string</td>
+          <td>HTTP 方法</td>
+          <td><code>GET</code></td>
+      </tr>
+      <tr>
+          <td><code>http.route</code></td>
+          <td>string</td>
+          <td>路由模板</td>
+          <td><code>/users/:id</code></td>
+      </tr>
+      <tr>
+          <td><code>http.status_code</code></td>
+          <td>int</td>
+          <td>HTTP 状态码</td>
+          <td><code>200</code></td>
+      </tr>
+      <tr>
+          <td><code>k8s.cluster.name</code></td>
+          <td>string</td>
+          <td>集群名称或 ID</td>
+          <td><code>k8s-prod-01</code></td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="可选-labels强烈">可选 Labels(强烈)<a class="anchor" href="#%e5%8f%af%e9%80%89-labels%e5%bc%ba%e7%83%88">#</a></h3>
+<table>
+  <thead>
+      <tr>
+          <th>Key</th>
+          <th>类型</th>
+          <th>说明</th>
+          <th>示例</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>deployment.environment</code></td>
+          <td>string</td>
+          <td>部署环境</td>
+          <td><code>prod</code> / <code>staging</code></td>
+      </tr>
+      <tr>
+          <td><code>trace_id</code></td>
+          <td>string</td>
+          <td>Trace ID（可选，用于关联 Metric 和 Trace）</td>
+          <td><code>2e71abb92e031efc2a7a1c4280959f4b</code></td>
+      </tr>
+      <tr>
+          <td><code>k8s.namespace.name</code></td>
+          <td>string</td>
+          <td>K8s 命名空间</td>
+          <td><code>applications</code></td>
+      </tr>
+      <tr>
+          <td><code>k8s.pod.name</code></td>
+          <td>string</td>
+          <td>Pod 名称</td>
+          <td><code>user-service-5c7d8b9d7f-xyz12</code></td>
+      </tr>
+      <tr>
+          <td><code>k8s.container.name</code></td>
+          <td>string</td>
+          <td>容器名称</td>
+          <td><code>user-service</code></td>
+      </tr>
+      <tr>
+          <td><code>k8s.node.name</code></td>
+          <td>string</td>
+          <td>节点名称</td>
+          <td><code>node-01</code></td>
+      </tr>
+      <tr>
+          <td><code>region</code> / <code>zone</code></td>
+          <td>string</td>
+          <td>地域 / 可用区</td>
+          <td><code>ap-southeast-1a</code></td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="metric-value--measurement">Metric Value / Measurement<a class="anchor" href="#metric-value--measurement">#</a></h3>
+<table>
+  <thead>
+      <tr>
+          <th>Key</th>
+          <th>类型</th>
+          <th>说明</th>
+          <th>示例</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>http.server.duration</code></td>
+          <td>duration</td>
+          <td>请求耗时</td>
+          <td><code>120ms</code></td>
+      </tr>
+      <tr>
+          <td><code>http.request.size</code></td>
+          <td>bytes</td>
+          <td>请求大小</td>
+          <td><code>2KB</code></td>
+      </tr>
+      <tr>
+          <td><code>http.response.size</code></td>
+          <td>bytes</td>
+          <td>响应大小</td>
+          <td><code>10KB</code></td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="2-trace">2️⃣ Trace<a class="anchor" href="#2-trace">#</a></h2>
+<p><strong>用于分布式请求链路追踪</strong></p>
+<h3 id="span-attributes">span Attributes<a class="anchor" href="#span-attributes">#</a></h3>
+<h2 id="span-attributes-1">Span Attributes<a class="anchor" href="#span-attributes-1">#</a></h2>
+<p><strong>Span 关注单次操作的上下文和状态，用于 Trace 追踪</strong></p>
+<h3 id="必选">必选<a class="anchor" href="#%e5%bf%85%e9%80%89">#</a></h3>
+<table>
+  <thead>
+      <tr>
+          <th>Key</th>
+          <th>类型</th>
+          <th>说明</th>
+          <th>示例</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>trace_id</code></td>
+          <td>string</td>
+          <td>Trace ID，用于关联整个 Trace</td>
+          <td><code>2e71abb92e031efc2a7a1c4280959f4b</code></td>
+      </tr>
+      <tr>
+          <td><code>span_id</code></td>
+          <td>string</td>
+          <td>当前 Span ID</td>
+          <td><code>abc123def456</code></td>
+      </tr>
+      <tr>
+          <td><code>span.name</code></td>
+          <td>string</td>
+          <td>Span 名称</td>
+          <td><code>Tekton.CreatePipelineRun</code></td>
+      </tr>
+      <tr>
+          <td><code>span.kind</code></td>
+          <td>string</td>
+          <td>Span 类型</td>
+          <td><code>server</code> / <code>client</code> / <code>producer</code> / <code>consumer</code></td>
+      </tr>
+      <tr>
+          <td><code>span.status</code></td>
+          <td>string</td>
+          <td>Span 状态</td>
+          <td><code>ok</code> / <code>error</code></td>
+      </tr>
+      <tr>
+          <td><code>span.duration</code></td>
+          <td>duration</td>
+          <td>Span 耗时</td>
+          <td><code>120ms</code></td>
+      </tr>
+      <tr>
+          <td><code>http.method</code></td>
+          <td>string</td>
+          <td>HTTP 方法</td>
+          <td><code>GET</code></td>
+      </tr>
+      <tr>
+          <td><code>http.route</code></td>
+          <td>string</td>
+          <td>路由模板</td>
+          <td><code>/users/:id</code></td>
+      </tr>
+      <tr>
+          <td><code>http.status_code</code></td>
+          <td>int</td>
+          <td>HTTP 状态码</td>
+          <td><code>200</code></td>
+      </tr>
+      <tr>
+          <td><code>url.path</code></td>
+          <td>string</td>
+          <td>请求路径</td>
+          <td><code>/api/v1/users/123</code></td>
+      </tr>
+      <tr>
+          <td><code>url.scheme</code></td>
+          <td>string</td>
+          <td>协议</td>
+          <td><code>http</code> / <code>https</code></td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="可选">可选<a class="anchor" href="#%e5%8f%af%e9%80%89">#</a></h3>
+<table>
+  <thead>
+      <tr>
+          <th>Key</th>
+          <th>类型</th>
+          <th>说明</th>
+          <th>示例</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>parent_span_id</code></td>
+          <td>string</td>
+          <td>父 Span ID</td>
+          <td><code>xyz789ghi012</code></td>
+      </tr>
+      <tr>
+          <td><code>client.address</code></td>
+          <td>string</td>
+          <td>客户端 IP 或地址</td>
+          <td><code>10.0.0.1</code></td>
+      </tr>
+      <tr>
+          <td><code>server.address</code></td>
+          <td>string</td>
+          <td>服务端 IP 或地址</td>
+          <td><code>10.0.0.10</code></td>
+      </tr>
+      <tr>
+          <td><code>network.peer.address</code></td>
+          <td>string</td>
+          <td>网络对端地址</td>
+          <td><code>10.0.0.2</code></td>
+      </tr>
+      <tr>
+          <td><code>network.peer.port</code></td>
+          <td>int</td>
+          <td>网络对端端口</td>
+          <td><code>443</code></td>
+      </tr>
+      <tr>
+          <td><code>network.protocol.version</code></td>
+          <td>string</td>
+          <td>网络协议版本</td>
+          <td><code>HTTP/2</code></td>
+      </tr>
+      <tr>
+          <td><code>http.response.body.size</code></td>
+          <td>int</td>
+          <td>响应体大小</td>
+          <td><code>1024</code></td>
+      </tr>
+      <tr>
+          <td><code>error.message</code></td>
+          <td>string</td>
+          <td>错误信息（如有）</td>
+          <td><code>database timeout</code></td>
+      </tr>
+      <tr>
+          <td><code>user_agent.original</code></td>
+          <td>string</td>
+          <td>User-Agent</td>
+          <td><code>curl/7.68.0</code></td>
+      </tr>
+  </tbody>
+</table>
+<h4 id="2-resource-attributesspan-所属资源如-pod--vm--node">2️⃣ Resource Attributes（Span 所属资源，如 Pod / VM / Node）<a class="anchor" href="#2-resource-attributesspan-%e6%89%80%e5%b1%9e%e8%b5%84%e6%ba%90%e5%a6%82-pod--vm--node">#</a></h4>
+<p><strong>表示 Span 或 Metric 所运行的物理/虚拟资源上下文，包括服务和 Kubernetes 信息</strong></p>
+<h3 id="必选-1">必选<a class="anchor" href="#%e5%bf%85%e9%80%89-1">#</a></h3>
+<table>
+  <thead>
+      <tr>
+          <th>Key</th>
+          <th>类型</th>
+          <th>说明</th>
+          <th>示例</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>service.name</code></td>
+          <td>string</td>
+          <td>服务名称</td>
+          <td><code>devflow</code></td>
+      </tr>
+      <tr>
+          <td><code>deployment.environment</code></td>
+          <td>string</td>
+          <td>部署环境</td>
+          <td><code>prod</code> / <code>staging</code> / <code>dev</code></td>
+      </tr>
+      <tr>
+          <td><code>k8s.cluster.name</code></td>
+          <td>string</td>
+          <td>集群名称</td>
+          <td><code>cluster-prod</code></td>
+      </tr>
+      <tr>
+          <td><code>k8s.namespace.name</code></td>
+          <td>string</td>
+          <td>Pod 所在命名空间</td>
+          <td><code>applications</code></td>
+      </tr>
+      <tr>
+          <td><code>k8s.pod.name</code></td>
+          <td>string</td>
+          <td>Pod 名称</td>
+          <td><code>devflow-12345</code></td>
+      </tr>
+      <tr>
+          <td><code>k8s.container.name</code></td>
+          <td>string</td>
+          <td>容器名称</td>
+          <td><code>devflow</code></td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="可选-1">可选<a class="anchor" href="#%e5%8f%af%e9%80%89-1">#</a></h3>
+<table>
+  <thead>
+      <tr>
+          <th>Key</th>
+          <th>类型</th>
+          <th>说明</th>
+          <th>示例</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>service.namespace</code></td>
+          <td>string</td>
+          <td>服务命名空间（业务层）</td>
+          <td><code>payments</code></td>
+      </tr>
+      <tr>
+          <td><code>service.instance.id</code></td>
+          <td>string</td>
+          <td>服务实例 ID 或 Pod 名称</td>
+          <td><code>devflow-abc123</code></td>
+      </tr>
+      <tr>
+          <td><code>service.version</code></td>
+          <td>string</td>
+          <td>服务版本</td>
+          <td><code>v1.2.3</code></td>
+      </tr>
+      <tr>
+          <td><code>k8s.node.name</code></td>
+          <td>string</td>
+          <td>节点名称</td>
+          <td><code>node-01</code></td>
+      </tr>
+      <tr>
+          <td><code>k8s.region</code></td>
+          <td>string</td>
+          <td>集群所在地域</td>
+          <td><code>ap-southeast-1</code></td>
+      </tr>
+      <tr>
+          <td><code>k8s.zone</code></td>
+          <td>string</td>
+          <td>集群可用区</td>
+          <td><code>ap-southeast-1a</code></td>
+      </tr>
+      <tr>
+          <td><code>k8s.host.id</code></td>
+          <td>string</td>
+          <td>节点/主机 ID</td>
+          <td><code>i-0234abcd5678ef</code></td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="3-log">3️⃣ Log<a class="anchor" href="#3-log">#</a></h2>
+<p><strong>用于记录系统或业务日志</strong></p>
+<h3 id="必选-attributes">必选 Attributes<a class="anchor" href="#%e5%bf%85%e9%80%89-attributes">#</a></h3>
+<table>
+  <thead>
+      <tr>
+          <th>Key</th>
+          <th>类型</th>
+          <th>说明</th>
+          <th>示例</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>log.level</code></td>
+          <td>string</td>
+          <td>日志级别</td>
+          <td><code>INFO</code> / <code>WARN</code> / <code>ERROR</code></td>
+      </tr>
+      <tr>
+          <td><code>log.message</code></td>
+          <td>string</td>
+          <td>日志内容</td>
+          <td><code>http request completed</code></td>
+      </tr>
+      <tr>
+          <td><code>trace_id</code></td>
+          <td>string</td>
+          <td>Trace ID（可选，用于关联 Trace / Metric）</td>
+          <td><code>2e71abb92e031efc2a7a1c4280959f4b</code></td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="可选-attributes">可选 Attributes<a class="anchor" href="#%e5%8f%af%e9%80%89-attributes">#</a></h3>
+<table>
+  <thead>
+      <tr>
+          <th>Key</th>
+          <th>类型</th>
+          <th>说明</th>
+          <th>示例</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>log.logger</code></td>
+          <td>string</td>
+          <td>日志记录器名称</td>
+          <td><code>gin</code> / <code>otelzap</code></td>
+      </tr>
+      <tr>
+          <td><code>span_id</code></td>
+          <td>string</td>
+          <td>Span ID（可选）</td>
+          <td><code>abc123def456</code></td>
+      </tr>
+      <tr>
+          <td><code>service.name</code></td>
+          <td>string</td>
+          <td>服务名称</td>
+          <td><code>user-service</code></td>
+      </tr>
+      <tr>
+          <td><code>deployment.environment</code></td>
+          <td>string</td>
+          <td>部署环境</td>
+          <td><code>prod</code></td>
+      </tr>
+      <tr>
+          <td><code>k8s.cluster.name</code></td>
+          <td>string</td>
+          <td>集群名称</td>
+          <td><code>cluster-prod</code></td>
+      </tr>
+      <tr>
+          <td><code>k8s.namespace.name</code></td>
+          <td>string</td>
+          <td>Pod 所在命名空间</td>
+          <td><code>applications</code></td>
+      </tr>
+      <tr>
+          <td><code>k8s.pod.name</code></td>
+          <td>string</td>
+          <td>Pod 名称</td>
+          <td><code>devflow-12345</code></td>
+      </tr>
+      <tr>
+          <td><code>k8s.container.name</code></td>
+          <td>string</td>
+          <td>容器名称</td>
+          <td><code>devflow</code></td>
+      </tr>
+      <tr>
+          <td><code>k8s.node.name</code></td>
+          <td>string</td>
+          <td>节点名称</td>
+          <td><code>node-01</code></td>
+      </tr>
+      <tr>
+          <td><code>k8s.region</code></td>
+          <td>string</td>
+          <td>集群所在地域</td>
+          <td><code>ap-southeast-1</code></td>
+      </tr>
+      <tr>
+          <td><code>k8s.zone</code></td>
+          <td>string</td>
+          <td>集群可用区</td>
+          <td><code>ap-southeast-1a</code></td>
+      </tr>
+      <tr>
+          <td><code>client.ip</code></td>
+          <td>string</td>
+          <td>客户端 IP</td>
+          <td><code>10.0.0.1</code></td>
+      </tr>
+      <tr>
+          <td><code>user_agent.original</code></td>
+          <td>string</td>
+          <td>User-Agent</td>
+          <td><code>curl/7.68.0</code></td>
+      </tr>
+      <tr>
+          <td><code>error.message</code></td>
+          <td>string</td>
+          <td>错误信息</td>
+          <td><code>database timeout</code></td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="value--measurement">Value / Measurement<a class="anchor" href="#value--measurement">#</a></h3>
+<table>
+  <thead>
+      <tr>
+          <th>Key</th>
+          <th>类型</th>
+          <th>说明</th>
+          <th>示例</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>log.stacktrace</code></td>
+          <td>string</td>
+          <td>错误堆栈信息（可选）</td>
+          <td><code>at main.go:45</code></td>
+      </tr>
+      <tr>
+          <td><code>http.server.duration</code></td>
+          <td>duration</td>
+          <td>请求耗时（可选，用于排查慢请求）</td>
+          <td><code>120ms</code></td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/docs/observability/attributes/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>Attributes</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/docs/component/" class="flex align-center">
+        <span>All Components</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+ 
+        
+        
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

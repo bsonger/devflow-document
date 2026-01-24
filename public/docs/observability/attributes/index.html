@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="1. 服务相关 Attributes (公共)# Key 类型 说明 示例 适用类型 service.name string 服务名称 devflow Metric / Log / Trace service.version string 服务版本 v1.2.3 Metric / Log / Trace service.instance.id string 服务实例 ID 或 Pod 名称 devflow-abc123 Metric / Log / Trace service.namespace string 服务命名空间 payments Metric / Log / Trace deployment.environment string 部署环境 prod / staging / dev Metric / Log / Trace 2. Kubernetes 相关 Attributes (公共)# Key 类型 说明 示例 适用类型 k8s.cluster.name string 集群名称 cluster-prod Metric / Log / Trace k8s.namespace.name string Pod 所在命名空间 applications Metric / Log / Trace k8s.pod.name string Pod 名称 devflow-12345 Metric / Log / Trace k8s.container.name string 容器名称 devflow Metric / Log / Trace k8s.node.name string 节点名称 node-01 Metric / Log / Trace 3. 统一规范# 同一请求生命周期内的 Metric / Log / Trace 应共享以下 Attributes：
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/observability/attributes/">
+  <meta property="og:site_name" content="Devflow">
+  <meta property="og:title" content="Devflow">
+  <meta property="og:description" content="1. 服务相关 Attributes (公共)# Key 类型 说明 示例 适用类型 service.name string 服务名称 devflow Metric / Log / Trace service.version string 服务版本 v1.2.3 Metric / Log / Trace service.instance.id string 服务实例 ID 或 Pod 名称 devflow-abc123 Metric / Log / Trace service.namespace string 服务命名空间 payments Metric / Log / Trace deployment.environment string 部署环境 prod / staging / dev Metric / Log / Trace 2. Kubernetes 相关 Attributes (公共)# Key 类型 说明 示例 适用类型 k8s.cluster.name string 集群名称 cluster-prod Metric / Log / Trace k8s.namespace.name string Pod 所在命名空间 applications Metric / Log / Trace k8s.pod.name string Pod 名称 devflow-12345 Metric / Log / Trace k8s.container.name string 容器名称 devflow Metric / Log / Trace k8s.node.name string 节点名称 node-01 Metric / Log / Trace 3. 统一规范# 同一请求生命周期内的 Metric / Log / Trace 应共享以下 Attributes：">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+
+
+  <meta itemprop="name" content="Devflow">
+  <meta itemprop="description" content="1. 服务相关 Attributes (公共)# Key 类型 说明 示例 适用类型 service.name string 服务名称 devflow Metric / Log / Trace service.version string 服务版本 v1.2.3 Metric / Log / Trace service.instance.id string 服务实例 ID 或 Pod 名称 devflow-abc123 Metric / Log / Trace service.namespace string 服务命名空间 payments Metric / Log / Trace deployment.environment string 部署环境 prod / staging / dev Metric / Log / Trace 2. Kubernetes 相关 Attributes (公共)# Key 类型 说明 示例 适用类型 k8s.cluster.name string 集群名称 cluster-prod Metric / Log / Trace k8s.namespace.name string Pod 所在命名空间 applications Metric / Log / Trace k8s.pod.name string Pod 名称 devflow-12345 Metric / Log / Trace k8s.container.name string 容器名称 devflow Metric / Log / Trace k8s.node.name string 节点名称 node-01 Metric / Log / Trace 3. 统一规范# 同一请求生命周期内的 Metric / Log / Trace 应共享以下 Attributes：">
+  <meta itemprop="wordCount" content="161">
+
+<title>Attributes | Devflow</title>
+<link rel="icon" href="/favicon.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/observability/attributes/">
+<link rel="stylesheet" href="/book.min.6970156cec683193d93c9c4edaf0d56574e4361df2e0c1be4f697ae81c3ba55f.css" integrity="sha256-aXAVbOxoMZPZPJxO2vDVZXTkNh3y4MG&#43;T2l66Bw7pV8=" crossorigin="anonymous">
+
+
+
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>Devflow</span>
+  </a>
+</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-4bd032e4e5fe1323a134583cafeecf06" class="toggle"  />
+    <label for="section-4bd032e4e5fe1323a134583cafeecf06" class="flex">
+      <a role="button" class="">
+        CI</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/ci/standard/" class="">
+      Standard</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/ci/component/" class="">
+      Components</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-0fc280a0e74cc087db99dcd67aadd7bb" class="toggle"  />
+    <label for="section-0fc280a0e74cc087db99dcd67aadd7bb" class="flex">
+      <a role="button" class="">
+        CD</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cd/component/" class="">
+      Components</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-6884c320646745efe1e09831aa35ad5b" class="toggle" checked />
+    <label for="section-6884c320646745efe1e09831aa35ad5b" class="flex">
+      <a role="button" class="">
+        observability</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/observability/component/" class="">
+      Component</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/observability/attributes/" class="active">
+      Attributes</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/observability/standard/" class="">
+      Standard</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/component/" class="">
+      All Components</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Attributes</h3>
+
+  <label for="toc-control">
+    
+  </label>
+</div>
+
+
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h2 id="1-服务相关-attributes-公共">1. 服务相关 Attributes (公共)<a class="anchor" href="#1-%e6%9c%8d%e5%8a%a1%e7%9b%b8%e5%85%b3-attributes-%e5%85%ac%e5%85%b1">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>Key</th>
+          <th>类型</th>
+          <th>说明</th>
+          <th>示例</th>
+          <th>适用类型</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>service.name</code></td>
+          <td>string</td>
+          <td>服务名称</td>
+          <td><code>devflow</code></td>
+          <td>Metric / Log / Trace</td>
+      </tr>
+      <tr>
+          <td><code>service.version</code></td>
+          <td>string</td>
+          <td>服务版本</td>
+          <td><code>v1.2.3</code></td>
+          <td>Metric / Log / Trace</td>
+      </tr>
+      <tr>
+          <td><code>service.instance.id</code></td>
+          <td>string</td>
+          <td>服务实例 ID 或 Pod 名称</td>
+          <td><code>devflow-abc123</code></td>
+          <td>Metric / Log / Trace</td>
+      </tr>
+      <tr>
+          <td><code>service.namespace</code></td>
+          <td>string</td>
+          <td>服务命名空间</td>
+          <td><code>payments</code></td>
+          <td>Metric / Log / Trace</td>
+      </tr>
+      <tr>
+          <td><code>deployment.environment</code></td>
+          <td>string</td>
+          <td>部署环境</td>
+          <td><code>prod</code> / <code>staging</code> / <code>dev</code></td>
+          <td>Metric / Log / Trace</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="2-kubernetes-相关-attributes-公共">2. Kubernetes 相关 Attributes (公共)<a class="anchor" href="#2-kubernetes-%e7%9b%b8%e5%85%b3-attributes-%e5%85%ac%e5%85%b1">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>Key</th>
+          <th>类型</th>
+          <th>说明</th>
+          <th>示例</th>
+          <th>适用类型</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>k8s.cluster.name</code></td>
+          <td>string</td>
+          <td>集群名称</td>
+          <td><code>cluster-prod</code></td>
+          <td>Metric / Log / Trace</td>
+      </tr>
+      <tr>
+          <td><code>k8s.namespace.name</code></td>
+          <td>string</td>
+          <td>Pod 所在命名空间</td>
+          <td><code>applications</code></td>
+          <td>Metric / Log / Trace</td>
+      </tr>
+      <tr>
+          <td><code>k8s.pod.name</code></td>
+          <td>string</td>
+          <td>Pod 名称</td>
+          <td><code>devflow-12345</code></td>
+          <td>Metric / Log / Trace</td>
+      </tr>
+      <tr>
+          <td><code>k8s.container.name</code></td>
+          <td>string</td>
+          <td>容器名称</td>
+          <td><code>devflow</code></td>
+          <td>Metric / Log / Trace</td>
+      </tr>
+      <tr>
+          <td><code>k8s.node.name</code></td>
+          <td>string</td>
+          <td>节点名称</td>
+          <td><code>node-01</code></td>
+          <td>Metric / Log / Trace</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="3-统一规范">3. 统一规范<a class="anchor" href="#3-%e7%bb%9f%e4%b8%80%e8%a7%84%e8%8c%83">#</a></h2>
+<ol>
+<li>
+<p><strong>同一请求生命周期</strong>内的 <strong>Metric / Log / Trace</strong> 应共享以下 Attributes：</p>
+<ul>
+<li><code>service.name</code></li>
+<li><code>service.version</code></li>
+<li><code>service.instance.id</code></li>
+<li><code>deployment.environment</code></li>
+<li><code>k8s.pod.name</code></li>
+<li><code>trace_id</code>（如果有 Trace）</li>
+</ul>
+</li>
+<li>
+<p><strong>命名规范</strong>：</p>
+<ul>
+<li>Attribute 使用 <strong>小写 + 点号分隔</strong> (<code>service.name</code>)</li>
+<li>Kubernetes 相关字段加前缀 <code>k8s.</code></li>
+<li>HTTP 相关字段加前缀 <code>http.</code></li>
+<li>日志相关字段加前缀 <code>log.</code></li>
+<li>Span 相关字段加前缀 <code>span.</code></li>
+</ul>
+</li>
+<li>
+<p><strong>来源要求</strong>：</p>
+<ul>
+<li>所有 Attribute 应来源于 <strong>环境变量</strong> 或 <strong>资源信息</strong>，避免硬编码。</li>
+</ul>
+</li>
+</ol>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/docs/observability/component/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>Component</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/docs/observability/standard/" class="flex align-center">
+        <span>Standard</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+ 
+        
+        
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

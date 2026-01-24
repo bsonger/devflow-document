@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Metrics# 组件 领域 解决的问题 定位 是否必选 替代方案 Prometheus Metrics 指标采集与查询 指标引擎 ✅ VictoriaMetrics Prometheus Operator 运维自动化 Prometheus 生命周期管理 控制器 ❌ 手动部署 kube-state-metrics K8s Metrics Kubernetes 状态指标 指标源 ✅ 无 node-exporter 主机监控 Node 资源指标 指标采集器 ✅ 无 Logs# 组件 领域 解决的问题 定位 是否必选 替代方案 Loki Logs 低成本日志存储与查询 日志系统 ❌ ELK、OpenSearch Alloy / Agent Logs 日志采集 采集 Agent ❌ Fluent Bit、Vector Tracing# 组件 领域 解决的问题 定位 是否必选 替代方案 Tempo Tracing 分布式追踪 Trace 存储 ❌ Jaeger OpenTelemetry Telemetry 统一采集标准 采集规范 ✅ OpenTracing（过时） Visualization# 组件 领域 解决的问题 定位 是否必选 替代方案 Grafana 可视化 Metrics / Logs / Traces 展示 统一观测入口 ✅ Kibana ">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/observability/component/">
+  <meta property="og:site_name" content="Devflow">
+  <meta property="og:title" content="Component">
+  <meta property="og:description" content="Metrics# 组件 领域 解决的问题 定位 是否必选 替代方案 Prometheus Metrics 指标采集与查询 指标引擎 ✅ VictoriaMetrics Prometheus Operator 运维自动化 Prometheus 生命周期管理 控制器 ❌ 手动部署 kube-state-metrics K8s Metrics Kubernetes 状态指标 指标源 ✅ 无 node-exporter 主机监控 Node 资源指标 指标采集器 ✅ 无 Logs# 组件 领域 解决的问题 定位 是否必选 替代方案 Loki Logs 低成本日志存储与查询 日志系统 ❌ ELK、OpenSearch Alloy / Agent Logs 日志采集 采集 Agent ❌ Fluent Bit、Vector Tracing# 组件 领域 解决的问题 定位 是否必选 替代方案 Tempo Tracing 分布式追踪 Trace 存储 ❌ Jaeger OpenTelemetry Telemetry 统一采集标准 采集规范 ✅ OpenTracing（过时） Visualization# 组件 领域 解决的问题 定位 是否必选 替代方案 Grafana 可视化 Metrics / Logs / Traces 展示 统一观测入口 ✅ Kibana">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+    <meta property="article:published_time" content="2026-01-04T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-01-04T00:00:00+00:00">
+    <meta property="article:tag" content="Kubernetes">
+    <meta property="article:tag" content="DevOps">
+    <meta property="article:tag" content="Observability">
+
+
+  <meta itemprop="name" content="Component">
+  <meta itemprop="description" content="Metrics# 组件 领域 解决的问题 定位 是否必选 替代方案 Prometheus Metrics 指标采集与查询 指标引擎 ✅ VictoriaMetrics Prometheus Operator 运维自动化 Prometheus 生命周期管理 控制器 ❌ 手动部署 kube-state-metrics K8s Metrics Kubernetes 状态指标 指标源 ✅ 无 node-exporter 主机监控 Node 资源指标 指标采集器 ✅ 无 Logs# 组件 领域 解决的问题 定位 是否必选 替代方案 Loki Logs 低成本日志存储与查询 日志系统 ❌ ELK、OpenSearch Alloy / Agent Logs 日志采集 采集 Agent ❌ Fluent Bit、Vector Tracing# 组件 领域 解决的问题 定位 是否必选 替代方案 Tempo Tracing 分布式追踪 Trace 存储 ❌ Jaeger OpenTelemetry Telemetry 统一采集标准 采集规范 ✅ OpenTracing（过时） Visualization# 组件 领域 解决的问题 定位 是否必选 替代方案 Grafana 可视化 Metrics / Logs / Traces 展示 统一观测入口 ✅ Kibana">
+  <meta itemprop="datePublished" content="2026-01-04T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2026-01-04T00:00:00+00:00">
+  <meta itemprop="wordCount" content="97">
+  <meta itemprop="keywords" content="Kubernetes,DevOps,Observability">
+
+<title>Component | Devflow</title>
+<link rel="icon" href="/favicon.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/observability/component/">
+<link rel="stylesheet" href="/book.min.6970156cec683193d93c9c4edaf0d56574e4361df2e0c1be4f697ae81c3ba55f.css" integrity="sha256-aXAVbOxoMZPZPJxO2vDVZXTkNh3y4MG&#43;T2l66Bw7pV8=" crossorigin="anonymous">
+
+
+
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>Devflow</span>
+  </a>
+</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-4bd032e4e5fe1323a134583cafeecf06" class="toggle"  />
+    <label for="section-4bd032e4e5fe1323a134583cafeecf06" class="flex">
+      <a role="button" class="">
+        CI</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/ci/standard/" class="">
+      Standard</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/ci/component/" class="">
+      Components</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-0fc280a0e74cc087db99dcd67aadd7bb" class="toggle"  />
+    <label for="section-0fc280a0e74cc087db99dcd67aadd7bb" class="flex">
+      <a role="button" class="">
+        CD</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cd/component/" class="">
+      Components</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-6884c320646745efe1e09831aa35ad5b" class="toggle" checked />
+    <label for="section-6884c320646745efe1e09831aa35ad5b" class="flex">
+      <a role="button" class="">
+        observability</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/observability/component/" class="active">
+      Component</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/observability/attributes/" class="">
+      Attributes</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/observability/standard/" class="">
+      Standard</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/component/" class="">
+      All Components</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Component</h3>
+
+  <label for="toc-control">
+    
+  </label>
+</div>
+
+
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h3 id="metrics">Metrics<a class="anchor" href="#metrics">#</a></h3>
+<table>
+  <thead>
+      <tr>
+          <th>组件</th>
+          <th>领域</th>
+          <th>解决的问题</th>
+          <th>定位</th>
+          <th>是否必选</th>
+          <th>替代方案</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Prometheus</td>
+          <td>Metrics</td>
+          <td>指标采集与查询</td>
+          <td>指标引擎</td>
+          <td>✅</td>
+          <td>VictoriaMetrics</td>
+      </tr>
+      <tr>
+          <td>Prometheus Operator</td>
+          <td>运维自动化</td>
+          <td>Prometheus 生命周期管理</td>
+          <td>控制器</td>
+          <td>❌</td>
+          <td>手动部署</td>
+      </tr>
+      <tr>
+          <td>kube-state-metrics</td>
+          <td>K8s Metrics</td>
+          <td>Kubernetes 状态指标</td>
+          <td>指标源</td>
+          <td>✅</td>
+          <td>无</td>
+      </tr>
+      <tr>
+          <td>node-exporter</td>
+          <td>主机监控</td>
+          <td>Node 资源指标</td>
+          <td>指标采集器</td>
+          <td>✅</td>
+          <td>无</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="logs">Logs<a class="anchor" href="#logs">#</a></h3>
+<table>
+  <thead>
+      <tr>
+          <th>组件</th>
+          <th>领域</th>
+          <th>解决的问题</th>
+          <th>定位</th>
+          <th>是否必选</th>
+          <th>替代方案</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Loki</td>
+          <td>Logs</td>
+          <td>低成本日志存储与查询</td>
+          <td>日志系统</td>
+          <td>❌</td>
+          <td>ELK、OpenSearch</td>
+      </tr>
+      <tr>
+          <td>Alloy / Agent</td>
+          <td>Logs</td>
+          <td>日志采集</td>
+          <td>采集 Agent</td>
+          <td>❌</td>
+          <td>Fluent Bit、Vector</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="tracing">Tracing<a class="anchor" href="#tracing">#</a></h3>
+<table>
+  <thead>
+      <tr>
+          <th>组件</th>
+          <th>领域</th>
+          <th>解决的问题</th>
+          <th>定位</th>
+          <th>是否必选</th>
+          <th>替代方案</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Tempo</td>
+          <td>Tracing</td>
+          <td>分布式追踪</td>
+          <td>Trace 存储</td>
+          <td>❌</td>
+          <td>Jaeger</td>
+      </tr>
+      <tr>
+          <td>OpenTelemetry</td>
+          <td>Telemetry</td>
+          <td>统一采集标准</td>
+          <td>采集规范</td>
+          <td>✅</td>
+          <td>OpenTracing（过时）</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="visualization">Visualization<a class="anchor" href="#visualization">#</a></h3>
+<table>
+  <thead>
+      <tr>
+          <th>组件</th>
+          <th>领域</th>
+          <th>解决的问题</th>
+          <th>定位</th>
+          <th>是否必选</th>
+          <th>替代方案</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Grafana</td>
+          <td>可视化</td>
+          <td>Metrics / Logs / Traces 展示</td>
+          <td>统一观测入口</td>
+          <td>✅</td>
+          <td>Kibana</td>
+      </tr>
+  </tbody>
+</table>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/docs/cd/component/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>Components</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/docs/observability/attributes/" class="flex align-center">
+        <span>Attributes</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+ 
+        
+        
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
