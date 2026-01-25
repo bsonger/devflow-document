@@ -9,14 +9,15 @@ https://github.com/alex-shpak/hugo-book
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="云原生 Blue/Green 发布实战：Argo CD &#43; Argo Rollouts# Blue/Green 发布是一种低风险的发布策略，通过维护两套环境（Blue 和 Green），在新版本发布时切换流量到新环境，实现平滑切换和快速回滚。
-1. 技术栈说明# 组件 作用 说明 Argo CD GitOps CD 平台 自动同步 Kubernetes 资源与 Git 仓库，实现声明式部署 Argo Rollouts 发布控制器 提供 Blue/Green、Canary 等高级发布策略，并支持指标分析与自动回滚 Service / Ingress 流量控制 Kubernetes Service 或 Ingress 实现流量切换 Prometheus / Metrics 指标监控 可用于自动判断新版本健康并触发切换 2. 基本原理# Blue/Green 环境： Blue：当前生产环境版本 Green：新版本环境，准备上线 流量切换： Service 指向 Blue 环境 Rollout 创建 Green Pod 后，通过 Service 将流量切换到 Green 回滚： 如果 Green 出现问题，Service 可以快速切回 Blue Argo CD： GitOps 同步 Blue/Green Rollout 的 Manifest，实现自动化部署和版本管理 3. Rollout 配置示例# apiVersion: argoproj.io/v1alpha1 kind: Rollout metadata: name: my-app namespace: production spec: replicas: 5 strategy: blueGreen: activeService: my-app-active previewService: my-app-preview autoPromotionEnabled: false # 手动切换流量 selector: matchLabels: app: my-app template: metadata: labels: app: my-app spec: containers: - name: my-app image: registry.example.com/my-app:v2">
+1. 技术栈说明# 组件 作用 说明 Argo CD GitOps CD 平台 自动同步 Kubernetes 资源与 Git 仓库，实现声明式部署 Argo Rollouts 发布控制器 提供 Blue/Green、Canary 等高级发布策略，并支持指标分析与自动回滚 Service / Ingress 流量控制 Kubernetes Service 或 Ingress 实现流量切换 Prometheus / Metrics 指标监控 可用于自动判断新版本健康并触发切换 2. 基本原理# Blue/Green 环境： Blue：当前生产环境版本 Green：新版本环境，准备上线 流量切换： Service 指向 Blue 环境 Rollout 创建 Green Pod 后，通过 Service 将流量切换到 Green 回滚： 如果 Green 出现问题，Service 可以快速切回 Blue Argo CD： GitOps 同步 Blue/Green Rollout 的 Manifest，实现自动化部署和版本管理 3. Rollout 配置示例# apiVersion: argoproj.io/v1alpha1 kind: Rollout metadata: name: my-app namespace: production spec: replicas: 5 strategy: blueGreen: activeService: my-app-active previewService: my-app-preview autoPromotionEnabled: false # 手动切换流量 selector: matchLabels: app: my-app template: metadata: labels: app: my-app spec: containers: - name: my-app image: registry.example.com/my-app:v2步骤# 1. 概述# Blue/Green 发布是一种通过同时运行两套版本（Blue 为当前稳定版本，Green 为新版本）， 并通过 Service 原子切换完成发布的策略。
+">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
 <meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/cd/blue_green/">
   <meta property="og:site_name" content="Devflow">
   <meta property="og:title" content="Devflow">
   <meta property="og:description" content="云原生 Blue/Green 发布实战：Argo CD &#43; Argo Rollouts# Blue/Green 发布是一种低风险的发布策略，通过维护两套环境（Blue 和 Green），在新版本发布时切换流量到新环境，实现平滑切换和快速回滚。
-1. 技术栈说明# 组件 作用 说明 Argo CD GitOps CD 平台 自动同步 Kubernetes 资源与 Git 仓库，实现声明式部署 Argo Rollouts 发布控制器 提供 Blue/Green、Canary 等高级发布策略，并支持指标分析与自动回滚 Service / Ingress 流量控制 Kubernetes Service 或 Ingress 实现流量切换 Prometheus / Metrics 指标监控 可用于自动判断新版本健康并触发切换 2. 基本原理# Blue/Green 环境： Blue：当前生产环境版本 Green：新版本环境，准备上线 流量切换： Service 指向 Blue 环境 Rollout 创建 Green Pod 后，通过 Service 将流量切换到 Green 回滚： 如果 Green 出现问题，Service 可以快速切回 Blue Argo CD： GitOps 同步 Blue/Green Rollout 的 Manifest，实现自动化部署和版本管理 3. Rollout 配置示例# apiVersion: argoproj.io/v1alpha1 kind: Rollout metadata: name: my-app namespace: production spec: replicas: 5 strategy: blueGreen: activeService: my-app-active previewService: my-app-preview autoPromotionEnabled: false # 手动切换流量 selector: matchLabels: app: my-app template: metadata: labels: app: my-app spec: containers: - name: my-app image: registry.example.com/my-app:v2">
+1. 技术栈说明# 组件 作用 说明 Argo CD GitOps CD 平台 自动同步 Kubernetes 资源与 Git 仓库，实现声明式部署 Argo Rollouts 发布控制器 提供 Blue/Green、Canary 等高级发布策略，并支持指标分析与自动回滚 Service / Ingress 流量控制 Kubernetes Service 或 Ingress 实现流量切换 Prometheus / Metrics 指标监控 可用于自动判断新版本健康并触发切换 2. 基本原理# Blue/Green 环境： Blue：当前生产环境版本 Green：新版本环境，准备上线 流量切换： Service 指向 Blue 环境 Rollout 创建 Green Pod 后，通过 Service 将流量切换到 Green 回滚： 如果 Green 出现问题，Service 可以快速切回 Blue Argo CD： GitOps 同步 Blue/Green Rollout 的 Manifest，实现自动化部署和版本管理 3. Rollout 配置示例# apiVersion: argoproj.io/v1alpha1 kind: Rollout metadata: name: my-app namespace: production spec: replicas: 5 strategy: blueGreen: activeService: my-app-active previewService: my-app-preview autoPromotionEnabled: false # 手动切换流量 selector: matchLabels: app: my-app template: metadata: labels: app: my-app spec: containers: - name: my-app image: registry.example.com/my-app:v2步骤# 1. 概述# Blue/Green 发布是一种通过同时运行两套版本（Blue 为当前稳定版本，Green 为新版本）， 并通过 Service 原子切换完成发布的策略。">
   <meta property="og:locale" content="zh_cn">
   <meta property="og:type" content="article">
     <meta property="article:section" content="docs">
@@ -24,8 +25,8 @@ https://github.com/alex-shpak/hugo-book
 
   <meta itemprop="name" content="Devflow">
   <meta itemprop="description" content="云原生 Blue/Green 发布实战：Argo CD &#43; Argo Rollouts# Blue/Green 发布是一种低风险的发布策略，通过维护两套环境（Blue 和 Green），在新版本发布时切换流量到新环境，实现平滑切换和快速回滚。
-1. 技术栈说明# 组件 作用 说明 Argo CD GitOps CD 平台 自动同步 Kubernetes 资源与 Git 仓库，实现声明式部署 Argo Rollouts 发布控制器 提供 Blue/Green、Canary 等高级发布策略，并支持指标分析与自动回滚 Service / Ingress 流量控制 Kubernetes Service 或 Ingress 实现流量切换 Prometheus / Metrics 指标监控 可用于自动判断新版本健康并触发切换 2. 基本原理# Blue/Green 环境： Blue：当前生产环境版本 Green：新版本环境，准备上线 流量切换： Service 指向 Blue 环境 Rollout 创建 Green Pod 后，通过 Service 将流量切换到 Green 回滚： 如果 Green 出现问题，Service 可以快速切回 Blue Argo CD： GitOps 同步 Blue/Green Rollout 的 Manifest，实现自动化部署和版本管理 3. Rollout 配置示例# apiVersion: argoproj.io/v1alpha1 kind: Rollout metadata: name: my-app namespace: production spec: replicas: 5 strategy: blueGreen: activeService: my-app-active previewService: my-app-preview autoPromotionEnabled: false # 手动切换流量 selector: matchLabels: app: my-app template: metadata: labels: app: my-app spec: containers: - name: my-app image: registry.example.com/my-app:v2">
-  <meta itemprop="wordCount" content="120">
+1. 技术栈说明# 组件 作用 说明 Argo CD GitOps CD 平台 自动同步 Kubernetes 资源与 Git 仓库，实现声明式部署 Argo Rollouts 发布控制器 提供 Blue/Green、Canary 等高级发布策略，并支持指标分析与自动回滚 Service / Ingress 流量控制 Kubernetes Service 或 Ingress 实现流量切换 Prometheus / Metrics 指标监控 可用于自动判断新版本健康并触发切换 2. 基本原理# Blue/Green 环境： Blue：当前生产环境版本 Green：新版本环境，准备上线 流量切换： Service 指向 Blue 环境 Rollout 创建 Green Pod 后，通过 Service 将流量切换到 Green 回滚： 如果 Green 出现问题，Service 可以快速切回 Blue Argo CD： GitOps 同步 Blue/Green Rollout 的 Manifest，实现自动化部署和版本管理 3. Rollout 配置示例# apiVersion: argoproj.io/v1alpha1 kind: Rollout metadata: name: my-app namespace: production spec: replicas: 5 strategy: blueGreen: activeService: my-app-active previewService: my-app-preview autoPromotionEnabled: false # 手动切换流量 selector: matchLabels: app: my-app template: metadata: labels: app: my-app spec: containers: - name: my-app image: registry.example.com/my-app:v2步骤# 1. 概述# Blue/Green 发布是一种通过同时运行两套版本（Blue 为当前稳定版本，Green 为新版本）， 并通过 Service 原子切换完成发布的策略。">
+  <meta itemprop="wordCount" content="361">
 
 <title>Blue Green | Devflow</title>
 <link rel="icon" href="/favicon.png" >
@@ -411,7 +412,209 @@ https://github.com/alex-shpak/hugo-book
 </span></span><span style="display:flex;"><span>    <span style="color:#f92672">spec</span>:
 </span></span><span style="display:flex;"><span>      <span style="color:#f92672">containers</span>:
 </span></span><span style="display:flex;"><span>      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">my-app</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">image</span>: <span style="color:#ae81ff">registry.example.com/my-app:v2</span></span></span></code></pre></div></article>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">image</span>: <span style="color:#ae81ff">registry.example.com/my-app:v2</span></span></span></code></pre></div><h2 id="步骤">步骤<a class="anchor" href="#%e6%ad%a5%e9%aa%a4">#</a></h2>
+<h4 id="1-概述">1. 概述<a class="anchor" href="#1-%e6%a6%82%e8%bf%b0">#</a></h4>
+<p>Blue/Green 发布是一种通过同时运行两套版本（Blue 为当前稳定版本，Green 为新版本），
+并通过 <strong>Service 原子切换</strong>完成发布的策略。</p>
+<p>在 Argo Rollouts 中，Blue/Green 发布依赖以下核心对象：</p>
+<ul>
+<li>Rollout</li>
+<li>ReplicaSet</li>
+<li>activeService</li>
+<li>previewService</li>
+<li>Analysis（可选）</li>
+</ul>
+<hr>
+<h4 id="2-核心对象说明">2. 核心对象说明<a class="anchor" href="#2-%e6%a0%b8%e5%bf%83%e5%af%b9%e8%b1%a1%e8%af%b4%e6%98%8e">#</a></h4>
+<h5 id="21-activeservice">2.1 activeService<a class="anchor" href="#21-activeservice">#</a></h5>
+<ul>
+<li>对外提供正式生产流量</li>
+<li>始终指向当前稳定版本的 ReplicaSet</li>
+</ul>
+<h5 id="22-previewservice">2.2 previewService<a class="anchor" href="#22-previewservice">#</a></h5>
+<ul>
+<li>用于新版本验证</li>
+<li>只接收测试或预览流量</li>
+</ul>
+<h5 id="23-replicaset">2.3 ReplicaSet<a class="anchor" href="#23-replicaset">#</a></h5>
+<ul>
+<li>每一次 Pod Template 变更都会生成新的 ReplicaSet</li>
+<li>用于实现版本隔离</li>
+</ul>
+<hr>
+<h4 id="3-发布前状态steady-state">3. 发布前状态（Steady State）<a class="anchor" href="#3-%e5%8f%91%e5%b8%83%e5%89%8d%e7%8a%b6%e6%80%81steady-state">#</a></h4>
+<ul>
+<li>Rollout 处于 Fully Promoted 状态</li>
+<li>当前稳定版本为 Revision 1</li>
+<li>activeService 和 previewService 均指向 Revision 1</li>
+<li>无发布进行中</li>
+</ul>
+<hr>
+<h4 id="4-bluegreen-发布步骤">4. Blue/Green 发布步骤<a class="anchor" href="#4-bluegreen-%e5%8f%91%e5%b8%83%e6%ad%a5%e9%aa%a4">#</a></h4>
+<h5 id="step-1触发更新">Step 1：触发更新<a class="anchor" href="#step-1%e8%a7%a6%e5%8f%91%e6%9b%b4%e6%96%b0">#</a></h5>
+<ul>
+<li>用户修改 <code>spec.template</code></li>
+<li>Argo Rollouts 检测到变更</li>
+<li>创建新的 ReplicaSet（Revision 2）</li>
+<li>初始副本数为 0</li>
+</ul>
+<hr>
+<h5 id="step-2切换-preview-service">Step 2：切换 Preview Service<a class="anchor" href="#step-2%e5%88%87%e6%8d%a2-preview-service">#</a></h5>
+<ul>
+<li>previewService 的 selector 更新</li>
+<li>previewService 指向 Revision 2</li>
+<li>activeService 仍指向 Revision 1</li>
+</ul>
+<hr>
+<h5 id="step-3扩容-green-副本">Step 3：扩容 Green 副本<a class="anchor" href="#step-3%e6%89%a9%e5%ae%b9-green-%e5%89%af%e6%9c%ac">#</a></h5>
+<ul>
+<li>Revision 2 ReplicaSet 被扩容</li>
+<li>副本数为：
+<ul>
+<li><code>spec.replicas</code>，或</li>
+<li><code>previewReplicaCount</code>（如配置）</li>
+</ul>
+</li>
+<li>等待 Pod Ready</li>
+</ul>
+<hr>
+<h5 id="step-4pre-promotion-analysis可选">Step 4：Pre-Promotion Analysis（可选）<a class="anchor" href="#step-4pre-promotion-analysis%e5%8f%af%e9%80%89">#</a></h5>
+<ul>
+<li>当 Revision 2 Pod Ready 后触发</li>
+<li>常用于校验：
+<ul>
+<li>成功率</li>
+<li>延迟</li>
+<li>错误率</li>
+<li>业务指标</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h5 id="step-5发布暂停可选">Step 5：发布暂停（可选）<a class="anchor" href="#step-5%e5%8f%91%e5%b8%83%e6%9a%82%e5%81%9c%e5%8f%af%e9%80%89">#</a></h5>
+<p>满足以下条件之一时，Rollout 会暂停：</p>
+<ul>
+<li><code>autoPromotionEnabled: false</code></li>
+<li>配置了 <code>autoPromotionSeconds</code></li>
+</ul>
+<p>恢复方式：</p>
+<ul>
+<li>人工 Resume</li>
+<li>或超时自动继续</li>
+</ul>
+<hr>
+<h5 id="step-6正式发布promotion">Step 6：正式发布（Promotion）<a class="anchor" href="#step-6%e6%ad%a3%e5%bc%8f%e5%8f%91%e5%b8%83promotion">#</a></h5>
+<ul>
+<li>activeService selector 更新</li>
+<li>activeService 从 Revision 1 切换到 Revision 2</li>
+<li>所有生产流量切到新版本</li>
+</ul>
+<hr>
+<h5 id="step-7post-promotion-analysis可选">Step 7：Post-Promotion Analysis（可选）<a class="anchor" href="#step-7post-promotion-analysis%e5%8f%af%e9%80%89">#</a></h5>
+<ul>
+<li>切流完成后执行</li>
+<li>用于验证真实生产流量下的稳定性</li>
+</ul>
+<hr>
+<h5 id="step-8发布完成">Step 8：发布完成<a class="anchor" href="#step-8%e5%8f%91%e5%b8%83%e5%ae%8c%e6%88%90">#</a></h5>
+<ul>
+<li>Revision 2 被标记为 Stable</li>
+<li>Rollout 状态变为 Healthy</li>
+<li>发布流程结束</li>
+</ul>
+<hr>
+<h5 id="step-9旧版本缩容">Step 9：旧版本缩容<a class="anchor" href="#step-9%e6%97%a7%e7%89%88%e6%9c%ac%e7%bc%a9%e5%ae%b9">#</a></h5>
+<ul>
+<li>等待 <code>scaleDownDelaySeconds</code>（默认 30 秒）</li>
+<li>Revision 1 ReplicaSet 被缩容至 0</li>
+</ul>
+<hr>
+<h4 id="5-回滚机制">5. 回滚机制<a class="anchor" href="#5-%e5%9b%9e%e6%bb%9a%e6%9c%ba%e5%88%b6">#</a></h4>
+<h5 id="51-人工回滚">5.1 人工回滚<a class="anchor" href="#51-%e4%ba%ba%e5%b7%a5%e5%9b%9e%e6%bb%9a">#</a></h5>
+<ul>
+<li>修改 Rollout 镜像版本</li>
+<li>或将 activeService 指回旧 ReplicaSet</li>
+</ul>
+<h5 id="52-自动回滚">5.2 自动回滚<a class="anchor" href="#52-%e8%87%aa%e5%8a%a8%e5%9b%9e%e6%bb%9a">#</a></h5>
+<ul>
+<li>Analysis 失败</li>
+<li>Rollout 中止发布</li>
+<li>activeService 保持指向旧版本</li>
+</ul>
+<hr>
+<h4 id="6-关键配置参数">6. 关键配置参数<a class="anchor" href="#6-%e5%85%b3%e9%94%ae%e9%85%8d%e7%bd%ae%e5%8f%82%e6%95%b0">#</a></h4>
+<table>
+  <thead>
+      <tr>
+          <th>参数</th>
+          <th>说明</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>activeService</td>
+          <td>正式流量 Service</td>
+      </tr>
+      <tr>
+          <td>previewService</td>
+          <td>预览流量 Service</td>
+      </tr>
+      <tr>
+          <td>previewReplicaCount</td>
+          <td>预览副本数</td>
+      </tr>
+      <tr>
+          <td>autoPromotionEnabled</td>
+          <td>是否自动切流</td>
+      </tr>
+      <tr>
+          <td>autoPromotionSeconds</td>
+          <td>延迟自动切流</td>
+      </tr>
+      <tr>
+          <td>scaleDownDelaySeconds</td>
+          <td>旧版本保留时间</td>
+      </tr>
+      <tr>
+          <td>prePromotionAnalysis</td>
+          <td>切流前分析</td>
+      </tr>
+      <tr>
+          <td>postPromotionAnalysis</td>
+          <td>切流后分析</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h4 id="7-bluegreen-特点">7. Blue/Green 特点<a class="anchor" href="#7-bluegreen-%e7%89%b9%e7%82%b9">#</a></h4>
+<h5 id="优点">优点<a class="anchor" href="#%e4%bc%98%e7%82%b9">#</a></h5>
+<ul>
+<li>Service 原子切换</li>
+<li>回滚速度极快</li>
+<li>新旧版本完全隔离</li>
+<li>发布流程清晰</li>
+</ul>
+<h5 id="缺点">缺点<a class="anchor" href="#%e7%bc%ba%e7%82%b9">#</a></h5>
+<ul>
+<li>发布期间资源占用翻倍</li>
+<li>不支持渐进式流量验证</li>
+</ul>
+<hr>
+<h4 id="8-适用场景">8. 适用场景<a class="anchor" href="#8-%e9%80%82%e7%94%a8%e5%9c%ba%e6%99%af">#</a></h4>
+<ul>
+<li>核心业务系统</li>
+<li>对回滚时间要求极高的系统</li>
+<li>不适合做流量比例控制的场景</li>
+</ul>
+<hr>
+<h4 id="9-总结">9. 总结<a class="anchor" href="#9-%e6%80%bb%e7%bb%93">#</a></h4>
+<p>Argo Rollouts 的 Blue/Green 发布本质是：</p>
+<ul>
+<li>使用 ReplicaSet 实现版本隔离</li>
+<li>使用 Service selector 实现原子切流</li>
+<li>使用 Analysis 实现发布质量控制</li>
+</ul>
+</article>
  
       
 
