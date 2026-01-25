@@ -8,24 +8,21 @@ https://github.com/alex-shpak/hugo-book
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="#持续集成（CI）
-组件 云原生领域 解决的问题 架构定位 是否必选 可替代方案 Tekton Pipelines CI 声明式、K8s 原生 CI 执行 CI 执行引擎 ❌ GitLab CI、Jenkins、GitHub Actions Tekton Triggers CI Git / Webhook 触发 Pipeline CI 事件入口 ❌ GitLab Webhook、Argo Events Tekton Dashboard CI CI 可视化 CI UI ❌ Jenkins UI、GitLab UI Buildah 镜像构建 无需 Docker Daemon 构建镜像 构建工具 ❌ Docker、Kaniko ">
+<meta name="description" content="持续集成（CI）组件能力矩阵# 一、CI 核心编排与触发# 组件 云原生领域 解决的问题 架构定位 是否必选 可替代方案 Tekton Pipelines CI 声明式、K8s 原生 CI 编排 CI 执行与编排引擎 ✅ Jenkins、GitHub Actions Tekton Triggers CI Git / Webhook 触发 Pipeline CI 事件入口 ❌ Argo Events Tekton Dashboard CI Pipeline 执行可视化 CI UI ❌ Jenkins UI、GitLab UI 二、源码获取与代码质量# 组件 云原生领域 解决的问题 架构定位 是否必选 可替代方案 Git Clone Task SCM 拉取源码、获取 Commit 信息 Source Stage ✅ 内置 Git Script 代码扫描（SAST / Secret） Security 代码漏洞、密钥泄漏、危险配置 Shift-Left Security ❌ SonarQube、Semgrep、Gitleaks 代码规范 / Lint Quality 代码风格、规范检查 Quality Gate ❌ golangci-lint、eslint 三、测试阶段# 组件 云原生领域 解决的问题 架构定位 是否必选 可替代方案 单元测试 Testing 功能正确性验证 Quality Gate ❌ Go test、JUnit 集成测试 Testing 多组件联调验证 Pre-Build Validation ❌ Testcontainers 覆盖率统计 Quality 测试质量度量 Quality Metrics ❌ Cobertura 四、镜像构建与制品管理# 组件 云原生领域 解决的问题 架构定位 是否必选 可替代方案 Buildah Image Build 无 Docker Daemon 构建镜像 构建引擎 ✅ Kaniko、Docker Artifact Registry Artifact 镜像 / 构建产物存储 制品仓库 ✅ Harbor、ECR 镜像 Tag / Digest 管理 Artifact 可追溯发布版本 Artifact Metadata ✅ — 五、软件供应链安全（Supply Chain Security）# 组件 云原生领域 解决的问题 架构定位 是否必选 可替代方案 SBOM 生成（Syft） Security 组件清单、依赖可追溯 Supply Chain ❌ CycloneDX 镜像签名（Cosign） Security 镜像可信验证 Trust &amp; Provenance ❌ Notary v2 漏洞扫描（Trivy） Security 镜像漏洞检测 Runtime / Deploy Gate ❌ Grype、Clair 六、CI → CD 状态桥接# 组件 云原生领域 解决的问题 架构定位 是否必选 可替代方案 Manifest Patch Task Platform 绑定 Commit / Image Digest CI → CD 状态同步 ✅ GitOps Commit Pipeline Result 传递 CI 跨 Task 数据共享 Data Flow ✅ — 七、通知与可观测性# 组件 云原生领域 解决的问题 架构定位 是否必选 可替代方案 Notify Task Feedback CI 结果通知 Feedback Channel ❌ Webhook、Slack CI Metrics（OTel） Observability 构建时长、成功率 CI 可观测性 ❌ Prometheus CI Trace（Pipeline / Task） Observability 执行链路分析 Debug / RCA ❌ Jaeger ">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
 <meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/ci/component/">
   <meta property="og:site_name" content="Devflow">
   <meta property="og:title" content="Components">
-  <meta property="og:description" content="#持续集成（CI）
-组件 云原生领域 解决的问题 架构定位 是否必选 可替代方案 Tekton Pipelines CI 声明式、K8s 原生 CI 执行 CI 执行引擎 ❌ GitLab CI、Jenkins、GitHub Actions Tekton Triggers CI Git / Webhook 触发 Pipeline CI 事件入口 ❌ GitLab Webhook、Argo Events Tekton Dashboard CI CI 可视化 CI UI ❌ Jenkins UI、GitLab UI Buildah 镜像构建 无需 Docker Daemon 构建镜像 构建工具 ❌ Docker、Kaniko">
+  <meta property="og:description" content="持续集成（CI）组件能力矩阵# 一、CI 核心编排与触发# 组件 云原生领域 解决的问题 架构定位 是否必选 可替代方案 Tekton Pipelines CI 声明式、K8s 原生 CI 编排 CI 执行与编排引擎 ✅ Jenkins、GitHub Actions Tekton Triggers CI Git / Webhook 触发 Pipeline CI 事件入口 ❌ Argo Events Tekton Dashboard CI Pipeline 执行可视化 CI UI ❌ Jenkins UI、GitLab UI 二、源码获取与代码质量# 组件 云原生领域 解决的问题 架构定位 是否必选 可替代方案 Git Clone Task SCM 拉取源码、获取 Commit 信息 Source Stage ✅ 内置 Git Script 代码扫描（SAST / Secret） Security 代码漏洞、密钥泄漏、危险配置 Shift-Left Security ❌ SonarQube、Semgrep、Gitleaks 代码规范 / Lint Quality 代码风格、规范检查 Quality Gate ❌ golangci-lint、eslint 三、测试阶段# 组件 云原生领域 解决的问题 架构定位 是否必选 可替代方案 单元测试 Testing 功能正确性验证 Quality Gate ❌ Go test、JUnit 集成测试 Testing 多组件联调验证 Pre-Build Validation ❌ Testcontainers 覆盖率统计 Quality 测试质量度量 Quality Metrics ❌ Cobertura 四、镜像构建与制品管理# 组件 云原生领域 解决的问题 架构定位 是否必选 可替代方案 Buildah Image Build 无 Docker Daemon 构建镜像 构建引擎 ✅ Kaniko、Docker Artifact Registry Artifact 镜像 / 构建产物存储 制品仓库 ✅ Harbor、ECR 镜像 Tag / Digest 管理 Artifact 可追溯发布版本 Artifact Metadata ✅ — 五、软件供应链安全（Supply Chain Security）# 组件 云原生领域 解决的问题 架构定位 是否必选 可替代方案 SBOM 生成（Syft） Security 组件清单、依赖可追溯 Supply Chain ❌ CycloneDX 镜像签名（Cosign） Security 镜像可信验证 Trust &amp; Provenance ❌ Notary v2 漏洞扫描（Trivy） Security 镜像漏洞检测 Runtime / Deploy Gate ❌ Grype、Clair 六、CI → CD 状态桥接# 组件 云原生领域 解决的问题 架构定位 是否必选 可替代方案 Manifest Patch Task Platform 绑定 Commit / Image Digest CI → CD 状态同步 ✅ GitOps Commit Pipeline Result 传递 CI 跨 Task 数据共享 Data Flow ✅ — 七、通知与可观测性# 组件 云原生领域 解决的问题 架构定位 是否必选 可替代方案 Notify Task Feedback CI 结果通知 Feedback Channel ❌ Webhook、Slack CI Metrics（OTel） Observability 构建时长、成功率 CI 可观测性 ❌ Prometheus CI Trace（Pipeline / Task） Observability 执行链路分析 Debug / RCA ❌ Jaeger">
   <meta property="og:locale" content="zh_cn">
   <meta property="og:type" content="article">
     <meta property="article:section" content="docs">
 
 
   <meta itemprop="name" content="Components">
-  <meta itemprop="description" content="#持续集成（CI）
-组件 云原生领域 解决的问题 架构定位 是否必选 可替代方案 Tekton Pipelines CI 声明式、K8s 原生 CI 执行 CI 执行引擎 ❌ GitLab CI、Jenkins、GitHub Actions Tekton Triggers CI Git / Webhook 触发 Pipeline CI 事件入口 ❌ GitLab Webhook、Argo Events Tekton Dashboard CI CI 可视化 CI UI ❌ Jenkins UI、GitLab UI Buildah 镜像构建 无需 Docker Daemon 构建镜像 构建工具 ❌ Docker、Kaniko">
-  <meta itemprop="wordCount" content="54">
+  <meta itemprop="description" content="持续集成（CI）组件能力矩阵# 一、CI 核心编排与触发# 组件 云原生领域 解决的问题 架构定位 是否必选 可替代方案 Tekton Pipelines CI 声明式、K8s 原生 CI 编排 CI 执行与编排引擎 ✅ Jenkins、GitHub Actions Tekton Triggers CI Git / Webhook 触发 Pipeline CI 事件入口 ❌ Argo Events Tekton Dashboard CI Pipeline 执行可视化 CI UI ❌ Jenkins UI、GitLab UI 二、源码获取与代码质量# 组件 云原生领域 解决的问题 架构定位 是否必选 可替代方案 Git Clone Task SCM 拉取源码、获取 Commit 信息 Source Stage ✅ 内置 Git Script 代码扫描（SAST / Secret） Security 代码漏洞、密钥泄漏、危险配置 Shift-Left Security ❌ SonarQube、Semgrep、Gitleaks 代码规范 / Lint Quality 代码风格、规范检查 Quality Gate ❌ golangci-lint、eslint 三、测试阶段# 组件 云原生领域 解决的问题 架构定位 是否必选 可替代方案 单元测试 Testing 功能正确性验证 Quality Gate ❌ Go test、JUnit 集成测试 Testing 多组件联调验证 Pre-Build Validation ❌ Testcontainers 覆盖率统计 Quality 测试质量度量 Quality Metrics ❌ Cobertura 四、镜像构建与制品管理# 组件 云原生领域 解决的问题 架构定位 是否必选 可替代方案 Buildah Image Build 无 Docker Daemon 构建镜像 构建引擎 ✅ Kaniko、Docker Artifact Registry Artifact 镜像 / 构建产物存储 制品仓库 ✅ Harbor、ECR 镜像 Tag / Digest 管理 Artifact 可追溯发布版本 Artifact Metadata ✅ — 五、软件供应链安全（Supply Chain Security）# 组件 云原生领域 解决的问题 架构定位 是否必选 可替代方案 SBOM 生成（Syft） Security 组件清单、依赖可追溯 Supply Chain ❌ CycloneDX 镜像签名（Cosign） Security 镜像可信验证 Trust &amp; Provenance ❌ Notary v2 漏洞扫描（Trivy） Security 镜像漏洞检测 Runtime / Deploy Gate ❌ Grype、Clair 六、CI → CD 状态桥接# 组件 云原生领域 解决的问题 架构定位 是否必选 可替代方案 Manifest Patch Task Platform 绑定 Commit / Image Digest CI → CD 状态同步 ✅ GitOps Commit Pipeline Result 传递 CI 跨 Task 数据共享 Data Flow ✅ — 七、通知与可观测性# 组件 云原生领域 解决的问题 架构定位 是否必选 可替代方案 Notify Task Feedback CI 结果通知 Feedback Channel ❌ Webhook、Slack CI Metrics（OTel） Observability 构建时长、成功率 CI 可观测性 ❌ Prometheus CI Trace（Pipeline / Task） Observability 执行链路分析 Debug / RCA ❌ Jaeger">
+  <meta itemprop="wordCount" content="256">
 
 <title>Components | Devflow</title>
 <link rel="icon" href="/favicon.png" >
@@ -128,7 +125,7 @@ https://github.com/alex-shpak/hugo-book
   
     <input type="checkbox" id="section-0fc280a0e74cc087db99dcd67aadd7bb" class="toggle"  />
     <label for="section-0fc280a0e74cc087db99dcd67aadd7bb" class="flex">
-      <a role="button" class="">
+      <a href="/docs/cd/" class="">
         CD</a>
       <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
     </label>
@@ -137,6 +134,46 @@ https://github.com/alex-shpak/hugo-book
           
   <ul>
     
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cd/blue_green/" class="">
+      Blue Green</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cd/canary/" class="">
+      Canary</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cd/standard/" class="">
+      Standard</a>
+  
+
+        </li>
       
     
       
@@ -286,7 +323,8 @@ https://github.com/alex-shpak/hugo-book
 
       
       
-  <article class="markdown book-article"><p>#持续集成（CI）</p>
+  <article class="markdown book-article"><h1 id="持续集成ci组件能力矩阵">持续集成（CI）组件能力矩阵<a class="anchor" href="#%e6%8c%81%e7%bb%ad%e9%9b%86%e6%88%90ci%e7%bb%84%e4%bb%b6%e8%83%bd%e5%8a%9b%e7%9f%a9%e9%98%b5">#</a></h1>
+<h2 id="一ci-核心编排与触发">一、CI 核心编排与触发<a class="anchor" href="#%e4%b8%80ci-%e6%a0%b8%e5%bf%83%e7%bc%96%e6%8e%92%e4%b8%8e%e8%a7%a6%e5%8f%91">#</a></h2>
 <table>
   <thead>
       <tr>
@@ -302,10 +340,10 @@ https://github.com/alex-shpak/hugo-book
       <tr>
           <td>Tekton Pipelines</td>
           <td>CI</td>
-          <td>声明式、K8s 原生 CI 执行</td>
-          <td>CI 执行引擎</td>
-          <td>❌</td>
-          <td>GitLab CI、Jenkins、GitHub Actions</td>
+          <td>声明式、K8s 原生 CI 编排</td>
+          <td>CI 执行与编排引擎</td>
+          <td>✅</td>
+          <td>Jenkins、GitHub Actions</td>
       </tr>
       <tr>
           <td>Tekton Triggers</td>
@@ -313,23 +351,247 @@ https://github.com/alex-shpak/hugo-book
           <td>Git / Webhook 触发 Pipeline</td>
           <td>CI 事件入口</td>
           <td>❌</td>
-          <td>GitLab Webhook、Argo Events</td>
+          <td>Argo Events</td>
       </tr>
       <tr>
           <td>Tekton Dashboard</td>
           <td>CI</td>
-          <td>CI 可视化</td>
+          <td>Pipeline 执行可视化</td>
           <td>CI UI</td>
           <td>❌</td>
           <td>Jenkins UI、GitLab UI</td>
       </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="二源码获取与代码质量">二、源码获取与代码质量<a class="anchor" href="#%e4%ba%8c%e6%ba%90%e7%a0%81%e8%8e%b7%e5%8f%96%e4%b8%8e%e4%bb%a3%e7%a0%81%e8%b4%a8%e9%87%8f">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>组件</th>
+          <th>云原生领域</th>
+          <th>解决的问题</th>
+          <th>架构定位</th>
+          <th>是否必选</th>
+          <th>可替代方案</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Git Clone Task</td>
+          <td>SCM</td>
+          <td>拉取源码、获取 Commit 信息</td>
+          <td>Source Stage</td>
+          <td>✅</td>
+          <td>内置 Git Script</td>
+      </tr>
+      <tr>
+          <td>代码扫描（SAST / Secret）</td>
+          <td>Security</td>
+          <td>代码漏洞、密钥泄漏、危险配置</td>
+          <td>Shift-Left Security</td>
+          <td>❌</td>
+          <td>SonarQube、Semgrep、Gitleaks</td>
+      </tr>
+      <tr>
+          <td>代码规范 / Lint</td>
+          <td>Quality</td>
+          <td>代码风格、规范检查</td>
+          <td>Quality Gate</td>
+          <td>❌</td>
+          <td>golangci-lint、eslint</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="三测试阶段">三、测试阶段<a class="anchor" href="#%e4%b8%89%e6%b5%8b%e8%af%95%e9%98%b6%e6%ae%b5">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>组件</th>
+          <th>云原生领域</th>
+          <th>解决的问题</th>
+          <th>架构定位</th>
+          <th>是否必选</th>
+          <th>可替代方案</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>单元测试</td>
+          <td>Testing</td>
+          <td>功能正确性验证</td>
+          <td>Quality Gate</td>
+          <td>❌</td>
+          <td>Go test、JUnit</td>
+      </tr>
+      <tr>
+          <td>集成测试</td>
+          <td>Testing</td>
+          <td>多组件联调验证</td>
+          <td>Pre-Build Validation</td>
+          <td>❌</td>
+          <td>Testcontainers</td>
+      </tr>
+      <tr>
+          <td>覆盖率统计</td>
+          <td>Quality</td>
+          <td>测试质量度量</td>
+          <td>Quality Metrics</td>
+          <td>❌</td>
+          <td>Cobertura</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="四镜像构建与制品管理">四、镜像构建与制品管理<a class="anchor" href="#%e5%9b%9b%e9%95%9c%e5%83%8f%e6%9e%84%e5%bb%ba%e4%b8%8e%e5%88%b6%e5%93%81%e7%ae%a1%e7%90%86">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>组件</th>
+          <th>云原生领域</th>
+          <th>解决的问题</th>
+          <th>架构定位</th>
+          <th>是否必选</th>
+          <th>可替代方案</th>
+      </tr>
+  </thead>
+  <tbody>
       <tr>
           <td>Buildah</td>
-          <td>镜像构建</td>
-          <td>无需 Docker Daemon 构建镜像</td>
-          <td>构建工具</td>
+          <td>Image Build</td>
+          <td>无 Docker Daemon 构建镜像</td>
+          <td>构建引擎</td>
+          <td>✅</td>
+          <td>Kaniko、Docker</td>
+      </tr>
+      <tr>
+          <td>Artifact Registry</td>
+          <td>Artifact</td>
+          <td>镜像 / 构建产物存储</td>
+          <td>制品仓库</td>
+          <td>✅</td>
+          <td>Harbor、ECR</td>
+      </tr>
+      <tr>
+          <td>镜像 Tag / Digest 管理</td>
+          <td>Artifact</td>
+          <td>可追溯发布版本</td>
+          <td>Artifact Metadata</td>
+          <td>✅</td>
+          <td>—</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="五软件供应链安全supply-chain-security">五、软件供应链安全（Supply Chain Security）<a class="anchor" href="#%e4%ba%94%e8%bd%af%e4%bb%b6%e4%be%9b%e5%ba%94%e9%93%be%e5%ae%89%e5%85%a8supply-chain-security">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>组件</th>
+          <th>云原生领域</th>
+          <th>解决的问题</th>
+          <th>架构定位</th>
+          <th>是否必选</th>
+          <th>可替代方案</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>SBOM 生成（Syft）</td>
+          <td>Security</td>
+          <td>组件清单、依赖可追溯</td>
+          <td>Supply Chain</td>
           <td>❌</td>
-          <td>Docker、Kaniko</td>
+          <td>CycloneDX</td>
+      </tr>
+      <tr>
+          <td>镜像签名（Cosign）</td>
+          <td>Security</td>
+          <td>镜像可信验证</td>
+          <td>Trust &amp; Provenance</td>
+          <td>❌</td>
+          <td>Notary v2</td>
+      </tr>
+      <tr>
+          <td>漏洞扫描（Trivy）</td>
+          <td>Security</td>
+          <td>镜像漏洞检测</td>
+          <td>Runtime / Deploy Gate</td>
+          <td>❌</td>
+          <td>Grype、Clair</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="六ci--cd-状态桥接">六、CI → CD 状态桥接<a class="anchor" href="#%e5%85%adci--cd-%e7%8a%b6%e6%80%81%e6%a1%a5%e6%8e%a5">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>组件</th>
+          <th>云原生领域</th>
+          <th>解决的问题</th>
+          <th>架构定位</th>
+          <th>是否必选</th>
+          <th>可替代方案</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Manifest Patch Task</td>
+          <td>Platform</td>
+          <td>绑定 Commit / Image Digest</td>
+          <td>CI → CD 状态同步</td>
+          <td>✅</td>
+          <td>GitOps Commit</td>
+      </tr>
+      <tr>
+          <td>Pipeline Result 传递</td>
+          <td>CI</td>
+          <td>跨 Task 数据共享</td>
+          <td>Data Flow</td>
+          <td>✅</td>
+          <td>—</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="七通知与可观测性">七、通知与可观测性<a class="anchor" href="#%e4%b8%83%e9%80%9a%e7%9f%a5%e4%b8%8e%e5%8f%af%e8%a7%82%e6%b5%8b%e6%80%a7">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>组件</th>
+          <th>云原生领域</th>
+          <th>解决的问题</th>
+          <th>架构定位</th>
+          <th>是否必选</th>
+          <th>可替代方案</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Notify Task</td>
+          <td>Feedback</td>
+          <td>CI 结果通知</td>
+          <td>Feedback Channel</td>
+          <td>❌</td>
+          <td>Webhook、Slack</td>
+      </tr>
+      <tr>
+          <td>CI Metrics（OTel）</td>
+          <td>Observability</td>
+          <td>构建时长、成功率</td>
+          <td>CI 可观测性</td>
+          <td>❌</td>
+          <td>Prometheus</td>
+      </tr>
+      <tr>
+          <td>CI Trace（Pipeline / Task）</td>
+          <td>Observability</td>
+          <td>执行链路分析</td>
+          <td>Debug / RCA</td>
+          <td>❌</td>
+          <td>Jaeger</td>
       </tr>
   </tbody>
 </table>
@@ -369,8 +631,8 @@ https://github.com/alex-shpak/hugo-book
     </span>
     <span>
     
-      <a href="/docs/cd/component/" class="flex align-center">
-        <span>Components</span>
+      <a href="/docs/cd/" class="flex align-center">
+        <span>CD</span>
         <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
       </a>
     

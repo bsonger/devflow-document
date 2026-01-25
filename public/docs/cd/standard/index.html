@@ -8,18 +8,21 @@ https://github.com/alex-shpak/hugo-book
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="">
+<meta name="description" content="发布策略选型建议# 场景 推荐策略 内部系统 Recreate / Rolling 普通业务 Rolling 核心生产系统 Canary 高回滚要求 Blue / Green 功能实验 A/B 新系统验证 Shadow 云原生 CD 最佳实践# 构建与发布完全解耦 发布过程必须可回滚 基于指标和 SLO 驱动发布决策 发布过程全链路可观测（Metric / Trace / Log） 所有发布行为可审计、可追溯 ">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
 <meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/cd/standard/">
   <meta property="og:site_name" content="Devflow">
   <meta property="og:title" content="Devflow">
+  <meta property="og:description" content="发布策略选型建议# 场景 推荐策略 内部系统 Recreate / Rolling 普通业务 Rolling 核心生产系统 Canary 高回滚要求 Blue / Green 功能实验 A/B 新系统验证 Shadow 云原生 CD 最佳实践# 构建与发布完全解耦 发布过程必须可回滚 基于指标和 SLO 驱动发布决策 发布过程全链路可观测（Metric / Trace / Log） 所有发布行为可审计、可追溯">
   <meta property="og:locale" content="zh_cn">
   <meta property="og:type" content="article">
     <meta property="article:section" content="docs">
 
 
   <meta itemprop="name" content="Devflow">
+  <meta itemprop="description" content="发布策略选型建议# 场景 推荐策略 内部系统 Recreate / Rolling 普通业务 Rolling 核心生产系统 Canary 高回滚要求 Blue / Green 功能实验 A/B 新系统验证 Shadow 云原生 CD 最佳实践# 构建与发布完全解耦 发布过程必须可回滚 基于指标和 SLO 驱动发布决策 发布过程全链路可观测（Metric / Trace / Log） 所有发布行为可审计、可追溯">
+  <meta itemprop="wordCount" content="33">
 
 <title>Standard | Devflow</title>
 <link rel="icon" href="/favicon.png" >
@@ -120,6 +123,85 @@ https://github.com/alex-shpak/hugo-book
   
 
   
+    <input type="checkbox" id="section-0fc280a0e74cc087db99dcd67aadd7bb" class="toggle" checked />
+    <label for="section-0fc280a0e74cc087db99dcd67aadd7bb" class="flex">
+      <a href="/docs/cd/" class="">
+        CD</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cd/blue_green/" class="">
+      Blue Green</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cd/canary/" class="">
+      Canary</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cd/standard/" class="active">
+      Standard</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cd/component/" class="">
+      Components</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
     <input type="checkbox" id="section-6884c320646745efe1e09831aa35ad5b" class="toggle"  />
     <label for="section-6884c320646745efe1e09831aa35ad5b" class="flex">
       <a role="button" class="">
@@ -168,45 +250,6 @@ https://github.com/alex-shpak/hugo-book
   
     <a href="/docs/observability/standard/" class="">
       Standard</a>
-  
-
-        </li>
-      
-    
-  </ul>
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <input type="checkbox" id="section-0fc280a0e74cc087db99dcd67aadd7bb" class="toggle" checked />
-    <label for="section-0fc280a0e74cc087db99dcd67aadd7bb" class="flex">
-      <a role="button" class="">
-        CD</a>
-      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
-    </label>
-  
-
-          
-  <ul>
-    
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/docs/cd/component/" class="">
-      Components</a>
   
 
         </li>
@@ -280,7 +323,51 @@ https://github.com/alex-shpak/hugo-book
 
       
       
-  <article class="markdown book-article"></article>
+  <article class="markdown book-article"><h2 id="发布策略选型建议">发布策略选型建议<a class="anchor" href="#%e5%8f%91%e5%b8%83%e7%ad%96%e7%95%a5%e9%80%89%e5%9e%8b%e5%bb%ba%e8%ae%ae">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>场景</th>
+          <th>推荐策略</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>内部系统</td>
+          <td>Recreate / Rolling</td>
+      </tr>
+      <tr>
+          <td>普通业务</td>
+          <td>Rolling</td>
+      </tr>
+      <tr>
+          <td>核心生产系统</td>
+          <td>Canary</td>
+      </tr>
+      <tr>
+          <td>高回滚要求</td>
+          <td>Blue / Green</td>
+      </tr>
+      <tr>
+          <td>功能实验</td>
+          <td>A/B</td>
+      </tr>
+      <tr>
+          <td>新系统验证</td>
+          <td>Shadow</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="云原生-cd-最佳实践">云原生 CD 最佳实践<a class="anchor" href="#%e4%ba%91%e5%8e%9f%e7%94%9f-cd-%e6%9c%80%e4%bd%b3%e5%ae%9e%e8%b7%b5">#</a></h2>
+<ul>
+<li>构建与发布完全解耦</li>
+<li>发布过程必须可回滚</li>
+<li>基于指标和 SLO 驱动发布决策</li>
+<li>发布过程全链路可观测（Metric / Trace / Log）</li>
+<li>所有发布行为可审计、可追溯</li>
+</ul>
+</article>
  
       
 
@@ -304,6 +391,25 @@ https://github.com/alex-shpak/hugo-book
 
   
   
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/docs/cd/canary/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>Canary</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/docs/cd/component/" class="flex align-center">
+        <span>Components</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
   
 
 

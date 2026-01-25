@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="云原生 Blue/Green 发布实战：Argo CD &#43; Argo Rollouts# Blue/Green 发布是一种低风险的发布策略，通过维护两套环境（Blue 和 Green），在新版本发布时切换流量到新环境，实现平滑切换和快速回滚。
+1. 技术栈说明# 组件 作用 说明 Argo CD GitOps CD 平台 自动同步 Kubernetes 资源与 Git 仓库，实现声明式部署 Argo Rollouts 发布控制器 提供 Blue/Green、Canary 等高级发布策略，并支持指标分析与自动回滚 Service / Ingress 流量控制 Kubernetes Service 或 Ingress 实现流量切换 Prometheus / Metrics 指标监控 可用于自动判断新版本健康并触发切换 2. 基本原理# Blue/Green 环境： Blue：当前生产环境版本 Green：新版本环境，准备上线 流量切换： Service 指向 Blue 环境 Rollout 创建 Green Pod 后，通过 Service 将流量切换到 Green 回滚： 如果 Green 出现问题，Service 可以快速切回 Blue Argo CD： GitOps 同步 Blue/Green Rollout 的 Manifest，实现自动化部署和版本管理 3. Rollout 配置示例# apiVersion: argoproj.io/v1alpha1 kind: Rollout metadata: name: my-app namespace: production spec: replicas: 5 strategy: blueGreen: activeService: my-app-active previewService: my-app-preview autoPromotionEnabled: false # 手动切换流量 selector: matchLabels: app: my-app template: metadata: labels: app: my-app spec: containers: - name: my-app image: registry.example.com/my-app:v2">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/cd/blue_green/">
+  <meta property="og:site_name" content="Devflow">
+  <meta property="og:title" content="Devflow">
+  <meta property="og:description" content="云原生 Blue/Green 发布实战：Argo CD &#43; Argo Rollouts# Blue/Green 发布是一种低风险的发布策略，通过维护两套环境（Blue 和 Green），在新版本发布时切换流量到新环境，实现平滑切换和快速回滚。
+1. 技术栈说明# 组件 作用 说明 Argo CD GitOps CD 平台 自动同步 Kubernetes 资源与 Git 仓库，实现声明式部署 Argo Rollouts 发布控制器 提供 Blue/Green、Canary 等高级发布策略，并支持指标分析与自动回滚 Service / Ingress 流量控制 Kubernetes Service 或 Ingress 实现流量切换 Prometheus / Metrics 指标监控 可用于自动判断新版本健康并触发切换 2. 基本原理# Blue/Green 环境： Blue：当前生产环境版本 Green：新版本环境，准备上线 流量切换： Service 指向 Blue 环境 Rollout 创建 Green Pod 后，通过 Service 将流量切换到 Green 回滚： 如果 Green 出现问题，Service 可以快速切回 Blue Argo CD： GitOps 同步 Blue/Green Rollout 的 Manifest，实现自动化部署和版本管理 3. Rollout 配置示例# apiVersion: argoproj.io/v1alpha1 kind: Rollout metadata: name: my-app namespace: production spec: replicas: 5 strategy: blueGreen: activeService: my-app-active previewService: my-app-preview autoPromotionEnabled: false # 手动切换流量 selector: matchLabels: app: my-app template: metadata: labels: app: my-app spec: containers: - name: my-app image: registry.example.com/my-app:v2">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+
+
+  <meta itemprop="name" content="Devflow">
+  <meta itemprop="description" content="云原生 Blue/Green 发布实战：Argo CD &#43; Argo Rollouts# Blue/Green 发布是一种低风险的发布策略，通过维护两套环境（Blue 和 Green），在新版本发布时切换流量到新环境，实现平滑切换和快速回滚。
+1. 技术栈说明# 组件 作用 说明 Argo CD GitOps CD 平台 自动同步 Kubernetes 资源与 Git 仓库，实现声明式部署 Argo Rollouts 发布控制器 提供 Blue/Green、Canary 等高级发布策略，并支持指标分析与自动回滚 Service / Ingress 流量控制 Kubernetes Service 或 Ingress 实现流量切换 Prometheus / Metrics 指标监控 可用于自动判断新版本健康并触发切换 2. 基本原理# Blue/Green 环境： Blue：当前生产环境版本 Green：新版本环境，准备上线 流量切换： Service 指向 Blue 环境 Rollout 创建 Green Pod 后，通过 Service 将流量切换到 Green 回滚： 如果 Green 出现问题，Service 可以快速切回 Blue Argo CD： GitOps 同步 Blue/Green Rollout 的 Manifest，实现自动化部署和版本管理 3. Rollout 配置示例# apiVersion: argoproj.io/v1alpha1 kind: Rollout metadata: name: my-app namespace: production spec: replicas: 5 strategy: blueGreen: activeService: my-app-active previewService: my-app-preview autoPromotionEnabled: false # 手动切换流量 selector: matchLabels: app: my-app template: metadata: labels: app: my-app spec: containers: - name: my-app image: registry.example.com/my-app:v2">
+  <meta itemprop="wordCount" content="120">
+
+<title>Blue Green | Devflow</title>
+<link rel="icon" href="/favicon.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/cd/blue_green/">
+<link rel="stylesheet" href="/book.min.6970156cec683193d93c9c4edaf0d56574e4361df2e0c1be4f697ae81c3ba55f.css" integrity="sha256-aXAVbOxoMZPZPJxO2vDVZXTkNh3y4MG&#43;T2l66Bw7pV8=" crossorigin="anonymous">
+
+
+
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>Devflow</span>
+  </a>
+</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-4bd032e4e5fe1323a134583cafeecf06" class="toggle"  />
+    <label for="section-4bd032e4e5fe1323a134583cafeecf06" class="flex">
+      <a role="button" class="">
+        CI</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/ci/standard/" class="">
+      Standard</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/ci/component/" class="">
+      Components</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-0fc280a0e74cc087db99dcd67aadd7bb" class="toggle" checked />
+    <label for="section-0fc280a0e74cc087db99dcd67aadd7bb" class="flex">
+      <a href="/docs/cd/" class="">
+        CD</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cd/blue_green/" class="active">
+      Blue Green</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cd/canary/" class="">
+      Canary</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cd/standard/" class="">
+      Standard</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cd/component/" class="">
+      Components</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-6884c320646745efe1e09831aa35ad5b" class="toggle"  />
+    <label for="section-6884c320646745efe1e09831aa35ad5b" class="flex">
+      <a role="button" class="">
+        observability</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/observability/component/" class="">
+      Component</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/observability/attributes/" class="">
+      Attributes</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/observability/standard/" class="">
+      Standard</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/component/" class="">
+      All Components</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Blue Green</h3>
+
+  <label for="toc-control">
+    
+  </label>
+</div>
+
+
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="云原生-bluegreen-发布实战argo-cd--argo-rollouts">云原生 Blue/Green 发布实战：Argo CD + Argo Rollouts<a class="anchor" href="#%e4%ba%91%e5%8e%9f%e7%94%9f-bluegreen-%e5%8f%91%e5%b8%83%e5%ae%9e%e6%88%98argo-cd--argo-rollouts">#</a></h1>
+<p>Blue/Green 发布是一种低风险的发布策略，通过维护两套环境（Blue 和 Green），在新版本发布时切换流量到新环境，实现平滑切换和快速回滚。</p>
+<hr>
+<h2 id="1-技术栈说明">1. 技术栈说明<a class="anchor" href="#1-%e6%8a%80%e6%9c%af%e6%a0%88%e8%af%b4%e6%98%8e">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>组件</th>
+          <th>作用</th>
+          <th>说明</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>Argo CD</strong></td>
+          <td>GitOps CD 平台</td>
+          <td>自动同步 Kubernetes 资源与 Git 仓库，实现声明式部署</td>
+      </tr>
+      <tr>
+          <td><strong>Argo Rollouts</strong></td>
+          <td>发布控制器</td>
+          <td>提供 Blue/Green、Canary 等高级发布策略，并支持指标分析与自动回滚</td>
+      </tr>
+      <tr>
+          <td><strong>Service / Ingress</strong></td>
+          <td>流量控制</td>
+          <td>Kubernetes Service 或 Ingress 实现流量切换</td>
+      </tr>
+      <tr>
+          <td><strong>Prometheus / Metrics</strong></td>
+          <td>指标监控</td>
+          <td>可用于自动判断新版本健康并触发切换</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="2-基本原理">2. 基本原理<a class="anchor" href="#2-%e5%9f%ba%e6%9c%ac%e5%8e%9f%e7%90%86">#</a></h2>
+<ol>
+<li><strong>Blue/Green 环境</strong>：
+<ul>
+<li><strong>Blue</strong>：当前生产环境版本</li>
+<li><strong>Green</strong>：新版本环境，准备上线</li>
+</ul>
+</li>
+<li><strong>流量切换</strong>：
+<ul>
+<li>Service 指向 Blue 环境</li>
+<li>Rollout 创建 Green Pod 后，通过 Service 将流量切换到 Green</li>
+</ul>
+</li>
+<li><strong>回滚</strong>：
+<ul>
+<li>如果 Green 出现问题，Service 可以快速切回 Blue</li>
+</ul>
+</li>
+<li><strong>Argo CD</strong>：
+<ul>
+<li>GitOps 同步 Blue/Green Rollout 的 Manifest，实现自动化部署和版本管理</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="3-rollout-配置示例">3. Rollout 配置示例<a class="anchor" href="#3-rollout-%e9%85%8d%e7%bd%ae%e7%a4%ba%e4%be%8b">#</a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">argoproj.io/v1alpha1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">kind</span>: <span style="color:#ae81ff">Rollout</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">metadata</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">my-app</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">namespace</span>: <span style="color:#ae81ff">production</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">spec</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">replicas</span>: <span style="color:#ae81ff">5</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">strategy</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">blueGreen</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">activeService</span>: <span style="color:#ae81ff">my-app-active</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">previewService</span>: <span style="color:#ae81ff">my-app-preview</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">autoPromotionEnabled</span>: <span style="color:#66d9ef">false</span> <span style="color:#75715e"># 手动切换流量</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">selector</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">matchLabels</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">app</span>: <span style="color:#ae81ff">my-app</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">template</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">metadata</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">labels</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">app</span>: <span style="color:#ae81ff">my-app</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">spec</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">containers</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">my-app</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">image</span>: <span style="color:#ae81ff">registry.example.com/my-app:v2</span></span></span></code></pre></div></article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/docs/cd/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>CD</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/docs/cd/canary/" class="flex align-center">
+        <span>Canary</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+ 
+        
+        
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

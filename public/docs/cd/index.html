@@ -8,17 +8,36 @@ https://github.com/alex-shpak/hugo-book
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="">
+<meta name="description" content="持续交付（Continuous Delivery, CD）# 1. 什么是持续交付（CD）# 持续交付（Continuous Delivery，简称 CD）是指将通过持续集成（CI）验证后的制品（如镜像、配置、Manifest），以自动化、可控、可回滚的方式持续部署到各个环境（测试 / 预发 / 生产）。
+CD 的核心目标包括：
+快速交付业务价值 降低发布风险 支持灰度与回滚 发布过程可观测、可审计 尽量减少人工干预 2. 云原生场景下的 CD 位置# 典型的软件交付链路如下：
+Code Commit → CI（Build / Test / Scan / Sign） → Artifact（Image / Manifest） → CD（Deploy / Release Strategy） → Runtime（Service / Traffic）
+在云原生体系中，CD 通常具备以下特征：
+基于声明式配置（YAML / GitOps） 与 Kubernetes 深度集成 发布过程与流量治理解耦 强调可回滚与可观测性 3. 主流发布策略概览# 发布策略 是否中断流量 是否支持灰度 回滚成本 实现复杂度 常见实现 Recreate 是 否 高 低 Deployment Rolling Update 否 否 中 低 Deployment Blue / Green 否 否 低 中 Argo CD / Rollouts Canary 否 是 低 高 Argo Rollouts A/B Testing 否 是 中 高 Rollouts &#43; 网关 Shadow / Mirror 否 是（不影响用户） 无 高 Service Mesh 4. 发布策略详解# 4.1 Recreate（重建发布）# 发布方式
+">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
 <meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/cd/">
   <meta property="og:site_name" content="Devflow">
   <meta property="og:title" content="CD">
+  <meta property="og:description" content="持续交付（Continuous Delivery, CD）# 1. 什么是持续交付（CD）# 持续交付（Continuous Delivery，简称 CD）是指将通过持续集成（CI）验证后的制品（如镜像、配置、Manifest），以自动化、可控、可回滚的方式持续部署到各个环境（测试 / 预发 / 生产）。
+CD 的核心目标包括：
+快速交付业务价值 降低发布风险 支持灰度与回滚 发布过程可观测、可审计 尽量减少人工干预 2. 云原生场景下的 CD 位置# 典型的软件交付链路如下：
+Code Commit → CI（Build / Test / Scan / Sign） → Artifact（Image / Manifest） → CD（Deploy / Release Strategy） → Runtime（Service / Traffic）
+在云原生体系中，CD 通常具备以下特征：
+基于声明式配置（YAML / GitOps） 与 Kubernetes 深度集成 发布过程与流量治理解耦 强调可回滚与可观测性 3. 主流发布策略概览# 发布策略 是否中断流量 是否支持灰度 回滚成本 实现复杂度 常见实现 Recreate 是 否 高 低 Deployment Rolling Update 否 否 中 低 Deployment Blue / Green 否 否 低 中 Argo CD / Rollouts Canary 否 是 低 高 Argo Rollouts A/B Testing 否 是 中 高 Rollouts &#43; 网关 Shadow / Mirror 否 是（不影响用户） 无 高 Service Mesh 4. 发布策略详解# 4.1 Recreate（重建发布）# 发布方式">
   <meta property="og:locale" content="zh_cn">
   <meta property="og:type" content="website">
 
 
   <meta itemprop="name" content="CD">
+  <meta itemprop="description" content="持续交付（Continuous Delivery, CD）# 1. 什么是持续交付（CD）# 持续交付（Continuous Delivery，简称 CD）是指将通过持续集成（CI）验证后的制品（如镜像、配置、Manifest），以自动化、可控、可回滚的方式持续部署到各个环境（测试 / 预发 / 生产）。
+CD 的核心目标包括：
+快速交付业务价值 降低发布风险 支持灰度与回滚 发布过程可观测、可审计 尽量减少人工干预 2. 云原生场景下的 CD 位置# 典型的软件交付链路如下：
+Code Commit → CI（Build / Test / Scan / Sign） → Artifact（Image / Manifest） → CD（Deploy / Release Strategy） → Runtime（Service / Traffic）
+在云原生体系中，CD 通常具备以下特征：
+基于声明式配置（YAML / GitOps） 与 Kubernetes 深度集成 发布过程与流量治理解耦 强调可回滚与可观测性 3. 主流发布策略概览# 发布策略 是否中断流量 是否支持灰度 回滚成本 实现复杂度 常见实现 Recreate 是 否 高 低 Deployment Rolling Update 否 否 中 低 Deployment Blue / Green 否 否 低 中 Argo CD / Rollouts Canary 否 是 低 高 Argo Rollouts A/B Testing 否 是 中 高 Rollouts &#43; 网关 Shadow / Mirror 否 是（不影响用户） 无 高 Service Mesh 4. 发布策略详解# 4.1 Recreate（重建发布）# 发布方式">
+  <meta itemprop="wordCount" content="281">
 
 <title>CD | Devflow</title>
 <link rel="icon" href="/favicon.png" >
@@ -122,7 +141,7 @@ https://github.com/alex-shpak/hugo-book
   
     <input type="checkbox" id="section-0fc280a0e74cc087db99dcd67aadd7bb" class="toggle" checked />
     <label for="section-0fc280a0e74cc087db99dcd67aadd7bb" class="flex">
-      <a role="button" class="active">
+      <a href="/docs/cd/" class="active">
         CD</a>
       <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
     </label>
@@ -131,6 +150,46 @@ https://github.com/alex-shpak/hugo-book
           
   <ul>
     
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cd/blue_green/" class="">
+      Blue Green</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cd/canary/" class="">
+      Canary</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cd/standard/" class="">
+      Standard</a>
+  
+
+        </li>
       
     
       
@@ -280,7 +339,273 @@ https://github.com/alex-shpak/hugo-book
 
       
       
-  <article class="markdown book-article"></article>
+  <article class="markdown book-article"><h1 id="持续交付continuous-delivery-cd">持续交付（Continuous Delivery, CD）<a class="anchor" href="#%e6%8c%81%e7%bb%ad%e4%ba%a4%e4%bb%98continuous-delivery-cd">#</a></h1>
+<h2 id="1-什么是持续交付cd">1. 什么是持续交付（CD）<a class="anchor" href="#1-%e4%bb%80%e4%b9%88%e6%98%af%e6%8c%81%e7%bb%ad%e4%ba%a4%e4%bb%98cd">#</a></h2>
+<p>持续交付（Continuous Delivery，简称 CD）是指将<strong>通过持续集成（CI）验证后的制品（如镜像、配置、Manifest）</strong>，以<strong>自动化、可控、可回滚</strong>的方式持续部署到各个环境（测试 / 预发 / 生产）。</p>
+<p>CD 的核心目标包括：</p>
+<ul>
+<li>快速交付业务价值</li>
+<li>降低发布风险</li>
+<li>支持灰度与回滚</li>
+<li>发布过程可观测、可审计</li>
+<li>尽量减少人工干预</li>
+</ul>
+<hr>
+<h2 id="2-云原生场景下的-cd-位置">2. 云原生场景下的 CD 位置<a class="anchor" href="#2-%e4%ba%91%e5%8e%9f%e7%94%9f%e5%9c%ba%e6%99%af%e4%b8%8b%e7%9a%84-cd-%e4%bd%8d%e7%bd%ae">#</a></h2>
+<p>典型的软件交付链路如下：</p>
+<p>Code Commit
+→ CI（Build / Test / Scan / Sign）
+→ Artifact（Image / Manifest）
+→ CD（Deploy / Release Strategy）
+→ Runtime（Service / Traffic）</p>
+<p>在云原生体系中，CD 通常具备以下特征：</p>
+<ul>
+<li>基于声明式配置（YAML / GitOps）</li>
+<li>与 Kubernetes 深度集成</li>
+<li>发布过程与流量治理解耦</li>
+<li>强调可回滚与可观测性</li>
+</ul>
+<hr>
+<h2 id="3-主流发布策略概览">3. 主流发布策略概览<a class="anchor" href="#3-%e4%b8%bb%e6%b5%81%e5%8f%91%e5%b8%83%e7%ad%96%e7%95%a5%e6%a6%82%e8%a7%88">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>发布策略</th>
+          <th>是否中断流量</th>
+          <th>是否支持灰度</th>
+          <th>回滚成本</th>
+          <th>实现复杂度</th>
+          <th>常见实现</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Recreate</td>
+          <td>是</td>
+          <td>否</td>
+          <td>高</td>
+          <td>低</td>
+          <td>Deployment</td>
+      </tr>
+      <tr>
+          <td>Rolling Update</td>
+          <td>否</td>
+          <td>否</td>
+          <td>中</td>
+          <td>低</td>
+          <td>Deployment</td>
+      </tr>
+      <tr>
+          <td>Blue / Green</td>
+          <td>否</td>
+          <td>否</td>
+          <td>低</td>
+          <td>中</td>
+          <td>Argo CD / Rollouts</td>
+      </tr>
+      <tr>
+          <td>Canary</td>
+          <td>否</td>
+          <td>是</td>
+          <td>低</td>
+          <td>高</td>
+          <td>Argo Rollouts</td>
+      </tr>
+      <tr>
+          <td>A/B Testing</td>
+          <td>否</td>
+          <td>是</td>
+          <td>中</td>
+          <td>高</td>
+          <td>Rollouts + 网关</td>
+      </tr>
+      <tr>
+          <td>Shadow / Mirror</td>
+          <td>否</td>
+          <td>是（不影响用户）</td>
+          <td>无</td>
+          <td>高</td>
+          <td>Service Mesh</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="4-发布策略详解">4. 发布策略详解<a class="anchor" href="#4-%e5%8f%91%e5%b8%83%e7%ad%96%e7%95%a5%e8%af%a6%e8%a7%a3">#</a></h2>
+<h3 id="41-recreate重建发布">4.1 Recreate（重建发布）<a class="anchor" href="#41-recreate%e9%87%8d%e5%bb%ba%e5%8f%91%e5%b8%83">#</a></h3>
+<p><strong>发布方式</strong></p>
+<p>先终止旧版本 Pod，再启动新版本 Pod。</p>
+<p><strong>特点</strong></p>
+<ul>
+<li>发布期间存在服务中断</li>
+<li>不支持并行版本</li>
+</ul>
+<p><strong>适用场景</strong></p>
+<ul>
+<li>内部系统</li>
+<li>非核心服务</li>
+<li>可接受短时间不可用的场景</li>
+</ul>
+<p><strong>优缺点</strong></p>
+<ul>
+<li>优点：实现简单</li>
+<li>缺点：服务中断、无灰度能力</li>
+</ul>
+<hr>
+<h3 id="42-rolling-update滚动发布">4.2 Rolling Update（滚动发布）<a class="anchor" href="#42-rolling-update%e6%bb%9a%e5%8a%a8%e5%8f%91%e5%b8%83">#</a></h3>
+<p><strong>发布方式</strong></p>
+<p>新旧版本 Pod 同时存在，逐步用新版本替换旧版本。</p>
+<p><strong>特点</strong></p>
+<ul>
+<li>Kubernetes 默认发布策略</li>
+<li>通过 <code>maxSurge</code>、<code>maxUnavailable</code> 控制节奏</li>
+</ul>
+<p><strong>适用场景</strong></p>
+<ul>
+<li>大多数 Web 服务</li>
+<li>对精细流量控制要求不高的业务</li>
+</ul>
+<p><strong>优缺点</strong></p>
+<ul>
+<li>优点：无中断、实现简单</li>
+<li>缺点：无法控制具体流量比例，回滚能力有限</li>
+</ul>
+<hr>
+<h3 id="43-blue--green蓝绿发布">4.3 Blue / Green（蓝绿发布）<a class="anchor" href="#43-blue--green%e8%93%9d%e7%bb%bf%e5%8f%91%e5%b8%83">#</a></h3>
+<p><strong>发布方式</strong></p>
+<p>同时运行两套完整环境（Blue 和 Green），通过切换流量完成发布。</p>
+<p><strong>特点</strong></p>
+<ul>
+<li>切流即完成发布</li>
+<li>回滚只需切回旧版本</li>
+</ul>
+<p><strong>适用场景</strong></p>
+<ul>
+<li>对稳定性要求极高的系统</li>
+<li>可接受双倍资源占用的场景</li>
+</ul>
+<p><strong>优缺点</strong></p>
+<ul>
+<li>优点：发布与回滚速度快</li>
+<li>缺点：资源消耗较高，不支持渐进灰度</li>
+</ul>
+<hr>
+<h3 id="44-canary金丝雀发布">4.4 Canary（金丝雀发布）<a class="anchor" href="#44-canary%e9%87%91%e4%b8%9d%e9%9b%80%e5%8f%91%e5%b8%83">#</a></h3>
+<p><strong>发布方式</strong></p>
+<p>将一小部分流量（如 10%）引入新版本，逐步扩大比例。</p>
+<p><strong>特点</strong></p>
+<ul>
+<li>当前生产环境最主流的发布方式</li>
+<li>可结合监控指标进行自动决策</li>
+</ul>
+<p><strong>适用场景</strong></p>
+<ul>
+<li>核心业务系统</li>
+<li>高并发、高可用服务</li>
+</ul>
+<p><strong>优缺点</strong></p>
+<ul>
+<li>优点：风险可控、支持自动回滚</li>
+<li>缺点：实现复杂，对监控和流量治理依赖高</li>
+</ul>
+<hr>
+<h3 id="45-ab-testingab-发布">4.5 A/B Testing（A/B 发布）<a class="anchor" href="#45-ab-testingab-%e5%8f%91%e5%b8%83">#</a></h3>
+<p><strong>发布方式</strong></p>
+<p>基于用户特征（Header、Cookie、User ID）进行流量分组。</p>
+<p><strong>特点</strong></p>
+<ul>
+<li>用户级流量隔离</li>
+<li>支持业务效果对比</li>
+</ul>
+<p><strong>适用场景</strong></p>
+<ul>
+<li>功能实验</li>
+<li>产品效果验证</li>
+<li>数据驱动决策</li>
+</ul>
+<p><strong>优缺点</strong></p>
+<ul>
+<li>优点：精细化控制用户流量</li>
+<li>缺点：策略复杂，对网关能力要求高</li>
+</ul>
+<hr>
+<h3 id="46-shadow--traffic-mirroring流量镜像">4.6 Shadow / Traffic Mirroring（流量镜像）<a class="anchor" href="#46-shadow--traffic-mirroring%e6%b5%81%e9%87%8f%e9%95%9c%e5%83%8f">#</a></h3>
+<p><strong>发布方式</strong></p>
+<p>将生产流量复制一份发送给新版本，但不影响用户响应。</p>
+<p><strong>特点</strong></p>
+<ul>
+<li>不对真实用户生效</li>
+<li>零风险验证新版本</li>
+</ul>
+<p><strong>适用场景</strong></p>
+<ul>
+<li>新架构验证</li>
+<li>性能压测</li>
+<li>行为回放测试</li>
+</ul>
+<p><strong>优缺点</strong></p>
+<ul>
+<li>优点：安全性极高</li>
+<li>缺点：资源消耗大，无法验证真实响应结果</li>
+</ul>
+<hr>
+<h2 id="5-发布策略选型建议">5. 发布策略选型建议<a class="anchor" href="#5-%e5%8f%91%e5%b8%83%e7%ad%96%e7%95%a5%e9%80%89%e5%9e%8b%e5%bb%ba%e8%ae%ae">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>场景</th>
+          <th>推荐策略</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>内部系统</td>
+          <td>Recreate / Rolling</td>
+      </tr>
+      <tr>
+          <td>普通业务</td>
+          <td>Rolling</td>
+      </tr>
+      <tr>
+          <td>核心生产系统</td>
+          <td>Canary</td>
+      </tr>
+      <tr>
+          <td>高回滚要求</td>
+          <td>Blue / Green</td>
+      </tr>
+      <tr>
+          <td>功能实验</td>
+          <td>A/B</td>
+      </tr>
+      <tr>
+          <td>新系统验证</td>
+          <td>Shadow</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="6-云原生-cd-最佳实践">6. 云原生 CD 最佳实践<a class="anchor" href="#6-%e4%ba%91%e5%8e%9f%e7%94%9f-cd-%e6%9c%80%e4%bd%b3%e5%ae%9e%e8%b7%b5">#</a></h2>
+<ul>
+<li>构建与发布完全解耦</li>
+<li>使用 Git 作为唯一事实源（GitOps）</li>
+<li>发布过程必须可回滚</li>
+<li>基于指标和 SLO 驱动发布决策</li>
+<li>发布过程全链路可观测（Metric / Trace / Log）</li>
+<li>所有发布行为可审计、可追溯</li>
+</ul>
+<hr>
+<h2 id="7-常见-cd-技术栈参考">7. 常见 CD 技术栈参考<a class="anchor" href="#7-%e5%b8%b8%e8%a7%81-cd-%e6%8a%80%e6%9c%af%e6%a0%88%e5%8f%82%e8%80%83">#</a></h2>
+<ul>
+<li>GitOps：Argo CD</li>
+<li>发布控制：Argo Rollouts</li>
+<li>流量治理：Istio / NGINX / Gateway API</li>
+<li>可观测性：Prometheus / OpenTelemetry</li>
+<li>安全：Cosign / SBOM / Policy Engine</li>
+</ul>
+<hr>
+<p>持续交付的本质不是“如何部署”，<br>
+而是<strong>如何安全、可控地把变化交付给用户</strong>。</p>
+</article>
  
       
 
@@ -304,6 +629,25 @@ https://github.com/alex-shpak/hugo-book
 
   
   
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/docs/ci/component/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>Components</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/docs/cd/blue_green/" class="flex align-center">
+        <span>Blue Green</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
   
 
 

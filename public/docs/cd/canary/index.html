@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="云原生 Canary 发布实战：Argo CD &#43; Argo Rollouts &#43; Istio# Canary 发布是将新版本的流量逐步引入生产环境的一种发布策略，用于 降低风险、快速回滚、灰度验证。在 Kubernetes 环境下，结合 Argo CD、Argo Rollouts 和 Istio 可以实现全自动化 Canary 发布。
+1. 技术栈说明# 组件 作用 说明 Argo CD GitOps CD 平台 自动同步 Kubernetes 资源与 Git 仓库，实现声明式部署 Argo Rollouts 发布控制器 提供 Canary、Blue/Green、实验性发布策略，并与服务网格集成 Istio 服务网格 流量管理、路由控制、指标采集，实现按比例灰度流量 Prometheus / Metrics 指标监控 用于自动判断 Canary 健康和触发回滚 2. 基本原理# Argo CD 负责将应用 Manifest（Deployment、Service、Rollout 等）同步到集群。 Argo Rollouts 替代原生 Deployment，对 Pod 版本的发布进行控制（如逐步增量）。 Istio VirtualService / DestinationRule 控制请求流量，将部分流量导向 Canary Pod。 Metrics &amp; Analysis：Rollouts 可以根据指标（如错误率、延迟）自动判断 Canary 是否健康。 回滚 / 推进： 如果指标正常，Rollout 自动增加新版本流量直至 100%。 如果异常，Rollout 自动回滚到旧版本。 ">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/cd/canary/">
+  <meta property="og:site_name" content="Devflow">
+  <meta property="og:title" content="Devflow">
+  <meta property="og:description" content="云原生 Canary 发布实战：Argo CD &#43; Argo Rollouts &#43; Istio# Canary 发布是将新版本的流量逐步引入生产环境的一种发布策略，用于 降低风险、快速回滚、灰度验证。在 Kubernetes 环境下，结合 Argo CD、Argo Rollouts 和 Istio 可以实现全自动化 Canary 发布。
+1. 技术栈说明# 组件 作用 说明 Argo CD GitOps CD 平台 自动同步 Kubernetes 资源与 Git 仓库，实现声明式部署 Argo Rollouts 发布控制器 提供 Canary、Blue/Green、实验性发布策略，并与服务网格集成 Istio 服务网格 流量管理、路由控制、指标采集，实现按比例灰度流量 Prometheus / Metrics 指标监控 用于自动判断 Canary 健康和触发回滚 2. 基本原理# Argo CD 负责将应用 Manifest（Deployment、Service、Rollout 等）同步到集群。 Argo Rollouts 替代原生 Deployment，对 Pod 版本的发布进行控制（如逐步增量）。 Istio VirtualService / DestinationRule 控制请求流量，将部分流量导向 Canary Pod。 Metrics &amp; Analysis：Rollouts 可以根据指标（如错误率、延迟）自动判断 Canary 是否健康。 回滚 / 推进： 如果指标正常，Rollout 自动增加新版本流量直至 100%。 如果异常，Rollout 自动回滚到旧版本。">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+
+
+  <meta itemprop="name" content="Devflow">
+  <meta itemprop="description" content="云原生 Canary 发布实战：Argo CD &#43; Argo Rollouts &#43; Istio# Canary 发布是将新版本的流量逐步引入生产环境的一种发布策略，用于 降低风险、快速回滚、灰度验证。在 Kubernetes 环境下，结合 Argo CD、Argo Rollouts 和 Istio 可以实现全自动化 Canary 发布。
+1. 技术栈说明# 组件 作用 说明 Argo CD GitOps CD 平台 自动同步 Kubernetes 资源与 Git 仓库，实现声明式部署 Argo Rollouts 发布控制器 提供 Canary、Blue/Green、实验性发布策略，并与服务网格集成 Istio 服务网格 流量管理、路由控制、指标采集，实现按比例灰度流量 Prometheus / Metrics 指标监控 用于自动判断 Canary 健康和触发回滚 2. 基本原理# Argo CD 负责将应用 Manifest（Deployment、Service、Rollout 等）同步到集群。 Argo Rollouts 替代原生 Deployment，对 Pod 版本的发布进行控制（如逐步增量）。 Istio VirtualService / DestinationRule 控制请求流量，将部分流量导向 Canary Pod。 Metrics &amp; Analysis：Rollouts 可以根据指标（如错误率、延迟）自动判断 Canary 是否健康。 回滚 / 推进： 如果指标正常，Rollout 自动增加新版本流量直至 100%。 如果异常，Rollout 自动回滚到旧版本。">
+  <meta itemprop="wordCount" content="86">
+
+<title>Canary | Devflow</title>
+<link rel="icon" href="/favicon.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/cd/canary/">
+<link rel="stylesheet" href="/book.min.6970156cec683193d93c9c4edaf0d56574e4361df2e0c1be4f697ae81c3ba55f.css" integrity="sha256-aXAVbOxoMZPZPJxO2vDVZXTkNh3y4MG&#43;T2l66Bw7pV8=" crossorigin="anonymous">
+
+
+
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>Devflow</span>
+  </a>
+</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-4bd032e4e5fe1323a134583cafeecf06" class="toggle"  />
+    <label for="section-4bd032e4e5fe1323a134583cafeecf06" class="flex">
+      <a role="button" class="">
+        CI</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/ci/standard/" class="">
+      Standard</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/ci/component/" class="">
+      Components</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-0fc280a0e74cc087db99dcd67aadd7bb" class="toggle" checked />
+    <label for="section-0fc280a0e74cc087db99dcd67aadd7bb" class="flex">
+      <a href="/docs/cd/" class="">
+        CD</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cd/blue_green/" class="">
+      Blue Green</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cd/canary/" class="active">
+      Canary</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cd/standard/" class="">
+      Standard</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cd/component/" class="">
+      Components</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-6884c320646745efe1e09831aa35ad5b" class="toggle"  />
+    <label for="section-6884c320646745efe1e09831aa35ad5b" class="flex">
+      <a role="button" class="">
+        observability</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/observability/component/" class="">
+      Component</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/observability/attributes/" class="">
+      Attributes</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/observability/standard/" class="">
+      Standard</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/component/" class="">
+      All Components</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Canary</h3>
+
+  <label for="toc-control">
+    
+  </label>
+</div>
+
+
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="云原生-canary-发布实战argo-cd--argo-rollouts--istio">云原生 Canary 发布实战：Argo CD + Argo Rollouts + Istio<a class="anchor" href="#%e4%ba%91%e5%8e%9f%e7%94%9f-canary-%e5%8f%91%e5%b8%83%e5%ae%9e%e6%88%98argo-cd--argo-rollouts--istio">#</a></h1>
+<p>Canary 发布是将新版本的流量逐步引入生产环境的一种发布策略，用于 <strong>降低风险、快速回滚、灰度验证</strong>。在 Kubernetes 环境下，结合 Argo CD、Argo Rollouts 和 Istio 可以实现全自动化 Canary 发布。</p>
+<hr>
+<h2 id="1-技术栈说明">1. 技术栈说明<a class="anchor" href="#1-%e6%8a%80%e6%9c%af%e6%a0%88%e8%af%b4%e6%98%8e">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>组件</th>
+          <th>作用</th>
+          <th>说明</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>Argo CD</strong></td>
+          <td>GitOps CD 平台</td>
+          <td>自动同步 Kubernetes 资源与 Git 仓库，实现声明式部署</td>
+      </tr>
+      <tr>
+          <td><strong>Argo Rollouts</strong></td>
+          <td>发布控制器</td>
+          <td>提供 Canary、Blue/Green、实验性发布策略，并与服务网格集成</td>
+      </tr>
+      <tr>
+          <td><strong>Istio</strong></td>
+          <td>服务网格</td>
+          <td>流量管理、路由控制、指标采集，实现按比例灰度流量</td>
+      </tr>
+      <tr>
+          <td><strong>Prometheus / Metrics</strong></td>
+          <td>指标监控</td>
+          <td>用于自动判断 Canary 健康和触发回滚</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="2-基本原理">2. 基本原理<a class="anchor" href="#2-%e5%9f%ba%e6%9c%ac%e5%8e%9f%e7%90%86">#</a></h2>
+<ol>
+<li><strong>Argo CD</strong> 负责将应用 Manifest（Deployment、Service、Rollout 等）同步到集群。</li>
+<li><strong>Argo Rollouts</strong> 替代原生 Deployment，对 Pod 版本的发布进行控制（如逐步增量）。</li>
+<li><strong>Istio VirtualService / DestinationRule</strong> 控制请求流量，将部分流量导向 Canary Pod。</li>
+<li><strong>Metrics &amp; Analysis</strong>：Rollouts 可以根据指标（如错误率、延迟）自动判断 Canary 是否健康。</li>
+<li><strong>回滚 / 推进</strong>：
+<ul>
+<li>如果指标正常，Rollout 自动增加新版本流量直至 100%。</li>
+<li>如果异常，Rollout 自动回滚到旧版本。</li>
+</ul>
+</li>
+</ol>
+<hr>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/docs/cd/blue_green/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>Blue Green</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/docs/cd/standard/" class="flex align-center">
+        <span>Standard</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+ 
+        
+        
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
