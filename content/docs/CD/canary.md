@@ -29,6 +29,37 @@ Canary 发布是将新版本的流量逐步引入生产环境的一种发布策�
 
 ---
 
+## 2.1 Devflow Canary 发布流程图（示例）
+
+```mermaid
+flowchart LR
+    A[Devflow Console] --> B[Devflow Job]
+    B --> C[Argo CD Application]
+    C --> D[Argo Devflow Plugin]
+    D --> E[Argo Rollouts Rollout]
+
+    C -. watch .-> F[Devflow Controller]
+    E -. watch .-> F
+    F --> M[(MongoDB)]
+    M -->|更新 steps / job status| F
+
+    E --> S0
+    subgraph Canary Steps
+        S0[Applied] --> S1[10% Traffic] --> S2[Verify]
+        S2 --> S3[30% Traffic] --> S4[Verify]
+        S4 --> S5[50% Traffic] --> S6[Verify]
+        S6 --> S7[100% Traffic]
+    end
+```
+
+说明：
+
+- 发布链路：Devflow Console 触发 Job，生成 Argo CD Application，经插件下发 Rollout。
+- 控制闭环：Devflow Controller 同时监听 Application 与 Rollout 状态，回写 Mongo 的 `steps` 与 `job status`。
+- 灰度节奏：Applied → 10% → Verify → 30% → Verify → 50% → Verify → 100%。
+
+---
+
 ## 3. 设计原则（单 Service）
 
 - 仅存在 **一个 Service**

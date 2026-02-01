@@ -9,7 +9,7 @@ https://github.com/alex-shpak/hugo-book
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="云原生 Canary 发布实战：Argo CD &#43; Argo Rollouts &#43; Istio# Canary 发布是将新版本的流量逐步引入生产环境的一种发布策略，用于 降低风险、快速回滚、灰度验证。在 Kubernetes 环境下，结合 Argo CD、Argo Rollouts 和 Istio 可以实现全自动化 Canary 发布。
-1. 技术栈说明# 组件 作用 说明 Argo CD GitOps CD 平台 自动同步 Kubernetes 资源与 Git 仓库，实现声明式部署 Argo Rollouts 发布控制器 提供 Canary、Blue/Green、实验性发布策略，并与服务网格集成 Istio 服务网格 流量管理、路由控制、指标采集，实现按比例灰度流量 Prometheus / Metrics 指标监控 用于自动判断 Canary 健康和触发回滚 2. 基本原理# Argo CD 负责将应用 Manifest（Deployment、Service、Rollout 等）同步到集群。 Argo Rollouts 替代原生 Deployment，对 Pod 版本的发布进行控制（如逐步增量）。 Istio VirtualService / DestinationRule 控制请求流量，将部分流量导向 Canary Pod。 Metrics &amp; Analysis：Rollouts 可以根据指标（如错误率、延迟）自动判断 Canary 是否健康。 回滚 / 推进： 如果指标正常，Rollout 自动增加新版本流量直至 100%。 如果异常，Rollout 自动回滚到旧版本。 3. 设计原则（单 Service）# 仅存在 一个 Service 新旧版本通过 Pod Label 区分 Istio 使用 DestinationRule Subset Argo Rollouts 动态控制流量权重 流量路径如下：
+1. 技术栈说明# 组件 作用 说明 Argo CD GitOps CD 平台 自动同步 Kubernetes 资源与 Git 仓库，实现声明式部署 Argo Rollouts 发布控制器 提供 Canary、Blue/Green、实验性发布策略，并与服务网格集成 Istio 服务网格 流量管理、路由控制、指标采集，实现按比例灰度流量 Prometheus / Metrics 指标监控 用于自动判断 Canary 健康和触发回滚 2. 基本原理# Argo CD 负责将应用 Manifest（Deployment、Service、Rollout 等）同步到集群。 Argo Rollouts 替代原生 Deployment，对 Pod 版本的发布进行控制（如逐步增量）。 Istio VirtualService / DestinationRule 控制请求流量，将部分流量导向 Canary Pod。 Metrics &amp; Analysis：Rollouts 可以根据指标（如错误率、延迟）自动判断 Canary 是否健康。 回滚 / 推进： 如果指标正常，Rollout 自动增加新版本流量直至 100%。 如果异常，Rollout 自动回滚到旧版本。 2.1 Devflow Canary 发布流程图（示例）# flowchart LR A[Devflow Console] --&gt; B[Devflow Job] B --&gt; C[Argo CD Application] C --&gt; D[Argo Devflow Plugin] D --&gt; E[Argo Rollouts Rollout] C -. watch .-&gt; F[Devflow Controller] E -. watch .-&gt; F F --&gt; M[(MongoDB)] M --&gt;|更新 steps / job status| F E --&gt; S0 subgraph Canary Steps S0[Applied] --&gt; S1[10% Traffic] --&gt; S2[Verify] S2 --&gt; S3[30% Traffic] --&gt; S4[Verify] S4 --&gt; S5[50% Traffic] --&gt; S6[Verify] S6 --&gt; S7[100% Traffic] end说明：
 ">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
@@ -17,7 +17,7 @@ https://github.com/alex-shpak/hugo-book
   <meta property="og:site_name" content="Devflow">
   <meta property="og:title" content="Devflow">
   <meta property="og:description" content="云原生 Canary 发布实战：Argo CD &#43; Argo Rollouts &#43; Istio# Canary 发布是将新版本的流量逐步引入生产环境的一种发布策略，用于 降低风险、快速回滚、灰度验证。在 Kubernetes 环境下，结合 Argo CD、Argo Rollouts 和 Istio 可以实现全自动化 Canary 发布。
-1. 技术栈说明# 组件 作用 说明 Argo CD GitOps CD 平台 自动同步 Kubernetes 资源与 Git 仓库，实现声明式部署 Argo Rollouts 发布控制器 提供 Canary、Blue/Green、实验性发布策略，并与服务网格集成 Istio 服务网格 流量管理、路由控制、指标采集，实现按比例灰度流量 Prometheus / Metrics 指标监控 用于自动判断 Canary 健康和触发回滚 2. 基本原理# Argo CD 负责将应用 Manifest（Deployment、Service、Rollout 等）同步到集群。 Argo Rollouts 替代原生 Deployment，对 Pod 版本的发布进行控制（如逐步增量）。 Istio VirtualService / DestinationRule 控制请求流量，将部分流量导向 Canary Pod。 Metrics &amp; Analysis：Rollouts 可以根据指标（如错误率、延迟）自动判断 Canary 是否健康。 回滚 / 推进： 如果指标正常，Rollout 自动增加新版本流量直至 100%。 如果异常，Rollout 自动回滚到旧版本。 3. 设计原则（单 Service）# 仅存在 一个 Service 新旧版本通过 Pod Label 区分 Istio 使用 DestinationRule Subset Argo Rollouts 动态控制流量权重 流量路径如下：">
+1. 技术栈说明# 组件 作用 说明 Argo CD GitOps CD 平台 自动同步 Kubernetes 资源与 Git 仓库，实现声明式部署 Argo Rollouts 发布控制器 提供 Canary、Blue/Green、实验性发布策略，并与服务网格集成 Istio 服务网格 流量管理、路由控制、指标采集，实现按比例灰度流量 Prometheus / Metrics 指标监控 用于自动判断 Canary 健康和触发回滚 2. 基本原理# Argo CD 负责将应用 Manifest（Deployment、Service、Rollout 等）同步到集群。 Argo Rollouts 替代原生 Deployment，对 Pod 版本的发布进行控制（如逐步增量）。 Istio VirtualService / DestinationRule 控制请求流量，将部分流量导向 Canary Pod。 Metrics &amp; Analysis：Rollouts 可以根据指标（如错误率、延迟）自动判断 Canary 是否健康。 回滚 / 推进： 如果指标正常，Rollout 自动增加新版本流量直至 100%。 如果异常，Rollout 自动回滚到旧版本。 2.1 Devflow Canary 发布流程图（示例）# flowchart LR A[Devflow Console] --&gt; B[Devflow Job] B --&gt; C[Argo CD Application] C --&gt; D[Argo Devflow Plugin] D --&gt; E[Argo Rollouts Rollout] C -. watch .-&gt; F[Devflow Controller] E -. watch .-&gt; F F --&gt; M[(MongoDB)] M --&gt;|更新 steps / job status| F E --&gt; S0 subgraph Canary Steps S0[Applied] --&gt; S1[10% Traffic] --&gt; S2[Verify] S2 --&gt; S3[30% Traffic] --&gt; S4[Verify] S4 --&gt; S5[50% Traffic] --&gt; S6[Verify] S6 --&gt; S7[100% Traffic] end说明：">
   <meta property="og:locale" content="zh_cn">
   <meta property="og:type" content="article">
     <meta property="article:section" content="docs">
@@ -25,8 +25,8 @@ https://github.com/alex-shpak/hugo-book
 
   <meta itemprop="name" content="Devflow">
   <meta itemprop="description" content="云原生 Canary 发布实战：Argo CD &#43; Argo Rollouts &#43; Istio# Canary 发布是将新版本的流量逐步引入生产环境的一种发布策略，用于 降低风险、快速回滚、灰度验证。在 Kubernetes 环境下，结合 Argo CD、Argo Rollouts 和 Istio 可以实现全自动化 Canary 发布。
-1. 技术栈说明# 组件 作用 说明 Argo CD GitOps CD 平台 自动同步 Kubernetes 资源与 Git 仓库，实现声明式部署 Argo Rollouts 发布控制器 提供 Canary、Blue/Green、实验性发布策略，并与服务网格集成 Istio 服务网格 流量管理、路由控制、指标采集，实现按比例灰度流量 Prometheus / Metrics 指标监控 用于自动判断 Canary 健康和触发回滚 2. 基本原理# Argo CD 负责将应用 Manifest（Deployment、Service、Rollout 等）同步到集群。 Argo Rollouts 替代原生 Deployment，对 Pod 版本的发布进行控制（如逐步增量）。 Istio VirtualService / DestinationRule 控制请求流量，将部分流量导向 Canary Pod。 Metrics &amp; Analysis：Rollouts 可以根据指标（如错误率、延迟）自动判断 Canary 是否健康。 回滚 / 推进： 如果指标正常，Rollout 自动增加新版本流量直至 100%。 如果异常，Rollout 自动回滚到旧版本。 3. 设计原则（单 Service）# 仅存在 一个 Service 新旧版本通过 Pod Label 区分 Istio 使用 DestinationRule Subset Argo Rollouts 动态控制流量权重 流量路径如下：">
-  <meta itemprop="wordCount" content="263">
+1. 技术栈说明# 组件 作用 说明 Argo CD GitOps CD 平台 自动同步 Kubernetes 资源与 Git 仓库，实现声明式部署 Argo Rollouts 发布控制器 提供 Canary、Blue/Green、实验性发布策略，并与服务网格集成 Istio 服务网格 流量管理、路由控制、指标采集，实现按比例灰度流量 Prometheus / Metrics 指标监控 用于自动判断 Canary 健康和触发回滚 2. 基本原理# Argo CD 负责将应用 Manifest（Deployment、Service、Rollout 等）同步到集群。 Argo Rollouts 替代原生 Deployment，对 Pod 版本的发布进行控制（如逐步增量）。 Istio VirtualService / DestinationRule 控制请求流量，将部分流量导向 Canary Pod。 Metrics &amp; Analysis：Rollouts 可以根据指标（如错误率、延迟）自动判断 Canary 是否健康。 回滚 / 推进： 如果指标正常，Rollout 自动增加新版本流量直至 100%。 如果异常，Rollout 自动回滚到旧版本。 2.1 Devflow Canary 发布流程图（示例）# flowchart LR A[Devflow Console] --&gt; B[Devflow Job] B --&gt; C[Argo CD Application] C --&gt; D[Argo Devflow Plugin] D --&gt; E[Argo Rollouts Rollout] C -. watch .-&gt; F[Devflow Controller] E -. watch .-&gt; F F --&gt; M[(MongoDB)] M --&gt;|更新 steps / job status| F E --&gt; S0 subgraph Canary Steps S0[Applied] --&gt; S1[10% Traffic] --&gt; S2[Verify] S2 --&gt; S3[30% Traffic] --&gt; S4[Verify] S4 --&gt; S5[50% Traffic] --&gt; S6[Verify] S6 --&gt; S7[100% Traffic] end说明：">
+  <meta itemprop="wordCount" content="375">
 
 <title>Canary | Devflow</title>
 <link rel="icon" href="/favicon.png" >
@@ -86,6 +86,8 @@ https://github.com/alex-shpak/hugo-book
 
           
   <ul>
+    
+      
     
       
         <li>
@@ -271,6 +273,43 @@ https://github.com/alex-shpak/hugo-book
   
 
   
+    <input type="checkbox" id="section-97bc183e640cafe9ca9da46d45661ec8" class="toggle"  />
+    <label for="section-97bc183e640cafe9ca9da46d45661ec8" class="flex">
+      <a role="button" class="">
+        devflow-controller</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/devflow-controller/canary/" class="">
+      Canary</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
     <a href="/docs/component/" class="">
       All Components</a>
   
@@ -377,6 +416,31 @@ https://github.com/alex-shpak/hugo-book
 </li>
 </ol>
 <hr>
+<hr>
+<h2 id="21-devflow-canary-发布流程图示例">2.1 Devflow Canary 发布流程图（示例）<a class="anchor" href="#21-devflow-canary-%e5%8f%91%e5%b8%83%e6%b5%81%e7%a8%8b%e5%9b%be%e7%a4%ba%e4%be%8b">#</a></h2>
+<pre class="mermaid">flowchart LR
+    A[Devflow Console] --&gt; B[Devflow Job]
+    B --&gt; C[Argo CD Application]
+    C --&gt; D[Argo Devflow Plugin]
+    D --&gt; E[Argo Rollouts Rollout]
+
+    C -. watch .-&gt; F[Devflow Controller]
+    E -. watch .-&gt; F
+    F --&gt; M[(MongoDB)]
+    M --&gt;|更新 steps / job status| F
+
+    E --&gt; S0
+    subgraph Canary Steps
+        S0[Applied] --&gt; S1[10% Traffic] --&gt; S2[Verify]
+        S2 --&gt; S3[30% Traffic] --&gt; S4[Verify]
+        S4 --&gt; S5[50% Traffic] --&gt; S6[Verify]
+        S6 --&gt; S7[100% Traffic]
+    end</pre><script src="/mermaid.min.js"></script><script>mermaid.initialize({"flowchart":{"useMaxWidth":true},"theme":"default"})</script><p>说明：</p>
+<ul>
+<li>发布链路：Devflow Console 触发 Job，生成 Argo CD Application，经插件下发 Rollout。</li>
+<li>控制闭环：Devflow Controller 同时监听 Application 与 Rollout 状态，回写 Mongo 的 <code>steps</code> 与 <code>job status</code>。</li>
+<li>灰度节奏：Applied → 10% → Verify → 30% → Verify → 50% → Verify → 100%。</li>
+</ul>
 <hr>
 <h2 id="3-设计原则单-service">3. 设计原则（单 Service）<a class="anchor" href="#3-%e8%ae%be%e8%ae%a1%e5%8e%9f%e5%88%99%e5%8d%95-service">#</a></h2>
 <ul>

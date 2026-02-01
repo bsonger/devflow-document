@@ -179,3 +179,32 @@ Canary（灰度发布）与 Blue/Green（蓝绿发布）是云原生场景中最
 
 > Canary 是“**边跑边试**”，  
 > Blue/Green 是“**切换开关**”。
+
+---
+
+## Devflow Normal（Rolling）发布流程图（示例）
+
+```mermaid
+flowchart LR
+    A[Devflow Console] --> B[Devflow Job]
+    B --> C[Argo CD Application]
+    C --> D[Kubernetes Deployment]
+
+    C -. watch .-> F[Devflow Controller]
+    D -. watch .-> F
+    F --> M[(MongoDB)]
+    M -->|更新 steps / job status| F
+
+    D --> S0
+    subgraph Rolling Steps
+        S0[Applied] --> S1[Rolling Update]
+        S1 --> S2[Verify]
+        S2 --> S3[Completed]
+    end
+```
+
+说明：
+
+- 发布链路：Devflow Console 触发 Job，生成 Argo CD Application，下发到 Kubernetes Deployment。
+- 控制闭环：Devflow Controller 监听 Application 与 Deployment 状态，回写 Mongo 的 `steps` 与 `job status`。
+- Normal 节奏：Deployment 完成 Rolling Update 后进入 Completed。

@@ -46,7 +46,11 @@
   </url><url>
     <loc>http://localhost:1313/docs/cd/canary/</loc>
   </url><url>
+    <loc>http://localhost:1313/docs/cd/devflow_controller/</loc>
+  </url><url>
     <loc>http://localhost:1313/docs/cd/standard/</loc>
+  </url><url>
+    <loc>http://localhost:1313/docs/ci/queue/</loc>
   </url><url>
     <loc>http://localhost:1313/docs/ci/standard/</loc>
   </url><url>

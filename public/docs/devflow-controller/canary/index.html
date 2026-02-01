@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Devflow Controller 监听CD 与状态回写流程# Devflow Controller 的核心职责是 监听 Argo CD Application 与 Argo Rollouts Rollout 的状态变化，并将发布进度与结果回写到 Mongo（steps 与 job status），形成闭环可观测的发布流水线。
+1. 监听对象# Argo CD Application 用于确认配置是否已下发（同步状态） 用于确认应用健康状态（健康度） Argo Rollouts Rollout 用于跟踪灰度阶段、流量权重与暂停/校验 用于判断发布是否成功、失败或回滚 2. 回写数据结构（Mongo）# steps：记录每个灰度阶段的执行进度与校验结果 例如：Applied / 10% / Verify / 30% / Verify / 50% / Verify / 100% job status：记录整个发布任务的全局状态 例如：Running / Succeeded / Failed 3. 典型监听与回写流程（Canary）# 创建发布任务 Devflow Console 触发 Job 生成 Argo CD Application Controller 监听到 Application 已同步 → steps=Applied 下发 Rollout Rollout 资源创建 Controller 监听 Rollout 进入发布阶段 → job status=Running 按阶段推进 10% → Verify → 30% → Verify → 50% → Verify → 100% Controller 在每个阶段更新 steps： 进入阶段：标记为 Running 验证通过：标记为 Succeeded 验证失败：标记为 Failed，并更新 job status=Failed 发布完成 Rollout 进入完成状态 Controller 更新 steps=100%，并设置 job status=Succeeded 4. 状态映射建议（简化版）# 监听对象 关键状态 steps 更新 job status 更新 Application Synced / Healthy Applied Running Rollout Progressing / Paused 对应阶段 Running Running Rollout Analysis 成功 对应 Verify Succeeded Running Rollout Degraded / Analysis 失败 对应 Verify Failed Failed Rollout Completed 100% Succeeded Succeeded 5. 异常与回滚# 如果 Rollout 进入 Degraded 或 Analysis 失败： Controller 立即回写 steps=Failed 更新 job status=Failed Rollout 侧可自动回滚（由策略或人工决定） 6. 关键点总结# Application 保证 配置已下发 Rollout 体现 发布过程与流量进度 Controller 负责 监听 &#43; 归一化状态 &#43; 回写 Mongo steps 精细化记录阶段；job status 表示全局结果 ">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/devflow-controller/canary/">
+  <meta property="og:site_name" content="Devflow">
+  <meta property="og:title" content="Devflow">
+  <meta property="og:description" content="Devflow Controller 监听CD 与状态回写流程# Devflow Controller 的核心职责是 监听 Argo CD Application 与 Argo Rollouts Rollout 的状态变化，并将发布进度与结果回写到 Mongo（steps 与 job status），形成闭环可观测的发布流水线。
+1. 监听对象# Argo CD Application 用于确认配置是否已下发（同步状态） 用于确认应用健康状态（健康度） Argo Rollouts Rollout 用于跟踪灰度阶段、流量权重与暂停/校验 用于判断发布是否成功、失败或回滚 2. 回写数据结构（Mongo）# steps：记录每个灰度阶段的执行进度与校验结果 例如：Applied / 10% / Verify / 30% / Verify / 50% / Verify / 100% job status：记录整个发布任务的全局状态 例如：Running / Succeeded / Failed 3. 典型监听与回写流程（Canary）# 创建发布任务 Devflow Console 触发 Job 生成 Argo CD Application Controller 监听到 Application 已同步 → steps=Applied 下发 Rollout Rollout 资源创建 Controller 监听 Rollout 进入发布阶段 → job status=Running 按阶段推进 10% → Verify → 30% → Verify → 50% → Verify → 100% Controller 在每个阶段更新 steps： 进入阶段：标记为 Running 验证通过：标记为 Succeeded 验证失败：标记为 Failed，并更新 job status=Failed 发布完成 Rollout 进入完成状态 Controller 更新 steps=100%，并设置 job status=Succeeded 4. 状态映射建议（简化版）# 监听对象 关键状态 steps 更新 job status 更新 Application Synced / Healthy Applied Running Rollout Progressing / Paused 对应阶段 Running Running Rollout Analysis 成功 对应 Verify Succeeded Running Rollout Degraded / Analysis 失败 对应 Verify Failed Failed Rollout Completed 100% Succeeded Succeeded 5. 异常与回滚# 如果 Rollout 进入 Degraded 或 Analysis 失败： Controller 立即回写 steps=Failed 更新 job status=Failed Rollout 侧可自动回滚（由策略或人工决定） 6. 关键点总结# Application 保证 配置已下发 Rollout 体现 发布过程与流量进度 Controller 负责 监听 &#43; 归一化状态 &#43; 回写 Mongo steps 精细化记录阶段；job status 表示全局结果">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+
+
+  <meta itemprop="name" content="Devflow">
+  <meta itemprop="description" content="Devflow Controller 监听CD 与状态回写流程# Devflow Controller 的核心职责是 监听 Argo CD Application 与 Argo Rollouts Rollout 的状态变化，并将发布进度与结果回写到 Mongo（steps 与 job status），形成闭环可观测的发布流水线。
+1. 监听对象# Argo CD Application 用于确认配置是否已下发（同步状态） 用于确认应用健康状态（健康度） Argo Rollouts Rollout 用于跟踪灰度阶段、流量权重与暂停/校验 用于判断发布是否成功、失败或回滚 2. 回写数据结构（Mongo）# steps：记录每个灰度阶段的执行进度与校验结果 例如：Applied / 10% / Verify / 30% / Verify / 50% / Verify / 100% job status：记录整个发布任务的全局状态 例如：Running / Succeeded / Failed 3. 典型监听与回写流程（Canary）# 创建发布任务 Devflow Console 触发 Job 生成 Argo CD Application Controller 监听到 Application 已同步 → steps=Applied 下发 Rollout Rollout 资源创建 Controller 监听 Rollout 进入发布阶段 → job status=Running 按阶段推进 10% → Verify → 30% → Verify → 50% → Verify → 100% Controller 在每个阶段更新 steps： 进入阶段：标记为 Running 验证通过：标记为 Succeeded 验证失败：标记为 Failed，并更新 job status=Failed 发布完成 Rollout 进入完成状态 Controller 更新 steps=100%，并设置 job status=Succeeded 4. 状态映射建议（简化版）# 监听对象 关键状态 steps 更新 job status 更新 Application Synced / Healthy Applied Running Rollout Progressing / Paused 对应阶段 Running Running Rollout Analysis 成功 对应 Verify Succeeded Running Rollout Degraded / Analysis 失败 对应 Verify Failed Failed Rollout Completed 100% Succeeded Succeeded 5. 异常与回滚# 如果 Rollout 进入 Degraded 或 Analysis 失败： Controller 立即回写 steps=Failed 更新 job status=Failed Rollout 侧可自动回滚（由策略或人工决定） 6. 关键点总结# Application 保证 配置已下发 Rollout 体现 发布过程与流量进度 Controller 负责 监听 &#43; 归一化状态 &#43; 回写 Mongo steps 精细化记录阶段；job status 表示全局结果">
+  <meta itemprop="wordCount" content="198">
+
+<title>Canary | Devflow</title>
+<link rel="icon" href="/favicon.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1313/docs/devflow-controller/canary/">
+<link rel="stylesheet" href="/book.min.6970156cec683193d93c9c4edaf0d56574e4361df2e0c1be4f697ae81c3ba55f.css" integrity="sha256-aXAVbOxoMZPZPJxO2vDVZXTkNh3y4MG&#43;T2l66Bw7pV8=" crossorigin="anonymous">
+
+
+
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>Devflow</span>
+  </a>
+</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-4bd032e4e5fe1323a134583cafeecf06" class="toggle"  />
+    <label for="section-4bd032e4e5fe1323a134583cafeecf06" class="flex">
+      <a role="button" class="">
+        CI</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/ci/standard/" class="">
+      Standard</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/ci/component/" class="">
+      Components</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-0fc280a0e74cc087db99dcd67aadd7bb" class="toggle"  />
+    <label for="section-0fc280a0e74cc087db99dcd67aadd7bb" class="flex">
+      <a href="/docs/cd/" class="">
+        CD</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cd/blue_green/" class="">
+      Blue Green</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cd/canary/" class="">
+      Canary</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cd/standard/" class="">
+      Standard</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cd/component/" class="">
+      Components</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-6884c320646745efe1e09831aa35ad5b" class="toggle"  />
+    <label for="section-6884c320646745efe1e09831aa35ad5b" class="flex">
+      <a role="button" class="">
+        observability</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/observability/component/" class="">
+      Component</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/observability/attributes/" class="">
+      Attributes</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/observability/standard/" class="">
+      Standard</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-97bc183e640cafe9ca9da46d45661ec8" class="toggle" checked />
+    <label for="section-97bc183e640cafe9ca9da46d45661ec8" class="flex">
+      <a role="button" class="">
+        devflow-controller</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/devflow-controller/canary/" class="active">
+      Canary</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/component/" class="">
+      All Components</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Canary</h3>
+
+  <label for="toc-control">
+    
+  </label>
+</div>
+
+
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="devflow-controller-监听cd-与状态回写流程">Devflow Controller 监听CD 与状态回写流程<a class="anchor" href="#devflow-controller-%e7%9b%91%e5%90%accd-%e4%b8%8e%e7%8a%b6%e6%80%81%e5%9b%9e%e5%86%99%e6%b5%81%e7%a8%8b">#</a></h1>
+<p>Devflow Controller 的核心职责是 <strong>监听 Argo CD Application 与 Argo Rollouts Rollout 的状态变化</strong>，并将发布进度与结果回写到 Mongo（<code>steps</code> 与 <code>job status</code>），形成闭环可观测的发布流水线。</p>
+<hr>
+<h2 id="1-监听对象">1. 监听对象<a class="anchor" href="#1-%e7%9b%91%e5%90%ac%e5%af%b9%e8%b1%a1">#</a></h2>
+<ol>
+<li><strong>Argo CD Application</strong>
+<ul>
+<li>用于确认配置是否已下发（同步状态）</li>
+<li>用于确认应用健康状态（健康度）</li>
+</ul>
+</li>
+<li><strong>Argo Rollouts Rollout</strong>
+<ul>
+<li>用于跟踪灰度阶段、流量权重与暂停/校验</li>
+<li>用于判断发布是否成功、失败或回滚</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="2-回写数据结构mongo">2. 回写数据结构（Mongo）<a class="anchor" href="#2-%e5%9b%9e%e5%86%99%e6%95%b0%e6%8d%ae%e7%bb%93%e6%9e%84mongo">#</a></h2>
+<ul>
+<li><strong>steps</strong>：记录每个灰度阶段的执行进度与校验结果
+<ul>
+<li>例如：Applied / 10% / Verify / 30% / Verify / 50% / Verify / 100%</li>
+</ul>
+</li>
+<li><strong>job status</strong>：记录整个发布任务的全局状态
+<ul>
+<li>例如：Running / Succeeded / Failed</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="3-典型监听与回写流程canary">3. 典型监听与回写流程（Canary）<a class="anchor" href="#3-%e5%85%b8%e5%9e%8b%e7%9b%91%e5%90%ac%e4%b8%8e%e5%9b%9e%e5%86%99%e6%b5%81%e7%a8%8bcanary">#</a></h2>
+<ol>
+<li><strong>创建发布任务</strong>
+<ul>
+<li>Devflow Console 触发 Job</li>
+<li>生成 Argo CD Application</li>
+<li>Controller 监听到 Application 已同步 → <code>steps=Applied</code></li>
+</ul>
+</li>
+<li><strong>下发 Rollout</strong>
+<ul>
+<li>Rollout 资源创建</li>
+<li>Controller 监听 Rollout 进入发布阶段 → <code>job status=Running</code></li>
+</ul>
+</li>
+<li><strong>按阶段推进</strong>
+<ul>
+<li>10% → Verify → 30% → Verify → 50% → Verify → 100%</li>
+<li>Controller 在每个阶段更新 <code>steps</code>：
+<ul>
+<li>进入阶段：标记为 Running</li>
+<li>验证通过：标记为 Succeeded</li>
+<li>验证失败：标记为 Failed，并更新 <code>job status=Failed</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>发布完成</strong>
+<ul>
+<li>Rollout 进入完成状态</li>
+<li>Controller 更新 <code>steps=100%</code>，并设置 <code>job status=Succeeded</code></li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="4-状态映射建议简化版">4. 状态映射建议（简化版）<a class="anchor" href="#4-%e7%8a%b6%e6%80%81%e6%98%a0%e5%b0%84%e5%bb%ba%e8%ae%ae%e7%ae%80%e5%8c%96%e7%89%88">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>监听对象</th>
+          <th>关键状态</th>
+          <th>steps 更新</th>
+          <th>job status 更新</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Application</td>
+          <td>Synced / Healthy</td>
+          <td>Applied</td>
+          <td>Running</td>
+      </tr>
+      <tr>
+          <td>Rollout</td>
+          <td>Progressing / Paused</td>
+          <td>对应阶段 Running</td>
+          <td>Running</td>
+      </tr>
+      <tr>
+          <td>Rollout</td>
+          <td>Analysis 成功</td>
+          <td>对应 Verify Succeeded</td>
+          <td>Running</td>
+      </tr>
+      <tr>
+          <td>Rollout</td>
+          <td>Degraded / Analysis 失败</td>
+          <td>对应 Verify Failed</td>
+          <td>Failed</td>
+      </tr>
+      <tr>
+          <td>Rollout</td>
+          <td>Completed</td>
+          <td>100% Succeeded</td>
+          <td>Succeeded</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="5-异常与回滚">5. 异常与回滚<a class="anchor" href="#5-%e5%bc%82%e5%b8%b8%e4%b8%8e%e5%9b%9e%e6%bb%9a">#</a></h2>
+<ul>
+<li>如果 Rollout 进入 <strong>Degraded</strong> 或 Analysis 失败：
+<ul>
+<li>Controller 立即回写 <code>steps=Failed</code></li>
+<li>更新 <code>job status=Failed</code></li>
+<li>Rollout 侧可自动回滚（由策略或人工决定）</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="6-关键点总结">6. 关键点总结<a class="anchor" href="#6-%e5%85%b3%e9%94%ae%e7%82%b9%e6%80%bb%e7%bb%93">#</a></h2>
+<ul>
+<li>Application 保证 <strong>配置已下发</strong></li>
+<li>Rollout 体现 <strong>发布过程与流量进度</strong></li>
+<li>Controller 负责 <strong>监听 + 归一化状态 + 回写 Mongo</strong></li>
+<li><code>steps</code> 精细化记录阶段；<code>job status</code> 表示全局结果</li>
+</ul>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/docs/observability/standard/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>Standard</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/docs/component/" class="flex align-center">
+        <span>All Components</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+ 
+        
+        
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
