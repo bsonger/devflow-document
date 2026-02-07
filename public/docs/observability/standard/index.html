@@ -8,9 +8,9 @@ https://github.com/alex-shpak/hugo-book
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Observability Labels / Attributes 规范# 本文档定义了 Metric / Trace / Log 的标准 Labels / Attributes，用于统一收集、查询和关联数据。
+<meta name="description" content="🏷️ Observability Labels / Attributes 规范# 本文档定义了 Metric / Trace / Log 的标准 Labels / Attributes，用于统一收集、查询和关联数据。
 其中 Labels / Attributes 主要分为两类：
-必选：核心维度，用于聚合和拆分指标 可选：辅助维度，可用于多集群、多环境、灰度或团队统计 1️⃣ Metric# 用于统计和聚合指标数据
+必选：核心维度，用于聚合和拆分指标 可选：辅助维度，可用于多集群、多环境、灰度或团队统计 ✅ 实践建议# 统一 service.name、deployment.environment 与 trace_id，保证三者可关联 监控查询以 service.name &#43; http.route 为首要维度 生产环境避免高基数字段（如 userId / requestId） 1️⃣ Metric# 用于统计和聚合指标数据
 必选 Labels# Key 类型 说明 示例 metric.name string 指标名称 http_request_duration_seconds service.name string 服务名称 user-service http.method string HTTP 方法 GET http.route string 路由模板 /users/:id http.status_code int HTTP 状态码 200 k8s.cluster.name string 集群名称或 ID k8s-prod-01 可选 Labels(强烈)# Key 类型 说明 示例 deployment.environment string 部署环境 prod / staging trace_id string Trace ID（可选，用于关联 Metric 和 Trace） 2e71abb92e031efc2a7a1c4280959f4b k8s.namespace.name string K8s 命名空间 applications k8s.pod.name string Pod 名称 user-service-5c7d8b9d7f-xyz12 k8s.container.name string 容器名称 user-service k8s.node.name string 节点名称 node-01 region / zone string 地域 / 可用区 ap-southeast-1a Metric Value / Measurement# Key 类型 说明 示例 http.server.duration duration 请求耗时 120ms http.request.size bytes 请求大小 2KB http.response.size bytes 响应大小 10KB 2️⃣ Trace# 用于分布式请求链路追踪
 ">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
@@ -18,9 +18,9 @@ https://github.com/alex-shpak/hugo-book
 <meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/observability/standard/">
   <meta property="og:site_name" content="Devflow">
   <meta property="og:title" content="Devflow">
-  <meta property="og:description" content="Observability Labels / Attributes 规范# 本文档定义了 Metric / Trace / Log 的标准 Labels / Attributes，用于统一收集、查询和关联数据。
+  <meta property="og:description" content="🏷️ Observability Labels / Attributes 规范# 本文档定义了 Metric / Trace / Log 的标准 Labels / Attributes，用于统一收集、查询和关联数据。
 其中 Labels / Attributes 主要分为两类：
-必选：核心维度，用于聚合和拆分指标 可选：辅助维度，可用于多集群、多环境、灰度或团队统计 1️⃣ Metric# 用于统计和聚合指标数据
+必选：核心维度，用于聚合和拆分指标 可选：辅助维度，可用于多集群、多环境、灰度或团队统计 ✅ 实践建议# 统一 service.name、deployment.environment 与 trace_id，保证三者可关联 监控查询以 service.name &#43; http.route 为首要维度 生产环境避免高基数字段（如 userId / requestId） 1️⃣ Metric# 用于统计和聚合指标数据
 必选 Labels# Key 类型 说明 示例 metric.name string 指标名称 http_request_duration_seconds service.name string 服务名称 user-service http.method string HTTP 方法 GET http.route string 路由模板 /users/:id http.status_code int HTTP 状态码 200 k8s.cluster.name string 集群名称或 ID k8s-prod-01 可选 Labels(强烈)# Key 类型 说明 示例 deployment.environment string 部署环境 prod / staging trace_id string Trace ID（可选，用于关联 Metric 和 Trace） 2e71abb92e031efc2a7a1c4280959f4b k8s.namespace.name string K8s 命名空间 applications k8s.pod.name string Pod 名称 user-service-5c7d8b9d7f-xyz12 k8s.container.name string 容器名称 user-service k8s.node.name string 节点名称 node-01 region / zone string 地域 / 可用区 ap-southeast-1a Metric Value / Measurement# Key 类型 说明 示例 http.server.duration duration 请求耗时 120ms http.request.size bytes 请求大小 2KB http.response.size bytes 响应大小 10KB 2️⃣ Trace# 用于分布式请求链路追踪">
   <meta property="og:locale" content="zh_cn">
   <meta property="og:type" content="article">
@@ -28,11 +28,11 @@ https://github.com/alex-shpak/hugo-book
 
 
   <meta itemprop="name" content="Devflow">
-  <meta itemprop="description" content="Observability Labels / Attributes 规范# 本文档定义了 Metric / Trace / Log 的标准 Labels / Attributes，用于统一收集、查询和关联数据。
+  <meta itemprop="description" content="🏷️ Observability Labels / Attributes 规范# 本文档定义了 Metric / Trace / Log 的标准 Labels / Attributes，用于统一收集、查询和关联数据。
 其中 Labels / Attributes 主要分为两类：
-必选：核心维度，用于聚合和拆分指标 可选：辅助维度，可用于多集群、多环境、灰度或团队统计 1️⃣ Metric# 用于统计和聚合指标数据
+必选：核心维度，用于聚合和拆分指标 可选：辅助维度，可用于多集群、多环境、灰度或团队统计 ✅ 实践建议# 统一 service.name、deployment.environment 与 trace_id，保证三者可关联 监控查询以 service.name &#43; http.route 为首要维度 生产环境避免高基数字段（如 userId / requestId） 1️⃣ Metric# 用于统计和聚合指标数据
 必选 Labels# Key 类型 说明 示例 metric.name string 指标名称 http_request_duration_seconds service.name string 服务名称 user-service http.method string HTTP 方法 GET http.route string 路由模板 /users/:id http.status_code int HTTP 状态码 200 k8s.cluster.name string 集群名称或 ID k8s-prod-01 可选 Labels(强烈)# Key 类型 说明 示例 deployment.environment string 部署环境 prod / staging trace_id string Trace ID（可选，用于关联 Metric 和 Trace） 2e71abb92e031efc2a7a1c4280959f4b k8s.namespace.name string K8s 命名空间 applications k8s.pod.name string Pod 名称 user-service-5c7d8b9d7f-xyz12 k8s.container.name string 容器名称 user-service k8s.node.name string 节点名称 node-01 region / zone string 地域 / 可用区 ap-southeast-1a Metric Value / Measurement# Key 类型 说明 示例 http.server.duration duration 请求耗时 120ms http.request.size bytes 请求大小 2KB http.response.size bytes 响应大小 10KB 2️⃣ Trace# 用于分布式请求链路追踪">
-  <meta itemprop="wordCount" content="457">
+  <meta itemprop="wordCount" content="474">
 
 <title>Standard | Devflow</title>
 <link rel="icon" href="/favicon.png" >
@@ -84,7 +84,7 @@ https://github.com/alex-shpak/hugo-book
   
     <input type="checkbox" id="section-4bd032e4e5fe1323a134583cafeecf06" class="toggle"  />
     <label for="section-4bd032e4e5fe1323a134583cafeecf06" class="flex">
-      <a role="button" class="">
+      <a href="/docs/ci/" class="">
         CI</a>
       <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
     </label>
@@ -93,6 +93,18 @@ https://github.com/alex-shpak/hugo-book
           
   <ul>
     
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/ci/queue/" class="">
+      Queue</a>
+  
+
+        </li>
       
     
       
@@ -216,7 +228,7 @@ https://github.com/alex-shpak/hugo-book
   
     <input type="checkbox" id="section-6884c320646745efe1e09831aa35ad5b" class="toggle" checked />
     <label for="section-6884c320646745efe1e09831aa35ad5b" class="flex">
-      <a role="button" class="">
+      <a href="/docs/observability/" class="">
         observability</a>
       <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
     </label>
@@ -246,8 +258,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/docs/observability/attributes/" class="">
-      Attributes</a>
+    <a href="/docs/observability/standard/" class="active">
+      Standard</a>
   
 
         </li>
@@ -260,8 +272,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/docs/observability/standard/" class="active">
-      Standard</a>
+    <a href="/docs/observability/attributes/" class="">
+      Attributes</a>
   
 
         </li>
@@ -281,7 +293,7 @@ https://github.com/alex-shpak/hugo-book
   
     <input type="checkbox" id="section-97bc183e640cafe9ca9da46d45661ec8" class="toggle"  />
     <label for="section-97bc183e640cafe9ca9da46d45661ec8" class="flex">
-      <a role="button" class="">
+      <a href="/docs/devflow-controller/" class="">
         devflow-controller</a>
       <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
     </label>
@@ -372,7 +384,7 @@ https://github.com/alex-shpak/hugo-book
 
       
       
-  <article class="markdown book-article"><h1 id="observability-labels--attributes-规范">Observability Labels / Attributes 规范<a class="anchor" href="#observability-labels--attributes-%e8%a7%84%e8%8c%83">#</a></h1>
+  <article class="markdown book-article"><h1 id="-observability-labels--attributes-规范">🏷️ Observability Labels / Attributes 规范<a class="anchor" href="#-observability-labels--attributes-%e8%a7%84%e8%8c%83">#</a></h1>
 <p>本文档定义了 <strong>Metric / Trace / Log</strong> 的标准 Labels / Attributes，用于统一收集、查询和关联数据。<br>
 其中 Labels / Attributes 主要分为两类：</p>
 <ul>
@@ -380,6 +392,12 @@ https://github.com/alex-shpak/hugo-book
 <li><strong>可选</strong>：辅助维度，可用于多集群、多环境、灰度或团队统计</li>
 </ul>
 <hr>
+<h2 id="-实践建议">✅ 实践建议<a class="anchor" href="#-%e5%ae%9e%e8%b7%b5%e5%bb%ba%e8%ae%ae">#</a></h2>
+<ul>
+<li>统一 <code>service.name</code>、<code>deployment.environment</code> 与 <code>trace_id</code>，保证三者可关联</li>
+<li>监控查询以 <code>service.name + http.route</code> 为首要维度</li>
+<li>生产环境避免高基数字段（如 userId / requestId）</li>
+</ul>
 <h2 id="1-metric">1️⃣ Metric<a class="anchor" href="#1-metric">#</a></h2>
 <p><strong>用于统计和聚合指标数据</strong></p>
 <h3 id="必选-labels">必选 Labels<a class="anchor" href="#%e5%bf%85%e9%80%89-labels">#</a></h3>
@@ -521,7 +539,7 @@ https://github.com/alex-shpak/hugo-book
 <h2 id="2-trace">2️⃣ Trace<a class="anchor" href="#2-trace">#</a></h2>
 <p><strong>用于分布式请求链路追踪</strong></p>
 <h3 id="span-attributes">span Attributes<a class="anchor" href="#span-attributes">#</a></h3>
-<h2 id="span-attributes-1">Span Attributes<a class="anchor" href="#span-attributes-1">#</a></h2>
+<h2 id="-span-attributes">🧷 Span Attributes<a class="anchor" href="#-span-attributes">#</a></h2>
 <p><strong>Span 关注单次操作的上下文和状态，用于 Trace 追踪</strong></p>
 <h3 id="必选">必选<a class="anchor" href="#%e5%bf%85%e9%80%89">#</a></h3>
 <table>
@@ -960,16 +978,16 @@ https://github.com/alex-shpak/hugo-book
   <div class="flex flex-wrap justify-between">
     <span>
     
-      <a href="/docs/observability/attributes/" class="flex align-center">
+      <a href="/docs/observability/component/" class="flex align-center">
         <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
-        <span>Attributes</span>
+        <span>Component</span>
       </a>
     
     </span>
     <span>
     
-      <a href="/docs/devflow-controller/canary/" class="flex align-center">
-        <span>Canary</span>
+      <a href="/docs/observability/attributes/" class="flex align-center">
+        <span>Attributes</span>
         <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
       </a>
     

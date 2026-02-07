@@ -1,10 +1,10 @@
-# 云原生 Canary 发布实战：Argo CD + Argo Rollouts + Istio
+# 🐤 云原生 Canary 发布实战：Argo CD + Argo Rollouts + Istio
 
 Canary 发布是将新版本的流量逐步引入生产环境的一种发布策略，用于 **降低风险、快速回滚、灰度验证**。在 Kubernetes 环境下，结合 Argo CD、Argo Rollouts 和 Istio 可以实现全自动化 Canary 发布。
 
 ---
 
-## 1. 技术栈说明
+## 🧩 1. 技术栈说明
 
 | 组件 | 作用 | 说明 |
 |------|------|------|
@@ -15,7 +15,7 @@ Canary 发布是将新版本的流量逐步引入生产环境的一种发布策�
 
 ---
 
-## 2. 基本原理
+## 🔍 2. 基本原理
 
 1. **Argo CD** 负责将应用 Manifest（Deployment、Service、Rollout 等）同步到集群。
 2. **Argo Rollouts** 替代原生 Deployment，对 Pod 版本的发布进行控制（如逐步增量）。
@@ -29,7 +29,7 @@ Canary 发布是将新版本的流量逐步引入生产环境的一种发布策�
 
 ---
 
-## 2.1 Devflow Canary 发布流程图（示例）
+## 🗺️ 2.1 Devflow Canary 发布流程图（示例）
 
 ```mermaid
 flowchart LR
@@ -60,7 +60,7 @@ flowchart LR
 
 ---
 
-## 3. 设计原则（单 Service）
+## 🧱 3. 设计原则（单 Service）
 
 - 仅存在 **一个 Service**
 - 新旧版本通过 **Pod Label** 区分
@@ -77,7 +77,7 @@ Client
 
 ---
 
-## 4. 关键资源说明
+## 🧷 4. 关键资源说明
 
 ### 4.1 Service（无版本感知）
 
@@ -104,7 +104,7 @@ Client
 
 ---
 
-## 5. Argo Rollouts Canary 流程
+## 🚦 5. Argo Rollouts Canary 流程
 
 ### 5.1 初始状态
 
@@ -154,7 +154,7 @@ Client
 
 ---
 
-## 6. 回滚机制
+## 🔁 6. 回滚机制
 
 - 任意阶段指标异常
 - Rollout 自动将权重切回 stable
@@ -162,7 +162,7 @@ Client
 
 ---
 
-## 7. 优点与适用场景
+## ✅ 7. 优点与适用场景
 
 ### 优点
 
@@ -179,7 +179,7 @@ Client
 
 ---
 
-## 8. 总结
+## 🧭 8. 总结
 
 Argo Rollouts + Istio 的 Canary 模式，在单 Service 架构下：
 

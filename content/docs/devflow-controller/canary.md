@@ -1,10 +1,10 @@
-# Devflow Controller 监听CD 与状态回写流程
+# 🔄 Devflow Controller 监听 CD 与状态回写流程
 
 Devflow Controller 的核心职责是 **监听 Argo CD Application 与 Argo Rollouts Rollout 的状态变化**，并将发布进度与结果回写到 Mongo（`steps` 与 `job status`），形成闭环可观测的发布流水线。
 
 ---
 
-## 1. 监听对象
+## 🧩 1. 监听对象
 
 1. **Argo CD Application**
    - 用于确认配置是否已下发（同步状态）
@@ -15,7 +15,7 @@ Devflow Controller 的核心职责是 **监听 Argo CD Application 与 Argo Roll
 
 ---
 
-## 2. 回写数据结构（Mongo）
+## 🧾 2. 回写数据结构（Mongo）
 
 - **steps**：记录每个灰度阶段的执行进度与校验结果
   - 例如：Applied / 10% / Verify / 30% / Verify / 50% / Verify / 100%
@@ -24,7 +24,7 @@ Devflow Controller 的核心职责是 **监听 Argo CD Application 与 Argo Roll
 
 ---
 
-## 3. 典型监听与回写流程（Canary）
+## 🗺️ 3. 典型监听与回写流程（Canary）
 
 1. **创建发布任务**
    - Devflow Console 触发 Job
@@ -45,7 +45,7 @@ Devflow Controller 的核心职责是 **监听 Argo CD Application 与 Argo Roll
 
 ---
 
-## 4. 状态映射建议（简化版）
+## 🧭 4. 状态映射建议（简化版）
 
 | 监听对象 | 关键状态 | steps 更新 | job status 更新 |
 |---------|----------|-----------|----------------|
@@ -57,7 +57,7 @@ Devflow Controller 的核心职责是 **监听 Argo CD Application 与 Argo Roll
 
 ---
 
-## 5. 异常与回滚
+## 🔁 5. 异常与回滚
 
 - 如果 Rollout 进入 **Degraded** 或 Analysis 失败：
   - Controller 立即回写 `steps=Failed`
@@ -66,7 +66,12 @@ Devflow Controller 的核心职责是 **监听 Argo CD Application 与 Argo Roll
 
 ---
 
-## 6. 关键点总结
+## ✅ 6. 关键点总结
+
+## 📥📤 7. 输入 / 输出（简要）
+
+**输入**：Argo CD Application、Argo Rollouts Rollout、指标与 Analysis 结果  
+**输出**：Mongo `steps`、`job status`、发布进度与结果回写  
 
 - Application 保证 **配置已下发**
 - Rollout 体现 **发布过程与流量进度**

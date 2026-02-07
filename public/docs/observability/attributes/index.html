@@ -8,22 +8,25 @@ https://github.com/alex-shpak/hugo-book
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="1. 服务相关 Attributes (公共)# Key 类型 说明 示例 适用类型 service.name string 服务名称 devflow Metric / Log / Trace service.version string 服务版本 v1.2.3 Metric / Log / Trace service.instance.id string 服务实例 ID 或 Pod 名称 devflow-abc123 Metric / Log / Trace service.namespace string 服务命名空间 payments Metric / Log / Trace deployment.environment string 部署环境 prod / staging / dev Metric / Log / Trace 2. Kubernetes 相关 Attributes (公共)# Key 类型 说明 示例 适用类型 k8s.cluster.name string 集群名称 cluster-prod Metric / Log / Trace k8s.namespace.name string Pod 所在命名空间 applications Metric / Log / Trace k8s.pod.name string Pod 名称 devflow-12345 Metric / Log / Trace k8s.container.name string 容器名称 devflow Metric / Log / Trace k8s.node.name string 节点名称 node-01 Metric / Log / Trace 3. 统一规范# 同一请求生命周期内的 Metric / Log / Trace 应共享以下 Attributes：
+<meta name="description" content="🧾 公共 Attributes 速查# 本页提供跨 Metric / Log / Trace 的公共字段清单，便于统一采集与关联查询。
+🧩 1. 服务相关 Attributes (公共)# Key 类型 说明 示例 适用类型 service.name string 服务名称 devflow Metric / Log / Trace service.version string 服务版本 v1.2.3 Metric / Log / Trace service.instance.id string 服务实例 ID 或 Pod 名称 devflow-abc123 Metric / Log / Trace service.namespace string 服务命名空间 payments Metric / Log / Trace deployment.environment string 部署环境 prod / staging / dev Metric / Log / Trace 🧩 2. Kubernetes 相关 Attributes (公共)# Key 类型 说明 示例 适用类型 k8s.cluster.name string 集群名称 cluster-prod Metric / Log / Trace k8s.namespace.name string Pod 所在命名空间 applications Metric / Log / Trace k8s.pod.name string Pod 名称 devflow-12345 Metric / Log / Trace k8s.container.name string 容器名称 devflow Metric / Log / Trace k8s.node.name string 节点名称 node-01 Metric / Log / Trace ✅ 3. 统一规范# 同一请求生命周期内的 Metric / Log / Trace 应共享以下 Attributes：
 ">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
 <meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/observability/attributes/">
   <meta property="og:site_name" content="Devflow">
-  <meta property="og:title" content="Devflow">
-  <meta property="og:description" content="1. 服务相关 Attributes (公共)# Key 类型 说明 示例 适用类型 service.name string 服务名称 devflow Metric / Log / Trace service.version string 服务版本 v1.2.3 Metric / Log / Trace service.instance.id string 服务实例 ID 或 Pod 名称 devflow-abc123 Metric / Log / Trace service.namespace string 服务命名空间 payments Metric / Log / Trace deployment.environment string 部署环境 prod / staging / dev Metric / Log / Trace 2. Kubernetes 相关 Attributes (公共)# Key 类型 说明 示例 适用类型 k8s.cluster.name string 集群名称 cluster-prod Metric / Log / Trace k8s.namespace.name string Pod 所在命名空间 applications Metric / Log / Trace k8s.pod.name string Pod 名称 devflow-12345 Metric / Log / Trace k8s.container.name string 容器名称 devflow Metric / Log / Trace k8s.node.name string 节点名称 node-01 Metric / Log / Trace 3. 统一规范# 同一请求生命周期内的 Metric / Log / Trace 应共享以下 Attributes：">
+  <meta property="og:title" content="Attributes">
+  <meta property="og:description" content="🧾 公共 Attributes 速查# 本页提供跨 Metric / Log / Trace 的公共字段清单，便于统一采集与关联查询。
+🧩 1. 服务相关 Attributes (公共)# Key 类型 说明 示例 适用类型 service.name string 服务名称 devflow Metric / Log / Trace service.version string 服务版本 v1.2.3 Metric / Log / Trace service.instance.id string 服务实例 ID 或 Pod 名称 devflow-abc123 Metric / Log / Trace service.namespace string 服务命名空间 payments Metric / Log / Trace deployment.environment string 部署环境 prod / staging / dev Metric / Log / Trace 🧩 2. Kubernetes 相关 Attributes (公共)# Key 类型 说明 示例 适用类型 k8s.cluster.name string 集群名称 cluster-prod Metric / Log / Trace k8s.namespace.name string Pod 所在命名空间 applications Metric / Log / Trace k8s.pod.name string Pod 名称 devflow-12345 Metric / Log / Trace k8s.container.name string 容器名称 devflow Metric / Log / Trace k8s.node.name string 节点名称 node-01 Metric / Log / Trace ✅ 3. 统一规范# 同一请求生命周期内的 Metric / Log / Trace 应共享以下 Attributes：">
   <meta property="og:locale" content="zh_cn">
   <meta property="og:type" content="article">
     <meta property="article:section" content="docs">
 
 
-  <meta itemprop="name" content="Devflow">
-  <meta itemprop="description" content="1. 服务相关 Attributes (公共)# Key 类型 说明 示例 适用类型 service.name string 服务名称 devflow Metric / Log / Trace service.version string 服务版本 v1.2.3 Metric / Log / Trace service.instance.id string 服务实例 ID 或 Pod 名称 devflow-abc123 Metric / Log / Trace service.namespace string 服务命名空间 payments Metric / Log / Trace deployment.environment string 部署环境 prod / staging / dev Metric / Log / Trace 2. Kubernetes 相关 Attributes (公共)# Key 类型 说明 示例 适用类型 k8s.cluster.name string 集群名称 cluster-prod Metric / Log / Trace k8s.namespace.name string Pod 所在命名空间 applications Metric / Log / Trace k8s.pod.name string Pod 名称 devflow-12345 Metric / Log / Trace k8s.container.name string 容器名称 devflow Metric / Log / Trace k8s.node.name string 节点名称 node-01 Metric / Log / Trace 3. 统一规范# 同一请求生命周期内的 Metric / Log / Trace 应共享以下 Attributes：">
-  <meta itemprop="wordCount" content="161">
+  <meta itemprop="name" content="Attributes">
+  <meta itemprop="description" content="🧾 公共 Attributes 速查# 本页提供跨 Metric / Log / Trace 的公共字段清单，便于统一采集与关联查询。
+🧩 1. 服务相关 Attributes (公共)# Key 类型 说明 示例 适用类型 service.name string 服务名称 devflow Metric / Log / Trace service.version string 服务版本 v1.2.3 Metric / Log / Trace service.instance.id string 服务实例 ID 或 Pod 名称 devflow-abc123 Metric / Log / Trace service.namespace string 服务命名空间 payments Metric / Log / Trace deployment.environment string 部署环境 prod / staging / dev Metric / Log / Trace 🧩 2. Kubernetes 相关 Attributes (公共)# Key 类型 说明 示例 适用类型 k8s.cluster.name string 集群名称 cluster-prod Metric / Log / Trace k8s.namespace.name string Pod 所在命名空间 applications Metric / Log / Trace k8s.pod.name string Pod 名称 devflow-12345 Metric / Log / Trace k8s.container.name string 容器名称 devflow Metric / Log / Trace k8s.node.name string 节点名称 node-01 Metric / Log / Trace ✅ 3. 统一规范# 同一请求生命周期内的 Metric / Log / Trace 应共享以下 Attributes：">
+  <meta itemprop="wordCount" content="175">
 
 <title>Attributes | Devflow</title>
 <link rel="icon" href="/favicon.png" >
@@ -75,7 +78,7 @@ https://github.com/alex-shpak/hugo-book
   
     <input type="checkbox" id="section-4bd032e4e5fe1323a134583cafeecf06" class="toggle"  />
     <label for="section-4bd032e4e5fe1323a134583cafeecf06" class="flex">
-      <a role="button" class="">
+      <a href="/docs/ci/" class="">
         CI</a>
       <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
     </label>
@@ -84,6 +87,18 @@ https://github.com/alex-shpak/hugo-book
           
   <ul>
     
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/ci/queue/" class="">
+      Queue</a>
+  
+
+        </li>
       
     
       
@@ -207,7 +222,7 @@ https://github.com/alex-shpak/hugo-book
   
     <input type="checkbox" id="section-6884c320646745efe1e09831aa35ad5b" class="toggle" checked />
     <label for="section-6884c320646745efe1e09831aa35ad5b" class="flex">
-      <a role="button" class="">
+      <a href="/docs/observability/" class="">
         observability</a>
       <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
     </label>
@@ -237,8 +252,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/docs/observability/attributes/" class="active">
-      Attributes</a>
+    <a href="/docs/observability/standard/" class="">
+      Standard</a>
   
 
         </li>
@@ -251,8 +266,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/docs/observability/standard/" class="">
-      Standard</a>
+    <a href="/docs/observability/attributes/" class="active">
+      Attributes</a>
   
 
         </li>
@@ -272,7 +287,7 @@ https://github.com/alex-shpak/hugo-book
   
     <input type="checkbox" id="section-97bc183e640cafe9ca9da46d45661ec8" class="toggle"  />
     <label for="section-97bc183e640cafe9ca9da46d45661ec8" class="flex">
-      <a role="button" class="">
+      <a href="/docs/devflow-controller/" class="">
         devflow-controller</a>
       <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
     </label>
@@ -363,7 +378,9 @@ https://github.com/alex-shpak/hugo-book
 
       
       
-  <article class="markdown book-article"><h2 id="1-服务相关-attributes-公共">1. 服务相关 Attributes (公共)<a class="anchor" href="#1-%e6%9c%8d%e5%8a%a1%e7%9b%b8%e5%85%b3-attributes-%e5%85%ac%e5%85%b1">#</a></h2>
+  <article class="markdown book-article"><h1 id="-公共-attributes-速查">🧾 公共 Attributes 速查<a class="anchor" href="#-%e5%85%ac%e5%85%b1-attributes-%e9%80%9f%e6%9f%a5">#</a></h1>
+<p>本页提供跨 Metric / Log / Trace 的公共字段清单，便于统一采集与关联查询。</p>
+<h2 id="-1-服务相关-attributes-公共">🧩 1. 服务相关 Attributes (公共)<a class="anchor" href="#-1-%e6%9c%8d%e5%8a%a1%e7%9b%b8%e5%85%b3-attributes-%e5%85%ac%e5%85%b1">#</a></h2>
 <table>
   <thead>
       <tr>
@@ -413,7 +430,7 @@ https://github.com/alex-shpak/hugo-book
   </tbody>
 </table>
 <hr>
-<h2 id="2-kubernetes-相关-attributes-公共">2. Kubernetes 相关 Attributes (公共)<a class="anchor" href="#2-kubernetes-%e7%9b%b8%e5%85%b3-attributes-%e5%85%ac%e5%85%b1">#</a></h2>
+<h2 id="-2-kubernetes-相关-attributes-公共">🧩 2. Kubernetes 相关 Attributes (公共)<a class="anchor" href="#-2-kubernetes-%e7%9b%b8%e5%85%b3-attributes-%e5%85%ac%e5%85%b1">#</a></h2>
 <table>
   <thead>
       <tr>
@@ -463,7 +480,7 @@ https://github.com/alex-shpak/hugo-book
   </tbody>
 </table>
 <hr>
-<h2 id="3-统一规范">3. 统一规范<a class="anchor" href="#3-%e7%bb%9f%e4%b8%80%e8%a7%84%e8%8c%83">#</a></h2>
+<h2 id="-3-统一规范">✅ 3. 统一规范<a class="anchor" href="#-3-%e7%bb%9f%e4%b8%80%e8%a7%84%e8%8c%83">#</a></h2>
 <ol>
 <li>
 <p><strong>同一请求生命周期</strong>内的 <strong>Metric / Log / Trace</strong> 应共享以下 Attributes：</p>
@@ -521,16 +538,16 @@ https://github.com/alex-shpak/hugo-book
   <div class="flex flex-wrap justify-between">
     <span>
     
-      <a href="/docs/observability/component/" class="flex align-center">
+      <a href="/docs/observability/standard/" class="flex align-center">
         <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
-        <span>Component</span>
+        <span>Standard</span>
       </a>
     
     </span>
     <span>
     
-      <a href="/docs/observability/standard/" class="flex align-center">
-        <span>Standard</span>
+      <a href="/docs/devflow-controller/" class="flex align-center">
+        <span>devflow-controller</span>
         <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
       </a>
     

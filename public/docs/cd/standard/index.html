@@ -8,7 +8,7 @@ https://github.com/alex-shpak/hugo-book
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="发布策略选型建议# 场景 推荐策略 内部系统 Recreate / Rolling 普通业务 Rolling 核心生产系统 Canary 高回滚要求 Blue / Green 功能实验 A/B 新系统验证 Shadow 云原生 CD 最佳实践# 构建与发布完全解耦 发布过程必须可回滚 基于指标和 SLO 驱动发布决策 发布过程全链路可观测（Metric / Trace / Log） 所有发布行为可审计、可追溯 Canary 与 Blue/Green 发布方案对比# 1. 概述# Canary（灰度发布）与 Blue/Green（蓝绿发布）是云原生场景中最常见的两种发布策略。 二者都用于降低发布风险，但在流量控制方式、资源模型、回滚机制等方面存在本质差异。
+<meta name="description" content="🧭 速览# Canary：渐进放量，适合核心业务 Blue/Green：原子切流，回滚快 Rolling：默认策略，成本低 🧭 发布策略选型建议# 场景 推荐策略 内部系统 Recreate / Rolling 普通业务 Rolling 核心生产系统 Canary 高回滚要求 Blue / Green 功能实验 A/B 新系统验证 Shadow 🧰 云原生 CD 最佳实践# 构建与发布完全解耦 发布过程必须可回滚 基于指标和 SLO 驱动发布决策 发布过程全链路可观测（Metric / Trace / Log） 所有发布行为可审计、可追溯 ⚖️ Canary 与 Blue/Green 发布方案对比# 1. 概述# Canary（灰度发布）与 Blue/Green（蓝绿发布）是云原生场景中最常见的两种发布策略。 二者都用于降低发布风险，但在流量控制方式、资源模型、回滚机制等方面存在本质差异。
 2. 核心思想对比# 维度 Canary（灰度发布） Blue/Green（蓝绿发布） 核心思想 小流量逐步验证新版本 两套完整环境原子切换 发布风险 渐进降低 切换瞬间承担 流量模型 按比例分流 全量切换 验证方式 实时观测生产流量 预览 &#43; 切流后验证 3. 流量控制方式# Canary# 同时运行新旧版本 流量按比例逐步切换： 10% → 30% → 50% → 100% 依赖能力： Argo Rollouts 自身权重 Istio / NGINX / ALB 等流量网关 Blue/Green# 通过 Service selector 实现切换 切流是 一次性原子操作 不支持按比例分流 Preview 流量与正式流量严格隔离 4. 资源使用对比# 维度 Canary Blue/Green 发布期间副本 新旧版本同时存在 新旧版本完整运行 峰值资源消耗 较低 较高（接近 2x） 资源弹性要求 中 高 5. 回滚机制对比# Canary 回滚# 逐步将流量权重降为 0 旧版本始终在线 回滚速度取决于流量调度系统 Blue/Green 回滚# 直接切换 Service selector 回滚几乎是瞬时完成 不依赖流量权重计算 6. 发布控制能力# 能力 Canary Blue/Green 手动暂停 支持 支持 自动推进 支持 支持 指标驱动发布 强 中 精细流量控制 强 无 7. Analysis（分析）能力# Canary# 每个阶段可配置 Analysis 支持： 错误率 延迟 业务指标 失败可自动回滚 Blue/Green# 支持 Pre-Promotion Analysis 支持 Post-Promotion Analysis 更偏向“发布前 / 发布后”校验 8. 故障影响范围# 维度 Canary Blue/Green 故障暴露用户 小范围 全量 故障发现速度 快 取决于监控 用户影响控制 强 弱 9. 运维复杂度# 维度 Canary Blue/Green 配置复杂度 高 低 流量系统依赖 强 弱 运维心智负担 高 低 10. 适用场景对比# 适合 Canary 的场景# 高并发互联网业务 需要真实流量验证 业务指标敏感 允许逐步放量 适合 Blue/Green 的场景# 核心系统 / 金融系统 回滚时间要求极高 不允许流量混跑 发布频率相对较低 11. 总结对比# 维度 推荐方案 极致稳定 &amp; 秒级回滚 Blue/Green 风险最小化 &amp; 渐进验证 Canary 资源充足 Blue/Green 资源受限 Canary 12. 选型建议# 核心链路：Blue/Green 用户入口服务：Canary 微服务体系：Canary &#43; 自动 Analysis 基础平台组件：Blue/Green 13. 一句话总结# Canary 是“边跑边试”，
 Blue/Green 是“切换开关”。
 ">
@@ -17,7 +17,7 @@ Blue/Green 是“切换开关”。
 <meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/cd/standard/">
   <meta property="og:site_name" content="Devflow">
   <meta property="og:title" content="Devflow">
-  <meta property="og:description" content="发布策略选型建议# 场景 推荐策略 内部系统 Recreate / Rolling 普通业务 Rolling 核心生产系统 Canary 高回滚要求 Blue / Green 功能实验 A/B 新系统验证 Shadow 云原生 CD 最佳实践# 构建与发布完全解耦 发布过程必须可回滚 基于指标和 SLO 驱动发布决策 发布过程全链路可观测（Metric / Trace / Log） 所有发布行为可审计、可追溯 Canary 与 Blue/Green 发布方案对比# 1. 概述# Canary（灰度发布）与 Blue/Green（蓝绿发布）是云原生场景中最常见的两种发布策略。 二者都用于降低发布风险，但在流量控制方式、资源模型、回滚机制等方面存在本质差异。
+  <meta property="og:description" content="🧭 速览# Canary：渐进放量，适合核心业务 Blue/Green：原子切流，回滚快 Rolling：默认策略，成本低 🧭 发布策略选型建议# 场景 推荐策略 内部系统 Recreate / Rolling 普通业务 Rolling 核心生产系统 Canary 高回滚要求 Blue / Green 功能实验 A/B 新系统验证 Shadow 🧰 云原生 CD 最佳实践# 构建与发布完全解耦 发布过程必须可回滚 基于指标和 SLO 驱动发布决策 发布过程全链路可观测（Metric / Trace / Log） 所有发布行为可审计、可追溯 ⚖️ Canary 与 Blue/Green 发布方案对比# 1. 概述# Canary（灰度发布）与 Blue/Green（蓝绿发布）是云原生场景中最常见的两种发布策略。 二者都用于降低发布风险，但在流量控制方式、资源模型、回滚机制等方面存在本质差异。
 2. 核心思想对比# 维度 Canary（灰度发布） Blue/Green（蓝绿发布） 核心思想 小流量逐步验证新版本 两套完整环境原子切换 发布风险 渐进降低 切换瞬间承担 流量模型 按比例分流 全量切换 验证方式 实时观测生产流量 预览 &#43; 切流后验证 3. 流量控制方式# Canary# 同时运行新旧版本 流量按比例逐步切换： 10% → 30% → 50% → 100% 依赖能力： Argo Rollouts 自身权重 Istio / NGINX / ALB 等流量网关 Blue/Green# 通过 Service selector 实现切换 切流是 一次性原子操作 不支持按比例分流 Preview 流量与正式流量严格隔离 4. 资源使用对比# 维度 Canary Blue/Green 发布期间副本 新旧版本同时存在 新旧版本完整运行 峰值资源消耗 较低 较高（接近 2x） 资源弹性要求 中 高 5. 回滚机制对比# Canary 回滚# 逐步将流量权重降为 0 旧版本始终在线 回滚速度取决于流量调度系统 Blue/Green 回滚# 直接切换 Service selector 回滚几乎是瞬时完成 不依赖流量权重计算 6. 发布控制能力# 能力 Canary Blue/Green 手动暂停 支持 支持 自动推进 支持 支持 指标驱动发布 强 中 精细流量控制 强 无 7. Analysis（分析）能力# Canary# 每个阶段可配置 Analysis 支持： 错误率 延迟 业务指标 失败可自动回滚 Blue/Green# 支持 Pre-Promotion Analysis 支持 Post-Promotion Analysis 更偏向“发布前 / 发布后”校验 8. 故障影响范围# 维度 Canary Blue/Green 故障暴露用户 小范围 全量 故障发现速度 快 取决于监控 用户影响控制 强 弱 9. 运维复杂度# 维度 Canary Blue/Green 配置复杂度 高 低 流量系统依赖 强 弱 运维心智负担 高 低 10. 适用场景对比# 适合 Canary 的场景# 高并发互联网业务 需要真实流量验证 业务指标敏感 允许逐步放量 适合 Blue/Green 的场景# 核心系统 / 金融系统 回滚时间要求极高 不允许流量混跑 发布频率相对较低 11. 总结对比# 维度 推荐方案 极致稳定 &amp; 秒级回滚 Blue/Green 风险最小化 &amp; 渐进验证 Canary 资源充足 Blue/Green 资源受限 Canary 12. 选型建议# 核心链路：Blue/Green 用户入口服务：Canary 微服务体系：Canary &#43; 自动 Analysis 基础平台组件：Blue/Green 13. 一句话总结# Canary 是“边跑边试”，
 Blue/Green 是“切换开关”。">
   <meta property="og:locale" content="zh_cn">
@@ -26,10 +26,10 @@ Blue/Green 是“切换开关”。">
 
 
   <meta itemprop="name" content="Devflow">
-  <meta itemprop="description" content="发布策略选型建议# 场景 推荐策略 内部系统 Recreate / Rolling 普通业务 Rolling 核心生产系统 Canary 高回滚要求 Blue / Green 功能实验 A/B 新系统验证 Shadow 云原生 CD 最佳实践# 构建与发布完全解耦 发布过程必须可回滚 基于指标和 SLO 驱动发布决策 发布过程全链路可观测（Metric / Trace / Log） 所有发布行为可审计、可追溯 Canary 与 Blue/Green 发布方案对比# 1. 概述# Canary（灰度发布）与 Blue/Green（蓝绿发布）是云原生场景中最常见的两种发布策略。 二者都用于降低发布风险，但在流量控制方式、资源模型、回滚机制等方面存在本质差异。
+  <meta itemprop="description" content="🧭 速览# Canary：渐进放量，适合核心业务 Blue/Green：原子切流，回滚快 Rolling：默认策略，成本低 🧭 发布策略选型建议# 场景 推荐策略 内部系统 Recreate / Rolling 普通业务 Rolling 核心生产系统 Canary 高回滚要求 Blue / Green 功能实验 A/B 新系统验证 Shadow 🧰 云原生 CD 最佳实践# 构建与发布完全解耦 发布过程必须可回滚 基于指标和 SLO 驱动发布决策 发布过程全链路可观测（Metric / Trace / Log） 所有发布行为可审计、可追溯 ⚖️ Canary 与 Blue/Green 发布方案对比# 1. 概述# Canary（灰度发布）与 Blue/Green（蓝绿发布）是云原生场景中最常见的两种发布策略。 二者都用于降低发布风险，但在流量控制方式、资源模型、回滚机制等方面存在本质差异。
 2. 核心思想对比# 维度 Canary（灰度发布） Blue/Green（蓝绿发布） 核心思想 小流量逐步验证新版本 两套完整环境原子切换 发布风险 渐进降低 切换瞬间承担 流量模型 按比例分流 全量切换 验证方式 实时观测生产流量 预览 &#43; 切流后验证 3. 流量控制方式# Canary# 同时运行新旧版本 流量按比例逐步切换： 10% → 30% → 50% → 100% 依赖能力： Argo Rollouts 自身权重 Istio / NGINX / ALB 等流量网关 Blue/Green# 通过 Service selector 实现切换 切流是 一次性原子操作 不支持按比例分流 Preview 流量与正式流量严格隔离 4. 资源使用对比# 维度 Canary Blue/Green 发布期间副本 新旧版本同时存在 新旧版本完整运行 峰值资源消耗 较低 较高（接近 2x） 资源弹性要求 中 高 5. 回滚机制对比# Canary 回滚# 逐步将流量权重降为 0 旧版本始终在线 回滚速度取决于流量调度系统 Blue/Green 回滚# 直接切换 Service selector 回滚几乎是瞬时完成 不依赖流量权重计算 6. 发布控制能力# 能力 Canary Blue/Green 手动暂停 支持 支持 自动推进 支持 支持 指标驱动发布 强 中 精细流量控制 强 无 7. Analysis（分析）能力# Canary# 每个阶段可配置 Analysis 支持： 错误率 延迟 业务指标 失败可自动回滚 Blue/Green# 支持 Pre-Promotion Analysis 支持 Post-Promotion Analysis 更偏向“发布前 / 发布后”校验 8. 故障影响范围# 维度 Canary Blue/Green 故障暴露用户 小范围 全量 故障发现速度 快 取决于监控 用户影响控制 强 弱 9. 运维复杂度# 维度 Canary Blue/Green 配置复杂度 高 低 流量系统依赖 强 弱 运维心智负担 高 低 10. 适用场景对比# 适合 Canary 的场景# 高并发互联网业务 需要真实流量验证 业务指标敏感 允许逐步放量 适合 Blue/Green 的场景# 核心系统 / 金融系统 回滚时间要求极高 不允许流量混跑 发布频率相对较低 11. 总结对比# 维度 推荐方案 极致稳定 &amp; 秒级回滚 Blue/Green 风险最小化 &amp; 渐进验证 Canary 资源充足 Blue/Green 资源受限 Canary 12. 选型建议# 核心链路：Blue/Green 用户入口服务：Canary 微服务体系：Canary &#43; 自动 Analysis 基础平台组件：Blue/Green 13. 一句话总结# Canary 是“边跑边试”，
 Blue/Green 是“切换开关”。">
-  <meta itemprop="wordCount" content="322">
+  <meta itemprop="wordCount" content="331">
 
 <title>Standard | Devflow</title>
 <link rel="icon" href="/favicon.png" >
@@ -81,7 +81,7 @@ Blue/Green 是“切换开关”。">
   
     <input type="checkbox" id="section-4bd032e4e5fe1323a134583cafeecf06" class="toggle"  />
     <label for="section-4bd032e4e5fe1323a134583cafeecf06" class="flex">
-      <a role="button" class="">
+      <a href="/docs/ci/" class="">
         CI</a>
       <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
     </label>
@@ -90,6 +90,18 @@ Blue/Green 是“切换开关”。">
           
   <ul>
     
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/ci/queue/" class="">
+      Queue</a>
+  
+
+        </li>
       
     
       
@@ -213,7 +225,7 @@ Blue/Green 是“切换开关”。">
   
     <input type="checkbox" id="section-6884c320646745efe1e09831aa35ad5b" class="toggle"  />
     <label for="section-6884c320646745efe1e09831aa35ad5b" class="flex">
-      <a role="button" class="">
+      <a href="/docs/observability/" class="">
         observability</a>
       <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
     </label>
@@ -243,8 +255,8 @@ Blue/Green 是“切换开关”。">
   
 
   
-    <a href="/docs/observability/attributes/" class="">
-      Attributes</a>
+    <a href="/docs/observability/standard/" class="">
+      Standard</a>
   
 
         </li>
@@ -257,8 +269,8 @@ Blue/Green 是“切换开关”。">
   
 
   
-    <a href="/docs/observability/standard/" class="">
-      Standard</a>
+    <a href="/docs/observability/attributes/" class="">
+      Attributes</a>
   
 
         </li>
@@ -278,7 +290,7 @@ Blue/Green 是“切换开关”。">
   
     <input type="checkbox" id="section-97bc183e640cafe9ca9da46d45661ec8" class="toggle"  />
     <label for="section-97bc183e640cafe9ca9da46d45661ec8" class="flex">
-      <a role="button" class="">
+      <a href="/docs/devflow-controller/" class="">
         devflow-controller</a>
       <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
     </label>
@@ -369,7 +381,13 @@ Blue/Green 是“切换开关”。">
 
       
       
-  <article class="markdown book-article"><h2 id="发布策略选型建议">发布策略选型建议<a class="anchor" href="#%e5%8f%91%e5%b8%83%e7%ad%96%e7%95%a5%e9%80%89%e5%9e%8b%e5%bb%ba%e8%ae%ae">#</a></h2>
+  <article class="markdown book-article"><h2 id="-速览">🧭 速览<a class="anchor" href="#-%e9%80%9f%e8%a7%88">#</a></h2>
+<ul>
+<li>Canary：渐进放量，适合核心业务</li>
+<li>Blue/Green：原子切流，回滚快</li>
+<li>Rolling：默认策略，成本低</li>
+</ul>
+<h2 id="-发布策略选型建议">🧭 发布策略选型建议<a class="anchor" href="#-%e5%8f%91%e5%b8%83%e7%ad%96%e7%95%a5%e9%80%89%e5%9e%8b%e5%bb%ba%e8%ae%ae">#</a></h2>
 <table>
   <thead>
       <tr>
@@ -405,7 +423,7 @@ Blue/Green 是“切换开关”。">
   </tbody>
 </table>
 <hr>
-<h2 id="云原生-cd-最佳实践">云原生 CD 最佳实践<a class="anchor" href="#%e4%ba%91%e5%8e%9f%e7%94%9f-cd-%e6%9c%80%e4%bd%b3%e5%ae%9e%e8%b7%b5">#</a></h2>
+<h2 id="-云原生-cd-最佳实践">🧰 云原生 CD 最佳实践<a class="anchor" href="#-%e4%ba%91%e5%8e%9f%e7%94%9f-cd-%e6%9c%80%e4%bd%b3%e5%ae%9e%e8%b7%b5">#</a></h2>
 <ul>
 <li>构建与发布完全解耦</li>
 <li>发布过程必须可回滚</li>
@@ -413,7 +431,7 @@ Blue/Green 是“切换开关”。">
 <li>发布过程全链路可观测（Metric / Trace / Log）</li>
 <li>所有发布行为可审计、可追溯</li>
 </ul>
-<h2 id="canary-与-bluegreen-发布方案对比">Canary 与 Blue/Green 发布方案对比<a class="anchor" href="#canary-%e4%b8%8e-bluegreen-%e5%8f%91%e5%b8%83%e6%96%b9%e6%a1%88%e5%af%b9%e6%af%94">#</a></h2>
+<h2 id="-canary-与-bluegreen-发布方案对比">⚖️ Canary 与 Blue/Green 发布方案对比<a class="anchor" href="#-canary-%e4%b8%8e-bluegreen-%e5%8f%91%e5%b8%83%e6%96%b9%e6%a1%88%e5%af%b9%e6%af%94">#</a></h2>
 <h3 id="1-概述">1. 概述<a class="anchor" href="#1-%e6%a6%82%e8%bf%b0">#</a></h3>
 <p>Canary（灰度发布）与 Blue/Green（蓝绿发布）是云原生场景中最常见的两种发布策略。
 二者都用于降低发布风险，但在<strong>流量控制方式、资源模型、回滚机制</strong>等方面存在本质差异。</p>
@@ -683,7 +701,7 @@ Blue/Green 是“切换开关”。">
 <p>Canary 是“<strong>边跑边试</strong>”，<br>
 Blue/Green 是“<strong>切换开关</strong>”。</p>
 </blockquote><hr>
-<h2 id="devflow-normalrolling发布流程图示例">Devflow Normal（Rolling）发布流程图（示例）<a class="anchor" href="#devflow-normalrolling%e5%8f%91%e5%b8%83%e6%b5%81%e7%a8%8b%e5%9b%be%e7%a4%ba%e4%be%8b">#</a></h2>
+<h2 id="-devflow-normalrolling发布流程图示例">🗺️ Devflow Normal（Rolling）发布流程图（示例）<a class="anchor" href="#-devflow-normalrolling%e5%8f%91%e5%b8%83%e6%b5%81%e7%a8%8b%e5%9b%be%e7%a4%ba%e4%be%8b">#</a></h2>
 <pre class="mermaid">flowchart LR
     A[Devflow Console] --&gt; B[Devflow Job]
     B --&gt; C[Argo CD Application]

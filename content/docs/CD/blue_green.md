@@ -1,10 +1,10 @@
-# 云原生 Blue/Green 发布实战：Argo CD + Argo Rollouts
+# 🟦🟩 云原生 Blue/Green 发布实战：Argo CD + Argo Rollouts
 
 Blue/Green 发布是一种低风险的发布策略，通过维护两套环境（Blue 和 Green），在新版本发布时切换流量到新环境，实现平滑切换和快速回滚。
 
 ---
 
-## 1. 技术栈说明
+## 🧩 1. 技术栈说明
 
 | 组件 | 作用 | 说明 |
 |------|------|------|
@@ -15,7 +15,7 @@ Blue/Green 发布是一种低风险的发布策略，通过维护两套环境（
 
 ---
 
-## 2. 基本原理
+## 🔍 2. 基本原理
 
 1. **Blue/Green 环境**：
    - **Blue**：当前生产环境版本
@@ -30,7 +30,7 @@ Blue/Green 发布是一种低风险的发布策略，通过维护两套环境（
 
 ---
 
-## 2.1 Devflow Blue/Green 发布流程图（示例）
+## 🗺️ 2.1 Devflow Blue/Green 发布流程图（示例）
 
 ```mermaid
 flowchart LR
@@ -62,7 +62,7 @@ flowchart LR
 
 ---
 
-## 3. Rollout 配置示例
+## 🧾 3. Rollout 配置示例
 
 ```yaml
 apiVersion: argoproj.io/v1alpha1
@@ -90,7 +90,7 @@ spec:
         image: registry.example.com/my-app:v2
 ```
 
-## 步骤
+## 🚦 步骤
 
 #### 1. 概述
 

@@ -8,17 +8,23 @@ https://github.com/alex-shpak/hugo-book
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="">
+<meta name="description" content="🚀 持续集成（CI）概览# CI 的目标是把「代码变成可信可交付的制品」，强调 自动化、可追溯与安全可信。
+🎯 核心目标# 让每次提交都可构建、可测试、可发布 让制品可追溯（Git Commit / Image Digest） 让安全前置（SAST / SBOM / 签名 / 漏洞扫描） 让反馈及时（通知 / 指标 / Trace） 🧱 核心能力# 触发与编排：Pipeline / Task / Trigger 构建与制品：镜像构建、仓库管理 质量与安全：测试、扫描、签名 可观测：日志、指标、Trace 🧭 快速导航# 标准流程：standard.md 队列与并发：queue.md 组件矩阵：component.md ">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
 <meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/ci/">
   <meta property="og:site_name" content="Devflow">
   <meta property="og:title" content="CI">
+  <meta property="og:description" content="🚀 持续集成（CI）概览# CI 的目标是把「代码变成可信可交付的制品」，强调 自动化、可追溯与安全可信。
+🎯 核心目标# 让每次提交都可构建、可测试、可发布 让制品可追溯（Git Commit / Image Digest） 让安全前置（SAST / SBOM / 签名 / 漏洞扫描） 让反馈及时（通知 / 指标 / Trace） 🧱 核心能力# 触发与编排：Pipeline / Task / Trigger 构建与制品：镜像构建、仓库管理 质量与安全：测试、扫描、签名 可观测：日志、指标、Trace 🧭 快速导航# 标准流程：standard.md 队列与并发：queue.md 组件矩阵：component.md">
   <meta property="og:locale" content="zh_cn">
   <meta property="og:type" content="website">
 
 
   <meta itemprop="name" content="CI">
+  <meta itemprop="description" content="🚀 持续集成（CI）概览# CI 的目标是把「代码变成可信可交付的制品」，强调 自动化、可追溯与安全可信。
+🎯 核心目标# 让每次提交都可构建、可测试、可发布 让制品可追溯（Git Commit / Image Digest） 让安全前置（SAST / SBOM / 签名 / 漏洞扫描） 让反馈及时（通知 / 指标 / Trace） 🧱 核心能力# 触发与编排：Pipeline / Task / Trigger 构建与制品：镜像构建、仓库管理 质量与安全：测试、扫描、签名 可观测：日志、指标、Trace 🧭 快速导航# 标准流程：standard.md 队列与并发：queue.md 组件矩阵：component.md">
+  <meta itemprop="wordCount" content="40">
 
 <title>CI | Devflow</title>
 <link rel="icon" href="/favicon.png" >
@@ -71,7 +77,7 @@ https://github.com/alex-shpak/hugo-book
   
     <input type="checkbox" id="section-4bd032e4e5fe1323a134583cafeecf06" class="toggle" checked />
     <label for="section-4bd032e4e5fe1323a134583cafeecf06" class="flex">
-      <a role="button" class="active">
+      <a href="/docs/ci/" class="active">
         CI</a>
       <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
     </label>
@@ -80,6 +86,18 @@ https://github.com/alex-shpak/hugo-book
           
   <ul>
     
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/ci/queue/" class="">
+      Queue</a>
+  
+
+        </li>
       
     
       
@@ -203,7 +221,7 @@ https://github.com/alex-shpak/hugo-book
   
     <input type="checkbox" id="section-6884c320646745efe1e09831aa35ad5b" class="toggle"  />
     <label for="section-6884c320646745efe1e09831aa35ad5b" class="flex">
-      <a role="button" class="">
+      <a href="/docs/observability/" class="">
         observability</a>
       <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
     </label>
@@ -233,8 +251,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/docs/observability/attributes/" class="">
-      Attributes</a>
+    <a href="/docs/observability/standard/" class="">
+      Standard</a>
   
 
         </li>
@@ -247,8 +265,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/docs/observability/standard/" class="">
-      Standard</a>
+    <a href="/docs/observability/attributes/" class="">
+      Attributes</a>
   
 
         </li>
@@ -268,7 +286,7 @@ https://github.com/alex-shpak/hugo-book
   
     <input type="checkbox" id="section-97bc183e640cafe9ca9da46d45661ec8" class="toggle"  />
     <label for="section-97bc183e640cafe9ca9da46d45661ec8" class="flex">
-      <a role="button" class="">
+      <a href="/docs/devflow-controller/" class="">
         devflow-controller</a>
       <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
     </label>
@@ -359,7 +377,29 @@ https://github.com/alex-shpak/hugo-book
 
       
       
-  <article class="markdown book-article"></article>
+  <article class="markdown book-article"><h1 id="-持续集成ci概览">🚀 持续集成（CI）概览<a class="anchor" href="#-%e6%8c%81%e7%bb%ad%e9%9b%86%e6%88%90ci%e6%a6%82%e8%a7%88">#</a></h1>
+<p>CI 的目标是把「代码变成可信可交付的制品」，强调 <strong>自动化、可追溯与安全可信</strong>。</p>
+<h2 id="-核心目标">🎯 核心目标<a class="anchor" href="#-%e6%a0%b8%e5%bf%83%e7%9b%ae%e6%a0%87">#</a></h2>
+<ul>
+<li>让每次提交都可构建、可测试、可发布</li>
+<li>让制品可追溯（Git Commit / Image Digest）</li>
+<li>让安全前置（SAST / SBOM / 签名 / 漏洞扫描）</li>
+<li>让反馈及时（通知 / 指标 / Trace）</li>
+</ul>
+<h2 id="-核心能力">🧱 核心能力<a class="anchor" href="#-%e6%a0%b8%e5%bf%83%e8%83%bd%e5%8a%9b">#</a></h2>
+<ul>
+<li>触发与编排：Pipeline / Task / Trigger</li>
+<li>构建与制品：镜像构建、仓库管理</li>
+<li>质量与安全：测试、扫描、签名</li>
+<li>可观测：日志、指标、Trace</li>
+</ul>
+<h2 id="-快速导航">🧭 快速导航<a class="anchor" href="#-%e5%bf%ab%e9%80%9f%e5%af%bc%e8%88%aa">#</a></h2>
+<ul>
+<li>标准流程：<code>standard.md</code></li>
+<li>队列与并发：<code>queue.md</code></li>
+<li>组件矩阵：<code>component.md</code></li>
+</ul>
+</article>
  
       
 
@@ -383,6 +423,20 @@ https://github.com/alex-shpak/hugo-book
 
   
   
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+    </span>
+    <span>
+    
+      <a href="/docs/ci/queue/" class="flex align-center">
+        <span>Queue</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
   
 
 

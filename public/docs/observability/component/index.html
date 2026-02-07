@@ -8,13 +8,13 @@ https://github.com/alex-shpak/hugo-book
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Metrics# 组件 领域 解决的问题 定位 是否必选 替代方案 Prometheus Metrics 指标采集与查询 指标引擎 ✅ VictoriaMetrics Prometheus Operator 运维自动化 Prometheus 生命周期管理 控制器 ❌ 手动部署 kube-state-metrics K8s Metrics Kubernetes 状态指标 指标源 ✅ 无 node-exporter 主机监控 Node 资源指标 指标采集器 ✅ 无 Logs# 组件 领域 解决的问题 定位 是否必选 替代方案 Loki Logs 低成本日志存储与查询 日志系统 ❌ ELK、OpenSearch Alloy / Agent Logs 日志采集 采集 Agent ❌ Fluent Bit、Vector Tracing# 组件 领域 解决的问题 定位 是否必选 替代方案 Tempo Tracing 分布式追踪 Trace 存储 ❌ Jaeger OpenTelemetry Telemetry 统一采集标准 采集规范 ✅ OpenTracing（过时） Visualization# 组件 领域 解决的问题 定位 是否必选 替代方案 Grafana 可视化 Metrics / Logs / Traces 展示 统一观测入口 ✅ Kibana ">
+<meta name="description" content="🧰 Observability 组件矩阵# 🧭 选型建议# 先落地 Metrics &#43; Grafana，再补齐 Logs / Tracing 日志优先低成本方案（Loki / Vector），再评估 ELK/OpenSearch Trace 采样率与成本权衡，避免全量采集 Metrics# 组件 领域 解决的问题 定位 是否必选 替代方案 Prometheus Metrics 指标采集与查询 指标引擎 ✅ VictoriaMetrics Prometheus Operator 运维自动化 Prometheus 生命周期管理 控制器 ❌ 手动部署 kube-state-metrics K8s Metrics Kubernetes 状态指标 指标源 ✅ 无 node-exporter 主机监控 Node 资源指标 指标采集器 ✅ 无 Logs# 组件 领域 解决的问题 定位 是否必选 替代方案 Loki Logs 低成本日志存储与查询 日志系统 ❌ ELK、OpenSearch Alloy / Agent Logs 日志采集 采集 Agent ❌ Fluent Bit、Vector Tracing# 组件 领域 解决的问题 定位 是否必选 替代方案 Tempo Tracing 分布式追踪 Trace 存储 ❌ Jaeger OpenTelemetry Telemetry 统一采集标准 采集规范 ✅ OpenTracing（过时） Visualization# 组件 领域 解决的问题 定位 是否必选 替代方案 Grafana 可视化 Metrics / Logs / Traces 展示 统一观测入口 ✅ Kibana ">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
 <meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/observability/component/">
   <meta property="og:site_name" content="Devflow">
   <meta property="og:title" content="Component">
-  <meta property="og:description" content="Metrics# 组件 领域 解决的问题 定位 是否必选 替代方案 Prometheus Metrics 指标采集与查询 指标引擎 ✅ VictoriaMetrics Prometheus Operator 运维自动化 Prometheus 生命周期管理 控制器 ❌ 手动部署 kube-state-metrics K8s Metrics Kubernetes 状态指标 指标源 ✅ 无 node-exporter 主机监控 Node 资源指标 指标采集器 ✅ 无 Logs# 组件 领域 解决的问题 定位 是否必选 替代方案 Loki Logs 低成本日志存储与查询 日志系统 ❌ ELK、OpenSearch Alloy / Agent Logs 日志采集 采集 Agent ❌ Fluent Bit、Vector Tracing# 组件 领域 解决的问题 定位 是否必选 替代方案 Tempo Tracing 分布式追踪 Trace 存储 ❌ Jaeger OpenTelemetry Telemetry 统一采集标准 采集规范 ✅ OpenTracing（过时） Visualization# 组件 领域 解决的问题 定位 是否必选 替代方案 Grafana 可视化 Metrics / Logs / Traces 展示 统一观测入口 ✅ Kibana">
+  <meta property="og:description" content="🧰 Observability 组件矩阵# 🧭 选型建议# 先落地 Metrics &#43; Grafana，再补齐 Logs / Tracing 日志优先低成本方案（Loki / Vector），再评估 ELK/OpenSearch Trace 采样率与成本权衡，避免全量采集 Metrics# 组件 领域 解决的问题 定位 是否必选 替代方案 Prometheus Metrics 指标采集与查询 指标引擎 ✅ VictoriaMetrics Prometheus Operator 运维自动化 Prometheus 生命周期管理 控制器 ❌ 手动部署 kube-state-metrics K8s Metrics Kubernetes 状态指标 指标源 ✅ 无 node-exporter 主机监控 Node 资源指标 指标采集器 ✅ 无 Logs# 组件 领域 解决的问题 定位 是否必选 替代方案 Loki Logs 低成本日志存储与查询 日志系统 ❌ ELK、OpenSearch Alloy / Agent Logs 日志采集 采集 Agent ❌ Fluent Bit、Vector Tracing# 组件 领域 解决的问题 定位 是否必选 替代方案 Tempo Tracing 分布式追踪 Trace 存储 ❌ Jaeger OpenTelemetry Telemetry 统一采集标准 采集规范 ✅ OpenTracing（过时） Visualization# 组件 领域 解决的问题 定位 是否必选 替代方案 Grafana 可视化 Metrics / Logs / Traces 展示 统一观测入口 ✅ Kibana">
   <meta property="og:locale" content="zh_cn">
   <meta property="og:type" content="article">
     <meta property="article:section" content="docs">
@@ -26,10 +26,10 @@ https://github.com/alex-shpak/hugo-book
 
 
   <meta itemprop="name" content="Component">
-  <meta itemprop="description" content="Metrics# 组件 领域 解决的问题 定位 是否必选 替代方案 Prometheus Metrics 指标采集与查询 指标引擎 ✅ VictoriaMetrics Prometheus Operator 运维自动化 Prometheus 生命周期管理 控制器 ❌ 手动部署 kube-state-metrics K8s Metrics Kubernetes 状态指标 指标源 ✅ 无 node-exporter 主机监控 Node 资源指标 指标采集器 ✅ 无 Logs# 组件 领域 解决的问题 定位 是否必选 替代方案 Loki Logs 低成本日志存储与查询 日志系统 ❌ ELK、OpenSearch Alloy / Agent Logs 日志采集 采集 Agent ❌ Fluent Bit、Vector Tracing# 组件 领域 解决的问题 定位 是否必选 替代方案 Tempo Tracing 分布式追踪 Trace 存储 ❌ Jaeger OpenTelemetry Telemetry 统一采集标准 采集规范 ✅ OpenTracing（过时） Visualization# 组件 领域 解决的问题 定位 是否必选 替代方案 Grafana 可视化 Metrics / Logs / Traces 展示 统一观测入口 ✅ Kibana">
+  <meta itemprop="description" content="🧰 Observability 组件矩阵# 🧭 选型建议# 先落地 Metrics &#43; Grafana，再补齐 Logs / Tracing 日志优先低成本方案（Loki / Vector），再评估 ELK/OpenSearch Trace 采样率与成本权衡，避免全量采集 Metrics# 组件 领域 解决的问题 定位 是否必选 替代方案 Prometheus Metrics 指标采集与查询 指标引擎 ✅ VictoriaMetrics Prometheus Operator 运维自动化 Prometheus 生命周期管理 控制器 ❌ 手动部署 kube-state-metrics K8s Metrics Kubernetes 状态指标 指标源 ✅ 无 node-exporter 主机监控 Node 资源指标 指标采集器 ✅ 无 Logs# 组件 领域 解决的问题 定位 是否必选 替代方案 Loki Logs 低成本日志存储与查询 日志系统 ❌ ELK、OpenSearch Alloy / Agent Logs 日志采集 采集 Agent ❌ Fluent Bit、Vector Tracing# 组件 领域 解决的问题 定位 是否必选 替代方案 Tempo Tracing 分布式追踪 Trace 存储 ❌ Jaeger OpenTelemetry Telemetry 统一采集标准 采集规范 ✅ OpenTracing（过时） Visualization# 组件 领域 解决的问题 定位 是否必选 替代方案 Grafana 可视化 Metrics / Logs / Traces 展示 统一观测入口 ✅ Kibana">
   <meta itemprop="datePublished" content="2026-01-04T00:00:00+00:00">
   <meta itemprop="dateModified" content="2026-01-04T00:00:00+00:00">
-  <meta itemprop="wordCount" content="97">
+  <meta itemprop="wordCount" content="115">
   <meta itemprop="keywords" content="Kubernetes,DevOps,Observability">
 
 <title>Component | Devflow</title>
@@ -82,7 +82,7 @@ https://github.com/alex-shpak/hugo-book
   
     <input type="checkbox" id="section-4bd032e4e5fe1323a134583cafeecf06" class="toggle"  />
     <label for="section-4bd032e4e5fe1323a134583cafeecf06" class="flex">
-      <a role="button" class="">
+      <a href="/docs/ci/" class="">
         CI</a>
       <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
     </label>
@@ -91,6 +91,18 @@ https://github.com/alex-shpak/hugo-book
           
   <ul>
     
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/ci/queue/" class="">
+      Queue</a>
+  
+
+        </li>
       
     
       
@@ -214,7 +226,7 @@ https://github.com/alex-shpak/hugo-book
   
     <input type="checkbox" id="section-6884c320646745efe1e09831aa35ad5b" class="toggle" checked />
     <label for="section-6884c320646745efe1e09831aa35ad5b" class="flex">
-      <a role="button" class="">
+      <a href="/docs/observability/" class="">
         observability</a>
       <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
     </label>
@@ -244,8 +256,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/docs/observability/attributes/" class="">
-      Attributes</a>
+    <a href="/docs/observability/standard/" class="">
+      Standard</a>
   
 
         </li>
@@ -258,8 +270,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/docs/observability/standard/" class="">
-      Standard</a>
+    <a href="/docs/observability/attributes/" class="">
+      Attributes</a>
   
 
         </li>
@@ -279,7 +291,7 @@ https://github.com/alex-shpak/hugo-book
   
     <input type="checkbox" id="section-97bc183e640cafe9ca9da46d45661ec8" class="toggle"  />
     <label for="section-97bc183e640cafe9ca9da46d45661ec8" class="flex">
-      <a role="button" class="">
+      <a href="/docs/devflow-controller/" class="">
         devflow-controller</a>
       <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
     </label>
@@ -370,7 +382,14 @@ https://github.com/alex-shpak/hugo-book
 
       
       
-  <article class="markdown book-article"><h3 id="metrics">Metrics<a class="anchor" href="#metrics">#</a></h3>
+  <article class="markdown book-article"><h1 id="-observability-组件矩阵">🧰 Observability 组件矩阵<a class="anchor" href="#-observability-%e7%bb%84%e4%bb%b6%e7%9f%a9%e9%98%b5">#</a></h1>
+<h2 id="-选型建议">🧭 选型建议<a class="anchor" href="#-%e9%80%89%e5%9e%8b%e5%bb%ba%e8%ae%ae">#</a></h2>
+<ul>
+<li>先落地 Metrics + Grafana，再补齐 Logs / Tracing</li>
+<li>日志优先低成本方案（Loki / Vector），再评估 ELK/OpenSearch</li>
+<li>Trace 采样率与成本权衡，避免全量采集</li>
+</ul>
+<h3 id="metrics">Metrics<a class="anchor" href="#metrics">#</a></h3>
 <table>
   <thead>
       <tr>
@@ -530,16 +549,16 @@ https://github.com/alex-shpak/hugo-book
   <div class="flex flex-wrap justify-between">
     <span>
     
-      <a href="/docs/cd/component/" class="flex align-center">
+      <a href="/docs/observability/" class="flex align-center">
         <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
-        <span>Components</span>
+        <span>observability</span>
       </a>
     
     </span>
     <span>
     
-      <a href="/docs/observability/attributes/" class="flex align-center">
-        <span>Attributes</span>
+      <a href="/docs/observability/standard/" class="flex align-center">
+        <span>Standard</span>
         <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
       </a>
     

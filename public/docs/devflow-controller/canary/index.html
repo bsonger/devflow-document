@@ -8,24 +8,28 @@ https://github.com/alex-shpak/hugo-book
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Devflow Controller 监听CD 与状态回写流程# Devflow Controller 的核心职责是 监听 Argo CD Application 与 Argo Rollouts Rollout 的状态变化，并将发布进度与结果回写到 Mongo（steps 与 job status），形成闭环可观测的发布流水线。
-1. 监听对象# Argo CD Application 用于确认配置是否已下发（同步状态） 用于确认应用健康状态（健康度） Argo Rollouts Rollout 用于跟踪灰度阶段、流量权重与暂停/校验 用于判断发布是否成功、失败或回滚 2. 回写数据结构（Mongo）# steps：记录每个灰度阶段的执行进度与校验结果 例如：Applied / 10% / Verify / 30% / Verify / 50% / Verify / 100% job status：记录整个发布任务的全局状态 例如：Running / Succeeded / Failed 3. 典型监听与回写流程（Canary）# 创建发布任务 Devflow Console 触发 Job 生成 Argo CD Application Controller 监听到 Application 已同步 → steps=Applied 下发 Rollout Rollout 资源创建 Controller 监听 Rollout 进入发布阶段 → job status=Running 按阶段推进 10% → Verify → 30% → Verify → 50% → Verify → 100% Controller 在每个阶段更新 steps： 进入阶段：标记为 Running 验证通过：标记为 Succeeded 验证失败：标记为 Failed，并更新 job status=Failed 发布完成 Rollout 进入完成状态 Controller 更新 steps=100%，并设置 job status=Succeeded 4. 状态映射建议（简化版）# 监听对象 关键状态 steps 更新 job status 更新 Application Synced / Healthy Applied Running Rollout Progressing / Paused 对应阶段 Running Running Rollout Analysis 成功 对应 Verify Succeeded Running Rollout Degraded / Analysis 失败 对应 Verify Failed Failed Rollout Completed 100% Succeeded Succeeded 5. 异常与回滚# 如果 Rollout 进入 Degraded 或 Analysis 失败： Controller 立即回写 steps=Failed 更新 job status=Failed Rollout 侧可自动回滚（由策略或人工决定） 6. 关键点总结# Application 保证 配置已下发 Rollout 体现 发布过程与流量进度 Controller 负责 监听 &#43; 归一化状态 &#43; 回写 Mongo steps 精细化记录阶段；job status 表示全局结果 ">
+<meta name="description" content="🔄 Devflow Controller 监听 CD 与状态回写流程# Devflow Controller 的核心职责是 监听 Argo CD Application 与 Argo Rollouts Rollout 的状态变化，并将发布进度与结果回写到 Mongo（steps 与 job status），形成闭环可观测的发布流水线。
+🧩 1. 监听对象# Argo CD Application 用于确认配置是否已下发（同步状态） 用于确认应用健康状态（健康度） Argo Rollouts Rollout 用于跟踪灰度阶段、流量权重与暂停/校验 用于判断发布是否成功、失败或回滚 🧾 2. 回写数据结构（Mongo）# steps：记录每个灰度阶段的执行进度与校验结果 例如：Applied / 10% / Verify / 30% / Verify / 50% / Verify / 100% job status：记录整个发布任务的全局状态 例如：Running / Succeeded / Failed 🗺️ 3. 典型监听与回写流程（Canary）# 创建发布任务 Devflow Console 触发 Job 生成 Argo CD Application Controller 监听到 Application 已同步 → steps=Applied 下发 Rollout Rollout 资源创建 Controller 监听 Rollout 进入发布阶段 → job status=Running 按阶段推进 10% → Verify → 30% → Verify → 50% → Verify → 100% Controller 在每个阶段更新 steps： 进入阶段：标记为 Running 验证通过：标记为 Succeeded 验证失败：标记为 Failed，并更新 job status=Failed 发布完成 Rollout 进入完成状态 Controller 更新 steps=100%，并设置 job status=Succeeded 🧭 4. 状态映射建议（简化版）# 监听对象 关键状态 steps 更新 job status 更新 Application Synced / Healthy Applied Running Rollout Progressing / Paused 对应阶段 Running Running Rollout Analysis 成功 对应 Verify Succeeded Running Rollout Degraded / Analysis 失败 对应 Verify Failed Failed Rollout Completed 100% Succeeded Succeeded 🔁 5. 异常与回滚# 如果 Rollout 进入 Degraded 或 Analysis 失败： Controller 立即回写 steps=Failed 更新 job status=Failed Rollout 侧可自动回滚（由策略或人工决定） ✅ 6. 关键点总结# 📥📤 7. 输入 / 输出（简要）# 输入：Argo CD Application、Argo Rollouts Rollout、指标与 Analysis 结果
+输出：Mongo steps、job status、发布进度与结果回写
+">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
 <meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/devflow-controller/canary/">
   <meta property="og:site_name" content="Devflow">
   <meta property="og:title" content="Devflow">
-  <meta property="og:description" content="Devflow Controller 监听CD 与状态回写流程# Devflow Controller 的核心职责是 监听 Argo CD Application 与 Argo Rollouts Rollout 的状态变化，并将发布进度与结果回写到 Mongo（steps 与 job status），形成闭环可观测的发布流水线。
-1. 监听对象# Argo CD Application 用于确认配置是否已下发（同步状态） 用于确认应用健康状态（健康度） Argo Rollouts Rollout 用于跟踪灰度阶段、流量权重与暂停/校验 用于判断发布是否成功、失败或回滚 2. 回写数据结构（Mongo）# steps：记录每个灰度阶段的执行进度与校验结果 例如：Applied / 10% / Verify / 30% / Verify / 50% / Verify / 100% job status：记录整个发布任务的全局状态 例如：Running / Succeeded / Failed 3. 典型监听与回写流程（Canary）# 创建发布任务 Devflow Console 触发 Job 生成 Argo CD Application Controller 监听到 Application 已同步 → steps=Applied 下发 Rollout Rollout 资源创建 Controller 监听 Rollout 进入发布阶段 → job status=Running 按阶段推进 10% → Verify → 30% → Verify → 50% → Verify → 100% Controller 在每个阶段更新 steps： 进入阶段：标记为 Running 验证通过：标记为 Succeeded 验证失败：标记为 Failed，并更新 job status=Failed 发布完成 Rollout 进入完成状态 Controller 更新 steps=100%，并设置 job status=Succeeded 4. 状态映射建议（简化版）# 监听对象 关键状态 steps 更新 job status 更新 Application Synced / Healthy Applied Running Rollout Progressing / Paused 对应阶段 Running Running Rollout Analysis 成功 对应 Verify Succeeded Running Rollout Degraded / Analysis 失败 对应 Verify Failed Failed Rollout Completed 100% Succeeded Succeeded 5. 异常与回滚# 如果 Rollout 进入 Degraded 或 Analysis 失败： Controller 立即回写 steps=Failed 更新 job status=Failed Rollout 侧可自动回滚（由策略或人工决定） 6. 关键点总结# Application 保证 配置已下发 Rollout 体现 发布过程与流量进度 Controller 负责 监听 &#43; 归一化状态 &#43; 回写 Mongo steps 精细化记录阶段；job status 表示全局结果">
+  <meta property="og:description" content="🔄 Devflow Controller 监听 CD 与状态回写流程# Devflow Controller 的核心职责是 监听 Argo CD Application 与 Argo Rollouts Rollout 的状态变化，并将发布进度与结果回写到 Mongo（steps 与 job status），形成闭环可观测的发布流水线。
+🧩 1. 监听对象# Argo CD Application 用于确认配置是否已下发（同步状态） 用于确认应用健康状态（健康度） Argo Rollouts Rollout 用于跟踪灰度阶段、流量权重与暂停/校验 用于判断发布是否成功、失败或回滚 🧾 2. 回写数据结构（Mongo）# steps：记录每个灰度阶段的执行进度与校验结果 例如：Applied / 10% / Verify / 30% / Verify / 50% / Verify / 100% job status：记录整个发布任务的全局状态 例如：Running / Succeeded / Failed 🗺️ 3. 典型监听与回写流程（Canary）# 创建发布任务 Devflow Console 触发 Job 生成 Argo CD Application Controller 监听到 Application 已同步 → steps=Applied 下发 Rollout Rollout 资源创建 Controller 监听 Rollout 进入发布阶段 → job status=Running 按阶段推进 10% → Verify → 30% → Verify → 50% → Verify → 100% Controller 在每个阶段更新 steps： 进入阶段：标记为 Running 验证通过：标记为 Succeeded 验证失败：标记为 Failed，并更新 job status=Failed 发布完成 Rollout 进入完成状态 Controller 更新 steps=100%，并设置 job status=Succeeded 🧭 4. 状态映射建议（简化版）# 监听对象 关键状态 steps 更新 job status 更新 Application Synced / Healthy Applied Running Rollout Progressing / Paused 对应阶段 Running Running Rollout Analysis 成功 对应 Verify Succeeded Running Rollout Degraded / Analysis 失败 对应 Verify Failed Failed Rollout Completed 100% Succeeded Succeeded 🔁 5. 异常与回滚# 如果 Rollout 进入 Degraded 或 Analysis 失败： Controller 立即回写 steps=Failed 更新 job status=Failed Rollout 侧可自动回滚（由策略或人工决定） ✅ 6. 关键点总结# 📥📤 7. 输入 / 输出（简要）# 输入：Argo CD Application、Argo Rollouts Rollout、指标与 Analysis 结果
+输出：Mongo steps、job status、发布进度与结果回写">
   <meta property="og:locale" content="zh_cn">
   <meta property="og:type" content="article">
     <meta property="article:section" content="docs">
 
 
   <meta itemprop="name" content="Devflow">
-  <meta itemprop="description" content="Devflow Controller 监听CD 与状态回写流程# Devflow Controller 的核心职责是 监听 Argo CD Application 与 Argo Rollouts Rollout 的状态变化，并将发布进度与结果回写到 Mongo（steps 与 job status），形成闭环可观测的发布流水线。
-1. 监听对象# Argo CD Application 用于确认配置是否已下发（同步状态） 用于确认应用健康状态（健康度） Argo Rollouts Rollout 用于跟踪灰度阶段、流量权重与暂停/校验 用于判断发布是否成功、失败或回滚 2. 回写数据结构（Mongo）# steps：记录每个灰度阶段的执行进度与校验结果 例如：Applied / 10% / Verify / 30% / Verify / 50% / Verify / 100% job status：记录整个发布任务的全局状态 例如：Running / Succeeded / Failed 3. 典型监听与回写流程（Canary）# 创建发布任务 Devflow Console 触发 Job 生成 Argo CD Application Controller 监听到 Application 已同步 → steps=Applied 下发 Rollout Rollout 资源创建 Controller 监听 Rollout 进入发布阶段 → job status=Running 按阶段推进 10% → Verify → 30% → Verify → 50% → Verify → 100% Controller 在每个阶段更新 steps： 进入阶段：标记为 Running 验证通过：标记为 Succeeded 验证失败：标记为 Failed，并更新 job status=Failed 发布完成 Rollout 进入完成状态 Controller 更新 steps=100%，并设置 job status=Succeeded 4. 状态映射建议（简化版）# 监听对象 关键状态 steps 更新 job status 更新 Application Synced / Healthy Applied Running Rollout Progressing / Paused 对应阶段 Running Running Rollout Analysis 成功 对应 Verify Succeeded Running Rollout Degraded / Analysis 失败 对应 Verify Failed Failed Rollout Completed 100% Succeeded Succeeded 5. 异常与回滚# 如果 Rollout 进入 Degraded 或 Analysis 失败： Controller 立即回写 steps=Failed 更新 job status=Failed Rollout 侧可自动回滚（由策略或人工决定） 6. 关键点总结# Application 保证 配置已下发 Rollout 体现 发布过程与流量进度 Controller 负责 监听 &#43; 归一化状态 &#43; 回写 Mongo steps 精细化记录阶段；job status 表示全局结果">
-  <meta itemprop="wordCount" content="198">
+  <meta itemprop="description" content="🔄 Devflow Controller 监听 CD 与状态回写流程# Devflow Controller 的核心职责是 监听 Argo CD Application 与 Argo Rollouts Rollout 的状态变化，并将发布进度与结果回写到 Mongo（steps 与 job status），形成闭环可观测的发布流水线。
+🧩 1. 监听对象# Argo CD Application 用于确认配置是否已下发（同步状态） 用于确认应用健康状态（健康度） Argo Rollouts Rollout 用于跟踪灰度阶段、流量权重与暂停/校验 用于判断发布是否成功、失败或回滚 🧾 2. 回写数据结构（Mongo）# steps：记录每个灰度阶段的执行进度与校验结果 例如：Applied / 10% / Verify / 30% / Verify / 50% / Verify / 100% job status：记录整个发布任务的全局状态 例如：Running / Succeeded / Failed 🗺️ 3. 典型监听与回写流程（Canary）# 创建发布任务 Devflow Console 触发 Job 生成 Argo CD Application Controller 监听到 Application 已同步 → steps=Applied 下发 Rollout Rollout 资源创建 Controller 监听 Rollout 进入发布阶段 → job status=Running 按阶段推进 10% → Verify → 30% → Verify → 50% → Verify → 100% Controller 在每个阶段更新 steps： 进入阶段：标记为 Running 验证通过：标记为 Succeeded 验证失败：标记为 Failed，并更新 job status=Failed 发布完成 Rollout 进入完成状态 Controller 更新 steps=100%，并设置 job status=Succeeded 🧭 4. 状态映射建议（简化版）# 监听对象 关键状态 steps 更新 job status 更新 Application Synced / Healthy Applied Running Rollout Progressing / Paused 对应阶段 Running Running Rollout Analysis 成功 对应 Verify Succeeded Running Rollout Degraded / Analysis 失败 对应 Verify Failed Failed Rollout Completed 100% Succeeded Succeeded 🔁 5. 异常与回滚# 如果 Rollout 进入 Degraded 或 Analysis 失败： Controller 立即回写 steps=Failed 更新 job status=Failed Rollout 侧可自动回滚（由策略或人工决定） ✅ 6. 关键点总结# 📥📤 7. 输入 / 输出（简要）# 输入：Argo CD Application、Argo Rollouts Rollout、指标与 Analysis 结果
+输出：Mongo steps、job status、发布进度与结果回写">
+  <meta itemprop="wordCount" content="221">
 
 <title>Canary | Devflow</title>
 <link rel="icon" href="/favicon.png" >
@@ -77,7 +81,7 @@ https://github.com/alex-shpak/hugo-book
   
     <input type="checkbox" id="section-4bd032e4e5fe1323a134583cafeecf06" class="toggle"  />
     <label for="section-4bd032e4e5fe1323a134583cafeecf06" class="flex">
-      <a role="button" class="">
+      <a href="/docs/ci/" class="">
         CI</a>
       <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
     </label>
@@ -86,6 +90,18 @@ https://github.com/alex-shpak/hugo-book
           
   <ul>
     
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/ci/queue/" class="">
+      Queue</a>
+  
+
+        </li>
       
     
       
@@ -209,7 +225,7 @@ https://github.com/alex-shpak/hugo-book
   
     <input type="checkbox" id="section-6884c320646745efe1e09831aa35ad5b" class="toggle"  />
     <label for="section-6884c320646745efe1e09831aa35ad5b" class="flex">
-      <a role="button" class="">
+      <a href="/docs/observability/" class="">
         observability</a>
       <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
     </label>
@@ -239,8 +255,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/docs/observability/attributes/" class="">
-      Attributes</a>
+    <a href="/docs/observability/standard/" class="">
+      Standard</a>
   
 
         </li>
@@ -253,8 +269,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/docs/observability/standard/" class="">
-      Standard</a>
+    <a href="/docs/observability/attributes/" class="">
+      Attributes</a>
   
 
         </li>
@@ -274,7 +290,7 @@ https://github.com/alex-shpak/hugo-book
   
     <input type="checkbox" id="section-97bc183e640cafe9ca9da46d45661ec8" class="toggle" checked />
     <label for="section-97bc183e640cafe9ca9da46d45661ec8" class="flex">
-      <a role="button" class="">
+      <a href="/docs/devflow-controller/" class="">
         devflow-controller</a>
       <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
     </label>
@@ -365,10 +381,10 @@ https://github.com/alex-shpak/hugo-book
 
       
       
-  <article class="markdown book-article"><h1 id="devflow-controller-监听cd-与状态回写流程">Devflow Controller 监听CD 与状态回写流程<a class="anchor" href="#devflow-controller-%e7%9b%91%e5%90%accd-%e4%b8%8e%e7%8a%b6%e6%80%81%e5%9b%9e%e5%86%99%e6%b5%81%e7%a8%8b">#</a></h1>
+  <article class="markdown book-article"><h1 id="-devflow-controller-监听-cd-与状态回写流程">🔄 Devflow Controller 监听 CD 与状态回写流程<a class="anchor" href="#-devflow-controller-%e7%9b%91%e5%90%ac-cd-%e4%b8%8e%e7%8a%b6%e6%80%81%e5%9b%9e%e5%86%99%e6%b5%81%e7%a8%8b">#</a></h1>
 <p>Devflow Controller 的核心职责是 <strong>监听 Argo CD Application 与 Argo Rollouts Rollout 的状态变化</strong>，并将发布进度与结果回写到 Mongo（<code>steps</code> 与 <code>job status</code>），形成闭环可观测的发布流水线。</p>
 <hr>
-<h2 id="1-监听对象">1. 监听对象<a class="anchor" href="#1-%e7%9b%91%e5%90%ac%e5%af%b9%e8%b1%a1">#</a></h2>
+<h2 id="-1-监听对象">🧩 1. 监听对象<a class="anchor" href="#-1-%e7%9b%91%e5%90%ac%e5%af%b9%e8%b1%a1">#</a></h2>
 <ol>
 <li><strong>Argo CD Application</strong>
 <ul>
@@ -384,7 +400,7 @@ https://github.com/alex-shpak/hugo-book
 </li>
 </ol>
 <hr>
-<h2 id="2-回写数据结构mongo">2. 回写数据结构（Mongo）<a class="anchor" href="#2-%e5%9b%9e%e5%86%99%e6%95%b0%e6%8d%ae%e7%bb%93%e6%9e%84mongo">#</a></h2>
+<h2 id="-2-回写数据结构mongo">🧾 2. 回写数据结构（Mongo）<a class="anchor" href="#-2-%e5%9b%9e%e5%86%99%e6%95%b0%e6%8d%ae%e7%bb%93%e6%9e%84mongo">#</a></h2>
 <ul>
 <li><strong>steps</strong>：记录每个灰度阶段的执行进度与校验结果
 <ul>
@@ -398,7 +414,7 @@ https://github.com/alex-shpak/hugo-book
 </li>
 </ul>
 <hr>
-<h2 id="3-典型监听与回写流程canary">3. 典型监听与回写流程（Canary）<a class="anchor" href="#3-%e5%85%b8%e5%9e%8b%e7%9b%91%e5%90%ac%e4%b8%8e%e5%9b%9e%e5%86%99%e6%b5%81%e7%a8%8bcanary">#</a></h2>
+<h2 id="-3-典型监听与回写流程canary">🗺️ 3. 典型监听与回写流程（Canary）<a class="anchor" href="#-3-%e5%85%b8%e5%9e%8b%e7%9b%91%e5%90%ac%e4%b8%8e%e5%9b%9e%e5%86%99%e6%b5%81%e7%a8%8bcanary">#</a></h2>
 <ol>
 <li><strong>创建发布任务</strong>
 <ul>
@@ -433,7 +449,7 @@ https://github.com/alex-shpak/hugo-book
 </li>
 </ol>
 <hr>
-<h2 id="4-状态映射建议简化版">4. 状态映射建议（简化版）<a class="anchor" href="#4-%e7%8a%b6%e6%80%81%e6%98%a0%e5%b0%84%e5%bb%ba%e8%ae%ae%e7%ae%80%e5%8c%96%e7%89%88">#</a></h2>
+<h2 id="-4-状态映射建议简化版">🧭 4. 状态映射建议（简化版）<a class="anchor" href="#-4-%e7%8a%b6%e6%80%81%e6%98%a0%e5%b0%84%e5%bb%ba%e8%ae%ae%e7%ae%80%e5%8c%96%e7%89%88">#</a></h2>
 <table>
   <thead>
       <tr>
@@ -477,7 +493,7 @@ https://github.com/alex-shpak/hugo-book
   </tbody>
 </table>
 <hr>
-<h2 id="5-异常与回滚">5. 异常与回滚<a class="anchor" href="#5-%e5%bc%82%e5%b8%b8%e4%b8%8e%e5%9b%9e%e6%bb%9a">#</a></h2>
+<h2 id="-5-异常与回滚">🔁 5. 异常与回滚<a class="anchor" href="#-5-%e5%bc%82%e5%b8%b8%e4%b8%8e%e5%9b%9e%e6%bb%9a">#</a></h2>
 <ul>
 <li>如果 Rollout 进入 <strong>Degraded</strong> 或 Analysis 失败：
 <ul>
@@ -488,7 +504,10 @@ https://github.com/alex-shpak/hugo-book
 </li>
 </ul>
 <hr>
-<h2 id="6-关键点总结">6. 关键点总结<a class="anchor" href="#6-%e5%85%b3%e9%94%ae%e7%82%b9%e6%80%bb%e7%bb%93">#</a></h2>
+<h2 id="-6-关键点总结">✅ 6. 关键点总结<a class="anchor" href="#-6-%e5%85%b3%e9%94%ae%e7%82%b9%e6%80%bb%e7%bb%93">#</a></h2>
+<h2 id="-7-输入--输出简要">📥📤 7. 输入 / 输出（简要）<a class="anchor" href="#-7-%e8%be%93%e5%85%a5--%e8%be%93%e5%87%ba%e7%ae%80%e8%a6%81">#</a></h2>
+<p><strong>输入</strong>：Argo CD Application、Argo Rollouts Rollout、指标与 Analysis 结果<br>
+<strong>输出</strong>：Mongo <code>steps</code>、<code>job status</code>、发布进度与结果回写</p>
 <ul>
 <li>Application 保证 <strong>配置已下发</strong></li>
 <li>Rollout 体现 <strong>发布过程与流量进度</strong></li>
@@ -523,9 +542,9 @@ https://github.com/alex-shpak/hugo-book
   <div class="flex flex-wrap justify-between">
     <span>
     
-      <a href="/docs/observability/standard/" class="flex align-center">
+      <a href="/docs/devflow-controller/" class="flex align-center">
         <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
-        <span>Standard</span>
+        <span>devflow-controller</span>
       </a>
     
     </span>

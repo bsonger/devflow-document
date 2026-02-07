@@ -8,21 +8,21 @@ https://github.com/alex-shpak/hugo-book
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="一、持续交付（CD &amp; 发布）# 组件 云原生领域 解决的问题 架构定位 是否必选 可替代方案 Argo CD CD / GitOps Git 驱动的声明式部署 CD 控制平面 ✅ FluxCD Argo ApplicationSet CD 多环境 / 多集群应用生成 CD 扩展能力 ❌ Helmfile、自研脚本 Argo Rollouts 发布策略 灰度 / 蓝绿发布 高级 Deployment 控制器 ❌ Flagger、Spinnaker 二、流量治理与服务网格# 组件 云原生领域 解决的问题 架构定位 是否必选 可替代方案 Istio Service Mesh 流量治理、mTLS、可观测 服务网格控制面 ❌ Linkerd、Consul Mesh Istio Ingress Gateway 流量入口 统一流量入口 南北向网关 ❌ Nginx Ingress、Traefik VirtualService / Gateway 流量控制 路由、权重、故障注入 流量规则层 ❌ Nginx 配置 ">
+<meta name="description" content="🧭 使用建议# 以 Argo CD 作为 GitOps 基座，先打通「声明式部署」 有灰度需求再引入 Rollouts，避免过早复杂化 多环境/多集群场景优先补齐 ApplicationSet 🚀 一、持续交付（CD &amp; 发布）# 组件 云原生领域 解决的问题 架构定位 是否必选 可替代方案 Argo CD CD / GitOps Git 驱动的声明式部署 CD 控制平面 ✅ FluxCD Argo ApplicationSet CD 多环境 / 多集群应用生成 CD 扩展能力 ❌ Helmfile、自研脚本 Argo Rollouts 发布策略 灰度 / 蓝绿发布 高级 Deployment 控制器 ❌ Flagger、Spinnaker 🕸️ 二、流量治理与服务网格# 组件 云原生领域 解决的问题 架构定位 是否必选 可替代方案 Istio Service Mesh 流量治理、mTLS、可观测 服务网格控制面 ❌ Linkerd、Consul Mesh Istio Ingress Gateway 流量入口 统一流量入口 南北向网关 ❌ Nginx Ingress、Traefik VirtualService / Gateway 流量控制 路由、权重、故障注入 流量规则层 ❌ Nginx 配置 ">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
 <meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/cd/component/">
   <meta property="og:site_name" content="Devflow">
   <meta property="og:title" content="Components">
-  <meta property="og:description" content="一、持续交付（CD &amp; 发布）# 组件 云原生领域 解决的问题 架构定位 是否必选 可替代方案 Argo CD CD / GitOps Git 驱动的声明式部署 CD 控制平面 ✅ FluxCD Argo ApplicationSet CD 多环境 / 多集群应用生成 CD 扩展能力 ❌ Helmfile、自研脚本 Argo Rollouts 发布策略 灰度 / 蓝绿发布 高级 Deployment 控制器 ❌ Flagger、Spinnaker 二、流量治理与服务网格# 组件 云原生领域 解决的问题 架构定位 是否必选 可替代方案 Istio Service Mesh 流量治理、mTLS、可观测 服务网格控制面 ❌ Linkerd、Consul Mesh Istio Ingress Gateway 流量入口 统一流量入口 南北向网关 ❌ Nginx Ingress、Traefik VirtualService / Gateway 流量控制 路由、权重、故障注入 流量规则层 ❌ Nginx 配置">
+  <meta property="og:description" content="🧭 使用建议# 以 Argo CD 作为 GitOps 基座，先打通「声明式部署」 有灰度需求再引入 Rollouts，避免过早复杂化 多环境/多集群场景优先补齐 ApplicationSet 🚀 一、持续交付（CD &amp; 发布）# 组件 云原生领域 解决的问题 架构定位 是否必选 可替代方案 Argo CD CD / GitOps Git 驱动的声明式部署 CD 控制平面 ✅ FluxCD Argo ApplicationSet CD 多环境 / 多集群应用生成 CD 扩展能力 ❌ Helmfile、自研脚本 Argo Rollouts 发布策略 灰度 / 蓝绿发布 高级 Deployment 控制器 ❌ Flagger、Spinnaker 🕸️ 二、流量治理与服务网格# 组件 云原生领域 解决的问题 架构定位 是否必选 可替代方案 Istio Service Mesh 流量治理、mTLS、可观测 服务网格控制面 ❌ Linkerd、Consul Mesh Istio Ingress Gateway 流量入口 统一流量入口 南北向网关 ❌ Nginx Ingress、Traefik VirtualService / Gateway 流量控制 路由、权重、故障注入 流量规则层 ❌ Nginx 配置">
   <meta property="og:locale" content="zh_cn">
   <meta property="og:type" content="article">
     <meta property="article:section" content="docs">
 
 
   <meta itemprop="name" content="Components">
-  <meta itemprop="description" content="一、持续交付（CD &amp; 发布）# 组件 云原生领域 解决的问题 架构定位 是否必选 可替代方案 Argo CD CD / GitOps Git 驱动的声明式部署 CD 控制平面 ✅ FluxCD Argo ApplicationSet CD 多环境 / 多集群应用生成 CD 扩展能力 ❌ Helmfile、自研脚本 Argo Rollouts 发布策略 灰度 / 蓝绿发布 高级 Deployment 控制器 ❌ Flagger、Spinnaker 二、流量治理与服务网格# 组件 云原生领域 解决的问题 架构定位 是否必选 可替代方案 Istio Service Mesh 流量治理、mTLS、可观测 服务网格控制面 ❌ Linkerd、Consul Mesh Istio Ingress Gateway 流量入口 统一流量入口 南北向网关 ❌ Nginx Ingress、Traefik VirtualService / Gateway 流量控制 路由、权重、故障注入 流量规则层 ❌ Nginx 配置">
-  <meta itemprop="wordCount" content="74">
+  <meta itemprop="description" content="🧭 使用建议# 以 Argo CD 作为 GitOps 基座，先打通「声明式部署」 有灰度需求再引入 Rollouts，避免过早复杂化 多环境/多集群场景优先补齐 ApplicationSet 🚀 一、持续交付（CD &amp; 发布）# 组件 云原生领域 解决的问题 架构定位 是否必选 可替代方案 Argo CD CD / GitOps Git 驱动的声明式部署 CD 控制平面 ✅ FluxCD Argo ApplicationSet CD 多环境 / 多集群应用生成 CD 扩展能力 ❌ Helmfile、自研脚本 Argo Rollouts 发布策略 灰度 / 蓝绿发布 高级 Deployment 控制器 ❌ Flagger、Spinnaker 🕸️ 二、流量治理与服务网格# 组件 云原生领域 解决的问题 架构定位 是否必选 可替代方案 Istio Service Mesh 流量治理、mTLS、可观测 服务网格控制面 ❌ Linkerd、Consul Mesh Istio Ingress Gateway 流量入口 统一流量入口 南北向网关 ❌ Nginx Ingress、Traefik VirtualService / Gateway 流量控制 路由、权重、故障注入 流量规则层 ❌ Nginx 配置">
+  <meta itemprop="wordCount" content="88">
 
 <title>Components | Devflow</title>
 <link rel="icon" href="/favicon.png" >
@@ -74,7 +74,7 @@ https://github.com/alex-shpak/hugo-book
   
     <input type="checkbox" id="section-4bd032e4e5fe1323a134583cafeecf06" class="toggle"  />
     <label for="section-4bd032e4e5fe1323a134583cafeecf06" class="flex">
-      <a role="button" class="">
+      <a href="/docs/ci/" class="">
         CI</a>
       <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
     </label>
@@ -83,6 +83,18 @@ https://github.com/alex-shpak/hugo-book
           
   <ul>
     
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/ci/queue/" class="">
+      Queue</a>
+  
+
+        </li>
       
     
       
@@ -206,7 +218,7 @@ https://github.com/alex-shpak/hugo-book
   
     <input type="checkbox" id="section-6884c320646745efe1e09831aa35ad5b" class="toggle"  />
     <label for="section-6884c320646745efe1e09831aa35ad5b" class="flex">
-      <a role="button" class="">
+      <a href="/docs/observability/" class="">
         observability</a>
       <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
     </label>
@@ -236,8 +248,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/docs/observability/attributes/" class="">
-      Attributes</a>
+    <a href="/docs/observability/standard/" class="">
+      Standard</a>
   
 
         </li>
@@ -250,8 +262,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/docs/observability/standard/" class="">
-      Standard</a>
+    <a href="/docs/observability/attributes/" class="">
+      Attributes</a>
   
 
         </li>
@@ -271,7 +283,7 @@ https://github.com/alex-shpak/hugo-book
   
     <input type="checkbox" id="section-97bc183e640cafe9ca9da46d45661ec8" class="toggle"  />
     <label for="section-97bc183e640cafe9ca9da46d45661ec8" class="flex">
-      <a role="button" class="">
+      <a href="/docs/devflow-controller/" class="">
         devflow-controller</a>
       <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
     </label>
@@ -362,7 +374,13 @@ https://github.com/alex-shpak/hugo-book
 
       
       
-  <article class="markdown book-article"><h2 id="一持续交付cd--发布">一、持续交付（CD &amp; 发布）<a class="anchor" href="#%e4%b8%80%e6%8c%81%e7%bb%ad%e4%ba%a4%e4%bb%98cd--%e5%8f%91%e5%b8%83">#</a></h2>
+  <article class="markdown book-article"><h2 id="-使用建议">🧭 使用建议<a class="anchor" href="#-%e4%bd%bf%e7%94%a8%e5%bb%ba%e8%ae%ae">#</a></h2>
+<ul>
+<li>以 Argo CD 作为 GitOps 基座，先打通「声明式部署」</li>
+<li>有灰度需求再引入 Rollouts，避免过早复杂化</li>
+<li>多环境/多集群场景优先补齐 ApplicationSet</li>
+</ul>
+<h2 id="-一持续交付cd--发布">🚀 一、持续交付（CD &amp; 发布）<a class="anchor" href="#-%e4%b8%80%e6%8c%81%e7%bb%ad%e4%ba%a4%e4%bb%98cd--%e5%8f%91%e5%b8%83">#</a></h2>
 <table>
   <thead>
       <tr>
@@ -402,7 +420,7 @@ https://github.com/alex-shpak/hugo-book
   </tbody>
 </table>
 <hr>
-<h2 id="二流量治理与服务网格">二、流量治理与服务网格<a class="anchor" href="#%e4%ba%8c%e6%b5%81%e9%87%8f%e6%b2%bb%e7%90%86%e4%b8%8e%e6%9c%8d%e5%8a%a1%e7%bd%91%e6%a0%bc">#</a></h2>
+<h2 id="-二流量治理与服务网格">🕸️ 二、流量治理与服务网格<a class="anchor" href="#-%e4%ba%8c%e6%b5%81%e9%87%8f%e6%b2%bb%e7%90%86%e4%b8%8e%e6%9c%8d%e5%8a%a1%e7%bd%91%e6%a0%bc">#</a></h2>
 <table>
   <thead>
       <tr>
@@ -478,8 +496,8 @@ https://github.com/alex-shpak/hugo-book
     </span>
     <span>
     
-      <a href="/docs/observability/component/" class="flex align-center">
-        <span>Component</span>
+      <a href="/docs/observability/" class="flex align-center">
+        <span>observability</span>
         <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
       </a>
     

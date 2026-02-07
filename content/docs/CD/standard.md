@@ -1,5 +1,11 @@
 
-##  发布策略选型建议
+## 🧭 速览
+
+- Canary：渐进放量，适合核心业务  
+- Blue/Green：原子切流，回滚快  
+- Rolling：默认策略，成本低  
+
+## 🧭 发布策略选型建议
 
 | 场景 | 推荐策略 |
 |----|----|
@@ -12,7 +18,7 @@
 
 ---
 
-## 云原生 CD 最佳实践
+## 🧰 云原生 CD 最佳实践
 
 - 构建与发布完全解耦
 - 发布过程必须可回滚
@@ -21,7 +27,7 @@
 - 所有发布行为可审计、可追溯
 
 
-## Canary 与 Blue/Green 发布方案对比
+## ⚖️ Canary 与 Blue/Green 发布方案对比
 
 ### 1. 概述
 
@@ -182,7 +188,7 @@ Canary（灰度发布）与 Blue/Green（蓝绿发布）是云原生场景中最
 
 ---
 
-## Devflow Normal（Rolling）发布流程图（示例）
+## 🗺️ Devflow Normal（Rolling）发布流程图（示例）
 
 ```mermaid
 flowchart LR

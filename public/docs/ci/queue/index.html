@@ -8,18 +8,24 @@ https://github.com/alex-shpak/hugo-book
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="">
+<meta name="description" content="⏱️ CI 队列与并发控制# CI 队列用于在高并发构建场景下实现 有序、可控与公平 的资源调度，避免构建雪崩与集群资源被打满。
+🎯 目标# 平衡吞吐与稳定性（避免抢占导致抖动） 保证关键流水线优先级（生产修复 &gt; 日常构建） 控制资源成本（限制并发与峰值） 🧩 常见策略# 策略 说明 适用场景 FIFO 先进先出 小规模、无强优先级需求 Priority 按优先级出队 生产修复、紧急发布 Per-Repo 每仓库限流 多团队共享集群 Per-Cluster 全局并发上限 资源紧张或成本敏感 🔧 Tekton 实现要点（示例）# 使用 PipelineRun 并发限制（配合 namespace 配额） 结合 PriorityClass 区分任务优先级 用 LimitRange / ResourceQuota 控制单个流水线资源 对重任务单独拆分执行池（如镜像构建专用节点） 📈 关键指标# 队列长度（Queue Depth） 平均等待时间（Queue Wait Time） 吞吐量（Runs / Hour） 失败率（Failure Rate） ✅ 推荐做法# 默认 FIFO，遇到生产紧急任务再引入 Priority 对大型构建设置并发上限与资源配额 对高频仓库设置每仓库限流 ">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
 <meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/ci/queue/">
   <meta property="og:site_name" content="Devflow">
   <meta property="og:title" content="Devflow">
+  <meta property="og:description" content="⏱️ CI 队列与并发控制# CI 队列用于在高并发构建场景下实现 有序、可控与公平 的资源调度，避免构建雪崩与集群资源被打满。
+🎯 目标# 平衡吞吐与稳定性（避免抢占导致抖动） 保证关键流水线优先级（生产修复 &gt; 日常构建） 控制资源成本（限制并发与峰值） 🧩 常见策略# 策略 说明 适用场景 FIFO 先进先出 小规模、无强优先级需求 Priority 按优先级出队 生产修复、紧急发布 Per-Repo 每仓库限流 多团队共享集群 Per-Cluster 全局并发上限 资源紧张或成本敏感 🔧 Tekton 实现要点（示例）# 使用 PipelineRun 并发限制（配合 namespace 配额） 结合 PriorityClass 区分任务优先级 用 LimitRange / ResourceQuota 控制单个流水线资源 对重任务单独拆分执行池（如镜像构建专用节点） 📈 关键指标# 队列长度（Queue Depth） 平均等待时间（Queue Wait Time） 吞吐量（Runs / Hour） 失败率（Failure Rate） ✅ 推荐做法# 默认 FIFO，遇到生产紧急任务再引入 Priority 对大型构建设置并发上限与资源配额 对高频仓库设置每仓库限流">
   <meta property="og:locale" content="zh_cn">
   <meta property="og:type" content="article">
     <meta property="article:section" content="docs">
 
 
   <meta itemprop="name" content="Devflow">
+  <meta itemprop="description" content="⏱️ CI 队列与并发控制# CI 队列用于在高并发构建场景下实现 有序、可控与公平 的资源调度，避免构建雪崩与集群资源被打满。
+🎯 目标# 平衡吞吐与稳定性（避免抢占导致抖动） 保证关键流水线优先级（生产修复 &gt; 日常构建） 控制资源成本（限制并发与峰值） 🧩 常见策略# 策略 说明 适用场景 FIFO 先进先出 小规模、无强优先级需求 Priority 按优先级出队 生产修复、紧急发布 Per-Repo 每仓库限流 多团队共享集群 Per-Cluster 全局并发上限 资源紧张或成本敏感 🔧 Tekton 实现要点（示例）# 使用 PipelineRun 并发限制（配合 namespace 配额） 结合 PriorityClass 区分任务优先级 用 LimitRange / ResourceQuota 控制单个流水线资源 对重任务单独拆分执行池（如镜像构建专用节点） 📈 关键指标# 队列长度（Queue Depth） 平均等待时间（Queue Wait Time） 吞吐量（Runs / Hour） 失败率（Failure Rate） ✅ 推荐做法# 默认 FIFO，遇到生产紧急任务再引入 Priority 对大型构建设置并发上限与资源配额 对高频仓库设置每仓库限流">
+  <meta itemprop="wordCount" content="67">
 
 <title>Queue | Devflow</title>
 <link rel="icon" href="/favicon.png" >
@@ -71,7 +77,7 @@ https://github.com/alex-shpak/hugo-book
   
     <input type="checkbox" id="section-4bd032e4e5fe1323a134583cafeecf06" class="toggle" checked />
     <label for="section-4bd032e4e5fe1323a134583cafeecf06" class="flex">
-      <a role="button" class="">
+      <a href="/docs/ci/" class="">
         CI</a>
       <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
     </label>
@@ -80,6 +86,18 @@ https://github.com/alex-shpak/hugo-book
           
   <ul>
     
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/ci/queue/" class="active">
+      Queue</a>
+  
+
+        </li>
       
     
       
@@ -168,20 +186,6 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/docs/cd/devflow_controller/" class="">
-      Devflow Controller</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
     <a href="/docs/cd/standard/" class="">
       Standard</a>
   
@@ -217,7 +221,7 @@ https://github.com/alex-shpak/hugo-book
   
     <input type="checkbox" id="section-6884c320646745efe1e09831aa35ad5b" class="toggle"  />
     <label for="section-6884c320646745efe1e09831aa35ad5b" class="flex">
-      <a role="button" class="">
+      <a href="/docs/observability/" class="">
         observability</a>
       <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
     </label>
@@ -247,8 +251,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/docs/observability/attributes/" class="">
-      Attributes</a>
+    <a href="/docs/observability/standard/" class="">
+      Standard</a>
   
 
         </li>
@@ -261,8 +265,45 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/docs/observability/standard/" class="">
-      Standard</a>
+    <a href="/docs/observability/attributes/" class="">
+      Attributes</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-97bc183e640cafe9ca9da46d45661ec8" class="toggle"  />
+    <label for="section-97bc183e640cafe9ca9da46d45661ec8" class="flex">
+      <a href="/docs/devflow-controller/" class="">
+        devflow-controller</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/devflow-controller/canary/" class="">
+      Canary</a>
   
 
         </li>
@@ -336,7 +377,67 @@ https://github.com/alex-shpak/hugo-book
 
       
       
-  <article class="markdown book-article"></article>
+  <article class="markdown book-article"><h1 id="-ci-队列与并发控制">⏱️ CI 队列与并发控制<a class="anchor" href="#-ci-%e9%98%9f%e5%88%97%e4%b8%8e%e5%b9%b6%e5%8f%91%e6%8e%a7%e5%88%b6">#</a></h1>
+<p>CI 队列用于在高并发构建场景下实现 <strong>有序、可控与公平</strong> 的资源调度，避免构建雪崩与集群资源被打满。</p>
+<h2 id="-目标">🎯 目标<a class="anchor" href="#-%e7%9b%ae%e6%a0%87">#</a></h2>
+<ul>
+<li>平衡吞吐与稳定性（避免抢占导致抖动）</li>
+<li>保证关键流水线优先级（生产修复 &gt; 日常构建）</li>
+<li>控制资源成本（限制并发与峰值）</li>
+</ul>
+<h2 id="-常见策略">🧩 常见策略<a class="anchor" href="#-%e5%b8%b8%e8%a7%81%e7%ad%96%e7%95%a5">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>策略</th>
+          <th>说明</th>
+          <th>适用场景</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>FIFO</td>
+          <td>先进先出</td>
+          <td>小规模、无强优先级需求</td>
+      </tr>
+      <tr>
+          <td>Priority</td>
+          <td>按优先级出队</td>
+          <td>生产修复、紧急发布</td>
+      </tr>
+      <tr>
+          <td>Per-Repo</td>
+          <td>每仓库限流</td>
+          <td>多团队共享集群</td>
+      </tr>
+      <tr>
+          <td>Per-Cluster</td>
+          <td>全局并发上限</td>
+          <td>资源紧张或成本敏感</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="-tekton-实现要点示例">🔧 Tekton 实现要点（示例）<a class="anchor" href="#-tekton-%e5%ae%9e%e7%8e%b0%e8%a6%81%e7%82%b9%e7%a4%ba%e4%be%8b">#</a></h2>
+<ul>
+<li>使用 <code>PipelineRun</code> 并发限制（配合 namespace 配额）</li>
+<li>结合 <code>PriorityClass</code> 区分任务优先级</li>
+<li>用 <code>LimitRange</code> / <code>ResourceQuota</code> 控制单个流水线资源</li>
+<li>对重任务单独拆分执行池（如镜像构建专用节点）</li>
+</ul>
+<h2 id="-关键指标">📈 关键指标<a class="anchor" href="#-%e5%85%b3%e9%94%ae%e6%8c%87%e6%a0%87">#</a></h2>
+<ul>
+<li>队列长度（Queue Depth）</li>
+<li>平均等待时间（Queue Wait Time）</li>
+<li>吞吐量（Runs / Hour）</li>
+<li>失败率（Failure Rate）</li>
+</ul>
+<h2 id="-推荐做法">✅ 推荐做法<a class="anchor" href="#-%e6%8e%a8%e8%8d%90%e5%81%9a%e6%b3%95">#</a></h2>
+<ul>
+<li>默认 FIFO，遇到生产紧急任务再引入 Priority</li>
+<li>对大型构建设置并发上限与资源配额</li>
+<li>对高频仓库设置每仓库限流</li>
+</ul>
+</article>
  
       
 
@@ -360,6 +461,25 @@ https://github.com/alex-shpak/hugo-book
 
   
   
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/docs/ci/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>CI</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/docs/ci/standard/" class="flex align-center">
+        <span>Standard</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
   
 
 

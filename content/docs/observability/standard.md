@@ -1,4 +1,4 @@
-# Observability Labels / Attributes 规范
+# 🏷️ Observability Labels / Attributes 规范
 
 本文档定义了 **Metric / Trace / Log** 的标准 Labels / Attributes，用于统一收集、查询和关联数据。  
 其中 Labels / Attributes 主要分为两类：  
@@ -6,6 +6,12 @@
 - **可选**：辅助维度，可用于多集群、多环境、灰度或团队统计  
 
 ---
+
+## ✅ 实践建议
+
+- 统一 `service.name`、`deployment.environment` 与 `trace_id`，保证三者可关联  
+- 监控查询以 `service.name + http.route` 为首要维度  
+- 生产环境避免高基数字段（如 userId / requestId）  
 
 ## 1️⃣ Metric
 
@@ -48,7 +54,7 @@
 **用于分布式请求链路追踪**
 
 ### span Attributes
-## Span Attributes
+## 🧷 Span Attributes
 **Span 关注单次操作的上下文和状态，用于 Trace 追踪**
 
 ### 必选
