@@ -1,14 +1,12 @@
 ### Build Static Site
-FROM ghcr.io/gohugoio/hugo:v0.147.6 AS builder
+FROM docker.io/hugomods/hugo:reg-ci-0.145.0 AS builder
 WORKDIR /src
-COPY --chown=hugo:hugo . .
+COPY . .
 ARG HUGO_BASEURL=/
 RUN hugo --baseURL "${HUGO_BASEURL}" --gc --minify
 
-### Serve with Nginx
-FROM docker.io/nginx:1.27.4-alpine
-COPY --from=builder /src/public /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-USER nginx
+### Serve with Caddy
+FROM docker.io/caddy@sha256:f2b257f20955d6be2229bed86bad24193eeb8c4dc962a4031a6eb42344ffa457
+COPY --from=builder /src/public /usr/share/caddy/
 EXPOSE 8080
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["caddy", "file-server", "--root", "/usr/share/caddy", "--listen", ":8080"]
