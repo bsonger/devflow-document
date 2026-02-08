@@ -8,25 +8,25 @@ https://github.com/alex-shpak/hugo-book
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="ht: 6# 🟢 Normal（Rolling）发布实战：Argo CD &#43; Kubernetes Deployment# Normal（Rolling）发布基于 Kubernetes Deployment 的滚动更新能力（RollingUpdate），适合大多数普通业务场景。
-🗺️ 1. Devflow Normal（Rolling）发布流程图（示例）# flowchart LR A[Devflow Console] --&gt; B[Devflow Job] B --&gt; C[Argo CD Application] C --&gt; D[Kubernetes Deployment] C --&gt; CS[Application Synced] CS --&gt; R0[Resources Applied] C -. watch .-&gt; F[Devflow Controller] D -. watch .-&gt; F F --&gt; M[(MongoDB)] M --&gt;|更新 steps / job status| F D --&gt; S0 subgraph Rolling Steps S0[Applied] --&gt; S1[Rolling Update] --&gt; S2[Verify] S2 --&gt; S3[Completed] S2 -. Failed .-&gt; SF[Failed] SF --&gt; RB[Rollback to Stable] end说明：
+<meta name="description" content="🟢 Normal（Rolling）发布实战：Argo CD &#43; Kubernetes Deployment# Normal（Rolling）发布基于 Kubernetes Deployment 的滚动更新能力（RollingUpdate），适合大多数普通业务场景。
+🗺️ 1. Devflow Normal（Rolling）发布流程图（示例）# flowchart LR A[Devflow Console] --&gt; B[Devflow Job] B --&gt; C[Argo CD Application] C --&gt; D[Kubernetes Deployment] C --&gt; CS[Application Synced] CS --&gt; R0[Resources Applied] C -. watch .-&gt; F[Devflow Controller] D -. watch .-&gt; F F --&gt; M[(MongoDB)] M --&gt;|更新 steps / job status| F D --&gt; S0 subgraph Rolling Steps S0[Applied] --&gt; S1[Rolling Update] --&gt; S2[Verify] S2 --&gt; S3[Completed] S2 -. Failed .-&gt; SF[Failed] SF --&gt; RB[Rollback to Stable] end 说明：
 ">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
 <meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/cd/normal/">
   <meta property="og:site_name" content="Devflow">
   <meta property="og:title" content="Normal (Rolling)">
-  <meta property="og:description" content="ht: 6# 🟢 Normal（Rolling）发布实战：Argo CD &#43; Kubernetes Deployment# Normal（Rolling）发布基于 Kubernetes Deployment 的滚动更新能力（RollingUpdate），适合大多数普通业务场景。
-🗺️ 1. Devflow Normal（Rolling）发布流程图（示例）# flowchart LR A[Devflow Console] --&gt; B[Devflow Job] B --&gt; C[Argo CD Application] C --&gt; D[Kubernetes Deployment] C --&gt; CS[Application Synced] CS --&gt; R0[Resources Applied] C -. watch .-&gt; F[Devflow Controller] D -. watch .-&gt; F F --&gt; M[(MongoDB)] M --&gt;|更新 steps / job status| F D --&gt; S0 subgraph Rolling Steps S0[Applied] --&gt; S1[Rolling Update] --&gt; S2[Verify] S2 --&gt; S3[Completed] S2 -. Failed .-&gt; SF[Failed] SF --&gt; RB[Rollback to Stable] end说明：">
+  <meta property="og:description" content="🟢 Normal（Rolling）发布实战：Argo CD &#43; Kubernetes Deployment# Normal（Rolling）发布基于 Kubernetes Deployment 的滚动更新能力（RollingUpdate），适合大多数普通业务场景。
+🗺️ 1. Devflow Normal（Rolling）发布流程图（示例）# flowchart LR A[Devflow Console] --&gt; B[Devflow Job] B --&gt; C[Argo CD Application] C --&gt; D[Kubernetes Deployment] C --&gt; CS[Application Synced] CS --&gt; R0[Resources Applied] C -. watch .-&gt; F[Devflow Controller] D -. watch .-&gt; F F --&gt; M[(MongoDB)] M --&gt;|更新 steps / job status| F D --&gt; S0 subgraph Rolling Steps S0[Applied] --&gt; S1[Rolling Update] --&gt; S2[Verify] S2 --&gt; S3[Completed] S2 -. Failed .-&gt; SF[Failed] SF --&gt; RB[Rollback to Stable] end 说明：">
   <meta property="og:locale" content="zh_cn">
   <meta property="og:type" content="article">
     <meta property="article:section" content="docs">
 
 
   <meta itemprop="name" content="Normal (Rolling)">
-  <meta itemprop="description" content="ht: 6# 🟢 Normal（Rolling）发布实战：Argo CD &#43; Kubernetes Deployment# Normal（Rolling）发布基于 Kubernetes Deployment 的滚动更新能力（RollingUpdate），适合大多数普通业务场景。
-🗺️ 1. Devflow Normal（Rolling）发布流程图（示例）# flowchart LR A[Devflow Console] --&gt; B[Devflow Job] B --&gt; C[Argo CD Application] C --&gt; D[Kubernetes Deployment] C --&gt; CS[Application Synced] CS --&gt; R0[Resources Applied] C -. watch .-&gt; F[Devflow Controller] D -. watch .-&gt; F F --&gt; M[(MongoDB)] M --&gt;|更新 steps / job status| F D --&gt; S0 subgraph Rolling Steps S0[Applied] --&gt; S1[Rolling Update] --&gt; S2[Verify] S2 --&gt; S3[Completed] S2 -. Failed .-&gt; SF[Failed] SF --&gt; RB[Rollback to Stable] end说明：">
-  <meta itemprop="wordCount" content="231">
+  <meta itemprop="description" content="🟢 Normal（Rolling）发布实战：Argo CD &#43; Kubernetes Deployment# Normal（Rolling）发布基于 Kubernetes Deployment 的滚动更新能力（RollingUpdate），适合大多数普通业务场景。
+🗺️ 1. Devflow Normal（Rolling）发布流程图（示例）# flowchart LR A[Devflow Console] --&gt; B[Devflow Job] B --&gt; C[Argo CD Application] C --&gt; D[Kubernetes Deployment] C --&gt; CS[Application Synced] CS --&gt; R0[Resources Applied] C -. watch .-&gt; F[Devflow Controller] D -. watch .-&gt; F F --&gt; M[(MongoDB)] M --&gt;|更新 steps / job status| F D --&gt; S0 subgraph Rolling Steps S0[Applied] --&gt; S1[Rolling Update] --&gt; S2[Verify] S2 --&gt; S3[Completed] S2 -. Failed .-&gt; SF[Failed] SF --&gt; RB[Rollback to Stable] end 说明：">
+  <meta itemprop="wordCount" content="230">
 
 <title>Normal (Rolling) | Devflow</title>
 <link rel="icon" href="/favicon.png" >
@@ -215,8 +215,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/docs/cd/blue_green/" class="">
-      Blue-green</a>
+    <a href="/docs/cd/canary/" class="">
+      Canary</a>
   
 
         </li>
@@ -229,8 +229,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/docs/cd/canary/" class="">
-      Canary</a>
+    <a href="/docs/cd/blue_green/" class="">
+      Blue-green</a>
   
 
         </li>
@@ -310,6 +310,71 @@ https://github.com/alex-shpak/hugo-book
   
     <a href="/docs/observability/attributes/" class="">
       Attributes</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-3ca2284b1a7ea15cff3e16ed44e3c015" class="toggle"  />
+    <label for="section-3ca2284b1a7ea15cff3e16ed44e3c015" class="flex">
+      <a href="/docs/devflow/" class="">
+        devflow</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/devflow/application/" class="">
+      Application</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/devflow/job/" class="">
+      Job</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/devflow/manifest/" class="">
+      Manifest</a>
   
 
         </li>
@@ -420,12 +485,12 @@ https://github.com/alex-shpak/hugo-book
 
       
       
-  <article class="markdown book-article"><h2 id="ht-6">ht: 6<a class="anchor" href="#ht-6">#</a></h2>
-<h1 id="-normalrolling发布实战argo-cd--kubernetes-deployment">🟢 Normal（Rolling）发布实战：Argo CD + Kubernetes Deployment<a class="anchor" href="#-normalrolling%e5%8f%91%e5%b8%83%e5%ae%9e%e6%88%98argo-cd--kubernetes-deployment">#</a></h1>
+  <article class="markdown book-article"><h1 id="-normalrolling发布实战argo-cd--kubernetes-deployment">🟢 Normal（Rolling）发布实战：Argo CD + Kubernetes Deployment<a class="anchor" href="#-normalrolling%e5%8f%91%e5%b8%83%e5%ae%9e%e6%88%98argo-cd--kubernetes-deployment">#</a></h1>
 <p>Normal（Rolling）发布基于 <strong>Kubernetes Deployment</strong> 的滚动更新能力（RollingUpdate），适合大多数普通业务场景。</p>
 <hr>
 <h2 id="-1-devflow-normalrolling发布流程图示例">🗺️ 1. Devflow Normal（Rolling）发布流程图（示例）<a class="anchor" href="#-1-devflow-normalrolling%e5%8f%91%e5%b8%83%e6%b5%81%e7%a8%8b%e5%9b%be%e7%a4%ba%e4%be%8b">#</a></h2>
-<pre class="mermaid">flowchart LR
+<pre class="mermaid">
+flowchart LR
     A[Devflow Console] --&gt; B[Devflow Job]
     B --&gt; C[Argo CD Application]
     C --&gt; D[Kubernetes Deployment]
@@ -444,7 +509,9 @@ https://github.com/alex-shpak/hugo-book
         S2 --&gt; S3[Completed]
         S2 -. Failed .-&gt; SF[Failed]
         SF --&gt; RB[Rollback to Stable]
-    end</pre><p>说明：</p>
+    end
+</pre>
+<p>说明：</p>
 <ul>
 <li>发布链路：Devflow Console 触发 Job，生成 Argo CD Application，下发 Deployment。</li>
 <li>控制闭环：Devflow Controller 监听 Application 与 Deployment 状态，回写 Mongo 的 <code>steps</code> 与 <code>job status</code>。</li>
@@ -531,7 +598,7 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li>普通业务系统</li>
 <li>对精细化流量控制要求不高</li>
-<li>资源成本敏感且发布频</li>
+<li>资源成本敏感且发布频率较高</li>
 </ul>
 </article>
  
@@ -561,9 +628,9 @@ https://github.com/alex-shpak/hugo-book
   <div class="flex flex-wrap justify-between">
     <span>
     
-      <a href="/docs/cd/canary/" class="flex align-center">
+      <a href="/docs/cd/blue_green/" class="flex align-center">
         <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
-        <span>Canary</span>
+        <span>Blue-green</span>
       </a>
     
     </span>

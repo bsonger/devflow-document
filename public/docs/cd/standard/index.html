@@ -218,8 +218,8 @@ Blue/Green 是“切换开关”。">
   
 
   
-    <a href="/docs/cd/blue_green/" class="">
-      Blue-green</a>
+    <a href="/docs/cd/canary/" class="">
+      Canary</a>
   
 
         </li>
@@ -232,8 +232,8 @@ Blue/Green 是“切换开关”。">
   
 
   
-    <a href="/docs/cd/canary/" class="">
-      Canary</a>
+    <a href="/docs/cd/blue_green/" class="">
+      Blue-green</a>
   
 
         </li>
@@ -313,6 +313,71 @@ Blue/Green 是“切换开关”。">
   
     <a href="/docs/observability/attributes/" class="">
       Attributes</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-3ca2284b1a7ea15cff3e16ed44e3c015" class="toggle"  />
+    <label for="section-3ca2284b1a7ea15cff3e16ed44e3c015" class="flex">
+      <a href="/docs/devflow/" class="">
+        devflow</a>
+      <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/devflow/application/" class="">
+      Application</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/devflow/job/" class="">
+      Job</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/devflow/manifest/" class="">
+      Manifest</a>
   
 
         </li>
@@ -759,7 +824,7 @@ Blue/Green 是“<strong>切换开关</strong>”。</p>
         S0[Applied] --&gt; S1[Rolling Update]
         S1 --&gt; S2[Verify]
         S2 --&gt; S3[Completed]
-    end</pre><script src="/mermaid.min.js"></script><script>mermaid.initialize({"flowchart":{"useMaxWidth":true},"theme":"default"})</script><p>说明：</p>
+    end</pre><p>说明：</p>
 <ul>
 <li>发布链路：Devflow Console 触发 Job，生成 Argo CD Application，下发到 Kubernetes Deployment。</li>
 <li>控制闭环：Devflow Controller 监听 Application 与 Deployment 状态，回写 Mongo 的 <code>steps</code> 与 <code>job status</code>。</li>
@@ -801,8 +866,8 @@ Blue/Green 是“<strong>切换开关</strong>”。</p>
     </span>
     <span>
     
-      <a href="/docs/cd/blue_green/" class="flex align-center">
-        <span>Blue-green</span>
+      <a href="/docs/cd/canary/" class="flex align-center">
+        <span>Canary</span>
         <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
       </a>
     

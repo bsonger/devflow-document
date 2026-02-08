@@ -8,37 +8,38 @@ https://github.com/alex-shpak/hugo-book
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="🏗️ CD 架构图（Architecture）# 下面是 CD 核心发布链路与控制闭环的整体关系图。
-🗺️ Mermaid 版# flowchart LR Dev[Developer] --&gt;|Release| Devflow[Devflow Console / Job] Devflow --&gt; Argo[Argo CD] Argo --&gt; App[Application] App --&gt; Rollout[Argo Rollouts] subgraph Release[Release Strategy] Canary[Canary] BG[Blue/Green] Rolling[Rolling] end Rollout --&gt; Release Release --&gt; Svc[Service / Gateway] Svc --&gt; Users[Users] Argo -. watch .-&gt; Ctrl[Devflow Controller] Rollout -. watch .-&gt; Ctrl Ctrl --&gt; Mongo[(MongoDB)] Svc --&gt; Metrics[Metrics / Traces / Logs] Metrics --&gt; Grafana[Grafana]✅ 关键说明# 触发：Devflow Console / Job 创建并驱动发布流程 发布：Rollouts 负责策略执行（Canary / Blue-Green / Rolling） 闭环：Controller 监听状态回写 Mongo，形成可观测发布闭环 验证：发布过程依赖指标与链路进行自动或人工决策 ">
+<meta name="description" content="🧩 Devflow（平台 API 核心）# Devflow 是平台的 核心 API 服务，类似于 Kubernetes 的 kube-apiserver：
+统一承接平台内外部请求入口 作为控制面核心，负责编排与状态治理 提供标准 API，解耦上层 UI 与下层控制器 🎯 核心职责# API 聚合入口：统一接入 Console、CLI、Webhook 业务与发布编排：管理应用、发布、流程与状态机 状态归一化：聚合 CI/CD/监控状态，输出统一状态视图 权限与审计：鉴权、配额、审计日志与操作追踪 🧭 与 kube-apiserver 的类比# 维度 Devflow kube-apiserver 入口 平台 API 入口 K8s API 入口 角色 平台控制面核心 K8s 控制面核心 对接对象 Console / Controller / Plugin kubectl / controller / scheduler 状态存储 MongoDB / 内部存储 etcd 资源模型 应用 / 发布 / 流程 Pod / Service / Deployment 🔄 典型调用链# Devflow Console → Devflow API → Controller / Plugin → Mongo
+">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
-<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/cd/architecture/">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/devflow/">
   <meta property="og:site_name" content="Devflow">
-  <meta property="og:title" content="Architecture">
-  <meta property="og:description" content="🏗️ CD 架构图（Architecture）# 下面是 CD 核心发布链路与控制闭环的整体关系图。
-🗺️ Mermaid 版# flowchart LR Dev[Developer] --&gt;|Release| Devflow[Devflow Console / Job] Devflow --&gt; Argo[Argo CD] Argo --&gt; App[Application] App --&gt; Rollout[Argo Rollouts] subgraph Release[Release Strategy] Canary[Canary] BG[Blue/Green] Rolling[Rolling] end Rollout --&gt; Release Release --&gt; Svc[Service / Gateway] Svc --&gt; Users[Users] Argo -. watch .-&gt; Ctrl[Devflow Controller] Rollout -. watch .-&gt; Ctrl Ctrl --&gt; Mongo[(MongoDB)] Svc --&gt; Metrics[Metrics / Traces / Logs] Metrics --&gt; Grafana[Grafana]✅ 关键说明# 触发：Devflow Console / Job 创建并驱动发布流程 发布：Rollouts 负责策略执行（Canary / Blue-Green / Rolling） 闭环：Controller 监听状态回写 Mongo，形成可观测发布闭环 验证：发布过程依赖指标与链路进行自动或人工决策">
+  <meta property="og:title" content="devflow">
+  <meta property="og:description" content="🧩 Devflow（平台 API 核心）# Devflow 是平台的 核心 API 服务，类似于 Kubernetes 的 kube-apiserver：
+统一承接平台内外部请求入口 作为控制面核心，负责编排与状态治理 提供标准 API，解耦上层 UI 与下层控制器 🎯 核心职责# API 聚合入口：统一接入 Console、CLI、Webhook 业务与发布编排：管理应用、发布、流程与状态机 状态归一化：聚合 CI/CD/监控状态，输出统一状态视图 权限与审计：鉴权、配额、审计日志与操作追踪 🧭 与 kube-apiserver 的类比# 维度 Devflow kube-apiserver 入口 平台 API 入口 K8s API 入口 角色 平台控制面核心 K8s 控制面核心 对接对象 Console / Controller / Plugin kubectl / controller / scheduler 状态存储 MongoDB / 内部存储 etcd 资源模型 应用 / 发布 / 流程 Pod / Service / Deployment 🔄 典型调用链# Devflow Console → Devflow API → Controller / Plugin → Mongo">
   <meta property="og:locale" content="zh_cn">
-  <meta property="og:type" content="article">
-    <meta property="article:section" content="docs">
+  <meta property="og:type" content="website">
 
 
-  <meta itemprop="name" content="Architecture">
-  <meta itemprop="description" content="🏗️ CD 架构图（Architecture）# 下面是 CD 核心发布链路与控制闭环的整体关系图。
-🗺️ Mermaid 版# flowchart LR Dev[Developer] --&gt;|Release| Devflow[Devflow Console / Job] Devflow --&gt; Argo[Argo CD] Argo --&gt; App[Application] App --&gt; Rollout[Argo Rollouts] subgraph Release[Release Strategy] Canary[Canary] BG[Blue/Green] Rolling[Rolling] end Rollout --&gt; Release Release --&gt; Svc[Service / Gateway] Svc --&gt; Users[Users] Argo -. watch .-&gt; Ctrl[Devflow Controller] Rollout -. watch .-&gt; Ctrl Ctrl --&gt; Mongo[(MongoDB)] Svc --&gt; Metrics[Metrics / Traces / Logs] Metrics --&gt; Grafana[Grafana]✅ 关键说明# 触发：Devflow Console / Job 创建并驱动发布流程 发布：Rollouts 负责策略执行（Canary / Blue-Green / Rolling） 闭环：Controller 监听状态回写 Mongo，形成可观测发布闭环 验证：发布过程依赖指标与链路进行自动或人工决策">
-  <meta itemprop="wordCount" content="86">
+  <meta itemprop="name" content="devflow">
+  <meta itemprop="description" content="🧩 Devflow（平台 API 核心）# Devflow 是平台的 核心 API 服务，类似于 Kubernetes 的 kube-apiserver：
+统一承接平台内外部请求入口 作为控制面核心，负责编排与状态治理 提供标准 API，解耦上层 UI 与下层控制器 🎯 核心职责# API 聚合入口：统一接入 Console、CLI、Webhook 业务与发布编排：管理应用、发布、流程与状态机 状态归一化：聚合 CI/CD/监控状态，输出统一状态视图 权限与审计：鉴权、配额、审计日志与操作追踪 🧭 与 kube-apiserver 的类比# 维度 Devflow kube-apiserver 入口 平台 API 入口 K8s API 入口 角色 平台控制面核心 K8s 控制面核心 对接对象 Console / Controller / Plugin kubectl / controller / scheduler 状态存储 MongoDB / 内部存储 etcd 资源模型 应用 / 发布 / 流程 Pod / Service / Deployment 🔄 典型调用链# Devflow Console → Devflow API → Controller / Plugin → Mongo">
+  <meta itemprop="wordCount" content="90">
 
-<title>Architecture | Devflow</title>
+<title>devflow | Devflow</title>
 <link rel="icon" href="/favicon.png" >
 <link rel="manifest" href="/manifest.json">
-<link rel="canonical" href="http://localhost:1313/docs/cd/architecture/">
+<link rel="canonical" href="http://localhost:1313/docs/devflow/">
 <link rel="stylesheet" href="/book.min.6970156cec683193d93c9c4edaf0d56574e4361df2e0c1be4f697ae81c3ba55f.css" integrity="sha256-aXAVbOxoMZPZPJxO2vDVZXTkNh3y4MG&#43;T2l66Bw7pV8=" crossorigin="anonymous">
 
 
 
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/docs/devflow/index.xml" title="Devflow" />
 
   
 </head>
-<body dir="ltr" class="book-kind-page book-type-docs">
+<body dir="ltr" class="book-kind-section book-type-docs">
   <input type="checkbox" class="hidden toggle" id="menu-control" />
   <input type="checkbox" class="hidden toggle" id="toc-control" />
   <main class="container flex">
@@ -154,7 +155,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-0fc280a0e74cc087db99dcd67aadd7bb" class="toggle" checked />
+    <input type="checkbox" id="section-0fc280a0e74cc087db99dcd67aadd7bb" class="toggle"  />
     <label for="section-0fc280a0e74cc087db99dcd67aadd7bb" class="flex">
       <a href="/docs/cd/" class="">
         CD</a>
@@ -172,7 +173,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/docs/cd/architecture/" class="active">
+    <a href="/docs/cd/architecture/" class="">
       Architecture</a>
   
 
@@ -326,9 +327,9 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-3ca2284b1a7ea15cff3e16ed44e3c015" class="toggle"  />
+    <input type="checkbox" id="section-3ca2284b1a7ea15cff3e16ed44e3c015" class="toggle" checked />
     <label for="section-3ca2284b1a7ea15cff3e16ed44e3c015" class="flex">
-      <a href="/docs/devflow/" class="">
+      <a href="/docs/devflow/" class="active">
         devflow</a>
       <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
     </label>
@@ -470,7 +471,7 @@ https://github.com/alex-shpak/hugo-book
     <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
   </label>
 
-  <h3>Architecture</h3>
+  <h3>devflow</h3>
 
   <label for="toc-control">
     
@@ -484,36 +485,64 @@ https://github.com/alex-shpak/hugo-book
 
       
       
-  <article class="markdown book-article"><h1 id="-cd-架构图architecture">🏗️ CD 架构图（Architecture）<a class="anchor" href="#-cd-%e6%9e%b6%e6%9e%84%e5%9b%bearchitecture">#</a></h1>
-<p>下面是 CD 核心发布链路与控制闭环的整体关系图。</p>
-<h2 id="-mermaid-版">🗺️ Mermaid 版<a class="anchor" href="#-mermaid-%e7%89%88">#</a></h2>
-<pre class="mermaid">flowchart LR
-  Dev[Developer] --&gt;|Release| Devflow[Devflow Console / Job]
-  Devflow --&gt; Argo[Argo CD]
-  Argo --&gt; App[Application]
-  App --&gt; Rollout[Argo Rollouts]
-
-  subgraph Release[Release Strategy]
-    Canary[Canary]
-    BG[Blue/Green]
-    Rolling[Rolling]
-  end
-
-  Rollout --&gt; Release
-  Release --&gt; Svc[Service / Gateway]
-  Svc --&gt; Users[Users]
-
-  Argo -. watch .-&gt; Ctrl[Devflow Controller]
-  Rollout -. watch .-&gt; Ctrl
-  Ctrl --&gt; Mongo[(MongoDB)]
-
-  Svc --&gt; Metrics[Metrics / Traces / Logs]
-  Metrics --&gt; Grafana[Grafana]</pre><h2 id="-关键说明">✅ 关键说明<a class="anchor" href="#-%e5%85%b3%e9%94%ae%e8%af%b4%e6%98%8e">#</a></h2>
+  <article class="markdown book-article"><h1 id="-devflow平台-api-核心">🧩 Devflow（平台 API 核心）<a class="anchor" href="#-devflow%e5%b9%b3%e5%8f%b0-api-%e6%a0%b8%e5%bf%83">#</a></h1>
+<p>Devflow 是平台的 <strong>核心 API 服务</strong>，类似于 Kubernetes 的 <code>kube-apiserver</code>：</p>
 <ul>
-<li><strong>触发</strong>：Devflow Console / Job 创建并驱动发布流程</li>
-<li><strong>发布</strong>：Rollouts 负责策略执行（Canary / Blue-Green / Rolling）</li>
-<li><strong>闭环</strong>：Controller 监听状态回写 Mongo，形成可观测发布闭环</li>
-<li><strong>验证</strong>：发布过程依赖指标与链路进行自动或人工决策</li>
+<li>统一承接平台内外部请求入口</li>
+<li>作为控制面核心，负责编排与状态治理</li>
+<li>提供标准 API，解耦上层 UI 与下层控制器</li>
+</ul>
+<h2 id="-核心职责">🎯 核心职责<a class="anchor" href="#-%e6%a0%b8%e5%bf%83%e8%81%8c%e8%b4%a3">#</a></h2>
+<ul>
+<li><strong>API 聚合入口</strong>：统一接入 Console、CLI、Webhook</li>
+<li><strong>业务与发布编排</strong>：管理应用、发布、流程与状态机</li>
+<li><strong>状态归一化</strong>：聚合 CI/CD/监控状态，输出统一状态视图</li>
+<li><strong>权限与审计</strong>：鉴权、配额、审计日志与操作追踪</li>
+</ul>
+<h2 id="-与-kube-apiserver-的类比">🧭 与 kube-apiserver 的类比<a class="anchor" href="#-%e4%b8%8e-kube-apiserver-%e7%9a%84%e7%b1%bb%e6%af%94">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>维度</th>
+          <th>Devflow</th>
+          <th>kube-apiserver</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>入口</td>
+          <td>平台 API 入口</td>
+          <td>K8s API 入口</td>
+      </tr>
+      <tr>
+          <td>角色</td>
+          <td>平台控制面核心</td>
+          <td>K8s 控制面核心</td>
+      </tr>
+      <tr>
+          <td>对接对象</td>
+          <td>Console / Controller / Plugin</td>
+          <td>kubectl / controller / scheduler</td>
+      </tr>
+      <tr>
+          <td>状态存储</td>
+          <td>MongoDB / 内部存储</td>
+          <td>etcd</td>
+      </tr>
+      <tr>
+          <td>资源模型</td>
+          <td>应用 / 发布 / 流程</td>
+          <td>Pod / Service / Deployment</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="-典型调用链">🔄 典型调用链<a class="anchor" href="#-%e5%85%b8%e5%9e%8b%e8%b0%83%e7%94%a8%e9%93%be">#</a></h2>
+<p>Devflow Console → Devflow API → Controller / Plugin → Mongo</p>
+<h2 id="-关键价值">✅ 关键价值<a class="anchor" href="#-%e5%85%b3%e9%94%ae%e4%bb%b7%e5%80%bc">#</a></h2>
+<ul>
+<li>统一入口，降低系统耦合度</li>
+<li>统一状态，提升可观测与可运维性</li>
+<li>标准接口，提升扩展与集成效率</li>
 </ul>
 </article>
  
@@ -543,16 +572,16 @@ https://github.com/alex-shpak/hugo-book
   <div class="flex flex-wrap justify-between">
     <span>
     
-      <a href="/docs/cd/" class="flex align-center">
+      <a href="/docs/observability/attributes/" class="flex align-center">
         <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
-        <span>CD</span>
+        <span>Attributes</span>
       </a>
     
     </span>
     <span>
     
-      <a href="/docs/cd/component/" class="flex align-center">
-        <span>Components</span>
+      <a href="/docs/devflow/application/" class="flex align-center">
+        <span>Application</span>
         <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
       </a>
     

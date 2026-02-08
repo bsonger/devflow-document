@@ -11,7 +11,7 @@ Normal（Rolling）发布基于 **Kubernetes Deployment** 的滚动更新能力�
 
 ## 🗺️ 1. Devflow Normal（Rolling）发布流程图（示例）
 
-```mermaid
+{{< mermaid >}}
 flowchart LR
     A[Devflow Console] --> B[Devflow Job]
     B --> C[Argo CD Application]
@@ -32,7 +32,7 @@ flowchart LR
         S2 -. Failed .-> SF[Failed]
         SF --> RB[Rollback to Stable]
     end
-```
+{{< /mermaid >}}
 
 说明：
 

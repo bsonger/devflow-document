@@ -36,7 +36,7 @@ Canary 发布是将新版本的流量逐步引入生产环境的一种发布策�
 
 ## 🗺️ 2.1 Devflow Canary 发布流程图（示例）
 
-```mermaid
+{{< mermaid >}}
 flowchart LR
     A[Devflow Console] --> B[Devflow Job]
     B --> C[Argo CD Application]
@@ -62,7 +62,7 @@ flowchart LR
         S6 -. Failed .-> SF
         SF --> RB[Rollback to Stable]
     end
-```
+{{< /mermaid >}}
 
 说明：
 

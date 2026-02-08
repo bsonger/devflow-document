@@ -8,29 +8,29 @@ https://github.com/alex-shpak/hugo-book
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="🏗️ CD 架构图（Architecture）# 下面是 CD 核心发布链路与控制闭环的整体关系图。
-🗺️ Mermaid 版# flowchart LR Dev[Developer] --&gt;|Release| Devflow[Devflow Console / Job] Devflow --&gt; Argo[Argo CD] Argo --&gt; App[Application] App --&gt; Rollout[Argo Rollouts] subgraph Release[Release Strategy] Canary[Canary] BG[Blue/Green] Rolling[Rolling] end Rollout --&gt; Release Release --&gt; Svc[Service / Gateway] Svc --&gt; Users[Users] Argo -. watch .-&gt; Ctrl[Devflow Controller] Rollout -. watch .-&gt; Ctrl Ctrl --&gt; Mongo[(MongoDB)] Svc --&gt; Metrics[Metrics / Traces / Logs] Metrics --&gt; Grafana[Grafana]✅ 关键说明# 触发：Devflow Console / Job 创建并驱动发布流程 发布：Rollouts 负责策略执行（Canary / Blue-Green / Rolling） 闭环：Controller 监听状态回写 Mongo，形成可观测发布闭环 验证：发布过程依赖指标与链路进行自动或人工决策 ">
+<meta name="description" content="🧩 Job 模型# 定义来源：devflow-common/model/job.go
+字段列表# 字段 类型 必须 说明 id ObjectID 系统 BaseModel.ID（系统生成） created_at time 系统 BaseModel.CreatedAt（系统生成） updated_at time 系统 BaseModel.UpdatedAt（系统生成） deleted_at *time 系统 BaseModel.DeletedAt application_id ObjectID 是 关联 Application ID application_name string 是 关联 Application 名称 project_name string 是 项目/命名空间名称 manifest_id ObjectID 是 关联 Manifest ID manifest_name string 是 关联 Manifest 名称 type string 是 Job 类型（Install/Upgrade/Rollback） env string 是 运行环境标识（如 prod/staging） status JobStatus 是 任务状态 JobStatus 枚举# Pending Running Succeeded Failed RollingBack RolledBack Syncing Syn ">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
-<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/cd/architecture/">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/devflow/job/">
   <meta property="og:site_name" content="Devflow">
-  <meta property="og:title" content="Architecture">
-  <meta property="og:description" content="🏗️ CD 架构图（Architecture）# 下面是 CD 核心发布链路与控制闭环的整体关系图。
-🗺️ Mermaid 版# flowchart LR Dev[Developer] --&gt;|Release| Devflow[Devflow Console / Job] Devflow --&gt; Argo[Argo CD] Argo --&gt; App[Application] App --&gt; Rollout[Argo Rollouts] subgraph Release[Release Strategy] Canary[Canary] BG[Blue/Green] Rolling[Rolling] end Rollout --&gt; Release Release --&gt; Svc[Service / Gateway] Svc --&gt; Users[Users] Argo -. watch .-&gt; Ctrl[Devflow Controller] Rollout -. watch .-&gt; Ctrl Ctrl --&gt; Mongo[(MongoDB)] Svc --&gt; Metrics[Metrics / Traces / Logs] Metrics --&gt; Grafana[Grafana]✅ 关键说明# 触发：Devflow Console / Job 创建并驱动发布流程 发布：Rollouts 负责策略执行（Canary / Blue-Green / Rolling） 闭环：Controller 监听状态回写 Mongo，形成可观测发布闭环 验证：发布过程依赖指标与链路进行自动或人工决策">
+  <meta property="og:title" content="Job">
+  <meta property="og:description" content="🧩 Job 模型# 定义来源：devflow-common/model/job.go
+字段列表# 字段 类型 必须 说明 id ObjectID 系统 BaseModel.ID（系统生成） created_at time 系统 BaseModel.CreatedAt（系统生成） updated_at time 系统 BaseModel.UpdatedAt（系统生成） deleted_at *time 系统 BaseModel.DeletedAt application_id ObjectID 是 关联 Application ID application_name string 是 关联 Application 名称 project_name string 是 项目/命名空间名称 manifest_id ObjectID 是 关联 Manifest ID manifest_name string 是 关联 Manifest 名称 type string 是 Job 类型（Install/Upgrade/Rollback） env string 是 运行环境标识（如 prod/staging） status JobStatus 是 任务状态 JobStatus 枚举# Pending Running Succeeded Failed RollingBack RolledBack Syncing Syn">
   <meta property="og:locale" content="zh_cn">
   <meta property="og:type" content="article">
     <meta property="article:section" content="docs">
 
 
-  <meta itemprop="name" content="Architecture">
-  <meta itemprop="description" content="🏗️ CD 架构图（Architecture）# 下面是 CD 核心发布链路与控制闭环的整体关系图。
-🗺️ Mermaid 版# flowchart LR Dev[Developer] --&gt;|Release| Devflow[Devflow Console / Job] Devflow --&gt; Argo[Argo CD] Argo --&gt; App[Application] App --&gt; Rollout[Argo Rollouts] subgraph Release[Release Strategy] Canary[Canary] BG[Blue/Green] Rolling[Rolling] end Rollout --&gt; Release Release --&gt; Svc[Service / Gateway] Svc --&gt; Users[Users] Argo -. watch .-&gt; Ctrl[Devflow Controller] Rollout -. watch .-&gt; Ctrl Ctrl --&gt; Mongo[(MongoDB)] Svc --&gt; Metrics[Metrics / Traces / Logs] Metrics --&gt; Grafana[Grafana]✅ 关键说明# 触发：Devflow Console / Job 创建并驱动发布流程 发布：Rollouts 负责策略执行（Canary / Blue-Green / Rolling） 闭环：Controller 监听状态回写 Mongo，形成可观测发布闭环 验证：发布过程依赖指标与链路进行自动或人工决策">
-  <meta itemprop="wordCount" content="86">
+  <meta itemprop="name" content="Job">
+  <meta itemprop="description" content="🧩 Job 模型# 定义来源：devflow-common/model/job.go
+字段列表# 字段 类型 必须 说明 id ObjectID 系统 BaseModel.ID（系统生成） created_at time 系统 BaseModel.CreatedAt（系统生成） updated_at time 系统 BaseModel.UpdatedAt（系统生成） deleted_at *time 系统 BaseModel.DeletedAt application_id ObjectID 是 关联 Application ID application_name string 是 关联 Application 名称 project_name string 是 项目/命名空间名称 manifest_id ObjectID 是 关联 Manifest ID manifest_name string 是 关联 Manifest 名称 type string 是 Job 类型（Install/Upgrade/Rollback） env string 是 运行环境标识（如 prod/staging） status JobStatus 是 任务状态 JobStatus 枚举# Pending Running Succeeded Failed RollingBack RolledBack Syncing Syn">
+  <meta itemprop="wordCount" content="77">
 
-<title>Architecture | Devflow</title>
+<title>Job | Devflow</title>
 <link rel="icon" href="/favicon.png" >
 <link rel="manifest" href="/manifest.json">
-<link rel="canonical" href="http://localhost:1313/docs/cd/architecture/">
+<link rel="canonical" href="http://localhost:1313/docs/devflow/job/">
 <link rel="stylesheet" href="/book.min.6970156cec683193d93c9c4edaf0d56574e4361df2e0c1be4f697ae81c3ba55f.css" integrity="sha256-aXAVbOxoMZPZPJxO2vDVZXTkNh3y4MG&#43;T2l66Bw7pV8=" crossorigin="anonymous">
 
 
@@ -154,7 +154,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-0fc280a0e74cc087db99dcd67aadd7bb" class="toggle" checked />
+    <input type="checkbox" id="section-0fc280a0e74cc087db99dcd67aadd7bb" class="toggle"  />
     <label for="section-0fc280a0e74cc087db99dcd67aadd7bb" class="flex">
       <a href="/docs/cd/" class="">
         CD</a>
@@ -172,7 +172,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/docs/cd/architecture/" class="active">
+    <a href="/docs/cd/architecture/" class="">
       Architecture</a>
   
 
@@ -326,7 +326,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-3ca2284b1a7ea15cff3e16ed44e3c015" class="toggle"  />
+    <input type="checkbox" id="section-3ca2284b1a7ea15cff3e16ed44e3c015" class="toggle" checked />
     <label for="section-3ca2284b1a7ea15cff3e16ed44e3c015" class="flex">
       <a href="/docs/devflow/" class="">
         devflow</a>
@@ -358,7 +358,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/docs/devflow/job/" class="">
+    <a href="/docs/devflow/job/" class="active">
       Job</a>
   
 
@@ -470,7 +470,7 @@ https://github.com/alex-shpak/hugo-book
     <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
   </label>
 
-  <h3>Architecture</h3>
+  <h3>Job</h3>
 
   <label for="toc-control">
     
@@ -484,36 +484,104 @@ https://github.com/alex-shpak/hugo-book
 
       
       
-  <article class="markdown book-article"><h1 id="-cd-架构图architecture">🏗️ CD 架构图（Architecture）<a class="anchor" href="#-cd-%e6%9e%b6%e6%9e%84%e5%9b%bearchitecture">#</a></h1>
-<p>下面是 CD 核心发布链路与控制闭环的整体关系图。</p>
-<h2 id="-mermaid-版">🗺️ Mermaid 版<a class="anchor" href="#-mermaid-%e7%89%88">#</a></h2>
-<pre class="mermaid">flowchart LR
-  Dev[Developer] --&gt;|Release| Devflow[Devflow Console / Job]
-  Devflow --&gt; Argo[Argo CD]
-  Argo --&gt; App[Application]
-  App --&gt; Rollout[Argo Rollouts]
-
-  subgraph Release[Release Strategy]
-    Canary[Canary]
-    BG[Blue/Green]
-    Rolling[Rolling]
-  end
-
-  Rollout --&gt; Release
-  Release --&gt; Svc[Service / Gateway]
-  Svc --&gt; Users[Users]
-
-  Argo -. watch .-&gt; Ctrl[Devflow Controller]
-  Rollout -. watch .-&gt; Ctrl
-  Ctrl --&gt; Mongo[(MongoDB)]
-
-  Svc --&gt; Metrics[Metrics / Traces / Logs]
-  Metrics --&gt; Grafana[Grafana]</pre><h2 id="-关键说明">✅ 关键说明<a class="anchor" href="#-%e5%85%b3%e9%94%ae%e8%af%b4%e6%98%8e">#</a></h2>
+  <article class="markdown book-article"><h1 id="-job-模型">🧩 Job 模型<a class="anchor" href="#-job-%e6%a8%a1%e5%9e%8b">#</a></h1>
+<blockquote class='book-hint '>
+<p>定义来源：<code>devflow-common/model/job.go</code></p>
+</blockquote><h2 id="字段列表">字段列表<a class="anchor" href="#%e5%ad%97%e6%ae%b5%e5%88%97%e8%a1%a8">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>字段</th>
+          <th>类型</th>
+          <th>必须</th>
+          <th>说明</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>id</td>
+          <td>ObjectID</td>
+          <td>系统</td>
+          <td>BaseModel.ID（系统生成）</td>
+      </tr>
+      <tr>
+          <td>created_at</td>
+          <td>time</td>
+          <td>系统</td>
+          <td>BaseModel.CreatedAt（系统生成）</td>
+      </tr>
+      <tr>
+          <td>updated_at</td>
+          <td>time</td>
+          <td>系统</td>
+          <td>BaseModel.UpdatedAt（系统生成）</td>
+      </tr>
+      <tr>
+          <td>deleted_at</td>
+          <td>*time</td>
+          <td>系统</td>
+          <td>BaseModel.DeletedAt</td>
+      </tr>
+      <tr>
+          <td>application_id</td>
+          <td>ObjectID</td>
+          <td>是</td>
+          <td>关联 Application ID</td>
+      </tr>
+      <tr>
+          <td>application_name</td>
+          <td>string</td>
+          <td>是</td>
+          <td>关联 Application 名称</td>
+      </tr>
+      <tr>
+          <td>project_name</td>
+          <td>string</td>
+          <td>是</td>
+          <td>项目/命名空间名称</td>
+      </tr>
+      <tr>
+          <td>manifest_id</td>
+          <td>ObjectID</td>
+          <td>是</td>
+          <td>关联 Manifest ID</td>
+      </tr>
+      <tr>
+          <td>manifest_name</td>
+          <td>string</td>
+          <td>是</td>
+          <td>关联 Manifest 名称</td>
+      </tr>
+      <tr>
+          <td>type</td>
+          <td>string</td>
+          <td>是</td>
+          <td>Job 类型（Install/Upgrade/Rollback）</td>
+      </tr>
+      <tr>
+          <td>env</td>
+          <td>string</td>
+          <td>是</td>
+          <td>运行环境标识（如 prod/staging）</td>
+      </tr>
+      <tr>
+          <td>status</td>
+          <td>JobStatus</td>
+          <td>是</td>
+          <td>任务状态</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="jobstatus-枚举">JobStatus 枚举<a class="anchor" href="#jobstatus-%e6%9e%9a%e4%b8%be">#</a></h2>
 <ul>
-<li><strong>触发</strong>：Devflow Console / Job 创建并驱动发布流程</li>
-<li><strong>发布</strong>：Rollouts 负责策略执行（Canary / Blue-Green / Rolling）</li>
-<li><strong>闭环</strong>：Controller 监听状态回写 Mongo，形成可观测发布闭环</li>
-<li><strong>验证</strong>：发布过程依赖指标与链路进行自动或人工决策</li>
+<li>Pending</li>
+<li>Running</li>
+<li>Succeeded</li>
+<li>Failed</li>
+<li>RollingBack</li>
+<li>RolledBack</li>
+<li>Syncing</li>
+<li>Syn</li>
 </ul>
 </article>
  
@@ -543,16 +611,16 @@ https://github.com/alex-shpak/hugo-book
   <div class="flex flex-wrap justify-between">
     <span>
     
-      <a href="/docs/cd/" class="flex align-center">
+      <a href="/docs/devflow/application/" class="flex align-center">
         <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
-        <span>CD</span>
+        <span>Application</span>
       </a>
     
     </span>
     <span>
     
-      <a href="/docs/cd/component/" class="flex align-center">
-        <span>Components</span>
+      <a href="/docs/devflow/manifest/" class="flex align-center">
+        <span>Manifest</span>
         <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
       </a>
     
