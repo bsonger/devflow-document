@@ -352,6 +352,34 @@ https://github.com/alex-shpak/hugo-book
         </li>
       
     
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/devflow/job/" class="">
+      Job</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/devflow/manifest/" class="">
+      Manifest</a>
+  
+
+        </li>
+      
+    
   </ul>
 
         </li>
@@ -544,7 +572,7 @@ https://github.com/alex-shpak/hugo-book
         S4 -. Failed .-&gt; SF
         SF --&gt; RB[Rollback to Stable]
     end
-    E --&gt; S0</pre><p>说明：</p>
+    E --&gt; S0</pre><script src="/mermaid.min.js"></script><script>mermaid.initialize({"flowchart":{"useMaxWidth":true},"theme":"default"})</script><p>说明：</p>
 <ul>
 <li>发布链路：Devflow Console 触发 Job，生成 Argo CD Application，经插件下发 Blue/Green Rollout。</li>
 <li>控制闭环：Devflow Controller 同时监听 Application 与 Rollout 状态，回写 Mongo 的 <code>steps</code> 与 <code>job status</code>。</li>

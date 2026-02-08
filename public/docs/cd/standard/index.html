@@ -824,7 +824,7 @@ Blue/Green 是“<strong>切换开关</strong>”。</p>
         S0[Applied] --&gt; S1[Rolling Update]
         S1 --&gt; S2[Verify]
         S2 --&gt; S3[Completed]
-    end</pre><p>说明：</p>
+    end</pre><script src="/mermaid.min.js"></script><script>mermaid.initialize({"flowchart":{"useMaxWidth":true},"theme":"default"})</script><p>说明：</p>
 <ul>
 <li>发布链路：Devflow Console 触发 Job，生成 Argo CD Application，下发到 Kubernetes Deployment。</li>
 <li>控制闭环：Devflow Controller 监听 Application 与 Deployment 状态，回写 Mongo 的 <code>steps</code> 与 <code>job status</code>。</li>

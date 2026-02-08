@@ -2,6 +2,10 @@ baseURL = 'https://example.org/'
 languageCode = 'zh-cn'
 title = 'Devflow'
 theme = "hugo-book"
+[markup]
+  [markup.goldmark.renderer]
+    unsafe = true
+relativeURLs = true
 [params]
    BookTheme = 'auto'
    BookToC = false

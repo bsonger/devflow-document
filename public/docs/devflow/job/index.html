@@ -9,14 +9,14 @@ https://github.com/alex-shpak/hugo-book
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="🧩 Job 模型# 定义来源：devflow-common/model/job.go
-字段列表# 字段 类型 必须 说明 id ObjectID 系统 BaseModel.ID（系统生成） created_at time 系统 BaseModel.CreatedAt（系统生成） updated_at time 系统 BaseModel.UpdatedAt（系统生成） deleted_at *time 系统 BaseModel.DeletedAt application_id ObjectID 是 关联 Application ID application_name string 是 关联 Application 名称 project_name string 是 项目/命名空间名称 manifest_id ObjectID 是 关联 Manifest ID manifest_name string 是 关联 Manifest 名称 type string 是 Job 类型（Install/Upgrade/Rollback） env string 是 运行环境标识（如 prod/staging） status JobStatus 是 任务状态 JobStatus 枚举# Pending Running Succeeded Failed RollingBack RolledBack Syncing Syn ">
+字段列表# 字段 类型 必须 说明 id ObjectID 系统 BaseModel.ID（系统生成） created_at time 系统 BaseModel.CreatedAt（系统生成） updated_at time 系统 BaseModel.UpdatedAt（系统生成） deleted_at *time 系统 BaseModel.DeletedAt application_id ObjectID 是 关联 Application ID application_name string 是 关联 Application 名称 project_name string 是 项目/命名空间名称 manifest_id ObjectID 是 关联 Manifest ID manifest_name string 是 关联 Manifest 名称 type string 是 Job 类型（Install/Upgrade/Rollback） env string 是 运行环境标识（如 prod/staging） status JobStatus 是 任务状态 JobStatus 枚举# Pending Running Succeeded Failed RollingBack RolledBack Syncing SyncFailed ">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
 <meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/devflow/job/">
   <meta property="og:site_name" content="Devflow">
   <meta property="og:title" content="Job">
   <meta property="og:description" content="🧩 Job 模型# 定义来源：devflow-common/model/job.go
-字段列表# 字段 类型 必须 说明 id ObjectID 系统 BaseModel.ID（系统生成） created_at time 系统 BaseModel.CreatedAt（系统生成） updated_at time 系统 BaseModel.UpdatedAt（系统生成） deleted_at *time 系统 BaseModel.DeletedAt application_id ObjectID 是 关联 Application ID application_name string 是 关联 Application 名称 project_name string 是 项目/命名空间名称 manifest_id ObjectID 是 关联 Manifest ID manifest_name string 是 关联 Manifest 名称 type string 是 Job 类型（Install/Upgrade/Rollback） env string 是 运行环境标识（如 prod/staging） status JobStatus 是 任务状态 JobStatus 枚举# Pending Running Succeeded Failed RollingBack RolledBack Syncing Syn">
+字段列表# 字段 类型 必须 说明 id ObjectID 系统 BaseModel.ID（系统生成） created_at time 系统 BaseModel.CreatedAt（系统生成） updated_at time 系统 BaseModel.UpdatedAt（系统生成） deleted_at *time 系统 BaseModel.DeletedAt application_id ObjectID 是 关联 Application ID application_name string 是 关联 Application 名称 project_name string 是 项目/命名空间名称 manifest_id ObjectID 是 关联 Manifest ID manifest_name string 是 关联 Manifest 名称 type string 是 Job 类型（Install/Upgrade/Rollback） env string 是 运行环境标识（如 prod/staging） status JobStatus 是 任务状态 JobStatus 枚举# Pending Running Succeeded Failed RollingBack RolledBack Syncing SyncFailed">
   <meta property="og:locale" content="zh_cn">
   <meta property="og:type" content="article">
     <meta property="article:section" content="docs">
@@ -24,7 +24,7 @@ https://github.com/alex-shpak/hugo-book
 
   <meta itemprop="name" content="Job">
   <meta itemprop="description" content="🧩 Job 模型# 定义来源：devflow-common/model/job.go
-字段列表# 字段 类型 必须 说明 id ObjectID 系统 BaseModel.ID（系统生成） created_at time 系统 BaseModel.CreatedAt（系统生成） updated_at time 系统 BaseModel.UpdatedAt（系统生成） deleted_at *time 系统 BaseModel.DeletedAt application_id ObjectID 是 关联 Application ID application_name string 是 关联 Application 名称 project_name string 是 项目/命名空间名称 manifest_id ObjectID 是 关联 Manifest ID manifest_name string 是 关联 Manifest 名称 type string 是 Job 类型（Install/Upgrade/Rollback） env string 是 运行环境标识（如 prod/staging） status JobStatus 是 任务状态 JobStatus 枚举# Pending Running Succeeded Failed RollingBack RolledBack Syncing Syn">
+字段列表# 字段 类型 必须 说明 id ObjectID 系统 BaseModel.ID（系统生成） created_at time 系统 BaseModel.CreatedAt（系统生成） updated_at time 系统 BaseModel.UpdatedAt（系统生成） deleted_at *time 系统 BaseModel.DeletedAt application_id ObjectID 是 关联 Application ID application_name string 是 关联 Application 名称 project_name string 是 项目/命名空间名称 manifest_id ObjectID 是 关联 Manifest ID manifest_name string 是 关联 Manifest 名称 type string 是 Job 类型（Install/Upgrade/Rollback） env string 是 运行环境标识（如 prod/staging） status JobStatus 是 任务状态 JobStatus 枚举# Pending Running Succeeded Failed RollingBack RolledBack Syncing SyncFailed">
   <meta itemprop="wordCount" content="77">
 
 <title>Job | Devflow</title>
@@ -581,7 +581,7 @@ https://github.com/alex-shpak/hugo-book
 <li>RollingBack</li>
 <li>RolledBack</li>
 <li>Syncing</li>
-<li>Syn</li>
+<li>SyncFailed</li>
 </ul>
 </article>
  
