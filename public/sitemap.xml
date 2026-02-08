@@ -56,12 +56,18 @@
   </url><url>
     <loc>http://localhost:1313/docs/devflow-controller/canary/</loc>
   </url><url>
+    <loc>http://localhost:1313/docs/observability/standard/</loc>
+  </url><url>
     <loc>http://localhost:1313/docs/observability/attributes/</loc>
   </url><url>
-    <loc>http://localhost:1313/docs/observability/standard/</loc>
+    <loc>http://localhost:1313/docs/cd/architecture/</loc>
+  </url><url>
+    <loc>http://localhost:1313/docs/ci/architecture/</loc>
   </url><url>
     <loc>http://localhost:1313/docs/cd/component/</loc>
   </url><url>
     <loc>http://localhost:1313/docs/ci/component/</loc>
+  </url><url>
+    <loc>http://localhost:1313/docs/cd/normal/</loc>
   </url>
 </urlset>

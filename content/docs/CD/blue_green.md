@@ -1,3 +1,7 @@
+---
+title: "Blue-green"
+weight: 5
+---
 # 🟦🟩 云原生 Blue/Green 发布实战：Argo CD + Argo Rollouts
 
 Blue/Green 发布是一种低风险的发布策略，通过维护两套环境（Blue 和 Green），在新版本发布时切换流量到新环境，实现平滑切换和快速回滚。
@@ -39,6 +43,9 @@ flowchart LR
     C --> D[Argo Devflow Plugin]
     D --> E[Argo Rollouts Rollout]
 
+    C --> CS[Application Synced]
+    CS --> R0[Resources Applied]
+
     C -.-> F[Devflow Controller]
     E -.-> F
     F --> M[(MongoDB)]
@@ -50,6 +57,9 @@ flowchart LR
         S2 --> S3[Promote Switch]
         S3 --> S4[Post Verify]
         S4 --> S5[Completed]
+        S2 -. Failed .-> SF[Failed]
+        S4 -. Failed .-> SF
+        SF --> RB[Rollback to Stable]
     end
     E --> S0
 ```
@@ -59,6 +69,43 @@ flowchart LR
 - 发布链路：Devflow Console 触发 Job，生成 Argo CD Application，经插件下发 Blue/Green Rollout。
 - 控制闭环：Devflow Controller 同时监听 Application 与 Rollout 状态，回写 Mongo 的 `steps` 与 `job status`。
 - Blue/Green 节奏：Preview 验证通过后再 Promote 切流，完成后进入 Completed。
+
+---
+
+## 🧭 2.2 端到端步骤（Devflow 驱动）
+
+1. **Devflow 创建 Application 成功**  
+   - Devflow Job 创建 Argo CD Application  
+   - Application 进入 `Synced`（不一定 `Healthy`）
+
+2. **Argo CD 同步并创建/更新资源成功**  
+   - Argo CD 监听到 Application 变更  
+   - 生成/更新 Rollout、Service、Ingress 等资源  
+
+3. **Rollout 创建成功并进入 Blue/Green**  
+   - Devflow Controller 监听 Rollout 状态  
+   - 持续更新 `steps` 与 `job status`：
+     - Preview Ready → Verify（成功）
+     - Promote Switch → Post Verify（成功）
+     - Completed
+   - 若新版本 Pod 启动失败（如 NotReady / CrashLoopBackOff），对应 Verify 进入 `Failed` 并触发回滚
+
+> 若任一步 Verify 失败，Controller 标记对应阶段失败并触发回滚流程（按策略自动或人工介入）。
+
+---
+
+## 📋 2.3 Blue/Green Steps / Status 对照表
+
+| Step | 状态（Status） | 触发事件 / 说明 |
+|------|----------------|----------------|
+| Applied | Running → Succeeded/Failed | Application 创建并 Sync 成功 |
+| Preview Ready | Running → Succeeded | 预览环境就绪（Pod Ready） |
+| Verify | Running → Succeeded / Failed | 指标通过或 Pod 启动正常 / Pod NotReady 或 CrashLoopBackOff |
+| Promote Switch | Running → Succeeded | activeService 切流到新版本 |
+| Post Verify | Running → Succeeded / Failed | 切流后验证通过 / 失败 |
+| Completed | Succeeded | 发布完成 |
+| Failed | Failed | 任一阶段 Verify 失败触发回滚 |
+| Rollback to Stable | Succeeded | 回滚至稳定版本 |
 
 ---
 

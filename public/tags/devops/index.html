@@ -73,7 +73,7 @@ https://github.com/alex-shpak/hugo-book
   
     <input type="checkbox" id="section-4bd032e4e5fe1323a134583cafeecf06" class="toggle"  />
     <label for="section-4bd032e4e5fe1323a134583cafeecf06" class="flex">
-      <a role="button" class="">
+      <a href="/docs/ci/" class="">
         CI</a>
       <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
     </label>
@@ -82,6 +82,18 @@ https://github.com/alex-shpak/hugo-book
           
   <ul>
     
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/ci/queue/" class="">
+      Queue</a>
+  
+
+        </li>
       
     
       
@@ -93,6 +105,20 @@ https://github.com/alex-shpak/hugo-book
   
     <a href="/docs/ci/standard/" class="">
       Standard</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/ci/architecture/" class="">
+      CI Architecture</a>
   
 
         </li>
@@ -184,8 +210,36 @@ https://github.com/alex-shpak/hugo-book
   
 
   
+    <a href="/docs/cd/architecture/" class="">
+      CD Architecture</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
     <a href="/docs/cd/component/" class="">
       Components</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cd/normal/" class="">
+      Normal (Rolling)</a>
   
 
         </li>
@@ -205,7 +259,7 @@ https://github.com/alex-shpak/hugo-book
   
     <input type="checkbox" id="section-6884c320646745efe1e09831aa35ad5b" class="toggle"  />
     <label for="section-6884c320646745efe1e09831aa35ad5b" class="flex">
-      <a role="button" class="">
+      <a href="/docs/observability/" class="">
         observability</a>
       <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
     </label>
@@ -235,8 +289,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/docs/observability/attributes/" class="">
-      Attributes</a>
+    <a href="/docs/observability/standard/" class="">
+      Standard</a>
   
 
         </li>
@@ -249,8 +303,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/docs/observability/standard/" class="">
-      Standard</a>
+    <a href="/docs/observability/attributes/" class="">
+      Attributes</a>
   
 
         </li>
@@ -270,7 +324,7 @@ https://github.com/alex-shpak/hugo-book
   
     <input type="checkbox" id="section-97bc183e640cafe9ca9da46d45661ec8" class="toggle"  />
     <label for="section-97bc183e640cafe9ca9da46d45661ec8" class="flex">
-      <a role="button" class="">
+      <a href="/docs/devflow-controller/" class="">
         devflow-controller</a>
       <img src="/icons/chevron-right.svg" class="book-icon" alt="Expand" />
     </label>
@@ -392,7 +446,21 @@ https://github.com/alex-shpak/hugo-book
   
 
 
-    <div class="book-post-content"><h2 id="一平台与应用层platform--application">一、平台与应用层（Platform / Application）<a class="anchor" href="#%e4%b8%80%e5%b9%b3%e5%8f%b0%e4%b8%8e%e5%ba%94%e7%94%a8%e5%b1%82platform--application">#</a></h2>
+    <div class="book-post-content"><h2 id="-快速定位">🧭 快速定位<a class="anchor" href="#-%e5%bf%ab%e9%80%9f%e5%ae%9a%e4%bd%8d">#</a></h2>
+<ul>
+<li>平台工程与控制面：DevFlow Controller / DevFlow</li>
+<li>CI：Tekton 体系</li>
+<li>CD：Argo CD / Rollouts</li>
+<li>观测：Prometheus / Loki / Tempo / Grafana</li>
+</ul>
+<h2 id="-最小落地组合mvp">✅ 最小落地组合（MVP）<a class="anchor" href="#-%e6%9c%80%e5%b0%8f%e8%90%bd%e5%9c%b0%e7%bb%84%e5%90%88mvp">#</a></h2>
+<ul>
+<li>CI：Tekton Pipelines + Buildah</li>
+<li>CD：Argo CD</li>
+<li>观测：Prometheus + Grafana</li>
+<li>网络：Cilium（或 Calico）</li>
+</ul>
+<h2 id="-一平台与应用层platform--application">🏗️ 一、平台与应用层（Platform / Application）<a class="anchor" href="#-%e4%b8%80%e5%b9%b3%e5%8f%b0%e4%b8%8e%e5%ba%94%e7%94%a8%e5%b1%82platform--application">#</a></h2>
 <table>
   <thead>
       <tr>
@@ -440,7 +508,7 @@ https://github.com/alex-shpak/hugo-book
   </tbody>
 </table>
 <hr>
-<h2 id="二持续集成ci">二、持续集成（CI）<a class="anchor" href="#%e4%ba%8c%e6%8c%81%e7%bb%ad%e9%9b%86%e6%88%90ci">#</a></h2>
+<h2 id="-二持续集成ci">🧪 二、持续集成（CI）<a class="anchor" href="#-%e4%ba%8c%e6%8c%81%e7%bb%ad%e9%9b%86%e6%88%90ci">#</a></h2>
 <table>
   <thead>
       <tr>
@@ -488,7 +556,7 @@ https://github.com/alex-shpak/hugo-book
   </tbody>
 </table>
 <hr>
-<h2 id="三持续交付cd--发布">三、持续交付（CD &amp; 发布）<a class="anchor" href="#%e4%b8%89%e6%8c%81%e7%bb%ad%e4%ba%a4%e4%bb%98cd--%e5%8f%91%e5%b8%83">#</a></h2>
+<h2 id="-三持续交付cd--发布">🚀 三、持续交付（CD &amp; 发布）<a class="anchor" href="#-%e4%b8%89%e6%8c%81%e7%bb%ad%e4%ba%a4%e4%bb%98cd--%e5%8f%91%e5%b8%83">#</a></h2>
 <table>
   <thead>
       <tr>
@@ -528,7 +596,7 @@ https://github.com/alex-shpak/hugo-book
   </tbody>
 </table>
 <hr>
-<h2 id="四流量治理与服务网格">四、流量治理与服务网格<a class="anchor" href="#%e5%9b%9b%e6%b5%81%e9%87%8f%e6%b2%bb%e7%90%86%e4%b8%8e%e6%9c%8d%e5%8a%a1%e7%bd%91%e6%a0%bc">#</a></h2>
+<h2 id="-四流量治理与服务网格">🕸️ 四、流量治理与服务网格<a class="anchor" href="#-%e5%9b%9b%e6%b5%81%e9%87%8f%e6%b2%bb%e7%90%86%e4%b8%8e%e6%9c%8d%e5%8a%a1%e7%bd%91%e6%a0%bc">#</a></h2>
 <table>
   <thead>
       <tr>
@@ -568,7 +636,7 @@ https://github.com/alex-shpak/hugo-book
   </tbody>
 </table>
 <hr>
-<h2 id="五网络cni">五、网络（CNI）<a class="anchor" href="#%e4%ba%94%e7%bd%91%e7%bb%9ccni">#</a></h2>
+<h2 id="-五网络cni">🌐 五、网络（CNI）<a class="anchor" href="#-%e4%ba%94%e7%bd%91%e7%bb%9ccni">#</a></h2>
 <table>
   <thead>
       <tr>
@@ -600,7 +668,7 @@ https://github.com/alex-shpak/hugo-book
   </tbody>
 </table>
 <hr>
-<h2 id="六可观测性observability">六、可观测性（Observability）<a class="anchor" href="#%e5%85%ad%e5%8f%af%e8%a7%82%e6%b5%8b%e6%80%a7observability">#</a></h2>
+<h2 id="-六可观测性observability">👀 六、可观测性（Observability）<a class="anchor" href="#-%e5%85%ad%e5%8f%af%e8%a7%82%e6%b5%8b%e6%80%a7observability">#</a></h2>
 <h3 id="metrics">Metrics<a class="anchor" href="#metrics">#</a></h3>
 <table>
   <thead>
@@ -734,7 +802,7 @@ https://github.com/alex-shpak/hugo-book
   </tbody>
 </table>
 <hr>
-<h2 id="七身份认证与安全">七、身份认证与安全<a class="anchor" href="#%e4%b8%83%e8%ba%ab%e4%bb%bd%e8%ae%a4%e8%af%81%e4%b8%8e%e5%ae%89%e5%85%a8">#</a></h2>
+<h2 id="-七身份认证与安全">🔐 七、身份认证与安全<a class="anchor" href="#-%e4%b8%83%e8%ba%ab%e4%bb%bd%e8%ae%a4%e8%af%81%e4%b8%8e%e5%ae%89%e5%85%a8">#</a></h2>
 <table>
   <thead>
       <tr>
@@ -774,7 +842,7 @@ https://github.com/alex-shpak/hugo-book
   </tbody>
 </table>
 <hr>
-<h2 id="八数据与存储">八、数据与存储<a class="anchor" href="#%e5%85%ab%e6%95%b0%e6%8d%ae%e4%b8%8e%e5%ad%98%e5%82%a8">#</a></h2>
+<h2 id="-八数据与存储">🗄️ 八、数据与存储<a class="anchor" href="#-%e5%85%ab%e6%95%b0%e6%8d%ae%e4%b8%8e%e5%ad%98%e5%82%a8">#</a></h2>
 <table>
   <thead>
       <tr>
@@ -814,7 +882,7 @@ https://github.com/alex-shpak/hugo-book
   </tbody>
 </table>
 <hr>
-<h2 id="九核心总结">九、核心总结<a class="anchor" href="#%e4%b9%9d%e6%a0%b8%e5%bf%83%e6%80%bb%e7%bb%93">#</a></h2>
+<h2 id="-九核心总结">✅ 九、核心总结<a class="anchor" href="#-%e4%b9%9d%e6%a0%b8%e5%bf%83%e6%80%bb%e7%bb%93">#</a></h2>
 <ul>
 <li><strong>Kubernetes</strong> 负责资源调度</li>
 <li><strong>Tekton</strong> 负责 CI</li>
@@ -857,7 +925,14 @@ https://github.com/alex-shpak/hugo-book
   
 
 
-    <div class="book-post-content"><h3 id="metrics">Metrics<a class="anchor" href="#metrics">#</a></h3>
+    <div class="book-post-content"><h1 id="-observability-组件矩阵">🧰 Observability 组件矩阵<a class="anchor" href="#-observability-%e7%bb%84%e4%bb%b6%e7%9f%a9%e9%98%b5">#</a></h1>
+<h2 id="-选型建议">🧭 选型建议<a class="anchor" href="#-%e9%80%89%e5%9e%8b%e5%bb%ba%e8%ae%ae">#</a></h2>
+<ul>
+<li>先落地 Metrics + Grafana，再补齐 Logs / Tracing</li>
+<li>日志优先低成本方案（Loki / Vector），再评估 ELK/OpenSearch</li>
+<li>Trace 采样率与成本权衡，避免全量采集</li>
+</ul>
+<h3 id="metrics">Metrics<a class="anchor" href="#metrics">#</a></h3>
 <table>
   <thead>
       <tr>

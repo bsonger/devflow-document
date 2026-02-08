@@ -8,25 +8,25 @@ https://github.com/alex-shpak/hugo-book
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="🐤 云原生 Canary 发布实战：Argo CD &#43; Argo Rollouts &#43; Istio# Canary 发布是将新版本的流量逐步引入生产环境的一种发布策略，用于 降低风险、快速回滚、灰度验证。在 Kubernetes 环境下，结合 Argo CD、Argo Rollouts 和 Istio 可以实现全自动化 Canary 发布。
-🧩 1. 技术栈说明# 组件 作用 说明 Argo CD GitOps CD 平台 自动同步 Kubernetes 资源与 Git 仓库，实现声明式部署 Argo Rollouts 发布控制器 提供 Canary、Blue/Green、实验性发布策略，并与服务网格集成 Istio 服务网格 流量管理、路由控制、指标采集，实现按比例灰度流量 Prometheus / Metrics 指标监控 用于自动判断 Canary 健康和触发回滚 🔍 2. 基本原理# Argo CD 负责将应用 Manifest（Deployment、Service、Rollout 等）同步到集群。 Argo Rollouts 替代原生 Deployment，对 Pod 版本的发布进行控制（如逐步增量）。 Istio VirtualService / DestinationRule 控制请求流量，将部分流量导向 Canary Pod。 Metrics &amp; Analysis：Rollouts 可以根据指标（如错误率、延迟）自动判断 Canary 是否健康。 回滚 / 推进： 如果指标正常，Rollout 自动增加新版本流量直至 100%。 如果异常，Rollout 自动回滚到旧版本。 🗺️ 2.1 Devflow Canary 发布流程图（示例）# flowchart LR A[Devflow Console] --&gt; B[Devflow Job] B --&gt; C[Argo CD Application] C --&gt; D[Argo Devflow Plugin] D --&gt; E[Argo Rollouts Rollout] C -. watch .-&gt; F[Devflow Controller] E -. watch .-&gt; F F --&gt; M[(MongoDB)] M --&gt;|更新 steps / job status| F E --&gt; S0 subgraph Canary Steps S0[Applied] --&gt; S1[10% Traffic] --&gt; S2[Verify] S2 --&gt; S3[30% Traffic] --&gt; S4[Verify] S4 --&gt; S5[50% Traffic] --&gt; S6[Verify] S6 --&gt; S7[100% Traffic] end说明：
+<meta name="description" content=" title: “Canary” weight: 4# 🐤 云原生 Canary 发布实战：Argo CD &#43; Argo Rollouts &#43; Istio# Canary 发布是将新版本的流量逐步引入生产环境的一种发布策略，用于 降低风险、快速回滚、灰度验证。在 Kubernetes 环境下，结合 Argo CD、Argo Rollouts 和 Istio 可以实现全自动化 Canary 发布。
+🧩 1. 技术栈说明# 组件 作用 说明 Argo CD GitOps CD 平台 自动同步 Kubernetes 资源与 Git 仓库，实现声明式部署 Argo Rollouts 发布控制器 提供 Canary、Blue/Green、实验性发布策略，并与服务网格集成 Istio 服务网格 流量管理、路由控制、指标采集，实现按比例灰度流量 Prometheus / Metrics 指标监控 用于自动判断 Canary 健康和触发回滚 🔍 2. 基本原理# Argo CD 负责将应用 Manifest（Deployment、Service、Rollout 等）同步到集群。 Argo Rollouts 替代原生 Deployment，对 Pod 版本的发布进行控制（如逐步增量）。 Istio VirtualService / DestinationRule 控制请求流量，将部分流量导向 Canary Pod。 Metrics &amp; Analysis：Rollouts 可以根据指标（如错误率、延迟）自动判断 Canary 是否健康。 回滚 / 推进： 如果指标正常，Rollout 自动增加新版本流量直至 100%。 如果异常，Rollout 自动回滚到旧版本。 🗺️ 2.1 Devflow Canary 发布流程图（示例）# flowchart LR A[Devflow Console] --&gt; B[Devflow Job] B --&gt; C[Argo CD Application] C --&gt; D[Argo Devflow Plugin] D --&gt; E[Argo Rollouts Rollout] C --&gt; CS[Application Synced] CS --&gt; R0[Resources Applied] C -. watch .-&gt; F[Devflow Controller] E -. watch .-&gt; F F --&gt; M[(MongoDB)] M --&gt;|更新 steps / job status| F E --&gt; S0 subgraph Canary Steps S0[Applied] --&gt; S1[10% Traffic] --&gt; S2[Verify] S2 --&gt; S3[30% Traffic] --&gt; S4[Verify] S4 --&gt; S5[50% Traffic] --&gt; S6[Verify] S6 --&gt; S7[100% Traffic] S2 -. Failed .-&gt; SF[Failed] S4 -. Failed .-&gt; SF S6 -. Failed .-&gt; SF SF --&gt; RB[Rollback to Stable] end说明：
 ">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
 <meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/cd/canary/">
   <meta property="og:site_name" content="Devflow">
   <meta property="og:title" content="Devflow">
-  <meta property="og:description" content="🐤 云原生 Canary 发布实战：Argo CD &#43; Argo Rollouts &#43; Istio# Canary 发布是将新版本的流量逐步引入生产环境的一种发布策略，用于 降低风险、快速回滚、灰度验证。在 Kubernetes 环境下，结合 Argo CD、Argo Rollouts 和 Istio 可以实现全自动化 Canary 发布。
-🧩 1. 技术栈说明# 组件 作用 说明 Argo CD GitOps CD 平台 自动同步 Kubernetes 资源与 Git 仓库，实现声明式部署 Argo Rollouts 发布控制器 提供 Canary、Blue/Green、实验性发布策略，并与服务网格集成 Istio 服务网格 流量管理、路由控制、指标采集，实现按比例灰度流量 Prometheus / Metrics 指标监控 用于自动判断 Canary 健康和触发回滚 🔍 2. 基本原理# Argo CD 负责将应用 Manifest（Deployment、Service、Rollout 等）同步到集群。 Argo Rollouts 替代原生 Deployment，对 Pod 版本的发布进行控制（如逐步增量）。 Istio VirtualService / DestinationRule 控制请求流量，将部分流量导向 Canary Pod。 Metrics &amp; Analysis：Rollouts 可以根据指标（如错误率、延迟）自动判断 Canary 是否健康。 回滚 / 推进： 如果指标正常，Rollout 自动增加新版本流量直至 100%。 如果异常，Rollout 自动回滚到旧版本。 🗺️ 2.1 Devflow Canary 发布流程图（示例）# flowchart LR A[Devflow Console] --&gt; B[Devflow Job] B --&gt; C[Argo CD Application] C --&gt; D[Argo Devflow Plugin] D --&gt; E[Argo Rollouts Rollout] C -. watch .-&gt; F[Devflow Controller] E -. watch .-&gt; F F --&gt; M[(MongoDB)] M --&gt;|更新 steps / job status| F E --&gt; S0 subgraph Canary Steps S0[Applied] --&gt; S1[10% Traffic] --&gt; S2[Verify] S2 --&gt; S3[30% Traffic] --&gt; S4[Verify] S4 --&gt; S5[50% Traffic] --&gt; S6[Verify] S6 --&gt; S7[100% Traffic] end说明：">
+  <meta property="og:description" content="title: “Canary” weight: 4# 🐤 云原生 Canary 发布实战：Argo CD &#43; Argo Rollouts &#43; Istio# Canary 发布是将新版本的流量逐步引入生产环境的一种发布策略，用于 降低风险、快速回滚、灰度验证。在 Kubernetes 环境下，结合 Argo CD、Argo Rollouts 和 Istio 可以实现全自动化 Canary 发布。
+🧩 1. 技术栈说明# 组件 作用 说明 Argo CD GitOps CD 平台 自动同步 Kubernetes 资源与 Git 仓库，实现声明式部署 Argo Rollouts 发布控制器 提供 Canary、Blue/Green、实验性发布策略，并与服务网格集成 Istio 服务网格 流量管理、路由控制、指标采集，实现按比例灰度流量 Prometheus / Metrics 指标监控 用于自动判断 Canary 健康和触发回滚 🔍 2. 基本原理# Argo CD 负责将应用 Manifest（Deployment、Service、Rollout 等）同步到集群。 Argo Rollouts 替代原生 Deployment，对 Pod 版本的发布进行控制（如逐步增量）。 Istio VirtualService / DestinationRule 控制请求流量，将部分流量导向 Canary Pod。 Metrics &amp; Analysis：Rollouts 可以根据指标（如错误率、延迟）自动判断 Canary 是否健康。 回滚 / 推进： 如果指标正常，Rollout 自动增加新版本流量直至 100%。 如果异常，Rollout 自动回滚到旧版本。 🗺️ 2.1 Devflow Canary 发布流程图（示例）# flowchart LR A[Devflow Console] --&gt; B[Devflow Job] B --&gt; C[Argo CD Application] C --&gt; D[Argo Devflow Plugin] D --&gt; E[Argo Rollouts Rollout] C --&gt; CS[Application Synced] CS --&gt; R0[Resources Applied] C -. watch .-&gt; F[Devflow Controller] E -. watch .-&gt; F F --&gt; M[(MongoDB)] M --&gt;|更新 steps / job status| F E --&gt; S0 subgraph Canary Steps S0[Applied] --&gt; S1[10% Traffic] --&gt; S2[Verify] S2 --&gt; S3[30% Traffic] --&gt; S4[Verify] S4 --&gt; S5[50% Traffic] --&gt; S6[Verify] S6 --&gt; S7[100% Traffic] S2 -. Failed .-&gt; SF[Failed] S4 -. Failed .-&gt; SF S6 -. Failed .-&gt; SF SF --&gt; RB[Rollback to Stable] end说明：">
   <meta property="og:locale" content="zh_cn">
   <meta property="og:type" content="article">
     <meta property="article:section" content="docs">
 
 
   <meta itemprop="name" content="Devflow">
-  <meta itemprop="description" content="🐤 云原生 Canary 发布实战：Argo CD &#43; Argo Rollouts &#43; Istio# Canary 发布是将新版本的流量逐步引入生产环境的一种发布策略，用于 降低风险、快速回滚、灰度验证。在 Kubernetes 环境下，结合 Argo CD、Argo Rollouts 和 Istio 可以实现全自动化 Canary 发布。
-🧩 1. 技术栈说明# 组件 作用 说明 Argo CD GitOps CD 平台 自动同步 Kubernetes 资源与 Git 仓库，实现声明式部署 Argo Rollouts 发布控制器 提供 Canary、Blue/Green、实验性发布策略，并与服务网格集成 Istio 服务网格 流量管理、路由控制、指标采集，实现按比例灰度流量 Prometheus / Metrics 指标监控 用于自动判断 Canary 健康和触发回滚 🔍 2. 基本原理# Argo CD 负责将应用 Manifest（Deployment、Service、Rollout 等）同步到集群。 Argo Rollouts 替代原生 Deployment，对 Pod 版本的发布进行控制（如逐步增量）。 Istio VirtualService / DestinationRule 控制请求流量，将部分流量导向 Canary Pod。 Metrics &amp; Analysis：Rollouts 可以根据指标（如错误率、延迟）自动判断 Canary 是否健康。 回滚 / 推进： 如果指标正常，Rollout 自动增加新版本流量直至 100%。 如果异常，Rollout 自动回滚到旧版本。 🗺️ 2.1 Devflow Canary 发布流程图（示例）# flowchart LR A[Devflow Console] --&gt; B[Devflow Job] B --&gt; C[Argo CD Application] C --&gt; D[Argo Devflow Plugin] D --&gt; E[Argo Rollouts Rollout] C -. watch .-&gt; F[Devflow Controller] E -. watch .-&gt; F F --&gt; M[(MongoDB)] M --&gt;|更新 steps / job status| F E --&gt; S0 subgraph Canary Steps S0[Applied] --&gt; S1[10% Traffic] --&gt; S2[Verify] S2 --&gt; S3[30% Traffic] --&gt; S4[Verify] S4 --&gt; S5[50% Traffic] --&gt; S6[Verify] S6 --&gt; S7[100% Traffic] end说明：">
-  <meta itemprop="wordCount" content="385">
+  <meta itemprop="description" content="title: “Canary” weight: 4# 🐤 云原生 Canary 发布实战：Argo CD &#43; Argo Rollouts &#43; Istio# Canary 发布是将新版本的流量逐步引入生产环境的一种发布策略，用于 降低风险、快速回滚、灰度验证。在 Kubernetes 环境下，结合 Argo CD、Argo Rollouts 和 Istio 可以实现全自动化 Canary 发布。
+🧩 1. 技术栈说明# 组件 作用 说明 Argo CD GitOps CD 平台 自动同步 Kubernetes 资源与 Git 仓库，实现声明式部署 Argo Rollouts 发布控制器 提供 Canary、Blue/Green、实验性发布策略，并与服务网格集成 Istio 服务网格 流量管理、路由控制、指标采集，实现按比例灰度流量 Prometheus / Metrics 指标监控 用于自动判断 Canary 健康和触发回滚 🔍 2. 基本原理# Argo CD 负责将应用 Manifest（Deployment、Service、Rollout 等）同步到集群。 Argo Rollouts 替代原生 Deployment，对 Pod 版本的发布进行控制（如逐步增量）。 Istio VirtualService / DestinationRule 控制请求流量，将部分流量导向 Canary Pod。 Metrics &amp; Analysis：Rollouts 可以根据指标（如错误率、延迟）自动判断 Canary 是否健康。 回滚 / 推进： 如果指标正常，Rollout 自动增加新版本流量直至 100%。 如果异常，Rollout 自动回滚到旧版本。 🗺️ 2.1 Devflow Canary 发布流程图（示例）# flowchart LR A[Devflow Console] --&gt; B[Devflow Job] B --&gt; C[Argo CD Application] C --&gt; D[Argo Devflow Plugin] D --&gt; E[Argo Rollouts Rollout] C --&gt; CS[Application Synced] CS --&gt; R0[Resources Applied] C -. watch .-&gt; F[Devflow Controller] E -. watch .-&gt; F F --&gt; M[(MongoDB)] M --&gt;|更新 steps / job status| F E --&gt; S0 subgraph Canary Steps S0[Applied] --&gt; S1[10% Traffic] --&gt; S2[Verify] S2 --&gt; S3[30% Traffic] --&gt; S4[Verify] S4 --&gt; S5[50% Traffic] --&gt; S6[Verify] S6 --&gt; S7[100% Traffic] S2 -. Failed .-&gt; SF[Failed] S4 -. Failed .-&gt; SF S6 -. Failed .-&gt; SF SF --&gt; RB[Rollback to Stable] end说明：">
+  <meta itemprop="wordCount" content="589">
 
 <title>Canary | Devflow</title>
 <link rel="icon" href="/favicon.png" >
@@ -122,6 +122,20 @@ https://github.com/alex-shpak/hugo-book
   
 
   
+    <a href="/docs/ci/architecture/" class="">
+      CI Architecture</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
     <a href="/docs/ci/component/" class="">
       Components</a>
   
@@ -159,8 +173,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/docs/cd/blue_green/" class="">
-      Blue Green</a>
+    <a href="/docs/cd/architecture/" class="">
+      Architecture</a>
   
 
         </li>
@@ -173,8 +187,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/docs/cd/canary/" class="active">
-      Canary</a>
+    <a href="/docs/cd/component/" class="">
+      Components</a>
   
 
         </li>
@@ -201,8 +215,36 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/docs/cd/component/" class="">
-      Components</a>
+    <a href="/docs/cd/blue_green/" class="">
+      Blue-green</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cd/canary/" class="active">
+      Canary</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cd/normal/" class="">
+      Normal (Rolling)</a>
   
 
         </li>
@@ -378,7 +420,10 @@ https://github.com/alex-shpak/hugo-book
 
       
       
-  <article class="markdown book-article"><h1 id="-云原生-canary-发布实战argo-cd--argo-rollouts--istio">🐤 云原生 Canary 发布实战：Argo CD + Argo Rollouts + Istio<a class="anchor" href="#-%e4%ba%91%e5%8e%9f%e7%94%9f-canary-%e5%8f%91%e5%b8%83%e5%ae%9e%e6%88%98argo-cd--argo-rollouts--istio">#</a></h1>
+  <article class="markdown book-article"><hr>
+<h2 id="weight-4">title: &ldquo;Canary&rdquo;
+weight: 4<a class="anchor" href="#weight-4">#</a></h2>
+<h1 id="-云原生-canary-发布实战argo-cd--argo-rollouts--istio">🐤 云原生 Canary 发布实战：Argo CD + Argo Rollouts + Istio<a class="anchor" href="#-%e4%ba%91%e5%8e%9f%e7%94%9f-canary-%e5%8f%91%e5%b8%83%e5%ae%9e%e6%88%98argo-cd--argo-rollouts--istio">#</a></h1>
 <p>Canary 发布是将新版本的流量逐步引入生产环境的一种发布策略，用于 <strong>降低风险、快速回滚、灰度验证</strong>。在 Kubernetes 环境下，结合 Argo CD、Argo Rollouts 和 Istio 可以实现全自动化 Canary 发布。</p>
 <hr>
 <h2 id="-1-技术栈说明">🧩 1. 技术栈说明<a class="anchor" href="#-1-%e6%8a%80%e6%9c%af%e6%a0%88%e8%af%b4%e6%98%8e">#</a></h2>
@@ -436,6 +481,9 @@ https://github.com/alex-shpak/hugo-book
     C --&gt; D[Argo Devflow Plugin]
     D --&gt; E[Argo Rollouts Rollout]
 
+    C --&gt; CS[Application Synced]
+    CS --&gt; R0[Resources Applied]
+
     C -. watch .-&gt; F[Devflow Controller]
     E -. watch .-&gt; F
     F --&gt; M[(MongoDB)]
@@ -447,12 +495,119 @@ https://github.com/alex-shpak/hugo-book
         S2 --&gt; S3[30% Traffic] --&gt; S4[Verify]
         S4 --&gt; S5[50% Traffic] --&gt; S6[Verify]
         S6 --&gt; S7[100% Traffic]
-    end</pre><script src="/mermaid.min.js"></script><script>mermaid.initialize({"flowchart":{"useMaxWidth":true},"theme":"default"})</script><p>说明：</p>
+        S2 -. Failed .-&gt; SF[Failed]
+        S4 -. Failed .-&gt; SF
+        S6 -. Failed .-&gt; SF
+        SF --&gt; RB[Rollback to Stable]
+    end</pre><p>说明：</p>
 <ul>
 <li>发布链路：Devflow Console 触发 Job，生成 Argo CD Application，经插件下发 Rollout。</li>
 <li>控制闭环：Devflow Controller 同时监听 Application 与 Rollout 状态，回写 Mongo 的 <code>steps</code> 与 <code>job status</code>。</li>
 <li>灰度节奏：Applied → 10% → Verify → 30% → Verify → 50% → Verify → 100%。</li>
 </ul>
+<hr>
+<h2 id="-22-端到端步骤devflow-驱动">🧭 2.2 端到端步骤（Devflow 驱动）<a class="anchor" href="#-22-%e7%ab%af%e5%88%b0%e7%ab%af%e6%ad%a5%e9%aa%a4devflow-%e9%a9%b1%e5%8a%a8">#</a></h2>
+<ol>
+<li>
+<p><strong>Devflow 创建 Application 成功</strong></p>
+<ul>
+<li>Devflow Job 创建 Argo CD Application</li>
+<li>Application 进入 <code>Synced</code>（不一定 <code>Healthy</code>）</li>
+</ul>
+</li>
+<li>
+<p><strong>Argo CD 同步并创建/更新资源成功</strong></p>
+<ul>
+<li>Argo CD 监听到 Application 变更</li>
+<li>生成/更新 Rollout、Service、VirtualService 等资源</li>
+</ul>
+</li>
+<li>
+<p><strong>Rollout 创建成功并进入灰度</strong></p>
+<ul>
+<li>Devflow Controller 监听 Rollout 状态</li>
+<li>持续更新 <code>steps</code> 与 <code>job status</code>：
+<ul>
+<li>10% → Verify（成功）</li>
+<li>30% → Verify（成功）</li>
+<li>50% → Verify（成功）</li>
+<li>100% → Completed</li>
+</ul>
+</li>
+<li>若新版本 Pod 启动失败（如 NotReady / CrashLoopBackOff），对应 Verify 进入 <code>Failed</code> 并触发回滚</li>
+</ul>
+</li>
+</ol>
+<blockquote class='book-hint '>
+<p>若任一步 Verify 失败，Controller 标记对应阶段失败并触发回滚流程（按策略自动或人工介入）。</p>
+</blockquote><hr>
+<h2 id="-23-canary-steps--status-对照表">📋 2.3 Canary Steps / Status 对照表<a class="anchor" href="#-23-canary-steps--status-%e5%af%b9%e7%85%a7%e8%a1%a8">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>Step</th>
+          <th>状态（Status）</th>
+          <th>触发事件 / 说明</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Applied</td>
+          <td>Running → Succeeded/Failed</td>
+          <td>Application 创建并 Sync 成功</td>
+      </tr>
+      <tr>
+          <td>10% Traffic</td>
+          <td>Running → Succeeded</td>
+          <td>切流 10% 完成</td>
+      </tr>
+      <tr>
+          <td>Verify</td>
+          <td>Running → Succeeded / Failed</td>
+          <td>指标通过或 Pod 启动正常 / Pod NotReady 或 CrashLoopBackOff</td>
+      </tr>
+      <tr>
+          <td>30% Traffic</td>
+          <td>Running → Succeeded</td>
+          <td>切流 30% 完成</td>
+      </tr>
+      <tr>
+          <td>Verify</td>
+          <td>Running → Succeeded / Failed</td>
+          <td>指标通过或 Pod 启动正常 / Pod NotReady 或 CrashLoopBackOff</td>
+      </tr>
+      <tr>
+          <td>50% Traffic</td>
+          <td>Running → Succeeded</td>
+          <td>切流 50% 完成</td>
+      </tr>
+      <tr>
+          <td>Verify</td>
+          <td>Running → Succeeded / Failed</td>
+          <td>指标通过或 Pod 启动正常 / Pod NotReady 或 CrashLoopBackOff</td>
+      </tr>
+      <tr>
+          <td>100% Traffic</td>
+          <td>Running → Succeeded</td>
+          <td>全量切流完成</td>
+      </tr>
+      <tr>
+          <td>Completed</td>
+          <td>Succeeded</td>
+          <td>发布完成</td>
+      </tr>
+      <tr>
+          <td>Failed</td>
+          <td>Failed</td>
+          <td>任一阶段 Verify 失败触发回滚</td>
+      </tr>
+      <tr>
+          <td>Rollback to Stable</td>
+          <td>Succeeded</td>
+          <td>回滚至稳定版本</td>
+      </tr>
+  </tbody>
+</table>
 <hr>
 <h2 id="-3-设计原则单-service">🧱 3. 设计原则（单 Service）<a class="anchor" href="#-3-%e8%ae%be%e8%ae%a1%e5%8e%9f%e5%88%99%e5%8d%95-service">#</a></h2>
 <ul>
@@ -564,7 +719,7 @@ https://github.com/alex-shpak/hugo-book
 <li>使用 VirtualService 控制流量</li>
 <li>使用 Rollout 管理发布节奏</li>
 </ul>
-<p>是当前云原生环境中 <strong>最成熟、最安全的灰度发布方案之一</strong>。</p>
+<p>是当前云原生环境中 **最成熟、最安�</p>
 </article>
  
       
@@ -595,14 +750,14 @@ https://github.com/alex-shpak/hugo-book
     
       <a href="/docs/cd/blue_green/" class="flex align-center">
         <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
-        <span>Blue Green</span>
+        <span>Blue-green</span>
       </a>
     
     </span>
     <span>
     
-      <a href="/docs/cd/standard/" class="flex align-center">
-        <span>Standard</span>
+      <a href="/docs/cd/normal/" class="flex align-center">
+        <span>Normal (Rolling)</span>
         <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
       </a>
     

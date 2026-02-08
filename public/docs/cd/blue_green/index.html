@@ -9,26 +9,26 @@ https://github.com/alex-shpak/hugo-book
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="🟦🟩 云原生 Blue/Green 发布实战：Argo CD &#43; Argo Rollouts# Blue/Green 发布是一种低风险的发布策略，通过维护两套环境（Blue 和 Green），在新版本发布时切换流量到新环境，实现平滑切换和快速回滚。
-🧩 1. 技术栈说明# 组件 作用 说明 Argo CD GitOps CD 平台 自动同步 Kubernetes 资源与 Git 仓库，实现声明式部署 Argo Rollouts 发布控制器 提供 Blue/Green、Canary 等高级发布策略，并支持指标分析与自动回滚 Service / Ingress 流量控制 Kubernetes Service 或 Ingress 实现流量切换 Prometheus / Metrics 指标监控 可用于自动判断新版本健康并触发切换 🔍 2. 基本原理# Blue/Green 环境： Blue：当前生产环境版本 Green：新版本环境，准备上线 流量切换： Service 指向 Blue 环境 Rollout 创建 Green Pod 后，通过 Service 将流量切换到 Green 回滚： 如果 Green 出现问题，Service 可以快速切回 Blue Argo CD： GitOps 同步 Blue/Green Rollout 的 Manifest，实现自动化部署和版本管理 🗺️ 2.1 Devflow Blue/Green 发布流程图（示例）# flowchart LR A[Devflow Console] --&gt; B[Devflow Job] B --&gt; C[Argo CD Application] C --&gt; D[Argo Devflow Plugin] D --&gt; E[Argo Rollouts Rollout] C -.-&gt; F[Devflow Controller] E -.-&gt; F F --&gt; M[(MongoDB)] F --&gt;|update steps and job status| M subgraph Blue_Green_Steps S0[Applied] --&gt; S1[Preview Ready] S1 --&gt; S2[Verify] S2 --&gt; S3[Promote Switch] S3 --&gt; S4[Post Verify] S4 --&gt; S5[Completed] end E --&gt; S0说明：
+🧩 1. 技术栈说明# 组件 作用 说明 Argo CD GitOps CD 平台 自动同步 Kubernetes 资源与 Git 仓库，实现声明式部署 Argo Rollouts 发布控制器 提供 Blue/Green、Canary 等高级发布策略，并支持指标分析与自动回滚 Service / Ingress 流量控制 Kubernetes Service 或 Ingress 实现流量切换 Prometheus / Metrics 指标监控 可用于自动判断新版本健康并触发切换 🔍 2. 基本原理# Blue/Green 环境： Blue：当前生产环境版本 Green：新版本环境，准备上线 流量切换： Service 指向 Blue 环境 Rollout 创建 Green Pod 后，通过 Service 将流量切换到 Green 回滚： 如果 Green 出现问题，Service 可以快速切回 Blue Argo CD： GitOps 同步 Blue/Green Rollout 的 Manifest，实现自动化部署和版本管理 🗺️ 2.1 Devflow Blue/Green 发布流程图（示例）# flowchart LR A[Devflow Console] --&gt; B[Devflow Job] B --&gt; C[Argo CD Application] C --&gt; D[Argo Devflow Plugin] D --&gt; E[Argo Rollouts Rollout] C --&gt; CS[Application Synced] CS --&gt; R0[Resources Applied] C -.-&gt; F[Devflow Controller] E -.-&gt; F F --&gt; M[(MongoDB)] F --&gt;|update steps and job status| M subgraph Blue_Green_Steps S0[Applied] --&gt; S1[Preview Ready] S1 --&gt; S2[Verify] S2 --&gt; S3[Promote Switch] S3 --&gt; S4[Post Verify] S4 --&gt; S5[Completed] S2 -. Failed .-&gt; SF[Failed] S4 -. Failed .-&gt; SF SF --&gt; RB[Rollback to Stable] end E --&gt; S0说明：
 ">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
 <meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/cd/blue_green/">
   <meta property="og:site_name" content="Devflow">
-  <meta property="og:title" content="Devflow">
+  <meta property="og:title" content="Blue-green">
   <meta property="og:description" content="🟦🟩 云原生 Blue/Green 发布实战：Argo CD &#43; Argo Rollouts# Blue/Green 发布是一种低风险的发布策略，通过维护两套环境（Blue 和 Green），在新版本发布时切换流量到新环境，实现平滑切换和快速回滚。
-🧩 1. 技术栈说明# 组件 作用 说明 Argo CD GitOps CD 平台 自动同步 Kubernetes 资源与 Git 仓库，实现声明式部署 Argo Rollouts 发布控制器 提供 Blue/Green、Canary 等高级发布策略，并支持指标分析与自动回滚 Service / Ingress 流量控制 Kubernetes Service 或 Ingress 实现流量切换 Prometheus / Metrics 指标监控 可用于自动判断新版本健康并触发切换 🔍 2. 基本原理# Blue/Green 环境： Blue：当前生产环境版本 Green：新版本环境，准备上线 流量切换： Service 指向 Blue 环境 Rollout 创建 Green Pod 后，通过 Service 将流量切换到 Green 回滚： 如果 Green 出现问题，Service 可以快速切回 Blue Argo CD： GitOps 同步 Blue/Green Rollout 的 Manifest，实现自动化部署和版本管理 🗺️ 2.1 Devflow Blue/Green 发布流程图（示例）# flowchart LR A[Devflow Console] --&gt; B[Devflow Job] B --&gt; C[Argo CD Application] C --&gt; D[Argo Devflow Plugin] D --&gt; E[Argo Rollouts Rollout] C -.-&gt; F[Devflow Controller] E -.-&gt; F F --&gt; M[(MongoDB)] F --&gt;|update steps and job status| M subgraph Blue_Green_Steps S0[Applied] --&gt; S1[Preview Ready] S1 --&gt; S2[Verify] S2 --&gt; S3[Promote Switch] S3 --&gt; S4[Post Verify] S4 --&gt; S5[Completed] end E --&gt; S0说明：">
+🧩 1. 技术栈说明# 组件 作用 说明 Argo CD GitOps CD 平台 自动同步 Kubernetes 资源与 Git 仓库，实现声明式部署 Argo Rollouts 发布控制器 提供 Blue/Green、Canary 等高级发布策略，并支持指标分析与自动回滚 Service / Ingress 流量控制 Kubernetes Service 或 Ingress 实现流量切换 Prometheus / Metrics 指标监控 可用于自动判断新版本健康并触发切换 🔍 2. 基本原理# Blue/Green 环境： Blue：当前生产环境版本 Green：新版本环境，准备上线 流量切换： Service 指向 Blue 环境 Rollout 创建 Green Pod 后，通过 Service 将流量切换到 Green 回滚： 如果 Green 出现问题，Service 可以快速切回 Blue Argo CD： GitOps 同步 Blue/Green Rollout 的 Manifest，实现自动化部署和版本管理 🗺️ 2.1 Devflow Blue/Green 发布流程图（示例）# flowchart LR A[Devflow Console] --&gt; B[Devflow Job] B --&gt; C[Argo CD Application] C --&gt; D[Argo Devflow Plugin] D --&gt; E[Argo Rollouts Rollout] C --&gt; CS[Application Synced] CS --&gt; R0[Resources Applied] C -.-&gt; F[Devflow Controller] E -.-&gt; F F --&gt; M[(MongoDB)] F --&gt;|update steps and job status| M subgraph Blue_Green_Steps S0[Applied] --&gt; S1[Preview Ready] S1 --&gt; S2[Verify] S2 --&gt; S3[Promote Switch] S3 --&gt; S4[Post Verify] S4 --&gt; S5[Completed] S2 -. Failed .-&gt; SF[Failed] S4 -. Failed .-&gt; SF SF --&gt; RB[Rollback to Stable] end E --&gt; S0说明：">
   <meta property="og:locale" content="zh_cn">
   <meta property="og:type" content="article">
     <meta property="article:section" content="docs">
 
 
-  <meta itemprop="name" content="Devflow">
+  <meta itemprop="name" content="Blue-green">
   <meta itemprop="description" content="🟦🟩 云原生 Blue/Green 发布实战：Argo CD &#43; Argo Rollouts# Blue/Green 发布是一种低风险的发布策略，通过维护两套环境（Blue 和 Green），在新版本发布时切换流量到新环境，实现平滑切换和快速回滚。
-🧩 1. 技术栈说明# 组件 作用 说明 Argo CD GitOps CD 平台 自动同步 Kubernetes 资源与 Git 仓库，实现声明式部署 Argo Rollouts 发布控制器 提供 Blue/Green、Canary 等高级发布策略，并支持指标分析与自动回滚 Service / Ingress 流量控制 Kubernetes Service 或 Ingress 实现流量切换 Prometheus / Metrics 指标监控 可用于自动判断新版本健康并触发切换 🔍 2. 基本原理# Blue/Green 环境： Blue：当前生产环境版本 Green：新版本环境，准备上线 流量切换： Service 指向 Blue 环境 Rollout 创建 Green Pod 后，通过 Service 将流量切换到 Green 回滚： 如果 Green 出现问题，Service 可以快速切回 Blue Argo CD： GitOps 同步 Blue/Green Rollout 的 Manifest，实现自动化部署和版本管理 🗺️ 2.1 Devflow Blue/Green 发布流程图（示例）# flowchart LR A[Devflow Console] --&gt; B[Devflow Job] B --&gt; C[Argo CD Application] C --&gt; D[Argo Devflow Plugin] D --&gt; E[Argo Rollouts Rollout] C -.-&gt; F[Devflow Controller] E -.-&gt; F F --&gt; M[(MongoDB)] F --&gt;|update steps and job status| M subgraph Blue_Green_Steps S0[Applied] --&gt; S1[Preview Ready] S1 --&gt; S2[Verify] S2 --&gt; S3[Promote Switch] S3 --&gt; S4[Post Verify] S4 --&gt; S5[Completed] end E --&gt; S0说明：">
-  <meta itemprop="wordCount" content="462">
+🧩 1. 技术栈说明# 组件 作用 说明 Argo CD GitOps CD 平台 自动同步 Kubernetes 资源与 Git 仓库，实现声明式部署 Argo Rollouts 发布控制器 提供 Blue/Green、Canary 等高级发布策略，并支持指标分析与自动回滚 Service / Ingress 流量控制 Kubernetes Service 或 Ingress 实现流量切换 Prometheus / Metrics 指标监控 可用于自动判断新版本健康并触发切换 🔍 2. 基本原理# Blue/Green 环境： Blue：当前生产环境版本 Green：新版本环境，准备上线 流量切换： Service 指向 Blue 环境 Rollout 创建 Green Pod 后，通过 Service 将流量切换到 Green 回滚： 如果 Green 出现问题，Service 可以快速切回 Blue Argo CD： GitOps 同步 Blue/Green Rollout 的 Manifest，实现自动化部署和版本管理 🗺️ 2.1 Devflow Blue/Green 发布流程图（示例）# flowchart LR A[Devflow Console] --&gt; B[Devflow Job] B --&gt; C[Argo CD Application] C --&gt; D[Argo Devflow Plugin] D --&gt; E[Argo Rollouts Rollout] C --&gt; CS[Application Synced] CS --&gt; R0[Resources Applied] C -.-&gt; F[Devflow Controller] E -.-&gt; F F --&gt; M[(MongoDB)] F --&gt;|update steps and job status| M subgraph Blue_Green_Steps S0[Applied] --&gt; S1[Preview Ready] S1 --&gt; S2[Verify] S2 --&gt; S3[Promote Switch] S3 --&gt; S4[Post Verify] S4 --&gt; S5[Completed] S2 -. Failed .-&gt; SF[Failed] S4 -. Failed .-&gt; SF SF --&gt; RB[Rollback to Stable] end E --&gt; S0说明：">
+  <meta itemprop="wordCount" content="622">
 
-<title>Blue Green | Devflow</title>
+<title>Blue-green | Devflow</title>
 <link rel="icon" href="/favicon.png" >
 <link rel="manifest" href="/manifest.json">
 <link rel="canonical" href="http://localhost:1313/docs/cd/blue_green/">
@@ -122,6 +122,20 @@ https://github.com/alex-shpak/hugo-book
   
 
   
+    <a href="/docs/ci/architecture/" class="">
+      CI Architecture</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
     <a href="/docs/ci/component/" class="">
       Components</a>
   
@@ -159,8 +173,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/docs/cd/blue_green/" class="active">
-      Blue Green</a>
+    <a href="/docs/cd/architecture/" class="">
+      Architecture</a>
   
 
         </li>
@@ -173,8 +187,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/docs/cd/canary/" class="">
-      Canary</a>
+    <a href="/docs/cd/component/" class="">
+      Components</a>
   
 
         </li>
@@ -201,8 +215,36 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/docs/cd/component/" class="">
-      Components</a>
+    <a href="/docs/cd/blue_green/" class="active">
+      Blue-green</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cd/canary/" class="">
+      Canary</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/cd/normal/" class="">
+      Normal (Rolling)</a>
   
 
         </li>
@@ -364,7 +406,7 @@ https://github.com/alex-shpak/hugo-book
     <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
   </label>
 
-  <h3>Blue Green</h3>
+  <h3>Blue-green</h3>
 
   <label for="toc-control">
     
@@ -447,6 +489,9 @@ https://github.com/alex-shpak/hugo-book
     C --&gt; D[Argo Devflow Plugin]
     D --&gt; E[Argo Rollouts Rollout]
 
+    C --&gt; CS[Application Synced]
+    CS --&gt; R0[Resources Applied]
+
     C -.-&gt; F[Devflow Controller]
     E -.-&gt; F
     F --&gt; M[(MongoDB)]
@@ -458,6 +503,9 @@ https://github.com/alex-shpak/hugo-book
         S2 --&gt; S3[Promote Switch]
         S3 --&gt; S4[Post Verify]
         S4 --&gt; S5[Completed]
+        S2 -. Failed .-&gt; SF[Failed]
+        S4 -. Failed .-&gt; SF
+        SF --&gt; RB[Rollback to Stable]
     end
     E --&gt; S0</pre><script src="/mermaid.min.js"></script><script>mermaid.initialize({"flowchart":{"useMaxWidth":true},"theme":"default"})</script><p>说明：</p>
 <ul>
@@ -465,6 +513,93 @@ https://github.com/alex-shpak/hugo-book
 <li>控制闭环：Devflow Controller 同时监听 Application 与 Rollout 状态，回写 Mongo 的 <code>steps</code> 与 <code>job status</code>。</li>
 <li>Blue/Green 节奏：Preview 验证通过后再 Promote 切流，完成后进入 Completed。</li>
 </ul>
+<hr>
+<h2 id="-22-端到端步骤devflow-驱动">🧭 2.2 端到端步骤（Devflow 驱动）<a class="anchor" href="#-22-%e7%ab%af%e5%88%b0%e7%ab%af%e6%ad%a5%e9%aa%a4devflow-%e9%a9%b1%e5%8a%a8">#</a></h2>
+<ol>
+<li>
+<p><strong>Devflow 创建 Application 成功</strong></p>
+<ul>
+<li>Devflow Job 创建 Argo CD Application</li>
+<li>Application 进入 <code>Synced</code>（不一定 <code>Healthy</code>）</li>
+</ul>
+</li>
+<li>
+<p><strong>Argo CD 同步并创建/更新资源成功</strong></p>
+<ul>
+<li>Argo CD 监听到 Application 变更</li>
+<li>生成/更新 Rollout、Service、Ingress 等资源</li>
+</ul>
+</li>
+<li>
+<p><strong>Rollout 创建成功并进入 Blue/Green</strong></p>
+<ul>
+<li>Devflow Controller 监听 Rollout 状态</li>
+<li>持续更新 <code>steps</code> 与 <code>job status</code>：
+<ul>
+<li>Preview Ready → Verify（成功）</li>
+<li>Promote Switch → Post Verify（成功）</li>
+<li>Completed</li>
+</ul>
+</li>
+<li>若新版本 Pod 启动失败（如 NotReady / CrashLoopBackOff），对应 Verify 进入 <code>Failed</code> 并触发回滚</li>
+</ul>
+</li>
+</ol>
+<blockquote class='book-hint '>
+<p>若任一步 Verify 失败，Controller 标记对应阶段失败并触发回滚流程（按策略自动或人工介入）。</p>
+</blockquote><hr>
+<h2 id="-23-bluegreen-steps--status-对照表">📋 2.3 Blue/Green Steps / Status 对照表<a class="anchor" href="#-23-bluegreen-steps--status-%e5%af%b9%e7%85%a7%e8%a1%a8">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>Step</th>
+          <th>状态（Status）</th>
+          <th>触发事件 / 说明</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Applied</td>
+          <td>Running → Succeeded/Failed</td>
+          <td>Application 创建并 Sync 成功</td>
+      </tr>
+      <tr>
+          <td>Preview Ready</td>
+          <td>Running → Succeeded</td>
+          <td>预览环境就绪（Pod Ready）</td>
+      </tr>
+      <tr>
+          <td>Verify</td>
+          <td>Running → Succeeded / Failed</td>
+          <td>指标通过或 Pod 启动正常 / Pod NotReady 或 CrashLoopBackOff</td>
+      </tr>
+      <tr>
+          <td>Promote Switch</td>
+          <td>Running → Succeeded</td>
+          <td>activeService 切流到新版本</td>
+      </tr>
+      <tr>
+          <td>Post Verify</td>
+          <td>Running → Succeeded / Failed</td>
+          <td>切流后验证通过 / 失败</td>
+      </tr>
+      <tr>
+          <td>Completed</td>
+          <td>Succeeded</td>
+          <td>发布完成</td>
+      </tr>
+      <tr>
+          <td>Failed</td>
+          <td>Failed</td>
+          <td>任一阶段 Verify 失败触发回滚</td>
+      </tr>
+      <tr>
+          <td>Rollback to Stable</td>
+          <td>Succeeded</td>
+          <td>回滚至稳定版本</td>
+      </tr>
+  </tbody>
+</table>
 <hr>
 <h2 id="-3-rollout-配置示例">🧾 3. Rollout 配置示例<a class="anchor" href="#-3-rollout-%e9%85%8d%e7%bd%ae%e7%a4%ba%e4%be%8b">#</a></h2>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">argoproj.io/v1alpha1</span>
@@ -719,9 +854,9 @@ https://github.com/alex-shpak/hugo-book
   <div class="flex flex-wrap justify-between">
     <span>
     
-      <a href="/docs/cd/" class="flex align-center">
+      <a href="/docs/cd/standard/" class="flex align-center">
         <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
-        <span>CD</span>
+        <span>Standard</span>
       </a>
     
     </span>

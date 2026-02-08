@@ -8,33 +8,37 @@ https://github.com/alex-shpak/hugo-book
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="">
+<meta name="description" content="🏗️ CD 架构图（Architecture）# 下面是 CD 核心发布链路与控制闭环的整体关系图。
+🗺️ Mermaid 版# flowchart LR Dev[Developer] --&gt;|Release| Devflow[Devflow Console / Job] Devflow --&gt; Argo[Argo CD] Argo --&gt; App[Application] App --&gt; Rollout[Argo Rollouts] subgraph Release[Release Strategy] Canary[Canary] BG[Blue/Green] Rolling[Rolling] end Rollout --&gt; Release Release --&gt; Svc[Service / Gateway] Svc --&gt; Users[Users] Argo -. watch .-&gt; Ctrl[Devflow Controller] Rollout -. watch .-&gt; Ctrl Ctrl --&gt; Mongo[(MongoDB)] Svc --&gt; Metrics[Metrics / Traces / Logs] Metrics --&gt; Grafana[Grafana]✅ 关键说明# 触发：Devflow Console / Job 创建并驱动发布流程 发布：Rollouts 负责策略执行（Canary / Blue-Green / Rolling） 闭环：Controller 监听状态回写 Mongo，形成可观测发布闭环 验证：发布过程依赖指标与链路进行自动或人工决策 ">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
-<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/categories/">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/docs/cd/architecture/">
   <meta property="og:site_name" content="Devflow">
-  <meta property="og:title" content="Categories">
+  <meta property="og:title" content="Architecture">
+  <meta property="og:description" content="🏗️ CD 架构图（Architecture）# 下面是 CD 核心发布链路与控制闭环的整体关系图。
+🗺️ Mermaid 版# flowchart LR Dev[Developer] --&gt;|Release| Devflow[Devflow Console / Job] Devflow --&gt; Argo[Argo CD] Argo --&gt; App[Application] App --&gt; Rollout[Argo Rollouts] subgraph Release[Release Strategy] Canary[Canary] BG[Blue/Green] Rolling[Rolling] end Rollout --&gt; Release Release --&gt; Svc[Service / Gateway] Svc --&gt; Users[Users] Argo -. watch .-&gt; Ctrl[Devflow Controller] Rollout -. watch .-&gt; Ctrl Ctrl --&gt; Mongo[(MongoDB)] Svc --&gt; Metrics[Metrics / Traces / Logs] Metrics --&gt; Grafana[Grafana]✅ 关键说明# 触发：Devflow Console / Job 创建并驱动发布流程 发布：Rollouts 负责策略执行（Canary / Blue-Green / Rolling） 闭环：Controller 监听状态回写 Mongo，形成可观测发布闭环 验证：发布过程依赖指标与链路进行自动或人工决策">
   <meta property="og:locale" content="zh_cn">
-  <meta property="og:type" content="website">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
 
 
-  <meta itemprop="name" content="Categories">
-  <meta itemprop="datePublished" content="2026-01-04T00:00:00+00:00">
-  <meta itemprop="dateModified" content="2026-01-04T00:00:00+00:00">
+  <meta itemprop="name" content="Architecture">
+  <meta itemprop="description" content="🏗️ CD 架构图（Architecture）# 下面是 CD 核心发布链路与控制闭环的整体关系图。
+🗺️ Mermaid 版# flowchart LR Dev[Developer] --&gt;|Release| Devflow[Devflow Console / Job] Devflow --&gt; Argo[Argo CD] Argo --&gt; App[Application] App --&gt; Rollout[Argo Rollouts] subgraph Release[Release Strategy] Canary[Canary] BG[Blue/Green] Rolling[Rolling] end Rollout --&gt; Release Release --&gt; Svc[Service / Gateway] Svc --&gt; Users[Users] Argo -. watch .-&gt; Ctrl[Devflow Controller] Rollout -. watch .-&gt; Ctrl Ctrl --&gt; Mongo[(MongoDB)] Svc --&gt; Metrics[Metrics / Traces / Logs] Metrics --&gt; Grafana[Grafana]✅ 关键说明# 触发：Devflow Console / Job 创建并驱动发布流程 发布：Rollouts 负责策略执行（Canary / Blue-Green / Rolling） 闭环：Controller 监听状态回写 Mongo，形成可观测发布闭环 验证：发布过程依赖指标与链路进行自动或人工决策">
+  <meta itemprop="wordCount" content="86">
 
-<title>Categories | Devflow</title>
+<title>Architecture | Devflow</title>
 <link rel="icon" href="/favicon.png" >
 <link rel="manifest" href="/manifest.json">
-<link rel="canonical" href="http://localhost:1313/categories/">
+<link rel="canonical" href="http://localhost:1313/docs/cd/architecture/">
 <link rel="stylesheet" href="/book.min.6970156cec683193d93c9c4edaf0d56574e4361df2e0c1be4f697ae81c3ba55f.css" integrity="sha256-aXAVbOxoMZPZPJxO2vDVZXTkNh3y4MG&#43;T2l66Bw7pV8=" crossorigin="anonymous">
 
 
 
-<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/categories/index.xml" title="Devflow" />
 
   
 </head>
-<body dir="ltr" class="book-kind-taxonomy book-type-categories">
+<body dir="ltr" class="book-kind-page book-type-docs">
   <input type="checkbox" class="hidden toggle" id="menu-control" />
   <input type="checkbox" class="hidden toggle" id="toc-control" />
   <main class="container flex">
@@ -150,7 +154,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-0fc280a0e74cc087db99dcd67aadd7bb" class="toggle"  />
+    <input type="checkbox" id="section-0fc280a0e74cc087db99dcd67aadd7bb" class="toggle" checked />
     <label for="section-0fc280a0e74cc087db99dcd67aadd7bb" class="flex">
       <a href="/docs/cd/" class="">
         CD</a>
@@ -168,8 +172,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/docs/cd/blue_green/" class="">
-      Blue Green</a>
+    <a href="/docs/cd/architecture/" class="active">
+      Architecture</a>
   
 
         </li>
@@ -182,8 +186,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/docs/cd/canary/" class="">
-      Canary</a>
+    <a href="/docs/cd/component/" class="">
+      Components</a>
   
 
         </li>
@@ -210,8 +214,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/docs/cd/architecture/" class="">
-      CD Architecture</a>
+    <a href="/docs/cd/blue_green/" class="">
+      Blue-green</a>
   
 
         </li>
@@ -224,8 +228,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/docs/cd/component/" class="">
-      Components</a>
+    <a href="/docs/cd/canary/" class="">
+      Canary</a>
   
 
         </li>
@@ -401,7 +405,7 @@ https://github.com/alex-shpak/hugo-book
     <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
   </label>
 
-  <h3>Categories</h3>
+  <h3>Architecture</h3>
 
   <label for="toc-control">
     
@@ -415,7 +419,38 @@ https://github.com/alex-shpak/hugo-book
 
       
       
-  <article class="markdown book-article"></article>
+  <article class="markdown book-article"><h1 id="-cd-架构图architecture">🏗️ CD 架构图（Architecture）<a class="anchor" href="#-cd-%e6%9e%b6%e6%9e%84%e5%9b%bearchitecture">#</a></h1>
+<p>下面是 CD 核心发布链路与控制闭环的整体关系图。</p>
+<h2 id="-mermaid-版">🗺️ Mermaid 版<a class="anchor" href="#-mermaid-%e7%89%88">#</a></h2>
+<pre class="mermaid">flowchart LR
+  Dev[Developer] --&gt;|Release| Devflow[Devflow Console / Job]
+  Devflow --&gt; Argo[Argo CD]
+  Argo --&gt; App[Application]
+  App --&gt; Rollout[Argo Rollouts]
+
+  subgraph Release[Release Strategy]
+    Canary[Canary]
+    BG[Blue/Green]
+    Rolling[Rolling]
+  end
+
+  Rollout --&gt; Release
+  Release --&gt; Svc[Service / Gateway]
+  Svc --&gt; Users[Users]
+
+  Argo -. watch .-&gt; Ctrl[Devflow Controller]
+  Rollout -. watch .-&gt; Ctrl
+  Ctrl --&gt; Mongo[(MongoDB)]
+
+  Svc --&gt; Metrics[Metrics / Traces / Logs]
+  Metrics --&gt; Grafana[Grafana]</pre><script src="/mermaid.min.js"></script><script>mermaid.initialize({"flowchart":{"useMaxWidth":true},"theme":"default"})</script><h2 id="-关键说明">✅ 关键说明<a class="anchor" href="#-%e5%85%b3%e9%94%ae%e8%af%b4%e6%98%8e">#</a></h2>
+<ul>
+<li><strong>触发</strong>：Devflow Console / Job 创建并驱动发布流程</li>
+<li><strong>发布</strong>：Rollouts 负责策略执行（Canary / Blue-Green / Rolling）</li>
+<li><strong>闭环</strong>：Controller 监听状态回写 Mongo，形成可观测发布闭环</li>
+<li><strong>验证</strong>：发布过程依赖指标与链路进行自动或人工决策</li>
+</ul>
+</article>
  
       
 
@@ -439,6 +474,25 @@ https://github.com/alex-shpak/hugo-book
 
   
   
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/docs/cd/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>CD</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/docs/cd/component/" class="flex align-center">
+        <span>Components</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
   
 
 

@@ -1,6 +1,7 @@
 
 ---
 title: "Components"
+weight: 2
 ---
 
 ## 🧭 使用建议
