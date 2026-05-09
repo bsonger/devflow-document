@@ -1,28 +1,22 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>部署指南 on DevFlow</title><link>https://devflow.bei.com/document/docs/deployment/</link><description>Recent content in 部署指南 on DevFlow</description><generator>Hugo</generator><language>zh-cn</language><atom:link href="https://devflow.bei.com/document/docs/deployment/index.xml" rel="self" type="application/rss+xml"/><item><title>部署步骤</title><link>https://devflow.bei.com/document/docs/deployment/guide/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/deployment/guide/</guid><description>&lt;h1 id="部署步骤"&gt;部署步骤&lt;a class="anchor" href="#%e9%83%a8%e7%bd%b2%e6%ad%a5%e9%aa%a4"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;p&gt;把 DevFlow 部署到自己的 Kubernetes 集群，总共需要 12 步。&lt;/p&gt;
+&lt;blockquote class='book-hint '&gt;
+&lt;p&gt;如果你只是想&lt;strong&gt;体验&lt;/strong&gt; DevFlow，建议先用 Docker Compose 或 Kind 搭一个最小环境，不用一上来就生产级部署。&lt;/p&gt;
+&lt;/blockquote&gt;&lt;hr&gt;
+&lt;h2 id="部署前的灵魂拷问"&gt;部署前的灵魂拷问&lt;a class="anchor" href="#%e9%83%a8%e7%bd%b2%e5%89%8d%e7%9a%84%e7%81%b5%e9%ad%82%e6%8b%b7%e9%97%ae"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;在动手之前，先问自己几个问题：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;我的集群有几个 Worker 节点？DevFlow itself 需要跑 5 个服务 + PostgreSQL + Tekton + Istio，资源不够会很痛苦。&lt;/li&gt;
+&lt;li&gt;我需要 Canary 和 Blue-Green 吗？如果只需要 Rolling，可以跳过 Argo Rollouts 和 Istio 的部分步骤。&lt;/li&gt;
+&lt;li&gt;我的镜像仓库准备好了吗？DevFlow 需要同时存镜像和部署包（OCI artifact）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;想清楚这些问题，部署过程会顺畅很多。&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id="前置条件"&gt;前置条件&lt;a class="anchor" href="#%e5%89%8d%e7%bd%ae%e6%9d%a1%e4%bb%b6"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;在开始之前，你需要有一个 Kubernetes 集群（v1.30+），至少 3 个 Worker 节点。&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id="第-1-步部署-istio"&gt;第 1 步：部署 Istio&lt;a class="anchor" href="#%e7%ac%ac-1-%e6%ad%a5%e9%83%a8%e7%bd%b2-istio"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;Istio 是流量治理的基础设施，Canary 和 Blue-Green 发布都依赖它。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;istioctl install --set profile&lt;span style="color:#f92672"&gt;=&lt;/span&gt;default&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;然后创建一个入口网关，让外部流量能进入 DevFlow：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;apiVersion&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;networking.istio.io/v1beta1&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;kind&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;Gateway&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;metadata&lt;/span&gt;:
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;name&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;devflow-gateway&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;namespace&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;devflow&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;spec&lt;/span&gt;:
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;selector&lt;/span&gt;:
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;istio&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;ingressgateway&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;servers&lt;/span&gt;:
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#f92672"&gt;port&lt;/span&gt;:
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;number&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;80&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;name&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;http&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;protocol&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;HTTP&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;hosts&lt;/span&gt;:
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#e6db74"&gt;&amp;#34;devflow.bei.com&amp;#34;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
-&lt;h2 id="第-2-步部署-argo-cd"&gt;第 2 步：部署 Argo CD&lt;a class="anchor" href="#%e7%ac%ac-2-%e6%ad%a5%e9%83%a8%e7%bd%b2-argo-cd"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;Argo CD 负责 GitOps 部署。DevFlow 把部署包推送到仓库后，Argo CD 负责实际同步到集群。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;kubectl create namespace argocd
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v3.2.2/manifests/install.yaml&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;配置 OCI Registry 访问权限，让 Argo CD 能拉取部署包：&lt;/p&gt;</description></item></channel></rss>
+&lt;blockquote class='book-hint '&gt;
+&lt;p&gt;💡 &lt;strong&gt;为什么先装 Istio？&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;想象一下，你的应用是一栋公寓楼，Istio 就是楼里的智能电梯系统。没有它，每个住户（Pod）只能走楼梯串门，又慢又乱。有了 Istio，流量想去哪一层、坐哪部电梯，全部智能调度。Canary 发布就是靠这个电梯系统实现的：先让 10% 的住户坐新电梯试试，没问题再全员换。&lt;/p&gt;</description></item></channel></rss>

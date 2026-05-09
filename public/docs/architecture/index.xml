@@ -78,6 +78,14 @@
 &lt;li&gt;Release：部署前快照，记录&amp;quot;这次发布的完整上下文&amp;quot;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;两份快照都不可变，确保发布可重现、可回滚。&lt;/p&gt;</description></item><item><title>领域模型</title><link>https://devflow.bei.com/document/docs/architecture/domain-model/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/architecture/domain-model/</guid><description>&lt;h1 id="领域模型"&gt;领域模型&lt;a class="anchor" href="#%e9%a2%86%e5%9f%9f%e6%a8%a1%e5%9e%8b"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;想象你要开一家连锁餐厅。你需要：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;公司总部&lt;/strong&gt;（Project）— 管品牌、管战略&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;具体门店&lt;/strong&gt;（Application）— 每一家店的菜单、装修、员工配置&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;城市分区&lt;/strong&gt;（Environment）— 北京店、上海店，不同城市有不同的运营策略&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;物业大楼&lt;/strong&gt;（Cluster）— 门店实际开在哪个商场&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;DevFlow 的领域模型就是这套&amp;quot;连锁餐厅管理体系&amp;quot;。&lt;/p&gt;
 &lt;p&gt;DevFlow 中的资源模型分为四个层级，从组织到部署，层层递进。&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id="资源关系总览"&gt;资源关系总览&lt;a class="anchor" href="#%e8%b5%84%e6%ba%90%e5%85%b3%e7%b3%bb%e6%80%bb%e8%a7%88"&gt;#&lt;/a&gt;&lt;/h2&gt;

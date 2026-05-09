@@ -70,7 +70,14 @@
 &lt;h2 id="与旧架构的区别"&gt;与旧架构的区别&lt;a class="anchor" href="#%e4%b8%8e%e6%97%a7%e6%9e%b6%e6%9e%84%e7%9a%84%e5%8c%ba%e5%88%ab"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;DevFlow 早期版本是直接操作 K8s 的，现在改成了 GitOps：&lt;/p&gt;</description></item><item><title>发布策略选型</title><link>https://devflow.bei.com/document/docs/cd/standard/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/cd/standard/</guid><description>&lt;h1 id="发布策略选型"&gt;发布策略选型&lt;a class="anchor" href="#%e5%8f%91%e5%b8%83%e7%ad%96%e7%95%a5%e9%80%89%e5%9e%8b"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;p&gt;选对发布策略，既能保证安全，又不浪费资源。这一页帮你做决定。&lt;/p&gt;
-&lt;hr&gt;
+&lt;blockquote class='book-hint '&gt;
+&lt;p&gt;选策略就像选交通工具：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Rolling 是公交车——便宜、稳定，但慢&lt;/li&gt;
+&lt;li&gt;Canary 是网约车——灵活、可控，根据路况调整&lt;/li&gt;
+&lt;li&gt;Blue-Green 是双轨地铁——新旧并行，瞬时切换&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;&lt;hr&gt;
 &lt;h2 id="三种策略对比"&gt;三种策略对比&lt;a class="anchor" href="#%e4%b8%89%e7%a7%8d%e7%ad%96%e7%95%a5%e5%af%b9%e6%af%94"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;table&gt;
  &lt;thead&gt;
@@ -185,9 +192,9 @@
  &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;hr&gt;
-&lt;h2 id="详细说明"&gt;详细说明&lt;a class="anchor" href="#%e8%af%a6%e7%bb%86%e8%af%b4%e6%98%8e"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;h3 id="rolling--一步一步换"&gt;Rolling — 一步一步换&lt;a class="anchor" href="#rolling--%e4%b8%80%e6%ad%a5%e4%b8%80%e6%ad%a5%e6%8d%a2"&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;K8s 逐步创建新版本 Pod，同时销毁旧版本 Pod：&lt;/p&gt;</description></item><item><title>Rolling 发布</title><link>https://devflow.bei.com/document/docs/cd/normal/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/cd/normal/</guid><description>&lt;h1 id="rolling-发布"&gt;Rolling 发布&lt;a class="anchor" href="#rolling-%e5%8f%91%e5%b8%83"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;h2 id="真实场景故事"&gt;真实场景故事&lt;a class="anchor" href="#%e7%9c%9f%e5%ae%9e%e5%9c%ba%e6%99%af%e6%95%85%e4%ba%8b"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;h3 id="场景一小明的内部工具"&gt;场景一：小明的内部工具&lt;a class="anchor" href="#%e5%9c%ba%e6%99%af%e4%b8%80%e5%b0%8f%e6%98%8e%e7%9a%84%e5%86%85%e9%83%a8%e5%b7%a5%e5%85%b7"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;小明负责一个内部数据分析工具，只有 20 个同事在用。他选 Rolling 发布：&lt;/p&gt;</description></item><item><title>Rolling 发布</title><link>https://devflow.bei.com/document/docs/cd/normal/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/cd/normal/</guid><description>&lt;h1 id="rolling-发布"&gt;Rolling 发布&lt;a class="anchor" href="#rolling-%e5%8f%91%e5%b8%83"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;p&gt;&lt;strong&gt;Rolling（滚动更新）&lt;/strong&gt; 是最简单的发布方式。Kubernetes 逐步创建新版本 Pod，同时销毁旧版本 Pod，就像换轮胎时一个一个换，车一直在跑。&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id="适合什么场景"&gt;适合什么场景&lt;a class="anchor" href="#%e9%80%82%e5%90%88%e4%bb%80%e4%b9%88%e5%9c%ba%e6%99%af"&gt;#&lt;/a&gt;&lt;/h2&gt;
