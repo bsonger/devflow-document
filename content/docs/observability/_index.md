@@ -58,6 +58,6 @@ DevFlow 所有服务都通过 Prometheus 暴露指标，Grafana 里能看到完�
 
 | 文档 | 内容 |
 |------|------|
-| [组件矩阵](component/) | 可观测性技术栈 |
+| [组件矩阵](component/) | 可观测性技术栈详细对比 |
 | [Attributes 规范](attributes/) | 统一的标签命名规范 |
-| [Labels 规范](standard/) | Metric / Trace / Log 的标准字段 |
+| [Labels 规范](standard/) | Metric / Trace / Log 的标准字段完整定义 |
