@@ -1,4 +1,5 @@
-FROM registry.cn-hangzhou.aliyuncs.com/devflow/alpine:3.22
-COPY public /usr/share/caddy
+FROM registry.cn-hangzhou.aliyuncs.com/acs-sample/nginx
+COPY public /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/nginx.conf
 EXPOSE 8080
-CMD ["busybox", "httpd", "-f", "-p", "8080", "-h", "/usr/share/caddy"]
+CMD ["nginx", "-g", "daemon off;"]
