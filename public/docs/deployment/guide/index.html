@@ -1,0 +1,201 @@
+<!doctype html><html lang=zh-cn dir=ltr><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content='部署步骤# 把 DevFlow 部署到自己的 Kubernetes 集群，总共需要 12 步。
+前置条件# 在开始之前，你需要有一个 Kubernetes 集群（v1.30+），至少 3 个 Worker 节点。
+第 1 步：部署 Istio# Istio 是流量治理的基础设施，Canary 和 Blue-Green 发布都依赖它。
+istioctl install --set profile=default然后创建一个入口网关，让外部流量能进入 DevFlow：
+apiVersion: networking.istio.io/v1beta1 kind: Gateway metadata: name: devflow-gateway namespace: devflow spec: selector: istio: ingressgateway servers: - port: number: 80 name: http protocol: HTTP hosts: - "devflow.bei.com" 第 2 步：部署 Argo CD# Argo CD 负责 GitOps 部署。DevFlow 把部署包推送到仓库后，Argo CD 负责实际同步到集群。
+kubectl create namespace argocd kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v3.2.2/manifests/install.yaml配置 OCI Registry 访问权限，让 Argo CD 能拉取部署包：
+'><meta name=theme-color media="(prefers-color-scheme: light)" content="#ffffff"><meta name=theme-color media="(prefers-color-scheme: dark)" content="#343a40"><meta name=color-scheme content="light dark"><meta property="og:url" content="https://devflow.bei.com/docs/deployment/guide/"><meta property="og:site_name" content="DevFlow"><meta property="og:title" content="部署步骤"><meta property="og:description" content='部署步骤# 把 DevFlow 部署到自己的 Kubernetes 集群，总共需要 12 步。
+前置条件# 在开始之前，你需要有一个 Kubernetes 集群（v1.30+），至少 3 个 Worker 节点。
+第 1 步：部署 Istio# Istio 是流量治理的基础设施，Canary 和 Blue-Green 发布都依赖它。
+istioctl install --set profile=default然后创建一个入口网关，让外部流量能进入 DevFlow：
+apiVersion: networking.istio.io/v1beta1 kind: Gateway metadata: name: devflow-gateway namespace: devflow spec: selector: istio: ingressgateway servers: - port: number: 80 name: http protocol: HTTP hosts: - "devflow.bei.com" 第 2 步：部署 Argo CD# Argo CD 负责 GitOps 部署。DevFlow 把部署包推送到仓库后，Argo CD 负责实际同步到集群。
+kubectl create namespace argocd kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v3.2.2/manifests/install.yaml配置 OCI Registry 访问权限，让 Argo CD 能拉取部署包：'><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta itemprop=name content="部署步骤"><meta itemprop=description content='部署步骤# 把 DevFlow 部署到自己的 Kubernetes 集群，总共需要 12 步。
+前置条件# 在开始之前，你需要有一个 Kubernetes 集群（v1.30+），至少 3 个 Worker 节点。
+第 1 步：部署 Istio# Istio 是流量治理的基础设施，Canary 和 Blue-Green 发布都依赖它。
+istioctl install --set profile=default然后创建一个入口网关，让外部流量能进入 DevFlow：
+apiVersion: networking.istio.io/v1beta1 kind: Gateway metadata: name: devflow-gateway namespace: devflow spec: selector: istio: ingressgateway servers: - port: number: 80 name: http protocol: HTTP hosts: - "devflow.bei.com" 第 2 步：部署 Argo CD# Argo CD 负责 GitOps 部署。DevFlow 把部署包推送到仓库后，Argo CD 负责实际同步到集群。
+kubectl create namespace argocd kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v3.2.2/manifests/install.yaml配置 OCI Registry 访问权限，让 Argo CD 能拉取部署包：'><meta itemprop=wordCount content="563"><title>部署步骤 | DevFlow</title><link rel=icon href=/favicon.png><link rel=manifest href=/manifest.json><link rel=canonical href=https://devflow.bei.com/docs/deployment/guide/><link rel=stylesheet href=/book.min.6970156cec683193d93c9c4edaf0d56574e4361df2e0c1be4f697ae81c3ba55f.css integrity="sha256-aXAVbOxoMZPZPJxO2vDVZXTkNh3y4MG+T2l66Bw7pV8=" crossorigin=anonymous><script defer src=/fuse.min.js></script><script defer src=/en.search.min.950293d2ccf704106df8c22fc0eecaffba86fc882bdd02654d3c659c4ad6ec74.js integrity="sha256-lQKT0sz3BBBt+MIvwO7K/7qG/Igr3QJlTTxlnErW7HQ=" crossorigin=anonymous></script></head><body dir=ltr class="book-kind-page book-type-docs"><input type=checkbox class="hidden toggle" id=menu-control>
+<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/><span>DevFlow</span></a></h2><div class="book-search hidden"><input id=book-search-input type=text placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><script>document.querySelector(".book-search").classList.remove("hidden")</script><ul><li><a href=/docs/getting-started/>快速开始</a><ul></ul></li><li><a href=/docs/overview/>平台概览</a><ul></ul></li><li><a href=/docs/architecture/>架构设计</a><ul><li><a href=/docs/architecture/services/>五大微服务</a></li><li><a href=/docs/architecture/domain-model/>领域模型</a></li><li><a href=/docs/architecture/lifecycle/>发布生命周期</a></li></ul></li><li><a href=/docs/services/>服务详解</a><ul><li><a href=/docs/services/meta-service/>meta-service</a></li><li><a href=/docs/services/config-service/>config-service</a></li><li><a href=/docs/services/network-service/>network-service</a></li><li><a href=/docs/services/release-service/>release-service</a></li><li><a href=/docs/services/runtime-service/>runtime-service</a></li></ul></li><li><a href=/docs/concepts/>核心概念</a><ul><li><a href=/docs/concepts/project-application/>Project 与 Application</a></li><li><a href=/docs/concepts/environment-cluster/>Environment 与 Cluster</a></li><li><a href=/docs/concepts/workload-config/>WorkloadConfig</a></li><li><a href=/docs/concepts/app-config/>AppConfig</a></li><li><a href=/docs/concepts/service-route/>Service 与 Route</a></li><li><a href=/docs/concepts/manifest-release/>Manifest 与 Release</a></li></ul></li><li><a href=/docs/ci/>持续集成</a><ul><li><a href=/docs/ci/architecture/>CI 架构</a></li><li><a href=/docs/ci/standard/>标准 CI 流程</a></li><li><a href=/docs/ci/component/>CI 组件矩阵</a></li><li><a href=/docs/ci/queue/>队列与并发控制</a></li></ul></li><li><a href=/docs/cd/>持续交付</a><ul><li><a href=/docs/cd/architecture/>CD 架构</a></li><li><a href=/docs/cd/standard/>发布策略选型</a></li><li><a href=/docs/cd/normal/>Rolling 发布</a></li><li><a href=/docs/cd/canary/>Canary 发布</a></li><li><a href=/docs/cd/blue-green/>Blue-Green 发布</a></li><li><a href=/docs/cd/component/>CD 组件矩阵</a></li></ul></li><li><a href=/docs/observability/>可观测性</a><ul><li><a href=/docs/observability/component/>可观测性组件矩阵</a></li><li><a href=/docs/observability/attributes/>公共 Attributes</a></li><li><a href=/docs/observability/standard/>Labels / Attributes 规范</a></li></ul></li><li><a href=/docs/deployment/>部署指南</a><ul><li><a href=/docs/deployment/guide/ class=active>部署步骤</a></li></ul></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class="book-header hidden"><div class="flex align-center justify-between"><label for=menu-control><img src=/icons/menu.svg class=book-icon alt=Menu></label><h3>部署步骤</h3><label for=toc-control><img src=/icons/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class=hidden><nav id=TableOfContents><ul><li><a href=#前置条件>前置条件</a></li><li><a href=#第-1-步部署-istio>第 1 步：部署 Istio</a></li><li><a href=#第-2-步部署-argo-cd>第 2 步：部署 Argo CD</a></li><li><a href=#第-3-步部署-argo-rollouts>第 3 步：部署 Argo Rollouts</a></li><li><a href=#第-4-步部署-postgresql>第 4 步：部署 PostgreSQL</a></li><li><a href=#第-5-步创建-devflow-配置>第 5 步：创建 DevFlow 配置</a></li><li><a href=#第-6-步部署-devflow-服务>第 6 步：部署 DevFlow 服务</a><ul><li><a href=#meta-service>meta-service</a></li><li><a href=#config-service-和-network-service>config-service 和 network-service</a></li><li><a href=#release-service>release-service</a></li><li><a href=#runtime-service>runtime-service</a></li></ul></li><li><a href=#第-7-步配置-ingress>第 7 步：配置 Ingress</a></li><li><a href=#第-8-步验证部署>第 8 步：验证部署</a></li><li><a href=#第-9-步部署-tekton>第 9 步：部署 Tekton</a></li><li><a href=#第-10-步配置监控可选>第 10 步：配置监控（可选）</a></li><li><a href=#第-11-步验证端到端流程>第 11 步：验证端到端流程</a></li></ul></nav></aside></header><article class="markdown book-article"><h1 id=部署步骤>部署步骤<a class=anchor href=#%e9%83%a8%e7%bd%b2%e6%ad%a5%e9%aa%a4>#</a></h1><p>把 DevFlow 部署到自己的 Kubernetes 集群，总共需要 12 步。</p><hr><h2 id=前置条件>前置条件<a class=anchor href=#%e5%89%8d%e7%bd%ae%e6%9d%a1%e4%bb%b6>#</a></h2><p>在开始之前，你需要有一个 Kubernetes 集群（v1.30+），至少 3 个 Worker 节点。</p><hr><h2 id=第-1-步部署-istio>第 1 步：部署 Istio<a class=anchor href=#%e7%ac%ac-1-%e6%ad%a5%e9%83%a8%e7%bd%b2-istio>#</a></h2><p>Istio 是流量治理的基础设施，Canary 和 Blue-Green 发布都依赖它。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>istioctl install --set profile<span style=color:#f92672>=</span>default</span></span></code></pre></div><p>然后创建一个入口网关，让外部流量能进入 DevFlow：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>networking.istio.io/v1beta1</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>kind</span>: <span style=color:#ae81ff>Gateway</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>devflow-gateway</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>namespace</span>: <span style=color:#ae81ff>devflow</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>spec</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>selector</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>istio</span>: <span style=color:#ae81ff>ingressgateway</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>servers</span>:
+</span></span><span style=display:flex><span>    - <span style=color:#f92672>port</span>:
+</span></span><span style=display:flex><span>        <span style=color:#f92672>number</span>: <span style=color:#ae81ff>80</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>name</span>: <span style=color:#ae81ff>http</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>protocol</span>: <span style=color:#ae81ff>HTTP</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>hosts</span>:
+</span></span><span style=display:flex><span>        - <span style=color:#e6db74>&#34;devflow.bei.com&#34;</span></span></span></code></pre></div><hr><h2 id=第-2-步部署-argo-cd>第 2 步：部署 Argo CD<a class=anchor href=#%e7%ac%ac-2-%e6%ad%a5%e9%83%a8%e7%bd%b2-argo-cd>#</a></h2><p>Argo CD 负责 GitOps 部署。DevFlow 把部署包推送到仓库后，Argo CD 负责实际同步到集群。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>kubectl create namespace argocd
+</span></span><span style=display:flex><span>kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v3.2.2/manifests/install.yaml</span></span></code></pre></div><p>配置 OCI Registry 访问权限，让 Argo CD 能拉取部署包：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>v1</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>kind</span>: <span style=color:#ae81ff>Secret</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>zot-repo</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>namespace</span>: <span style=color:#ae81ff>argocd</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>labels</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>argocd.argoproj.io/secret-type</span>: <span style=color:#ae81ff>repository</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>type</span>: <span style=color:#ae81ff>Opaque</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>stringData</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>type</span>: <span style=color:#ae81ff>oci</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>url</span>: <span style=color:#ae81ff>registry.example.com</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>username</span>: <span style=color:#ae81ff>argocd</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>password</span>: <span style=color:#ae81ff>&lt;password&gt;</span></span></span></code></pre></div><hr><h2 id=第-3-步部署-argo-rollouts>第 3 步：部署 Argo Rollouts<a class=anchor href=#%e7%ac%ac-3-%e6%ad%a5%e9%83%a8%e7%bd%b2-argo-rollouts>#</a></h2><p>Argo Rollouts 扩展了 Kubernetes 的发布能力，支持 Canary 和 Blue-Green。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>kubectl create namespace argo-rollouts
+</span></span><span style=display:flex><span>kubectl apply -n argo-rollouts -f https://github.com/argoproj/argo-rollouts/releases/download/v1.8.0/install.yaml</span></span></code></pre></div><blockquote class=book-hint><p>如果你只用 Rolling 发布，这步可以跳过。</p></blockquote><hr><h2 id=第-4-步部署-postgresql>第 4 步：部署 PostgreSQL<a class=anchor href=#%e7%ac%ac-4-%e6%ad%a5%e9%83%a8%e7%bd%b2-postgresql>#</a></h2><p>DevFlow 的 4 个服务（meta、config、network、release）需要 PostgreSQL 存储数据。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>helm install postgresql bitnami/postgresql <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span>  --namespace devflow <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span>  --set auth.username<span style=color:#f92672>=</span>devflow <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span>  --set auth.password<span style=color:#f92672>=</span>&lt;password&gt; <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span>  --set auth.database<span style=color:#f92672>=</span>devflow <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span>  --set primary.persistence.size<span style=color:#f92672>=</span>50Gi</span></span></code></pre></div><hr><h2 id=第-5-步创建-devflow-配置>第 5 步：创建 DevFlow 配置<a class=anchor href=#%e7%ac%ac-5-%e6%ad%a5%e5%88%9b%e5%bb%ba-devflow-%e9%85%8d%e7%bd%ae>#</a></h2><p>创建一个共享的 ConfigMap，所有 DevFlow 服务都能读到：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>v1</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>kind</span>: <span style=color:#ae81ff>ConfigMap</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>devflow-config</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>namespace</span>: <span style=color:#ae81ff>devflow</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>data</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>database.host</span>: <span style=color:#e6db74>&#34;postgresql.devflow.svc.cluster.local&#34;</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>database.port</span>: <span style=color:#e6db74>&#34;5432&#34;</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>database.name</span>: <span style=color:#e6db74>&#34;devflow&#34;</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>otel.endpoint</span>: <span style=color:#e6db74>&#34;devflow-otel-trace-gateway:4317&#34;</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>registry.url</span>: <span style=color:#e6db74>&#34;registry.example.com&#34;</span></span></span></code></pre></div><hr><h2 id=第-6-步部署-devflow-服务>第 6 步：部署 DevFlow 服务<a class=anchor href=#%e7%ac%ac-6-%e6%ad%a5%e9%83%a8%e7%bd%b2-devflow-%e6%9c%8d%e5%8a%a1>#</a></h2><h3 id=meta-service>meta-service<a class=anchor href=#meta-service>#</a></h3><p>meta-service 是其他服务的依赖，先部署它：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>apps/v1</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>kind</span>: <span style=color:#ae81ff>Deployment</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>meta-service</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>namespace</span>: <span style=color:#ae81ff>devflow</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>spec</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>replicas</span>: <span style=color:#ae81ff>2</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>selector</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>matchLabels</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>app</span>: <span style=color:#ae81ff>meta-service</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>template</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>labels</span>:
+</span></span><span style=display:flex><span>        <span style=color:#f92672>app</span>: <span style=color:#ae81ff>meta-service</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>spec</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>containers</span>:
+</span></span><span style=display:flex><span>        - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>meta-service</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>image</span>: <span style=color:#ae81ff>registry.example.com/devflow/meta-service:latest</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>ports</span>:
+</span></span><span style=display:flex><span>            - <span style=color:#f92672>containerPort</span>: <span style=color:#ae81ff>8081</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>envFrom</span>:
+</span></span><span style=display:flex><span>            - <span style=color:#f92672>configMapRef</span>:
+</span></span><span style=display:flex><span>                <span style=color:#f92672>name</span>: <span style=color:#ae81ff>devflow-config</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>env</span>:
+</span></span><span style=display:flex><span>            - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>DATABASE_PASSWORD</span>
+</span></span><span style=display:flex><span>              <span style=color:#f92672>valueFrom</span>:
+</span></span><span style=display:flex><span>                <span style=color:#f92672>secretKeyRef</span>:
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>postgresql</span>
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>key</span>: <span style=color:#ae81ff>password</span></span></span></code></pre></div><h3 id=config-service-和-network-service>config-service 和 network-service<a class=anchor href=#config-service-%e5%92%8c-network-service>#</a></h3><p>按相同模式部署，它们也连 PostgreSQL，读同一个 ConfigMap。</p><h3 id=release-service>release-service<a class=anchor href=#release-service>#</a></h3><p>release-service 需要额外的配置，告诉它下游服务在哪、Tekton 怎么触发：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>v1</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>kind</span>: <span style=color:#ae81ff>ConfigMap</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>release-service-config</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>namespace</span>: <span style=color:#ae81ff>devflow</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>data</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>meta_service.url</span>: <span style=color:#e6db74>&#34;http://meta-service:8081&#34;</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>config_service.url</span>: <span style=color:#e6db74>&#34;http://config-service&#34;</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>network_service.url</span>: <span style=color:#e6db74>&#34;http://network-service&#34;</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>tekton.event_listener</span>: <span style=color:#e6db74>&#34;http://el-devflow-build.tekton-pipelines.svc.cluster.local&#34;</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>argocd.server</span>: <span style=color:#e6db74>&#34;argocd-server.argocd.svc.cluster.local&#34;</span></span></span></code></pre></div><h3 id=runtime-service>runtime-service<a class=anchor href=#runtime-service>#</a></h3><p>runtime-service <strong>不需要数据库</strong>，但需要 K8s 集群的访问权限：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>v1</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>kind</span>: <span style=color:#ae81ff>ServiceAccount</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>runtime-service</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>namespace</span>: <span style=color:#ae81ff>devflow</span>
+</span></span><span style=display:flex><span>---
+</span></span><span style=display:flex><span><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>rbac.authorization.k8s.io/v1</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>kind</span>: <span style=color:#ae81ff>ClusterRole</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>runtime-service</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>rules</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#f92672>apiGroups</span>: [<span style=color:#e6db74>&#34;&#34;</span>]
+</span></span><span style=display:flex><span>    <span style=color:#f92672>resources</span>: [<span style=color:#e6db74>&#34;pods&#34;</span>, <span style=color:#e6db74>&#34;pods/log&#34;</span>]
+</span></span><span style=display:flex><span>    <span style=color:#f92672>verbs</span>: [<span style=color:#e6db74>&#34;get&#34;</span>, <span style=color:#e6db74>&#34;list&#34;</span>, <span style=color:#e6db74>&#34;watch&#34;</span>, <span style=color:#e6db74>&#34;delete&#34;</span>]
+</span></span><span style=display:flex><span>  - <span style=color:#f92672>apiGroups</span>: [<span style=color:#e6db74>&#34;apps&#34;</span>]
+</span></span><span style=display:flex><span>    <span style=color:#f92672>resources</span>: [<span style=color:#e6db74>&#34;deployments&#34;</span>, <span style=color:#e6db74>&#34;statefulsets&#34;</span>, <span style=color:#e6db74>&#34;daemonsets&#34;</span>]
+</span></span><span style=display:flex><span>    <span style=color:#f92672>verbs</span>: [<span style=color:#e6db74>&#34;get&#34;</span>, <span style=color:#e6db74>&#34;list&#34;</span>, <span style=color:#e6db74>&#34;watch&#34;</span>, <span style=color:#e6db74>&#34;patch&#34;</span>]
+</span></span><span style=display:flex><span>---
+</span></span><span style=display:flex><span><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>rbac.authorization.k8s.io/v1</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>kind</span>: <span style=color:#ae81ff>ClusterRoleBinding</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>runtime-service</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>roleRef</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>apiGroup</span>: <span style=color:#ae81ff>rbac.authorization.k8s.io</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>kind</span>: <span style=color:#ae81ff>ClusterRole</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>runtime-service</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>subjects</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#f92672>kind</span>: <span style=color:#ae81ff>ServiceAccount</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>name</span>: <span style=color:#ae81ff>runtime-service</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>namespace</span>: <span style=color:#ae81ff>devflow</span></span></span></code></pre></div><blockquote class=book-hint><p>为什么需要 ClusterRole？因为 runtime-service 要监听整个集群的 Pod 和 Workload 状态，不能只盯着自己的命名空间。</p></blockquote><hr><h2 id=第-7-步配置-ingress>第 7 步：配置 Ingress<a class=anchor href=#%e7%ac%ac-7-%e6%ad%a5%e9%85%8d%e7%bd%ae-ingress>#</a></h2><p>让外部请求能路由到正确的服务：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>networking.istio.io/v1beta1</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>kind</span>: <span style=color:#ae81ff>VirtualService</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>devflow-api</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>namespace</span>: <span style=color:#ae81ff>devflow</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>spec</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>hosts</span>:
+</span></span><span style=display:flex><span>    - <span style=color:#e6db74>&#34;devflow.bei.com&#34;</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>gateways</span>:
+</span></span><span style=display:flex><span>    - <span style=color:#ae81ff>devflow-gateway</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>http</span>:
+</span></span><span style=display:flex><span>    - <span style=color:#f92672>match</span>:
+</span></span><span style=display:flex><span>        - <span style=color:#f92672>uri</span>:
+</span></span><span style=display:flex><span>            <span style=color:#f92672>prefix</span>: <span style=color:#ae81ff>/api/v1/meta</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>route</span>:
+</span></span><span style=display:flex><span>        - <span style=color:#f92672>destination</span>:
+</span></span><span style=display:flex><span>            <span style=color:#f92672>host</span>: <span style=color:#ae81ff>meta-service</span>
+</span></span><span style=display:flex><span>            <span style=color:#f92672>port</span>:
+</span></span><span style=display:flex><span>              <span style=color:#f92672>number</span>: <span style=color:#ae81ff>8081</span>
+</span></span><span style=display:flex><span>    - <span style=color:#f92672>match</span>:
+</span></span><span style=display:flex><span>        - <span style=color:#f92672>uri</span>:
+</span></span><span style=display:flex><span>            <span style=color:#f92672>prefix</span>: <span style=color:#ae81ff>/api/v1/release</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>route</span>:
+</span></span><span style=display:flex><span>        - <span style=color:#f92672>destination</span>:
+</span></span><span style=display:flex><span>            <span style=color:#f92672>host</span>: <span style=color:#ae81ff>release-service</span>
+</span></span><span style=display:flex><span>            <span style=color:#f92672>port</span>:
+</span></span><span style=display:flex><span>              <span style=color:#f92672>number</span>: <span style=color:#ae81ff>8083</span></span></span></code></pre></div><blockquote class=book-hint><p>config-service 和 network-service 的入口可以按需暴露，Console 通常只直接调用 meta、release、runtime。</p></blockquote><hr><h2 id=第-8-步验证部署>第 8 步：验证部署<a class=anchor href=#%e7%ac%ac-8-%e6%ad%a5%e9%aa%8c%e8%af%81%e9%83%a8%e7%bd%b2>#</a></h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 看 Pod 是不是都 Running</span>
+</span></span><span style=display:flex><span>kubectl get pods -n devflow
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 检查服务健康</span>
+</span></span><span style=display:flex><span> curl https://devflow.bei.com/api/v1/meta/health
+</span></span><span style=display:flex><span> curl https://devflow.bei.com/api/v1/release/health
+</span></span><span style=display:flex><span> curl https://devflow.bei.com/api/v1/runtime/health
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 检查数据库 migration 是否完成</span>
+</span></span><span style=display:flex><span>kubectl logs -n devflow deployment/meta-service | grep <span style=color:#e6db74>&#34;migration completed&#34;</span></span></span></code></pre></div><hr><h2 id=第-9-步部署-tekton>第 9 步：部署 Tekton<a class=anchor href=#%e7%ac%ac-9-%e6%ad%a5%e9%83%a8%e7%bd%b2-tekton>#</a></h2><p>Tekton 是 CI 引擎，负责构建镜像。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>kubectl apply -f https://storage.googleapis.com/tekton-releases/pipeline/latest/release.yaml
+</span></span><span style=display:flex><span>kubectl apply -f https://storage.googleapis.com/tekton-releases/triggers/latest/release.yaml</span></span></code></pre></div><p>配置 EventListener 接收 release-service 的构建触发：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>triggers.tekton.dev/v1beta1</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>kind</span>: <span style=color:#ae81ff>EventListener</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>devflow-build</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>namespace</span>: <span style=color:#ae81ff>tekton-pipelines</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>spec</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>serviceAccountName</span>: <span style=color:#ae81ff>tekton-trigger</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>triggers</span>:
+</span></span><span style=display:flex><span>    - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>devflow-build-trigger</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>bindings</span>:
+</span></span><span style=display:flex><span>        - <span style=color:#f92672>ref</span>: <span style=color:#ae81ff>devflow-build-binding</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>template</span>:
+</span></span><span style=display:flex><span>        <span style=color:#f92672>ref</span>: <span style=color:#ae81ff>devflow-build-template</span></span></span></code></pre></div><hr><h2 id=第-10-步配置监控可选>第 10 步：配置监控（可选）<a class=anchor href=#%e7%ac%ac-10-%e6%ad%a5%e9%85%8d%e7%bd%ae%e7%9b%91%e6%8e%a7%e5%8f%af%e9%80%89>#</a></h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># Prometheus</span>
+</span></span><span style=display:flex><span>helm install prometheus prometheus-community/prometheus <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span>  --namespace observability
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Grafana</span>
+</span></span><span style=display:flex><span>helm install grafana grafana/grafana <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span>  --namespace observability</span></span></code></pre></div><hr><h2 id=第-11-步验证端到端流程>第 11 步：验证端到端流程<a class=anchor href=#%e7%ac%ac-11-%e6%ad%a5%e9%aa%8c%e8%af%81%e7%ab%af%e5%88%b0%e7%ab%af%e6%b5%81%e7%a8%8b>#</a></h2><p>用 curl 走一遍完整的发布流程：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 1. 创建项目</span>
+</span></span><span style=display:flex><span>curl -X POST https://devflow.bei.com/api/v1/meta/projects <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span>  -d <span style=color:#e6db74>&#39;{&#34;name&#34;:&#34;demo&#34;}&#39;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 2. 注册应用</span>
+</span></span><span style=display:flex><span>curl -X POST https://devflow.bei.com/api/v1/meta/applications <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span>  -d <span style=color:#e6db74>&#39;{&#34;name&#34;:&#34;hello&#34;,&#34;repo_url&#34;:&#34;github.com/example/hello&#34;,&#34;type&#34;:&#34;Rolling&#34;}&#39;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 3. 创建环境</span>
+</span></span><span style=display:flex><span>curl -X POST https://devflow.bei.com/api/v1/meta/environments <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span>  -d <span style=color:#e6db74>&#39;{&#34;name&#34;:&#34;test&#34;,&#34;cluster_id&#34;:&#34;cluster-001&#34;,&#34;namespace&#34;:&#34;test&#34;}&#39;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 4. 发起发布</span>
+</span></span><span style=display:flex><span>curl -X POST https://devflow.bei.com/api/v1/release/releases <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span>  -d <span style=color:#e6db74>&#39;{&#34;manifest_id&#34;:&#34;m-001&#34;,&#34;environment_id&#34;:&#34;env-001&#34;,&#34;strategy&#34;:&#34;Rolling&#34;}&#39;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 5. 查看状态</span>
+</span></span><span style=display:flex><span>curl https://devflow.bei.com/api/v1/release/releases/rel-001</span></span></code></pre></div><p>如果 Release 状态从 Pending → Running → Completed，说明部署成功。</p></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div></div><div></div></div><div class="flex flex-wrap justify-between"><span><a href=/docs/deployment/ class="flex align-center"><img src=/icons/backward.svg class=book-icon alt=Backward>
+<span>部署指南</span>
+</a></span><span></span></div><script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script></footer><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#前置条件>前置条件</a></li><li><a href=#第-1-步部署-istio>第 1 步：部署 Istio</a></li><li><a href=#第-2-步部署-argo-cd>第 2 步：部署 Argo CD</a></li><li><a href=#第-3-步部署-argo-rollouts>第 3 步：部署 Argo Rollouts</a></li><li><a href=#第-4-步部署-postgresql>第 4 步：部署 PostgreSQL</a></li><li><a href=#第-5-步创建-devflow-配置>第 5 步：创建 DevFlow 配置</a></li><li><a href=#第-6-步部署-devflow-服务>第 6 步：部署 DevFlow 服务</a><ul><li><a href=#meta-service>meta-service</a></li><li><a href=#config-service-和-network-service>config-service 和 network-service</a></li><li><a href=#release-service>release-service</a></li><li><a href=#runtime-service>runtime-service</a></li></ul></li><li><a href=#第-7-步配置-ingress>第 7 步：配置 Ingress</a></li><li><a href=#第-8-步验证部署>第 8 步：验证部署</a></li><li><a href=#第-9-步部署-tekton>第 9 步：部署 Tekton</a></li><li><a href=#第-10-步配置监控可选>第 10 步：配置监控（可选）</a></li><li><a href=#第-11-步验证端到端流程>第 11 步：验证端到端流程</a></li></ul></nav></div></aside></main></body></html>

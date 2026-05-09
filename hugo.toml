@@ -1,6 +1,6 @@
-baseURL = 'https://example.org/'
+baseURL = 'https://devflow.bei.com/'
 languageCode = 'zh-cn'
-title = 'Devflow'
+title = 'DevFlow'
 theme = "hugo-book"
 [markup]
   [markup.goldmark.renderer]
@@ -8,10 +8,10 @@ theme = "hugo-book"
 relativeURLs = true
 [params]
    BookTheme = 'auto'
-   BookToC = false
+   BookToC = true
    BookSection = 'docs'
    BookDateFormat = '2006-01-02'
-   BookSearch = false
+   BookSearch = true
    BookComments = false
    weight = 20
    bookHidden = false

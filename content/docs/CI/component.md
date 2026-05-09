@@ -1,79 +1,73 @@
-
 ---
-title: "Components"
+title: "CI 组件矩阵"
+weight: 53
 ---
 
-# 持续集成（CI）组件能力矩阵
+# CI 用到哪些工具
 
-## 🧭 选型要点
-
-- 先打通编排与触发，再完善安全与可观测  
-- 供应链安全建议从 SBOM + 签名开始逐步完善  
-- 重点任务使用更高优先级与独立资源池  
-
-## 🧩 一、CI 核心编排与触发
-
-| 组件 | 云原生领域 | 解决的问题 | 架构定位 | 是否必选 | 可替代方案 |
-|------|------------|------------|----------|----------|------------|
-| Tekton Pipelines | CI | 声明式、K8s 原生 CI 编排 | CI 执行与编排引擎 | ✅ | Jenkins、GitHub Actions |
-| Tekton Triggers | CI | Git / Webhook 触发 Pipeline | CI 事件入口 | ❌ | Argo Events |
-| Tekton Dashboard | CI | Pipeline 执行可视化 | CI UI | ❌ | Jenkins UI、GitLab UI |
+DevFlow 的 CI 流水线依赖以下工具，每个负责一个具体环节。
 
 ---
 
-## 🧼 二、源码获取与代码质量
+## 核心工具
 
-| 组件 | 云原生领域 | 解决的问题 | 架构定位 | 是否必选 | 可替代方案 |
-|------|------------|------------|----------|----------|------------|
-| Git Clone Task | SCM | 拉取源码、获取 Commit 信息 | Source Stage | ✅ | 内置 Git Script |
-| 代码扫描（SAST / Secret） | Security | 代码漏洞、密钥泄漏、危险配置 | Shift-Left Security | ❌ | SonarQube、Semgrep、Gitleaks |
-| 代码规范 / Lint | Quality | 代码风格、规范检查 | Quality Gate | ❌ | golangci-lint、eslint |
+### Tekton Pipelines — 流水线引擎
 
----
+CI 的"骨架"。定义流水线的结构：有哪些步骤、按什么顺序执行、步骤之间怎么共享数据。
 
-## 🧪 三、测试阶段
+### Tekton Triggers — 触发器
 
-| 组件 | 云原生领域 | 解决的问题 | 架构定位 | 是否必选 | 可替代方案 |
-|------|------------|------------|----------|----------|------------|
-| 单元测试 | Testing | 功能正确性验证 | Quality Gate | ❌ | Go test、JUnit |
-| 集成测试 | Testing | 多组件联调验证 | Pre-Build Validation | ❌ | Testcontainers |
-| 覆盖率统计 | Quality | 测试质量度量 | Quality Metrics | ❌ | Cobertura |
+接收 release-service 的 HTTP 请求，自动创建流水线执行实例。相当于 CI 的"入口门卫"。
+
+### Buildah — 镜像构建
+
+在容器里构建容器镜像，不需要 Docker Daemon。支持多阶段构建，可以做出很小的最终镜像。
 
 ---
 
-## 📦 四、镜像构建与制品管理
+## 安全工具
 
-| 组件 | 云原生领域 | 解决的问题 | 架构定位 | 是否必选 | 可替代方案 |
-|------|------------|------------|----------|----------|------------|
-| Buildah | Image Build | 无 Docker Daemon 构建镜像 | 构建引擎 | ✅ | Kaniko、Docker |
-| Artifact Registry | Artifact | 镜像 / 构建产物存储 | 制品仓库 | ✅ | Harbor、ECR |
-| 镜像 Tag / Digest 管理 | Artifact | 可追溯发布版本 | Artifact Metadata | ✅ | — |
+### Syft — SBOM 生成
 
----
+分析镜像里装了什么软件、什么版本，生成"软件物料清单"。出了问题可以追溯：「这个漏洞影响我们吗？影响哪些服务？」
 
-## 🔐 五、软件供应链安全（Supply Chain Security）
+### Cosign — 镜像签名
 
-| 组件 | 云原生领域 | 解决的问题 | 架构定位 | 是否必选 | 可替代方案 |
-|------|------------|------------|----------|----------|------------|
-| SBOM 生成（Syft） | Security | 组件清单、依赖可追溯 | Supply Chain | ❌ | CycloneDX |
-| 镜像签名（Cosign） | Security | 镜像可信验证 | Trust & Provenance | ❌ | Notary v2 |
-| 漏洞扫描（Trivy） | Security | 镜像漏洞检测 | Runtime / Deploy Gate | ❌ | Grype、Clair |
+给镜像做数字签名，防止镜像被替换或篡改。就像给快递包裹贴防伪标签。
+
+### Trivy — 漏洞扫描
+
+扫描镜像里的已知安全漏洞。发现高危漏洞会直接阻断构建，不让有问题的镜像进入部署环节。
 
 ---
 
-## 🔗 六、CI → CD 状态桥接
+## 工具清单
 
-| 组件 | 云原生领域 | 解决的问题 | 架构定位 | 是否必选 | 可替代方案 |
-|------|------------|------------|----------|----------|------------|
-| Manifest Patch Task | Platform | 绑定 Commit / Image Digest | CI → CD 状态同步 | ✅ | GitOps Commit |
-| Pipeline Result 传递 | CI | 跨 Task 数据共享 | Data Flow | ✅ | — |
+| 工具 | 用途 | 是否必须 |
+|------|------|---------|
+| Tekton Pipelines | 流水线编排 | ✅ |
+| Tekton Triggers | 事件触发 | ✅ |
+| Buildah | 镜像构建 | ✅ |
+| Syft | SBOM 生成 | ✅ |
+| Cosign | 镜像签名 | ✅ |
+| Trivy | 漏洞扫描 | ✅ |
+| OpenTelemetry | 链路追踪 | ✅ |
+| Tekton Dashboard | 流水线可视化 | ❌（可选）|
 
 ---
 
-## 👀 七、通知与可观测性
+## 流水线示意图
 
-| 组件 | 云原生领域 | 解决的问题 | 架构定位 | 是否必选 | 可替代方案 |
-|------|------------|------------|----------|----------|------------|
-| Notify Task | Feedback | CI 结果通知 | Feedback Channel | ❌ | Webhook、Slack |
-| CI Metrics（OTel） | Observability | 构建时长、成功率 | CI 可观测性 | ❌ | Prometheus |
-| CI Trace（Pipeline / Task） | Observability | 执行链路分析 | Debug / RCA | ❌ | Jaeger |
+```
+Tekton Trigger 接收请求
+        ↓
+创建 PipelineRun
+        ↓
+┌─────────────────────────────────────────────┐
+│  拉代码 → 扫描 → 测试 → 构建 → SBOM → 签名 → 再扫  │
+└─────────────────────────────────────────────┘
+        ↓
+推送镜像到 OCI Registry
+        ↓
+回调 release-service
+```

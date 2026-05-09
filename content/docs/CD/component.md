@@ -1,32 +1,71 @@
-
 ---
-title: "Components"
-weight: 2
+title: "CD 组件矩阵"
+weight: 66
 ---
 
-## 🧭 使用建议
+# CD 用到哪些工具
 
-- 以 Argo CD 作为 GitOps 基座，先打通「声明式部署」  
-- 有灰度需求再引入 Rollouts，避免过早复杂化  
-- 多环境/多集群场景优先补齐 ApplicationSet  
-
-
-## 🚀 一、持续交付（CD & 发布）
-
-| 组件                  | 云原生领域       | 解决的问题         | 架构定位              | 是否必选 | 可替代方案             |
-|---------------------|-------------|---------------|-------------------|------|-------------------|
-| Argo CD             | CD / GitOps | Git 驱动的声明式部署  | CD 控制平面           | ✅    | FluxCD            |
-| Argo ApplicationSet | CD          | 多环境 / 多集群应用生成 | CD 扩展能力           | ❌    | Helmfile、自研脚本     |
-| Argo Rollouts       | 发布策略        | 灰度 / 蓝绿发布     | 高级 Deployment 控制器 | ❌    | Flagger、Spinnaker |
+DevFlow 的 CD 依赖以下几个核心工具，各司其职。
 
 ---
 
-## 🕸️ 二、流量治理与服务网格
+## 核心组件
 
-| 组件                       | 云原生领域        | 解决的问题         | 架构定位    | 是否必选 | 可替代方案                 |
-|--------------------------|--------------|---------------|---------|------|-----------------------|
-| Istio                    | Service Mesh | 流量治理、mTLS、可观测 | 服务网格控制面 | ❌    | Linkerd、Consul Mesh   |
-| Istio Ingress Gateway    | 流量入口         | 统一流量入口        | 南北向网关   | ❌    | Nginx Ingress、Traefik |
-| VirtualService / Gateway | 流量控制         | 路由、权重、故障注入    | 流量规则层   | ❌    | Nginx 配置              |
+### Argo CD — GitOps 引擎
+
+Argo CD 是 CD 的核心。它盯着 OCI Registry 里的部署包，一旦发现新版本，就自动同步到 Kubernetes 集群。
+
+你可以把它理解成一个**自动同步器**：你更新了仓库里的配置，它自动帮你 apply 到集群。
+
+### Argo Rollouts — 高级发布控制器
+
+原生 Kubernetes 只支持简单的 Rolling Update。Argo Rollouts 扩展了这个能力，支持：
+
+- **Canary** — 按权重逐步切流量
+- **Blue-Green** — 两套实例并行，瞬时切换
+- **Analysis** — 自动基于指标判断要不要继续
+
+### Istio — 流量指挥官
+
+Istio 负责控制流量怎么分配：
+
+- **VirtualService** — 定义流量路由规则（权重、匹配条件）
+- **DestinationRule** — 定义 Pod 分组（stable / canary）
+- **Gateway** — 外部流量入口
+
+没有 Istio，Canary 和 Blue-Green 就做不了流量控制。
+
+### OCI Registry — 部署包仓库
+
+DevFlow 把渲染好的 Kubernetes 配置打包成 OCI artifact，和镜像存在同一个仓库里。
+
+好处：镜像和部署包一起版本管理，不会搞混。
 
 ---
+
+## 组件关系
+
+```
+DevFlow
+  └─ release-service ──→ OCI Registry
+                              ↑
+Argo CD ←─────────────────────┘
+  └─ Argo Rollouts ←── Istio (VirtualService / DestinationRule)
+                              ↓
+                        Kubernetes
+                              ↓
+                        runtime-service
+```
+
+---
+
+## 必须 vs 可选
+
+| 组件 | Rolling | Canary | Blue-Green |
+|------|---------|--------|------------|
+| Argo CD | ✅ 必须 | ✅ 必须 | ✅ 必须 |
+| OCI Registry | ✅ 必须 | ✅ 必须 | ✅ 必须 |
+| Argo Rollouts | ❌ 不需要 | ✅ 必须 | ✅ 必须 |
+| Istio | ❌ 不需要 | ✅ 必须 | ⚪ 可选 |
+
+如果你只需要 Rolling 发布，Argo Rollouts 和 Istio 可以不装。

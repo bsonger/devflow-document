@@ -1,6 +1,6 @@
 {
-  "name": "Devflow",
-  "short_name": "Devflow",
+  "name": "DevFlow",
+  "short_name": "DevFlow",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

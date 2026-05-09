@@ -1,83 +1,94 @@
 ---
-title: "Normal (Rolling)"
-weight: 6
+title: "Rolling 发布"
+weight: 63
 ---
 
-# 🟢 Normal（Rolling）发布实战：Argo CD + Kubernetes Deployment
+# Rolling 发布
 
-Normal（Rolling）发布基于 **Kubernetes Deployment** 的滚动更新能力（RollingUpdate），适合大多数普通业务场景。
+**Rolling（滚动更新）** 是最简单的发布方式。Kubernetes 逐步创建新版本 Pod，同时销毁旧版本 Pod，就像换轮胎时一个一个换，车一直在跑。
 
 ---
 
-## 🗺️ 1. Devflow Normal（Rolling）发布流程图（示例）
+## 适合什么场景
+
+- 内部工具、后台管理系统
+- 资源敏感、成本优先的服务
+- 对短暂波动容忍度较高的应用
+
+---
+
+## 原理
 
 ```mermaid
-flowchart LR
-    A[Devflow Console] --> B[Devflow Job]
-    B --> C[Argo CD Application]
-    C --> D[Kubernetes Deployment]
-
-    C --> CS[Application Synced]
-    CS --> R0[Resources Applied]
-
-    C -. watch .-> F[Devflow Controller]
-    D -. watch .-> F
-    F --> M[(MongoDB)]
-    M -->|更新 steps / job status| F
-
-    D --> S0
-    subgraph Rolling Steps
-        S0[Applied] --> S1[Rolling Update] --> S2[Verify]
-        S2 --> S3[Completed]
-        S2 -. Failed .-> SF[Failed]
-        SF --> RB[Rollback to Stable]
+graph LR
+    subgraph "Kubernetes"
+        RS1["旧版本 ReplicaSet"]
+        RS2["新版本 ReplicaSet"]
+        Svc["Service"]
     end
+    subgraph "Pod"
+        P1["旧 Pod"]
+        P2["旧 Pod"]
+        P3["新 Pod"]
+        P4["新 Pod"]
+    end
+
+    Svc --> P1
+    Svc --> P2
+    Svc --> P3
+    Svc --> P4
+    RS1 --> P1
+    RS1 --> P2
+    RS2 --> P3
+    RS2 --> P4
 ```
 
-说明：
-
-- 发布链路：Devflow Console 触发 Job，生成 Argo CD Application，下发 Deployment。
-- 控制闭环：Devflow Controller 监听 Application 与 Deployment 状态，回写 Mongo 的 `steps` 与 `job status`。
-- Normal 节奏：Rolling Update 完成后进入 Completed。
+Service 同时指向新旧 Pod，流量自然平滑过渡。K8s 控制每次最多多创建 25% 的新 Pod，最多只允许 25% 的 Pod 不可用。
 
 ---
 
-## 🧭 2. 端到端步骤（Devflow 驱动）
+## 发布过程
 
-1. **Devflow 创建 Application 成功**  
-   - Devflow Job 创建 Argo CD Application  
-   - Application 进入 `Synced`（不一定 `Healthy`）
-
-2. **Argo CD 同步并创建/更新资源成功**  
-   - Argo CD 监听到 Application 变更  
-   - 生成/更新 Deployment、Service 等资源  
-
-3. **Deployment 开始滚动更新**  
-   - Devflow Controller 监听 Deployment 状态  
-   - 持续更新 `steps` 与 `job status`：
-     - Rolling Update → Verify（成功）
-     - Completed
-   - 若新版本 Pod 启动失败（如 NotReady / CrashLoopBackOff），对应 Verify 进入 `Failed` 并触发回滚
-
-> 若 Verify 失败，Controller 标记对应阶段失败并触发回滚流程（按策略自动或人工介入）。
+```
+开始: [旧][旧][旧]           (3 Pod)
+      ↓
+步骤 1: [旧][旧][旧][新]       (创建 1 个新 Pod)
+      ↓
+步骤 2: [旧][旧][新][新]       (销毁 1 个旧 Pod)
+      ↓
+步骤 3: [旧][新][新][新]       (继续替换)
+      ↓
+完成: [新][新][新]           (全部替换完毕)
+```
 
 ---
 
-## 📋 3. Normal（Rolling）Steps / Status 对照表
+## 回滚
 
-| Step | 状态（Status） | 触发事件 / 说明 |
-|------|----------------|----------------|
-| Applied | Running → Succeeded/Failed | Application 创建并 Sync 成功 |
-| Rolling Update | Running → Succeeded | Deployment 滚动更新进行中 |
-| Verify | Running → Succeeded / Failed | 指标通过或 Pod 启动正常 / Pod NotReady 或 CrashLoopBackOff |
-| Completed | Succeeded | 发布完成 |
-| Failed | Failed | Verify 失败触发回滚 |
-| Rollback to Stable | Succeeded | 回滚至稳定版本 |
+Rolling 的回滚是反向的滚动更新：
+
+```
+当前: [新][新][新]
+      ↓
+回滚: [新][新][旧]
+      ↓
+完成: [旧][旧][旧]
+```
+
+**回滚时间**：1-5 分钟（取决于副本数和替换速度）。
 
 ---
 
-## ✅ 4. 适用场景
+## 优缺点
 
-- 普通业务系统
-- 对精细化流量控制要求不高
-- 资源成本敏感且发布频率较高
+| ✅ 优点 | ❌ 缺点 |
+|---------|---------|
+| 资源占用最低 | 回滚速度慢 |
+| 无需额外组件 | 出问题影响所有用户 |
+| 实现最简单 | 无法控制流量比例 |
+
+---
+
+## 一句话总结
+
+Rolling 就是"稳扎稳打" — 成本低、实现简单，适合不那么关键的服务。

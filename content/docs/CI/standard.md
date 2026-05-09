@@ -1,93 +1,112 @@
-# 🧰 企业云原生平台标准 CI 流程
+---
+title: "标准 CI 流程"
+weight: 52
+---
 
-## 🧭 速览
+# 标准 CI 流程
 
-- 目标：让每次提交可构建、可测试、可追溯  
-- 关键：签名 + SBOM + 漏洞扫描  
-- 产出：可审计的镜像与制品  
-
-## 🎯 1. 目标
-
-本标准 CI 流程旨在实现：
-
-- 自动化构建、测试、发布流程  
-- 镜像和构建产物安全可追溯  
-- 与云原生平台安全策略和 Observability 集成  
-- 支持多项目、多环境的复用  
-- 确保企业级安全规范落地
+DevFlow 的标准 CI 流水线确保每个镜像在发布前都经过完整的安全和质量检查。
 
 ---
 
-## 🗺️ 2. 流程概览
+## 流程概览
 
-代码提交 → 代码扫描 → 单元/集成测试 → 构建镜像 → SBOM 生成 → 镜像签名 → 漏洞扫描 → Artifact 发布 → 通知 & 指标
-
----
-
-## 🧩 3. 流程阶段与功能
-
-| 阶段 | 功能描述 | 实现工具 / Tekton Task | 核心规范 |
-| ---- | -------- | -------------------- | -------- |
-| 源码管理 | 拉取代码，支持分支/commit/tag | Tekton `git-clone` Task | 可追溯，每次构建对应唯一 commit |
-| 代码扫描 | 静态分析、SAST | SonarQube / CodeQL | 阻止不合规代码提交 |
-| 单元/集成测试 | 执行测试并生成报告 | Tekton Test Task | 生成可追踪测试报告 |
-| 构建镜像 | 构建容器镜像 | Buildah / Kaniko | 不允许手工 push，镜像不可变 |
-| SBOM 生成 | 软件组成清单生成 | Syft / Grype | 用于安全审计与漏洞扫描 |
-| 镜像签名 | Cosign 签名 | Tekton Cosign Task | 支持 keyless/OIDC，保证镜像可信 |
-| 漏洞扫描 | 镜像安全扫描 | Trivy / Clair | 阻止高危漏洞镜像上线 |
-| Artifact 发布 | Push 镜像 / Helm / Chart | Harbor / OCI Registry | 支持 digest 部署，保证不可篡改 |
-| 通知 & 指标 | 告警及指标收集 | Slack / DingTalk / Prometheus / Grafana | Pipeline 状态、构建指标上报 |
+```mermaid
+graph LR
+    A["拉代码"] --> B["静态扫描"]
+    B --> C["单元测试"]
+    C --> D["集成测试"]
+    D --> E["构建镜像"]
+    E --> F["生成 SBOM"]
+    F --> G["签名镜像"]
+    G --> H["漏洞扫描"]
+    H --> I["推送仓库"]
+    I --> J["通知 DevFlow"]
+```
 
 ---
 
-## 🧷 4. 参数化设计
+## 各阶段说明
 
-- 支持可配置参数：
-  - `git-url`, `git-revision`, `image-name`, `image-tag`, `Dockerfile`, `manifest-name`
-- 可复用 Pipeline 支持多项目、多分支构建
-- 支持 Workspace 共享：
-  - 源码、Docker 配置、SSH Key、Secrets
+### 1. 拉代码
+
+从 Git 仓库拉取指定版本的代码，验证 commit hash 与 Manifest 中记录的是否一致。
+
+如果不一致，说明代码在发起发布后被人修改过，构建终止。
+
+### 2. 静态扫描
+
+扫描代码中的安全问题：
+
+- **敏感信息泄露** — 有没有硬编码的密码、Token、密钥
+- **依赖漏洞** — 引用的第三方库有没有已知漏洞
+- **代码规范** — 是否符合团队编码规范
+
+### 3. 单元测试
+
+执行项目的单元测试。
+
+**门禁**：覆盖率 ≥ 60%，且所有测试必须通过。
+
+### 4. 集成测试
+
+在隔离环境中启动依赖服务（数据库、缓存等），执行端到端测试。
+
+验证应用在实际依赖存在时是否能正常工作。
+
+### 5. 构建镜像
+
+使用 Buildah 构建容器镜像。
+
+**最佳实践**：
+- 使用最小化基础镜像（distroless / alpine）
+- 多阶段构建，减少最终镜像体积
+- 非 root 用户运行容器
+
+### 6. 生成 SBOM
+
+生成软件物料清单（Software Bill of Materials），记录镜像中的所有组件和依赖版本。
+
+格式：SPDX 或 CycloneDX
+
+用途：漏洞追踪、合规审计、供应链安全。
+
+### 7. 签名镜像
+
+使用 Cosign 对镜像进行数字签名，确保镜像在传输和存储过程中没有被篡改。
+
+签名密钥存储在 Kubernetes Secret 中，通过 RBAC 控制访问。
+
+### 8. 漏洞扫描
+
+使用 Trivy 扫描镜像中的已知漏洞。
+
+| 漏洞等级 | 处理方式 |
+|---------|---------|
+| CRITICAL | 必须修复，否则构建终止 |
+| HIGH | 24 小时内修复 |
+| MEDIUM / LOW | 记录并跟踪 |
+
+### 9. 推送仓库
+
+将镜像、SBOM 和签名推送到 OCI Registry（Zot）。
+
+### 10. 通知 DevFlow
+
+构建完成后，Tekton 通过 HTTP 回调通知 release-service：
+
+- **成功** — 继续创建 Release，进入部署流程
+- **失败** — 更新 Manifest 状态为 Failed，发布终止
 
 ---
 
-## 🔗 5. 串联顺序设计
+## 质量门禁总结
 
-推荐 Pipeline 流程顺序：
+| 阶段 | 门禁条件 | 失败后果 |
+|------|---------|---------|
+| 静态扫描 | 无敏感信息泄露 | 构建终止 |
+| 单元测试 | 覆盖率 ≥ 60%，全部通过 | 构建终止 |
+| 集成测试 | 全部通过 | 构建终止 |
+| 漏洞扫描 | 无 CRITICAL 漏洞 | 构建终止 |
 
-`clone → test → build → sbom → sign → scan → push → notify`
-
-- 使用 Tekton `runAfter` 或 DAG 定义依赖关系  
-- 每个阶段可独立复用 Task，保证灵活性
-
----
-
-## 🔐 6. 安全策略
-
-- 镜像签名 (Cosign)  
-- 镜像来源限制 (白名单 Registry)  
-- Artifact 可追溯 (Label / Digest)  
-- 构建凭证安全 (OIDC / Tekton Secrets)  
-- 与 Kyverno / OPA Gatekeeper 联动
-
----
-
-## 👀 7. 可观测性设计
-
-- **日志**：Pipeline Step 日志统一收集  
-- **指标**：构建时长、失败次数、漏洞数量、测试覆盖率  
-- **追踪**：可集成 OpenTelemetry，将 Trace 与 CI/CD 流程关联
-
----
-
-## 🧭 8. 标准 CI 流程示意图
-
-代码提交 → 代码扫描 → 单元/集成测试 → 构建镜像 → SBOM 生成 → 镜像签名 → 漏洞扫描 → Artifact 发布 → 通知 & 指标
-
----
-
-## ✅ 9. 核心思想
-
-1. **可复用**：Pipeline 参数化 + Task 复用  
-2. **安全可信**：签名 + SBOM + 漏洞扫描  
-3. **可追溯**：Git commit + Image Label + Artifact digest  
-4. **自动化**：无需人工操作，通知自动触发
+有问题的代码不会被打包成镜像，也不会进入部署环节。
