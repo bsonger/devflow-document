@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>架构设计 on DevFlow</title><link>https://devflow.bei.com/docs/architecture/</link><description>Recent content in 架构设计 on DevFlow</description><generator>Hugo</generator><language>zh-cn</language><atom:link href="https://devflow.bei.com/docs/architecture/index.xml" rel="self" type="application/rss+xml"/><item><title>五大微服务</title><link>https://devflow.bei.com/docs/architecture/services/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/docs/architecture/services/</guid><description>&lt;h1 id="五大微服务"&gt;五大微服务&lt;a class="anchor" href="#%e4%ba%94%e5%a4%a7%e5%be%ae%e6%9c%8d%e5%8a%a1"&gt;#&lt;/a&gt;&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>架构设计 on DevFlow</title><link>https://devflow.bei.com/document/docs/architecture/</link><description>Recent content in 架构设计 on DevFlow</description><generator>Hugo</generator><language>zh-cn</language><atom:link href="https://devflow.bei.com/document/docs/architecture/index.xml" rel="self" type="application/rss+xml"/><item><title>五大微服务</title><link>https://devflow.bei.com/document/docs/architecture/services/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/architecture/services/</guid><description>&lt;h1 id="五大微服务"&gt;五大微服务&lt;a class="anchor" href="#%e4%ba%94%e5%a4%a7%e5%be%ae%e6%9c%8d%e5%8a%a1"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;p&gt;DevFlow 由 5 个独立服务组成。你可以把它们理解成一个发布团队里的 5 个角色。&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id="服务总览"&gt;服务总览&lt;a class="anchor" href="#%e6%9c%8d%e5%8a%a1%e6%80%bb%e8%a7%88"&gt;#&lt;/a&gt;&lt;/h2&gt;
@@ -77,7 +77,7 @@
 &lt;li&gt;Manifest：构建前快照，记录&amp;quot;构建时刻的应用状态&amp;quot;&lt;/li&gt;
 &lt;li&gt;Release：部署前快照，记录&amp;quot;这次发布的完整上下文&amp;quot;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;两份快照都不可变，确保发布可重现、可回滚。&lt;/p&gt;</description></item><item><title>领域模型</title><link>https://devflow.bei.com/docs/architecture/domain-model/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/docs/architecture/domain-model/</guid><description>&lt;h1 id="领域模型"&gt;领域模型&lt;a class="anchor" href="#%e9%a2%86%e5%9f%9f%e6%a8%a1%e5%9e%8b"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;两份快照都不可变，确保发布可重现、可回滚。&lt;/p&gt;</description></item><item><title>领域模型</title><link>https://devflow.bei.com/document/docs/architecture/domain-model/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/architecture/domain-model/</guid><description>&lt;h1 id="领域模型"&gt;领域模型&lt;a class="anchor" href="#%e9%a2%86%e5%9f%9f%e6%a8%a1%e5%9e%8b"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;p&gt;DevFlow 中的资源模型分为四个层级，从组织到部署，层层递进。&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id="资源关系总览"&gt;资源关系总览&lt;a class="anchor" href="#%e8%b5%84%e6%ba%90%e5%85%b3%e7%b3%bb%e6%80%bb%e8%a7%88"&gt;#&lt;/a&gt;&lt;/h2&gt;
@@ -118,7 +118,7 @@
  Manifest --&amp;gt; Release&lt;/pre&gt;&lt;hr&gt;
 &lt;h2 id="四个层级"&gt;四个层级&lt;a class="anchor" href="#%e5%9b%9b%e4%b8%aa%e5%b1%82%e7%ba%a7"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;h3 id="第一层组织"&gt;第一层：组织&lt;a class="anchor" href="#%e7%ac%ac%e4%b8%80%e5%b1%82%e7%bb%84%e7%bb%87"&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;Project&lt;/strong&gt; 和 &lt;strong&gt;Application&lt;/strong&gt; 负责&amp;quot;谁拥有什么&amp;quot;。&lt;/p&gt;</description></item><item><title>发布生命周期</title><link>https://devflow.bei.com/docs/architecture/lifecycle/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/docs/architecture/lifecycle/</guid><description>&lt;h1 id="发布生命周期"&gt;发布生命周期&lt;a class="anchor" href="#%e5%8f%91%e5%b8%83%e7%94%9f%e5%91%bd%e5%91%a8%e6%9c%9f"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;Project&lt;/strong&gt; 和 &lt;strong&gt;Application&lt;/strong&gt; 负责&amp;quot;谁拥有什么&amp;quot;。&lt;/p&gt;</description></item><item><title>发布生命周期</title><link>https://devflow.bei.com/document/docs/architecture/lifecycle/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/architecture/lifecycle/</guid><description>&lt;h1 id="发布生命周期"&gt;发布生命周期&lt;a class="anchor" href="#%e5%8f%91%e5%b8%83%e7%94%9f%e5%91%bd%e5%91%a8%e6%9c%9f"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;p&gt;在 DevFlow 中发布一个应用，会经历 8 个阶段。理解这个流程，就能理解 DevFlow 是怎么保证发布安全可控的。&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id="整体流程"&gt;整体流程&lt;a class="anchor" href="#%e6%95%b4%e4%bd%93%e6%b5%81%e7%a8%8b"&gt;#&lt;/a&gt;&lt;/h2&gt;

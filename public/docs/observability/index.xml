@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>可观测性 on DevFlow</title><link>https://devflow.bei.com/docs/observability/</link><description>Recent content in 可观测性 on DevFlow</description><generator>Hugo</generator><language>zh-cn</language><atom:link href="https://devflow.bei.com/docs/observability/index.xml" rel="self" type="application/rss+xml"/><item><title>可观测性组件矩阵</title><link>https://devflow.bei.com/docs/observability/component/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/docs/observability/component/</guid><description>&lt;h1 id="可观测性技术栈"&gt;可观测性技术栈&lt;a class="anchor" href="#%e5%8f%af%e8%a7%82%e6%b5%8b%e6%80%a7%e6%8a%80%e6%9c%af%e6%a0%88"&gt;#&lt;/a&gt;&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>可观测性 on DevFlow</title><link>https://devflow.bei.com/document/docs/observability/</link><description>Recent content in 可观测性 on DevFlow</description><generator>Hugo</generator><language>zh-cn</language><atom:link href="https://devflow.bei.com/document/docs/observability/index.xml" rel="self" type="application/rss+xml"/><item><title>可观测性组件矩阵</title><link>https://devflow.bei.com/document/docs/observability/component/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/observability/component/</guid><description>&lt;h1 id="可观测性技术栈"&gt;可观测性技术栈&lt;a class="anchor" href="#%e5%8f%af%e8%a7%82%e6%b5%8b%e6%80%a7%e6%8a%80%e6%9c%af%e6%a0%88"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;p&gt;DevFlow 的可观测性由三个支柱组成：Metrics（指标）、Logs（日志）、Traces（链路）。每个支柱有专门的工具负责采集、存储和展示。&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id="metrics--系统的体检报告"&gt;Metrics — 系统的体检报告&lt;a class="anchor" href="#metrics--%e7%b3%bb%e7%bb%9f%e7%9a%84%e4%bd%93%e6%a3%80%e6%8a%a5%e5%91%8a"&gt;#&lt;/a&gt;&lt;/h2&gt;
@@ -63,7 +63,7 @@
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;三个支柱互相关联，形成一个完整的观测闭环。&lt;/p&gt;</description></item><item><title>公共 Attributes</title><link>https://devflow.bei.com/docs/observability/attributes/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/docs/observability/attributes/</guid><description>&lt;h1 id="公共-attributes"&gt;公共 Attributes&lt;a class="anchor" href="#%e5%85%ac%e5%85%b1-attributes"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;三个支柱互相关联，形成一个完整的观测闭环。&lt;/p&gt;</description></item><item><title>公共 Attributes</title><link>https://devflow.bei.com/document/docs/observability/attributes/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/observability/attributes/</guid><description>&lt;h1 id="公共-attributes"&gt;公共 Attributes&lt;a class="anchor" href="#%e5%85%ac%e5%85%b1-attributes"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;p&gt;DevFlow 的所有服务使用统一的标签（Attributes），这样 Metrics、Logs、Traces 才能互相关联。&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id="为什么要统一"&gt;为什么要统一&lt;a class="anchor" href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e8%a6%81%e7%bb%9f%e4%b8%80"&gt;#&lt;/a&gt;&lt;/h2&gt;
@@ -166,7 +166,7 @@
 &lt;/ul&gt;
 &lt;hr&gt;
 &lt;h2 id="来源"&gt;来源&lt;a class="anchor" href="#%e6%9d%a5%e6%ba%90"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;这些标签通过环境变量注入到服务中：&lt;/p&gt;</description></item><item><title>Labels / Attributes 规范</title><link>https://devflow.bei.com/docs/observability/standard/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/docs/observability/standard/</guid><description>&lt;h1 id="标签使用规范"&gt;标签使用规范&lt;a class="anchor" href="#%e6%a0%87%e7%ad%be%e4%bd%bf%e7%94%a8%e8%a7%84%e8%8c%83"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;这些标签通过环境变量注入到服务中：&lt;/p&gt;</description></item><item><title>Labels / Attributes 规范</title><link>https://devflow.bei.com/document/docs/observability/standard/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/observability/standard/</guid><description>&lt;h1 id="标签使用规范"&gt;标签使用规范&lt;a class="anchor" href="#%e6%a0%87%e7%ad%be%e4%bd%bf%e7%94%a8%e8%a7%84%e8%8c%83"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;p&gt;DevFlow 的 Metrics、Traces、Logs 使用统一的标签体系，确保三者可以互相关联。&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id="metrics指标标签"&gt;Metrics（指标）标签&lt;a class="anchor" href="#metrics%e6%8c%87%e6%a0%87%e6%a0%87%e7%ad%be"&gt;#&lt;/a&gt;&lt;/h2&gt;

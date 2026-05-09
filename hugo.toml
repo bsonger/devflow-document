@@ -1,11 +1,10 @@
-baseURL = 'https://devflow.bei.com/'
+baseURL = 'https://devflow.bei.com/document/'
 languageCode = 'zh-cn'
 title = 'DevFlow'
 theme = "hugo-book"
 [markup]
   [markup.goldmark.renderer]
     unsafe = true
-relativeURLs = true
 [params]
    BookTheme = 'auto'
    BookToC = true

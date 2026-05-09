@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>服务详解 on DevFlow</title><link>https://devflow.bei.com/docs/services/</link><description>Recent content in 服务详解 on DevFlow</description><generator>Hugo</generator><language>zh-cn</language><atom:link href="https://devflow.bei.com/docs/services/index.xml" rel="self" type="application/rss+xml"/><item><title>meta-service</title><link>https://devflow.bei.com/docs/services/meta-service/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/docs/services/meta-service/</guid><description>&lt;h1 id="meta-service"&gt;meta-service&lt;a class="anchor" href="#meta-service"&gt;#&lt;/a&gt;&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>服务详解 on DevFlow</title><link>https://devflow.bei.com/document/docs/services/</link><description>Recent content in 服务详解 on DevFlow</description><generator>Hugo</generator><language>zh-cn</language><atom:link href="https://devflow.bei.com/document/docs/services/index.xml" rel="self" type="application/rss+xml"/><item><title>meta-service</title><link>https://devflow.bei.com/document/docs/services/meta-service/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/services/meta-service/</guid><description>&lt;h1 id="meta-service"&gt;meta-service&lt;a class="anchor" href="#meta-service"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;p&gt;&lt;strong&gt;档案管理员&lt;/strong&gt; — 所有应用、环境、集群的权威信息库。&lt;/p&gt;
 &lt;h2 id="它是做什么的"&gt;它是做什么的&lt;a class="anchor" href="#%e5%ae%83%e6%98%af%e5%81%9a%e4%bb%80%e4%b9%88%e7%9a%84"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;meta-service 管理 DevFlow 中的&amp;quot;户口本信息&amp;quot;：&lt;/p&gt;
@@ -30,7 +30,7 @@ GET /api/v1/meta/clusters # 集群列表&lt;/code&gt;&lt;/pre&gt;&lt;h2 id="关�
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;只读为主&lt;/strong&gt; — 大部分场景是其他服务来查询元数据，写入操作相对较少&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;下游服务解耦&lt;/strong&gt; — config-service、network-service 通过 &lt;code&gt;application_environment_id&lt;/code&gt; 关联，不直接依赖 meta-service 的内部结构&lt;/li&gt;
-&lt;/ul&gt;</description></item><item><title>config-service</title><link>https://devflow.bei.com/docs/services/config-service/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/docs/services/config-service/</guid><description>&lt;h1 id="config-service"&gt;config-service&lt;a class="anchor" href="#config-service"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;/ul&gt;</description></item><item><title>config-service</title><link>https://devflow.bei.com/document/docs/services/config-service/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/services/config-service/</guid><description>&lt;h1 id="config-service"&gt;config-service&lt;a class="anchor" href="#config-service"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;p&gt;&lt;strong&gt;配置专员&lt;/strong&gt; — 管理应用的运行时配置，确保不同环境的配置不会串台。&lt;/p&gt;
 &lt;h2 id="它是做什么的"&gt;它是做什么的&lt;a class="anchor" href="#%e5%ae%83%e6%98%af%e5%81%9a%e4%bb%80%e4%b9%88%e7%9a%84"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;config-service 管理两层配置：&lt;/p&gt;
@@ -83,7 +83,7 @@ GET /api/v1/meta/clusters # 集群列表&lt;/code&gt;&lt;/pre&gt;&lt;h2 id="关�
 &lt;/ul&gt;
 &lt;h2 id="api-入口"&gt;API 入口&lt;a class="anchor" href="#api-%e5%85%a5%e5%8f%a3"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;pre tabindex="0"&gt;&lt;code&gt;GET/POST/PUT/DELETE /api/v1/config/workload-configs
-GET/POST/PUT/DELETE /api/v1/config/app-configs&lt;/code&gt;&lt;/pre&gt;</description></item><item><title>network-service</title><link>https://devflow.bei.com/docs/services/network-service/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/docs/services/network-service/</guid><description>&lt;h1 id="network-service"&gt;network-service&lt;a class="anchor" href="#network-service"&gt;#&lt;/a&gt;&lt;/h1&gt;
+GET/POST/PUT/DELETE /api/v1/config/app-configs&lt;/code&gt;&lt;/pre&gt;</description></item><item><title>network-service</title><link>https://devflow.bei.com/document/docs/services/network-service/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/services/network-service/</guid><description>&lt;h1 id="network-service"&gt;network-service&lt;a class="anchor" href="#network-service"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;p&gt;&lt;strong&gt;网络工程师&lt;/strong&gt; — 管理应用的网络拓扑和外部访问入口。&lt;/p&gt;
 &lt;h2 id="它是做什么的"&gt;它是做什么的&lt;a class="anchor" href="#%e5%ae%83%e6%98%af%e5%81%9a%e4%bb%80%e4%b9%88%e7%9a%84"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;network-service 管理两层网络定义：&lt;/p&gt;
@@ -126,7 +126,7 @@ GET/POST/PUT/DELETE /api/v1/config/app-configs&lt;/code&gt;&lt;/pre&gt;</descrip
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;tls&lt;/span&gt;:
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;enabled&lt;/span&gt;: &lt;span style="color:#66d9ef"&gt;false&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;同一个应用，测试环境用测试域名且不用 HTTPS，生产环境用正式域名且启用 HTTPS。&lt;/p&gt;
 &lt;h2 id="为什么分层"&gt;为什么分层&lt;a class="anchor" href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e5%88%86%e5%b1%82"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;和配置管理的思路一样：&lt;/p&gt;</description></item><item><title>release-service</title><link>https://devflow.bei.com/docs/services/release-service/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/docs/services/release-service/</guid><description>&lt;h1 id="release-service"&gt;release-service&lt;a class="anchor" href="#release-service"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;和配置管理的思路一样：&lt;/p&gt;</description></item><item><title>release-service</title><link>https://devflow.bei.com/document/docs/services/release-service/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/services/release-service/</guid><description>&lt;h1 id="release-service"&gt;release-service&lt;a class="anchor" href="#release-service"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;p&gt;&lt;strong&gt;发布经理&lt;/strong&gt; — 发布全流程的编排者。从你在 Console 上点&amp;quot;发布&amp;quot;按钮，到应用真正跑在 Kubernetes 上，全是 release-service 在操心。&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id="它是做什么的"&gt;它是做什么的&lt;a class="anchor" href="#%e5%ae%83%e6%98%af%e5%81%9a%e4%bb%80%e4%b9%88%e7%9a%84"&gt;#&lt;/a&gt;&lt;/h2&gt;
@@ -166,7 +166,7 @@ GET/POST/PUT/DELETE /api/v1/config/app-configs&lt;/code&gt;&lt;/pre&gt;</descrip
 &lt;h2 id="一次发布的完整旅程"&gt;一次发布的完整旅程&lt;a class="anchor" href="#%e4%b8%80%e6%ac%a1%e5%8f%91%e5%b8%83%e7%9a%84%e5%ae%8c%e6%95%b4%e6%97%85%e7%a8%8b"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;你在 Console 上点了&amp;quot;发布 order-service 到生产环境&amp;quot;，接下来 release-service 会：&lt;/p&gt;
 &lt;h3 id="第一步收集信息"&gt;第一步：收集信息&lt;a class="anchor" href="#%e7%ac%ac%e4%b8%80%e6%ad%a5%e6%94%b6%e9%9b%86%e4%bf%a1%e6%81%af"&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;release-service 先去找其他服务打听情况：&lt;/p&gt;</description></item><item><title>runtime-service</title><link>https://devflow.bei.com/docs/services/runtime-service/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/docs/services/runtime-service/</guid><description>&lt;h1 id="runtime-service"&gt;runtime-service&lt;a class="anchor" href="#runtime-service"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;release-service 先去找其他服务打听情况：&lt;/p&gt;</description></item><item><title>runtime-service</title><link>https://devflow.bei.com/document/docs/services/runtime-service/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/services/runtime-service/</guid><description>&lt;h1 id="runtime-service"&gt;runtime-service&lt;a class="anchor" href="#runtime-service"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;p&gt;&lt;strong&gt;运维值班&lt;/strong&gt; — 实时观察 Kubernetes 集群，执行运维操作。&lt;/p&gt;
 &lt;h2 id="它是做什么的"&gt;它是做什么的&lt;a class="anchor" href="#%e5%ae%83%e6%98%af%e5%81%9a%e4%bb%80%e4%b9%88%e7%9a%84"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;runtime-service 是 DevFlow 与 Kubernetes 之间的&lt;strong&gt;眼睛和手&lt;/strong&gt;：&lt;/p&gt;

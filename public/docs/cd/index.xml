@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>持续交付 on DevFlow</title><link>https://devflow.bei.com/docs/cd/</link><description>Recent content in 持续交付 on DevFlow</description><generator>Hugo</generator><language>zh-cn</language><atom:link href="https://devflow.bei.com/docs/cd/index.xml" rel="self" type="application/rss+xml"/><item><title>CD 架构</title><link>https://devflow.bei.com/docs/cd/architecture/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/docs/cd/architecture/</guid><description>&lt;h1 id="cd-架构"&gt;CD 架构&lt;a class="anchor" href="#cd-%e6%9e%b6%e6%9e%84"&gt;#&lt;/a&gt;&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>持续交付 on DevFlow</title><link>https://devflow.bei.com/document/docs/cd/</link><description>Recent content in 持续交付 on DevFlow</description><generator>Hugo</generator><language>zh-cn</language><atom:link href="https://devflow.bei.com/document/docs/cd/index.xml" rel="self" type="application/rss+xml"/><item><title>CD 架构</title><link>https://devflow.bei.com/document/docs/cd/architecture/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/cd/architecture/</guid><description>&lt;h1 id="cd-架构"&gt;CD 架构&lt;a class="anchor" href="#cd-%e6%9e%b6%e6%9e%84"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;p&gt;DevFlow 的 CD 不直接操作 Kubernetes，而是通过 &lt;strong&gt;GitOps&lt;/strong&gt; 模式工作：release-service 生成部署包，推送到仓库，Argo CD 负责实际部署。&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id="为什么用-gitops"&gt;为什么用 GitOps&lt;a class="anchor" href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e7%94%a8-gitops"&gt;#&lt;/a&gt;&lt;/h2&gt;
@@ -68,7 +68,7 @@
 &lt;/table&gt;
 &lt;hr&gt;
 &lt;h2 id="与旧架构的区别"&gt;与旧架构的区别&lt;a class="anchor" href="#%e4%b8%8e%e6%97%a7%e6%9e%b6%e6%9e%84%e7%9a%84%e5%8c%ba%e5%88%ab"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;DevFlow 早期版本是直接操作 K8s 的，现在改成了 GitOps：&lt;/p&gt;</description></item><item><title>发布策略选型</title><link>https://devflow.bei.com/docs/cd/standard/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/docs/cd/standard/</guid><description>&lt;h1 id="发布策略选型"&gt;发布策略选型&lt;a class="anchor" href="#%e5%8f%91%e5%b8%83%e7%ad%96%e7%95%a5%e9%80%89%e5%9e%8b"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;DevFlow 早期版本是直接操作 K8s 的，现在改成了 GitOps：&lt;/p&gt;</description></item><item><title>发布策略选型</title><link>https://devflow.bei.com/document/docs/cd/standard/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/cd/standard/</guid><description>&lt;h1 id="发布策略选型"&gt;发布策略选型&lt;a class="anchor" href="#%e5%8f%91%e5%b8%83%e7%ad%96%e7%95%a5%e9%80%89%e5%9e%8b"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;p&gt;选对发布策略，既能保证安全，又不浪费资源。这一页帮你做决定。&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id="三种策略对比"&gt;三种策略对比&lt;a class="anchor" href="#%e4%b8%89%e7%a7%8d%e7%ad%96%e7%95%a5%e5%af%b9%e6%af%94"&gt;#&lt;/a&gt;&lt;/h2&gt;
@@ -187,7 +187,7 @@
 &lt;hr&gt;
 &lt;h2 id="详细说明"&gt;详细说明&lt;a class="anchor" href="#%e8%af%a6%e7%bb%86%e8%af%b4%e6%98%8e"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;h3 id="rolling--一步一步换"&gt;Rolling — 一步一步换&lt;a class="anchor" href="#rolling--%e4%b8%80%e6%ad%a5%e4%b8%80%e6%ad%a5%e6%8d%a2"&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;K8s 逐步创建新版本 Pod，同时销毁旧版本 Pod：&lt;/p&gt;</description></item><item><title>Rolling 发布</title><link>https://devflow.bei.com/docs/cd/normal/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/docs/cd/normal/</guid><description>&lt;h1 id="rolling-发布"&gt;Rolling 发布&lt;a class="anchor" href="#rolling-%e5%8f%91%e5%b8%83"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;K8s 逐步创建新版本 Pod，同时销毁旧版本 Pod：&lt;/p&gt;</description></item><item><title>Rolling 发布</title><link>https://devflow.bei.com/document/docs/cd/normal/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/cd/normal/</guid><description>&lt;h1 id="rolling-发布"&gt;Rolling 发布&lt;a class="anchor" href="#rolling-%e5%8f%91%e5%b8%83"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;p&gt;&lt;strong&gt;Rolling（滚动更新）&lt;/strong&gt; 是最简单的发布方式。Kubernetes 逐步创建新版本 Pod，同时销毁旧版本 Pod，就像换轮胎时一个一个换，车一直在跑。&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id="适合什么场景"&gt;适合什么场景&lt;a class="anchor" href="#%e9%80%82%e5%90%88%e4%bb%80%e4%b9%88%e5%9c%ba%e6%99%af"&gt;#&lt;/a&gt;&lt;/h2&gt;
@@ -231,7 +231,7 @@
  ↓
 完成: [新][新][新] (全部替换完毕)&lt;/code&gt;&lt;/pre&gt;&lt;hr&gt;
 &lt;h2 id="回滚"&gt;回滚&lt;a class="anchor" href="#%e5%9b%9e%e6%bb%9a"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;Rolling 的回滚是反向的滚动更新：&lt;/p&gt;</description></item><item><title>Canary 发布</title><link>https://devflow.bei.com/docs/cd/canary/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/docs/cd/canary/</guid><description>&lt;h1 id="canary-发布"&gt;Canary 发布&lt;a class="anchor" href="#canary-%e5%8f%91%e5%b8%83"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;Rolling 的回滚是反向的滚动更新：&lt;/p&gt;</description></item><item><title>Canary 发布</title><link>https://devflow.bei.com/document/docs/cd/canary/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/cd/canary/</guid><description>&lt;h1 id="canary-发布"&gt;Canary 发布&lt;a class="anchor" href="#canary-%e5%8f%91%e5%b8%83"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;p&gt;&lt;strong&gt;Canary（灰度发布）&lt;/strong&gt; 是 DevFlow 最推荐的发布方式。它的核心思想是：&lt;strong&gt;先让一小部分用户试用新版本，验证没问题后再扩大范围&lt;/strong&gt;。&lt;/p&gt;
 &lt;p&gt;就像餐厅推出新菜品，先给 VIP 客人试吃，反馈好再全员推广。&lt;/p&gt;
 &lt;hr&gt;
@@ -300,7 +300,7 @@
  &lt;/tr&gt;
  &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;每个阶段结束后，系统会自动检查 Prometheus 指标。如果错误率飙升或延迟异常，自动回滚到上一个阶段。&lt;/p&gt;</description></item><item><title>Blue-Green 发布</title><link>https://devflow.bei.com/docs/cd/blue-green/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/docs/cd/blue-green/</guid><description>&lt;h1 id="blue-green-发布"&gt;Blue-Green 发布&lt;a class="anchor" href="#blue-green-%e5%8f%91%e5%b8%83"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;每个阶段结束后，系统会自动检查 Prometheus 指标。如果错误率飙升或延迟异常，自动回滚到上一个阶段。&lt;/p&gt;</description></item><item><title>Blue-Green 发布</title><link>https://devflow.bei.com/document/docs/cd/blue-green/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/cd/blue-green/</guid><description>&lt;h1 id="blue-green-发布"&gt;Blue-Green 发布&lt;a class="anchor" href="#blue-green-%e5%8f%91%e5%b8%83"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;p&gt;&lt;strong&gt;Blue-Green（蓝绿部署）&lt;/strong&gt; 是最稳妥的发布方式。它同时维护两套完整实例，验证通过后瞬时切换流量。就像走天桥，旧路和新路同时在，随时可以退回来。&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id="适合什么场景"&gt;适合什么场景&lt;a class="anchor" href="#%e9%80%82%e5%90%88%e4%bb%80%e4%b9%88%e5%9c%ba%e6%99%af"&gt;#&lt;/a&gt;&lt;/h2&gt;
@@ -338,7 +338,7 @@
 &lt;h2 id="发布过程"&gt;发布过程&lt;a class="anchor" href="#%e5%8f%91%e5%b8%83%e8%bf%87%e7%a8%8b"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;h3 id="阶段-1部署新版本"&gt;阶段 1：部署新版本&lt;a class="anchor" href="#%e9%98%b6%e6%ae%b5-1%e9%83%a8%e7%bd%b2%e6%96%b0%e7%89%88%e6%9c%ac"&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;pre tabindex="0"&gt;&lt;code&gt;Active → Blue(旧, 3 Pod) ← 生产流量
-Preview → Green(新, 3 Pod) ← 验证流量&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Green 部署完成，可以通过 Preview Service 访问验证。&lt;/p&gt;</description></item><item><title>CD 组件矩阵</title><link>https://devflow.bei.com/docs/cd/component/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/docs/cd/component/</guid><description>&lt;h1 id="cd-用到哪些工具"&gt;CD 用到哪些工具&lt;a class="anchor" href="#cd-%e7%94%a8%e5%88%b0%e5%93%aa%e4%ba%9b%e5%b7%a5%e5%85%b7"&gt;#&lt;/a&gt;&lt;/h1&gt;
+Preview → Green(新, 3 Pod) ← 验证流量&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Green 部署完成，可以通过 Preview Service 访问验证。&lt;/p&gt;</description></item><item><title>CD 组件矩阵</title><link>https://devflow.bei.com/document/docs/cd/component/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/cd/component/</guid><description>&lt;h1 id="cd-用到哪些工具"&gt;CD 用到哪些工具&lt;a class="anchor" href="#cd-%e7%94%a8%e5%88%b0%e5%93%aa%e4%ba%9b%e5%b7%a5%e5%85%b7"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;p&gt;DevFlow 的 CD 依赖以下几个核心工具，各司其职。&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id="核心组件"&gt;核心组件&lt;a class="anchor" href="#%e6%a0%b8%e5%bf%83%e7%bb%84%e4%bb%b6"&gt;#&lt;/a&gt;&lt;/h2&gt;
