@@ -856,4 +856,31 @@
  G --&amp;gt; H[Observe Runtime Status]&lt;/pre&gt;&lt;p&gt;如果 observability 接得足够完整，这些阶段应该出现在&lt;strong&gt;同一条 Trace&lt;/strong&gt;里，而不是散落在多个互不关联的日志里。&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id="-根-span-最少应该带什么"&gt;✅ 根 Span 最少应该带什么&lt;a class="anchor" href="#-%e6%a0%b9-span-%e6%9c%80%e5%b0%91%e5%ba%94%e8%af%a5%e5%b8%a6%e4%bb%80%e4%b9%88"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;发布链路最重要的是入口 Span，也就是用户或系统真正发起发布请求的那一层。&lt;/p&gt;</description></item></channel></rss>
+&lt;p&gt;发布链路最重要的是入口 Span，也就是用户或系统真正发起发布请求的那一层。&lt;/p&gt;</description></item><item><title>Collector 生产排障 Runbook</title><link>https://devflow.bei.com/document/docs/observability/collector-runbook/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/observability/collector-runbook/</guid><description>&lt;h1 id="-collector-生产排障-runbook"&gt;🛠️ Collector 生产排障 Runbook&lt;a class="anchor" href="#-collector-%e7%94%9f%e4%ba%a7%e6%8e%92%e9%9a%9c-runbook"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;span class="df-badge"&gt;Runbook&lt;/span&gt; &lt;span class="df-badge"&gt;OTel Collector&lt;/span&gt; &lt;span class="df-badge"&gt;Oncall&lt;/span&gt; &lt;span class="df-badge"&gt;SRE&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;这页不是讲“Collector 应该怎么配置”，而是讲：&lt;/p&gt;
+&lt;blockquote class='book-hint '&gt;
+&lt;p&gt;&lt;strong&gt;当线上 Metrics / Logs / Traces 突然断流、缺字段、延迟变高时，值班的人应该按什么顺序排查？&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;&lt;p&gt;适合的读者：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;值班工程师&lt;/li&gt;
+&lt;li&gt;SRE / 平台工程师&lt;/li&gt;
+&lt;li&gt;负责维护 observability 基础设施的开发者&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;读完后，你应该能完成一件事：&lt;/p&gt;
+&lt;blockquote class='book-hint '&gt;
+&lt;p&gt;&lt;strong&gt;在 5~10 分钟内判断问题更可能出在服务侧、Collector 侧，还是后端存储侧。&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;&lt;hr&gt;
+&lt;h2 id="-先记排障总原则"&gt;🧭 先记排障总原则&lt;a class="anchor" href="#-%e5%85%88%e8%ae%b0%e6%8e%92%e9%9a%9c%e6%80%bb%e5%8e%9f%e5%88%99"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Collector 在整条链路里的位置很特殊：&lt;/p&gt;
+&lt;pre class="mermaid"&gt;graph LR
+ App[Service SDK] --&amp;gt; Collector
+ Collector --&amp;gt; Metrics[Prometheus / Remote Write]
+ Collector --&amp;gt; Logs[Loki / Logs Backend]
+ Collector --&amp;gt; Traces[Tempo / Trace Backend]&lt;/pre&gt;&lt;p&gt;所以 Collector 故障通常会表现成三类：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;入口没收到数据&lt;/strong&gt; — 问题更可能在服务侧或网络侧&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;收到了但没转发出去&lt;/strong&gt; — 问题更可能在 Collector 自身&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;转发出去了但查询不到&lt;/strong&gt; — 问题更可能在后端存储 / 查询侧&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;先判断属于哪一类，效率最高。&lt;/p&gt;</description></item></channel></rss>
