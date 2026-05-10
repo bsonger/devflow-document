@@ -26,7 +26,7 @@ metrics label，哪些字段只能留在 trace 或 log 中。
 |------|----------|----------|
 | 服务启动层 | `service.name` `service.version` | SDK Resource / 环境变量 |
 | 服务代码层 | `devflow.*` `error.message` `db.operation` | Span / Log / Metric 代码 |
-| Collector 层 | `deployment.environment` `k8s.*` `cloud.region` | OTel Collector processors |
+| Collector 层 | `deployment.environment.name` `k8s.*` `cloud.region` | OTel Collector processors |
 
 如果你先关心“字段应该放哪”，优先看 [公共 Attributes](../attributes/)。
 
@@ -72,7 +72,7 @@ metrics label，哪些字段只能留在 trace 或 log 中。
 |------|-----------|
 | `user_id` | 用户可能有几千万，每个用户一条时间线 |
 | `request_id` | 每个请求唯一，基数无限 |
-| `ip_address` | IP 数量无界 |
+| `client.address` | 地址数量无界，不适合做高频 label |
 | `trace_id` | 每个请求唯一，基数无限 |
 | `release_id` | 发布频繁变化，会打碎高频时间序列 |
 | `url.path` | 原始路径通常包含动态 ID，基数失控 |
@@ -97,7 +97,8 @@ HTTP metrics。
 
 | Key | 类型 | 说明 | 示例 |
 |-----|-----|-----|-----|
-| `http.server.duration` | duration | 请求耗时 | `120ms` |
+| `duration_ms` | float | 请求耗时（毫秒） | `120.4` |
+| `http.server.request.duration` | duration | 请求耗时（秒） | `0.1204s` |
 | `http.request.size` | bytes | 请求大小 | `2KB` |
 | `http.response.size` | bytes | 响应大小 | `10KB` |
 

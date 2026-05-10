@@ -172,7 +172,7 @@ Trace 只是骨架，日志负责补细节。
 - `service.name`
 - `http.route`
 - `http.status_code`
-- `deployment.environment`
+- `deployment.environment.name`
 
 不建议把 `devflow.release.id` 直接打成高频 metrics label；它更适合留在 Trace 和 Logs 中。
 

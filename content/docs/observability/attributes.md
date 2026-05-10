@@ -81,17 +81,17 @@ Metrics、Logs、Traces 需要能互相关联，但三者不是同一种东西�
 
 | Key | 说明 | 推荐来源 | 示例 |
 |-----|------|----------|------|
-| `service.name` | 服务名 | `OTEL_SERVICE_NAME` | `meta-service` |
-| `service.version` | 当前发布版本 | `SERVICE_VERSION` 或 `OTEL_RESOURCE_ATTRIBUTES` | `1.4.2` |
-| `service.namespace` | 逻辑服务域/业务域 | `OTEL_SERVICE_NAMESPACE` 或 `OTEL_RESOURCE_ATTRIBUTES` | `devflow` |
+| `service.name` | 服务名 | `SERVICE_NAME`（兼容 `OTEL_SERVICE_NAME`） | `meta-service` |
+| `service.version` | 当前发布版本 | `SERVICE_VERSION`（兼容 `OTEL_RESOURCE_ATTRIBUTES`） | `1.4.2` |
+| `service.namespace` | 逻辑服务域/业务域 | `OTEL_SERVICE_NAMESPACE`（兼容 `OTEL_RESOURCE_ATTRIBUTES`） | `devflow` |
 | `service.instance.id` | 实例唯一标识 | Downward API / Pod 名 | `meta-service-7f8c9d` |
-| `deployment.environment.name` | 部署环境（如平台无法统一注入时再兜底） | `DEPLOYMENT_ENVIRONMENT` 或 `OTEL_RESOURCE_ATTRIBUTES` | `prod` |
+| `deployment.environment.name` | 部署环境 | Collector / resource enrichment 优先；仅兼容老的服务侧输入 | `prod` |
 
 ### 这类字段应该怎么配
 
 ```yaml
 env:
-  - name: OTEL_SERVICE_NAME
+  - name: SERVICE_NAME
     value: "meta-service"
   - name: OTEL_SERVICE_NAMESPACE
     value: "devflow"
@@ -235,7 +235,7 @@ processors:
 
 #### 服务模板至少统一好
 
-- `OTEL_SERVICE_NAME`
+- `SERVICE_NAME`
 - `OTEL_SERVICE_NAMESPACE`
 - `SERVICE_VERSION`
 - `OTEL_EXPORTER_OTLP_ENDPOINT`
@@ -283,8 +283,9 @@ Collector 不应该承担业务语义推断。
 
 ### 服务模板 / 基础设施统一做
 
-- `OTEL_SERVICE_NAME`
-- `OTEL_RESOURCE_ATTRIBUTES`
+- `SERVICE_NAME`
+- `OTEL_SERVICE_NAMESPACE`
+- `SERVICE_VERSION`
 - exporter endpoint
 - propagators
 - sampling 基础策略

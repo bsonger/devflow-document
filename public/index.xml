@@ -1321,7 +1321,7 @@ metrics label，哪些字段只能留在 trace 或 log 中。&lt;/p&gt;
  &lt;/tr&gt;
  &lt;tr&gt;
  &lt;td&gt;Collector 层&lt;/td&gt;
- &lt;td&gt;&lt;code&gt;deployment.environment&lt;/code&gt; &lt;code&gt;k8s.*&lt;/code&gt; &lt;code&gt;cloud.region&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;&lt;code&gt;deployment.environment.name&lt;/code&gt; &lt;code&gt;k8s.*&lt;/code&gt; &lt;code&gt;cloud.region&lt;/code&gt;&lt;/td&gt;
  &lt;td&gt;OTel Collector processors&lt;/td&gt;
  &lt;/tr&gt;
  &lt;/tbody&gt;
@@ -1350,7 +1350,7 @@ metrics label，哪些字段只能留在 trace 或 log 中。&lt;/p&gt;
 &lt;h3 id="必备"&gt;必备&lt;a class="anchor" href="#%e5%bf%85%e5%a4%87"&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;service.name&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;deployment.environment&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;deployment.environment.name&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;http.method&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;http.route&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;http.status_code&lt;/code&gt;&lt;/li&gt;
@@ -1387,7 +1387,7 @@ metrics label，哪些字段只能留在 trace 或 log 中。&lt;/p&gt;
 &lt;h3 id="必备-1"&gt;必备&lt;a class="anchor" href="#%e5%bf%85%e5%a4%87-1"&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;service.name&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;deployment.environment&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;deployment.environment.name&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;trace_id&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;span_id&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;span.name&lt;/code&gt;&lt;/li&gt;
@@ -1441,7 +1441,7 @@ metrics label，哪些字段只能留在 trace 或 log 中。&lt;/p&gt;
  &lt;/tr&gt;
  &lt;tr&gt;
  &lt;td&gt;集群级公共字段&lt;/td&gt;
- &lt;td&gt;&lt;code&gt;deployment.environment&lt;/code&gt; &lt;code&gt;k8s.cluster.name&lt;/code&gt; &lt;code&gt;cloud.region&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;&lt;code&gt;deployment.environment.name&lt;/code&gt; &lt;code&gt;k8s.cluster.name&lt;/code&gt; &lt;code&gt;cloud.region&lt;/code&gt;&lt;/td&gt;
  &lt;/tr&gt;
  &lt;tr&gt;
  &lt;td&gt;统一导出&lt;/td&gt;
@@ -1559,7 +1559,7 @@ metrics label，哪些字段只能留在 trace 或 log 中。&lt;/p&gt;
  &lt;/tr&gt;
  &lt;tr&gt;
  &lt;td&gt;平台公共元数据&lt;/td&gt;
- &lt;td&gt;&lt;code&gt;deployment.environment&lt;/code&gt; &lt;code&gt;k8s.cluster.name&lt;/code&gt; &lt;code&gt;k8s.namespace.name&lt;/code&gt; &lt;code&gt;k8s.pod.name&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;&lt;code&gt;deployment.environment.name&lt;/code&gt; &lt;code&gt;k8s.cluster.name&lt;/code&gt; &lt;code&gt;k8s.namespace.name&lt;/code&gt; &lt;code&gt;k8s.pod.name&lt;/code&gt;&lt;/td&gt;
  &lt;/tr&gt;
  &lt;/tbody&gt;
 &lt;/table&gt;
@@ -1568,13 +1568,9 @@ metrics label，哪些字段只能留在 trace 或 log 中。&lt;/p&gt;
 &lt;h2 id="-启动配置检查"&gt;① 启动配置检查&lt;a class="anchor" href="#-%e5%90%af%e5%8a%a8%e9%85%8d%e7%bd%ae%e6%a3%80%e6%9f%a5"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;h3 id="必查项"&gt;必查项&lt;a class="anchor" href="#%e5%bf%85%e6%9f%a5%e9%a1%b9"&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 服务配置了 &lt;code&gt;OTEL_SERVICE_NAME&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 服务配置了 &lt;code&gt;OTEL_RESOURCE_ATTRIBUTES&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; &lt;code&gt;OTEL_RESOURCE_ATTRIBUTES&lt;/code&gt; 里至少包含：
-&lt;ul&gt;
-&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; &lt;code&gt;service.version&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 服务配置了 &lt;code&gt;SERVICE_NAME&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 服务配置了 &lt;code&gt;OTEL_SERVICE_NAMESPACE&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 服务配置了 &lt;code&gt;SERVICE_VERSION&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 服务配置了 &lt;code&gt;OTEL_EXPORTER_OTLP_ENDPOINT&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id="通过标准"&gt;通过标准&lt;a class="anchor" href="#%e9%80%9a%e8%bf%87%e6%a0%87%e5%87%86"&gt;#&lt;/a&gt;&lt;/h3&gt;
@@ -1588,7 +1584,7 @@ metrics label，哪些字段只能留在 trace 或 log 中。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;把 &lt;code&gt;devflow.release.id&lt;/code&gt; 塞进 &lt;code&gt;OTEL_RESOURCE_ATTRIBUTES&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;漏掉 &lt;code&gt;service.name&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;把本应平台统一注入的 &lt;code&gt;deployment.environment&lt;/code&gt; 分散到每个服务手工维护&lt;/li&gt;
+&lt;li&gt;把本应平台统一注入的 &lt;code&gt;deployment.environment.name&lt;/code&gt; 分散到每个服务手工维护&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
 &lt;h2 id="-trace-基础链路检查"&gt;② Trace 基础链路检查&lt;a class="anchor" href="#-trace-%e5%9f%ba%e7%a1%80%e9%93%be%e8%b7%af%e6%a3%80%e6%9f%a5"&gt;#&lt;/a&gt;&lt;/h2&gt;
@@ -1625,12 +1621,16 @@ metrics label，哪些字段只能留在 trace 或 log 中。&lt;/p&gt;
  &lt;td&gt;发生时间&lt;/td&gt;
  &lt;/tr&gt;
  &lt;tr&gt;
- &lt;td&gt;&lt;code&gt;log.level&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;&lt;code&gt;severity_text&lt;/code&gt;&lt;/td&gt;
  &lt;td&gt;级别&lt;/td&gt;
  &lt;/tr&gt;
  &lt;tr&gt;
- &lt;td&gt;&lt;code&gt;log.message&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;&lt;code&gt;body&lt;/code&gt;&lt;/td&gt;
  &lt;td&gt;人能读懂的事件描述&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;logger.name&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;日志分类名&lt;/td&gt;
  &lt;/tr&gt;
  &lt;tr&gt;
  &lt;td&gt;&lt;code&gt;service.name&lt;/code&gt;&lt;/td&gt;
@@ -1670,13 +1670,18 @@ metrics label，哪些字段只能留在 trace 或 log 中。&lt;/p&gt;
  &lt;td&gt;✅&lt;/td&gt;
  &lt;/tr&gt;
  &lt;tr&gt;
- &lt;td&gt;&lt;code&gt;log.level&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;&lt;code&gt;severity_text&lt;/code&gt;&lt;/td&gt;
  &lt;td&gt;日志级别&lt;/td&gt;
  &lt;td&gt;✅&lt;/td&gt;
  &lt;/tr&gt;
  &lt;tr&gt;
- &lt;td&gt;&lt;code&gt;log.message&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;&lt;code&gt;body&lt;/code&gt;&lt;/td&gt;
  &lt;td&gt;日志消息&lt;/td&gt;
+ &lt;td&gt;✅&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;logger.name&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;日志分类&lt;/td&gt;
  &lt;td&gt;✅&lt;/td&gt;
  &lt;/tr&gt;
  &lt;tr&gt;
@@ -1685,8 +1690,8 @@ metrics label，哪些字段只能留在 trace 或 log 中。&lt;/p&gt;
  &lt;td&gt;✅&lt;/td&gt;
  &lt;/tr&gt;
  &lt;tr&gt;
- &lt;td&gt;&lt;code&gt;deployment.environment&lt;/code&gt;&lt;/td&gt;
- &lt;td&gt;环境（建议平台统一注入）&lt;/td&gt;
+ &lt;td&gt;&lt;code&gt;service.namespace&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;服务命名空间&lt;/td&gt;
  &lt;td&gt;✅&lt;/td&gt;
  &lt;/tr&gt;
  &lt;/tbody&gt;
@@ -1770,21 +1775,22 @@ metrics label，哪些字段只能留在 trace 或 log 中。&lt;/p&gt;
 &lt;h3 id="http-入口日志"&gt;HTTP 入口日志&lt;a class="anchor" href="#http-%e5%85%a5%e5%8f%a3%e6%97%a5%e5%bf%97"&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-json" data-lang="json"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;{
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;&amp;#34;timestamp&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;2026-05-10T14:12:01Z&amp;#34;&lt;/span&gt;,
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;&amp;#34;log.level&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;INFO&amp;#34;&lt;/span&gt;,
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;&amp;#34;log.message&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;request accepted&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;&amp;#34;severity_text&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;INFO&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;&amp;#34;logger.name&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;http.access&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;&amp;#34;body&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;request accepted&amp;#34;&lt;/span&gt;,
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;&amp;#34;service.name&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;release-service&amp;#34;&lt;/span&gt;,
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;&amp;#34;deployment.environment&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;prod&amp;#34;&lt;/span&gt;,
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;&amp;#34;trace_id&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;2e71abb92e031efc2a7a1c4280959f4b&amp;#34;&lt;/span&gt;,
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;&amp;#34;span_id&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;abc123def456&amp;#34;&lt;/span&gt;,
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;&amp;#34;http.method&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;POST&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;&amp;#34;http.request.method&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;POST&amp;#34;&lt;/span&gt;,
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;&amp;#34;http.route&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;/api/v1/release/releases&amp;#34;&lt;/span&gt;,
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;&amp;#34;devflow.application.id&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;app-123&amp;#34;&lt;/span&gt;,
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;&amp;#34;devflow.environment.id&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;env-456&amp;#34;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="发布阶段日志"&gt;发布阶段日志&lt;a class="anchor" href="#%e5%8f%91%e5%b8%83%e9%98%b6%e6%ae%b5%e6%97%a5%e5%bf%97"&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-json" data-lang="json"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;{
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;&amp;#34;timestamp&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;2026-05-10T14:12:03Z&amp;#34;&lt;/span&gt;,
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;&amp;#34;log.level&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;INFO&amp;#34;&lt;/span&gt;,
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;&amp;#34;log.message&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;release rendering started&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;&amp;#34;severity_text&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;INFO&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;&amp;#34;logger.name&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;business.event&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;&amp;#34;body&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;release rendering started&amp;#34;&lt;/span&gt;,
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;&amp;#34;service.name&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;release-service&amp;#34;&lt;/span&gt;,
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;&amp;#34;trace_id&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;2e71abb92e031efc2a7a1c4280959f4b&amp;#34;&lt;/span&gt;,
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;&amp;#34;devflow.application.id&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;app-123&amp;#34;&lt;/span&gt;,
@@ -1793,8 +1799,9 @@ metrics label，哪些字段只能留在 trace 或 log 中。&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="错误日志"&gt;错误日志&lt;a class="anchor" href="#%e9%94%99%e8%af%af%e6%97%a5%e5%bf%97"&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-json" data-lang="json"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;{
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;&amp;#34;timestamp&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;2026-05-10T14:12:08Z&amp;#34;&lt;/span&gt;,
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;&amp;#34;log.level&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;ERROR&amp;#34;&lt;/span&gt;,
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;&amp;#34;log.message&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;failed to create argo application&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;&amp;#34;severity_text&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;ERROR&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;&amp;#34;logger.name&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;http.error&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;&amp;#34;body&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;failed to create argo application&amp;#34;&lt;/span&gt;,
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;&amp;#34;service.name&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;release-service&amp;#34;&lt;/span&gt;,
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;&amp;#34;trace_id&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;2e71abb92e031efc2a7a1c4280959f4b&amp;#34;&lt;/span&gt;,
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;&amp;#34;devflow.release.id&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;rel-001&amp;#34;&lt;/span&gt;,
@@ -1869,7 +1876,7 @@ metrics label，哪些字段只能留在 trace 或 log 中。&lt;/p&gt;
 &lt;/ul&gt;
 &lt;h3 id="collector-层"&gt;Collector 层&lt;a class="anchor" href="#collector-%e5%b1%82"&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;code&gt;deployment.environment&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;deployment.environment.name&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;k8s.cluster.name&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;k8s.namespace.name&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;k8s.pod.name&lt;/code&gt;&lt;/li&gt;

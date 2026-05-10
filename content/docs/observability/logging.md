@@ -23,8 +23,9 @@ weight: 78
 | 字段 | 作用 |
 |------|------|
 | `timestamp` | 发生时间 |
-| `log.level` | 级别 |
-| `log.message` | 人能读懂的事件描述 |
+| `severity_text` | 级别 |
+| `body` | 人能读懂的事件描述 |
+| `logger.name` | 日志分类名 |
 | `service.name` | 哪个服务打的 |
 | `trace_id` | 跳转到链路 |
 | `span_id` | 对齐当前 Span |
@@ -44,10 +45,11 @@ weight: 78
 | Key | 说明 | 必须 |
 |-----|------|------|
 | `timestamp` | 时间戳 | ✅ |
-| `log.level` | 日志级别 | ✅ |
-| `log.message` | 日志消息 | ✅ |
+| `severity_text` | 日志级别 | ✅ |
+| `body` | 日志消息 | ✅ |
+| `logger.name` | 日志分类 | ✅ |
 | `service.name` | 服务名 | ✅ |
-| `deployment.environment` | 环境（建议平台统一注入） | ✅ |
+| `service.namespace` | 服务命名空间 | ✅ |
 
 ### 关联字段
 
@@ -78,13 +80,13 @@ weight: 78
 ```json
 {
   "timestamp": "2026-05-10T14:12:01Z",
-  "log.level": "INFO",
-  "log.message": "request accepted",
+  "severity_text": "INFO",
+  "logger.name": "http.access",
+  "body": "request accepted",
   "service.name": "release-service",
-  "deployment.environment": "prod",
   "trace_id": "2e71abb92e031efc2a7a1c4280959f4b",
   "span_id": "abc123def456",
-  "http.method": "POST",
+  "http.request.method": "POST",
   "http.route": "/api/v1/release/releases",
   "devflow.application.id": "app-123",
   "devflow.environment.id": "env-456"
@@ -96,8 +98,9 @@ weight: 78
 ```json
 {
   "timestamp": "2026-05-10T14:12:03Z",
-  "log.level": "INFO",
-  "log.message": "release rendering started",
+  "severity_text": "INFO",
+  "logger.name": "business.event",
+  "body": "release rendering started",
   "service.name": "release-service",
   "trace_id": "2e71abb92e031efc2a7a1c4280959f4b",
   "devflow.application.id": "app-123",
@@ -111,8 +114,9 @@ weight: 78
 ```json
 {
   "timestamp": "2026-05-10T14:12:08Z",
-  "log.level": "ERROR",
-  "log.message": "failed to create argo application",
+  "severity_text": "ERROR",
+  "logger.name": "http.error",
+  "body": "failed to create argo application",
   "service.name": "release-service",
   "trace_id": "2e71abb92e031efc2a7a1c4280959f4b",
   "devflow.release.id": "rel-001",

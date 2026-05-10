@@ -35,7 +35,7 @@ weight: 74
 ### 必备
 
 - `service.name`
-- `deployment.environment`
+- `deployment.environment.name`
 - `http.method`
 - `http.route`
 - `http.status_code`
@@ -76,7 +76,7 @@ Metrics 应该优先回答：
 ### 必备
 
 - `service.name`
-- `deployment.environment`
+- `deployment.environment.name`
 - `trace_id`
 - `span_id`
 - `span.name`
@@ -121,7 +121,7 @@ Trace 应该优先回答：
 - `log.level`
 - `log.message`
 - `service.name`
-- `deployment.environment`
+- `deployment.environment.name`
 
 ### 强烈建议
 
@@ -155,7 +155,7 @@ Log 应该优先回答：
 |------|---------|--------|------|----------|
 | `service.name` | ✅ 必备 | ✅ 必备 | ✅ 必备 | 服务配置 |
 | `service.version` | ◑ 建议 | ◑ 建议 | ◑ 建议 | 服务配置 |
-| `deployment.environment` | ✅ 必备 | ✅ 必备 | ✅ 必备 | OTel / 平台统一注入优先 |
+| `deployment.environment.name` | ✅ 必备 | ✅ 必备 | ✅ 必备 | OTel / 平台统一注入优先 |
 | `k8s.cluster.name` | ✅ 必备 | ✅ 必备 | ◑ 建议 | OTel Collector |
 | `k8s.namespace.name` | ◑ 建议 | ✅ 建议 | ✅ 建议 | OTel Collector |
 | `k8s.pod.name` | ◑ 建议 | ✅ 建议 | ✅ 建议 | OTel Collector |
@@ -206,7 +206,7 @@ Log 应该优先回答：
 
 建议平台优先统一注入：
 
-- `deployment.environment`
+- `deployment.environment.name`
 - `k8s.cluster.name`
 - `k8s.namespace.name`
 - `k8s.pod.name`

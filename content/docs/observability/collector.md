@@ -26,7 +26,7 @@ Collector 这一层，建议只做**运行环境增强**和**统一转发**：
 | 负责内容 | 示例 |
 |----------|------|
 | K8s 元数据补齐 | `k8s.pod.name` `k8s.namespace.name` `k8s.node.name` |
-| 集群级公共字段 | `deployment.environment` `k8s.cluster.name` `cloud.region` |
+| 集群级公共字段 | `deployment.environment.name` `k8s.cluster.name` `cloud.region` |
 | 统一导出 | Prometheus / Loki / Tempo / OTLP backend |
 | 基础清洗 | 删除无用属性、限制标签爆炸 |
 
@@ -101,7 +101,7 @@ processors:
 
   resource:
     attributes:
-      - key: deployment.environment
+      - key: deployment.environment.name
         value: prod
         action: upsert
       - key: k8s.cluster.name
@@ -201,7 +201,7 @@ service:
 
 适合放这里的字段：
 
-- `deployment.environment`
+- `deployment.environment.name`
 - `k8s.cluster.name`
 - `cloud.region`
 - `cloud.availability_zone`
@@ -271,10 +271,12 @@ env:
     value: http://otel-collector.observability.svc.cluster.local:4317
   - name: OTEL_EXPORTER_OTLP_PROTOCOL
     value: grpc
-  - name: OTEL_SERVICE_NAME
+  - name: SERVICE_NAME
     value: meta-service
-  - name: OTEL_RESOURCE_ATTRIBUTES
-    value: service.version=1.4.2,deployment.environment=prod,service.namespace=devflow
+  - name: OTEL_SERVICE_NAMESPACE
+    value: devflow
+  - name: SERVICE_VERSION
+    value: 1.4.2
 ```
 
 这样分工会很清楚：
@@ -293,7 +295,7 @@ env:
 
 - `service.name`
 - `service.version`
-- `deployment.environment`
+- `service.namespace`
 
 ### 服务代码层
 
@@ -303,6 +305,7 @@ env:
 
 ### Collector 层
 
+- `deployment.environment.name`
 - `k8s.cluster.name`
 - `k8s.namespace.name`
 - `k8s.pod.name`

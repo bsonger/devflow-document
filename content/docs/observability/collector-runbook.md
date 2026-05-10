@@ -247,7 +247,7 @@ graph LR
 
 - `http.route` 是否退化成原始 URL
 - `service.name` 是否缺失
-- 多环境是否共用了错误的 `deployment.environment`
+- 多环境是否共用了错误的 `deployment.environment.name`
 
 ---
 

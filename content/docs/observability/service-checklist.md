@@ -22,7 +22,7 @@ weight: 79
 
 ### Collector 层
 
-- `deployment.environment`
+- `deployment.environment.name`
 - `k8s.cluster.name`
 - `k8s.namespace.name`
 - `k8s.pod.name`
@@ -182,7 +182,7 @@ weight: 79
 ### P0
 
 - `service.name`
-- `deployment.environment`
+- `deployment.environment.name`
 - `trace_id`
 - `devflow.application.id`
 

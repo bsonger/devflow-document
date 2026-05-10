@@ -30,7 +30,7 @@ weight: 77
 | 启动配置 | `service.name` `service.version` |
 | Trace 基础链路 | `trace_id` `span_id` `http.method` `http.route` |
 | 业务上下文 | `devflow.application.id`，发布链路再加 `devflow.release.id` |
-| 平台公共元数据 | `deployment.environment` `k8s.cluster.name` `k8s.namespace.name` `k8s.pod.name` |
+| 平台公共元数据 | `deployment.environment.name` `k8s.cluster.name` `k8s.namespace.name` `k8s.pod.name` |
 
 如果缺少其中任何一组，排障链路都会断。
 
@@ -40,10 +40,9 @@ weight: 77
 
 ### 必查项
 
-- [ ] 服务配置了 `OTEL_SERVICE_NAME`
-- [ ] 服务配置了 `OTEL_RESOURCE_ATTRIBUTES`
-- [ ] `OTEL_RESOURCE_ATTRIBUTES` 里至少包含：
-  - [ ] `service.version`
+- [ ] 服务配置了 `SERVICE_NAME`
+- [ ] 服务配置了 `OTEL_SERVICE_NAMESPACE`
+- [ ] 服务配置了 `SERVICE_VERSION`
 - [ ] 服务配置了 `OTEL_EXPORTER_OTLP_ENDPOINT`
 
 ### 通过标准
@@ -58,7 +57,7 @@ weight: 77
 
 - 把 `devflow.release.id` 塞进 `OTEL_RESOURCE_ATTRIBUTES`
 - 漏掉 `service.name`
-- 把本应平台统一注入的 `deployment.environment` 分散到每个服务手工维护
+- 把本应平台统一注入的 `deployment.environment.name` 分散到每个服务手工维护
 
 ---
 
@@ -217,9 +216,9 @@ Prometheus / Grafana 中应该能按：
 2. 在 Trace 后端确认能看到入口 Span
 3. 在 Span 中确认：
    - `service.name`
-   - `deployment.environment`
+   - `deployment.environment.name`（如果平台侧已补齐）
    - `devflow.application.id`
-4. 在 Span 或日志中确认存在 `deployment.environment`
+4. 在 Span 或日志中确认存在 `deployment.environment.name`，或者确认该字段由 Collector/resource enrichment 负责
 5. 在日志系统确认同一次请求能按 `trace_id` 查到日志
 6. 在指标系统确认该路由有延迟 / 请求数 / 错误率指标
 

@@ -69,10 +69,12 @@ env:
     value: http://otel-collector.observability.svc.cluster.local:4317
   - name: OTEL_EXPORTER_OTLP_PROTOCOL
     value: grpc
-  - name: OTEL_SERVICE_NAME
+  - name: SERVICE_NAME
     value: release-service
-  - name: OTEL_RESOURCE_ATTRIBUTES
-    value: service.version=1.4.2,service.namespace=devflow,deployment.environment=prod
+  - name: OTEL_SERVICE_NAMESPACE
+    value: devflow
+  - name: SERVICE_VERSION
+    value: 1.4.2
 ```
 
 这一层只负责：
@@ -81,7 +83,7 @@ env:
 - `service.version`
 - `service.namespace`
 
-`deployment.environment` 如果平台已经通过 OTel Collector 统一注入，就不要再让每个服务重复维护；只有平台暂时做不到时，才在这里兜底。
+`deployment.environment.name` 如果平台已经通过 OTel Collector 统一注入，就不要再让每个服务重复维护；只有平台暂时做不到时，才在这里兜底。
 
 不要在这里塞 `devflow.release.id` 这类请求级字段。
 
@@ -108,7 +110,10 @@ import (
 
 func InitOTel(ctx context.Context) (func(context.Context) error, error) {
     endpoint := os.Getenv("OTEL_EXPORTER_OTLP_ENDPOINT")
-    serviceName := os.Getenv("OTEL_SERVICE_NAME")
+    serviceName := os.Getenv("SERVICE_NAME")
+    if serviceName == "" {
+        serviceName = os.Getenv("OTEL_SERVICE_NAME")
+    }
 
     exporter, err := otlptracegrpc.New(ctx,
         otlptracegrpc.WithEndpoint(endpoint),
@@ -259,10 +264,10 @@ logger.Info("release fetched",
 
 ### 推荐
 
-- `service.name`
-- `deployment.environment`
-- `http.route`
-- `http.status_code`
+- `service_name`
+- `deployment_environment_name`
+- `http_route`
+- `http_response_status_code`
 
 ### 不推荐
 
@@ -287,7 +292,7 @@ logger.Info("release fetched",
 
 ### Collector 层
 
-- `deployment.environment=prod`
+- `deployment.environment.name=prod`
 - `k8s.cluster.name=devflow-prod`
 - `k8s.namespace.name=devflow`
 - `k8s.pod.name=release-service-xxxx`
@@ -301,7 +306,7 @@ logger.Info("release fetched",
 
 - `trace_id=...`
 - `span_id=...`
-- `http.method=GET`
+- `http.request.method=GET`
 - `http.route=/api/v1/releases/:id`
 
 ---

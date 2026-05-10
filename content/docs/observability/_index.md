@@ -39,7 +39,7 @@ Observability 里最容易混乱的一点，不是“字段叫什么”，而是
 |------|------|----------|--------|
 | 服务启动标签 | `service.name` `service.version` | 服务 Deployment / SDK 初始化 | 平台模板 + 服务配置 |
 | 服务业务标签 | `devflow.application.id` `devflow.release.id` `error.message` | 服务代码 | 服务开发者 |
-| 平台公共标签 | `deployment.environment` `k8s.pod.name` `k8s.namespace.name` `k8s.cluster.name` | OTel Collector | SRE / 平台组 |
+| 平台公共标签 | `deployment.environment.name` `k8s.pod.name` `k8s.namespace.name` `k8s.cluster.name` | OTel Collector | SRE / 平台组 |
 
 建议先读 [Attributes 规范](attributes/)，再看 [Labels 规范](standard/)。
 
