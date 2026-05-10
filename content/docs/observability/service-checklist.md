@@ -31,9 +31,9 @@ weight: 79
 
 - `trace_id`
 - `span_id`
-- `http.method`
+- `http.request.method`
 - `http.route`
-- `http.status_code`
+- `http.response.status_code`
 
 ---
 
@@ -182,9 +182,10 @@ weight: 79
 ### P0
 
 - `service.name`
-- `deployment.environment.name`
 - `trace_id`
 - `devflow.application.id`
+
+`deployment.environment.name` 建议由 Collector / 平台资源注入统一补齐，不作为每个服务手工维护的启动必填项。
 
 ### P1
 

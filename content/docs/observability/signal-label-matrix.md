@@ -34,18 +34,18 @@ weight: 74
 
 ### 必备
 
-- `service.name`
-- `deployment.environment.name`
-- `http.method`
-- `http.route`
-- `http.status_code`
-- `k8s.cluster.name`
+- `service_name`
+- `deployment_environment_name`
+- `http_request_method`
+- `http_route`
+- `http_response_status_code`
+- `k8s_cluster_name`
 
 ### 强烈建议
 
-- `service.version`
-- `k8s.namespace.name`
-- `k8s.pod.name`（确实需要 Pod 级分析时）
+- `service_version`
+- `k8s_namespace_name`
+- `k8s_pod_name`（确实需要 Pod 级分析时）
 - `devflow.intent.kind`（仅低基数任务类型）
 
 ### 不建议放进 Metrics labels
@@ -76,14 +76,13 @@ Metrics 应该优先回答：
 ### 必备
 
 - `service.name`
-- `deployment.environment.name`
 - `trace_id`
 - `span_id`
 - `span.name`
 - `span.kind`
-- `http.method`
+- `http.request.method`
 - `http.route`
-- `http.status_code`
+- `http.response.status_code`
 
 ### 强烈建议
 
@@ -118,10 +117,10 @@ Trace 应该优先回答：
 ### 必备
 
 - `timestamp`
-- `log.level`
-- `log.message`
+- `severity_text`
+- `body`
+- `logger.name`
 - `service.name`
-- `deployment.environment.name`
 
 ### 强烈建议
 
@@ -153,12 +152,12 @@ Log 应该优先回答：
 
 | 标签 | Metrics | Traces | Logs | 推荐归属 |
 |------|---------|--------|------|----------|
-| `service.name` | ✅ 必备 | ✅ 必备 | ✅ 必备 | 服务配置 |
-| `service.version` | ◑ 建议 | ◑ 建议 | ◑ 建议 | 服务配置 |
-| `deployment.environment.name` | ✅ 必备 | ✅ 必备 | ✅ 必备 | OTel / 平台统一注入优先 |
-| `k8s.cluster.name` | ✅ 必备 | ✅ 必备 | ◑ 建议 | OTel Collector |
-| `k8s.namespace.name` | ◑ 建议 | ✅ 建议 | ✅ 建议 | OTel Collector |
-| `k8s.pod.name` | ◑ 建议 | ✅ 建议 | ✅ 建议 | OTel Collector |
+| `service_name` / `service.name` | ✅ 必备 | ✅ 必备 | ✅ 必备 | 服务配置 / Resource |
+| `service_version` / `service.version` | ◑ 建议 | ◑ 建议 | ◑ 建议 | 服务配置 / Resource |
+| `deployment_environment_name` / `deployment.environment.name` | ✅ 必备 | ◑ 建议 | ◑ 建议 | OTel / 平台统一注入优先 |
+| `k8s_cluster_name` / `k8s.cluster.name` | ✅ 必备 | ✅ 必备 | ◑ 建议 | OTel Collector |
+| `k8s_namespace_name` / `k8s.namespace.name` | ◑ 建议 | ✅ 建议 | ✅ 建议 | OTel Collector |
+| `k8s_pod_name` / `k8s.pod.name` | ◑ 建议 | ✅ 建议 | ✅ 建议 | OTel Collector |
 | `devflow.project.id` | ❌ | ✅ 建议 | ✅ 建议 | 服务代码 |
 | `devflow.application.id` | ❌ | ✅ 建议 | ✅ 建议 | 服务代码 |
 | `devflow.environment.id` | ❌ | ✅ 建议 | ✅ 建议 | 服务代码 |
@@ -166,8 +165,8 @@ Log 应该优先回答：
 | `devflow.release.id` | ❌ | ✅ 强烈建议 | ✅ 强烈建议 | 服务代码 |
 | `devflow.intent.kind` | ◑ 低基数时可用 | ✅ 建议 | ✅ 建议 | 服务代码 |
 | `devflow.intent.status` | ❌ | ✅ 建议 | ✅ 建议 | 服务代码 |
-| `trace_id` | ◑ exemplar 场景 | ✅ 必备 | ✅ 强烈建议 | 自动生成 / 服务代码 |
-| `span_id` | ❌ | ✅ 必备 | ✅ 建议 | 自动生成 / 服务代码 |
+| `trace_id` | ◑ exemplar 场景 | ✅ 必备 | ✅ 强烈建议 | 自动生成 / SDK |
+| `span_id` | ❌ | ✅ 必备 | ✅ 建议 | 自动生成 / SDK |
 | `error.type` | ❌ | ✅ 建议 | ✅ 强烈建议 | 服务代码 |
 | `error.message` | ❌ | ✅ 建议 | ✅ 强烈建议 | 服务代码 |
 

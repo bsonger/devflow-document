@@ -52,7 +52,7 @@ graph LR
 |------|------------|
 | `trace_id` | 串起整条发布链路 |
 | `service.name=release-service` | 明确入口服务 |
-| `http.method` | 确认入口动作 |
+| `http.request.method` | 确认入口动作 |
 | `http.route` | 确认入口 API |
 | `devflow.project.id` | 识别项目 |
 | `devflow.application.id` | 识别应用 |
@@ -65,7 +65,7 @@ graph LR
 {
   "span.name": "POST /api/v1/release/releases",
   "service.name": "release-service",
-  "http.method": "POST",
+  "http.request.method": "POST",
   "http.route": "/api/v1/release/releases",
   "devflow.project.id": "proj-001",
   "devflow.application.id": "app-123",
@@ -137,8 +137,9 @@ Trace 只是骨架，日志负责补细节。
 ```json
 {
   "timestamp": "2026-05-10T15:21:08Z",
-  "log.level": "ERROR",
-  "log.message": "failed to create argo application",
+  "severity_text": "ERROR",
+  "logger.name": "http.error",
+  "body": "failed to create argo application",
   "service.name": "release-service",
   "trace_id": "2e71abb92e031efc2a7a1c4280959f4b",
   "span_id": "9fa312ab0044cd11",
@@ -171,7 +172,7 @@ Trace 只是骨架，日志负责补细节。
 
 - `service.name`
 - `http.route`
-- `http.status_code`
+- `http.response.status_code`
 - `deployment.environment.name`
 
 不建议把 `devflow.release.id` 直接打成高频 metrics label；它更适合留在 Trace 和 Logs 中。

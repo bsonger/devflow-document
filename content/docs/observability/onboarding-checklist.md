@@ -28,7 +28,7 @@ weight: 77
 | 维度 | 必须具备 |
 |------|----------|
 | 启动配置 | `service.name` `service.version` |
-| Trace 基础链路 | `trace_id` `span_id` `http.method` `http.route` |
+| Trace 基础链路 | `trace_id` `span_id` `http.request.method` `http.route` |
 | 业务上下文 | `devflow.application.id`，发布链路再加 `devflow.release.id` |
 | 平台公共元数据 | `deployment.environment.name` `k8s.cluster.name` `k8s.namespace.name` `k8s.pod.name` |
 
@@ -67,9 +67,9 @@ weight: 77
 
 - [ ] HTTP 框架已经接入 OTel middleware
 - [ ] 入口请求能自动生成 `trace_id`
-- [ ] Span 中能看到 `http.method`
+- [ ] Span 中能看到 `http.request.method`
 - [ ] Span 中能看到 `http.route`
-- [ ] Span 中能看到 `http.status_code`
+- [ ] Span 中能看到 `http.response.status_code`
 
 ### 通过标准
 
@@ -123,8 +123,8 @@ weight: 77
 ### 必查项
 
 - [ ] 日志是结构化的
-- [ ] 每条关键日志有 `log.level`
-- [ ] 每条关键日志有 `log.message`
+- [ ] 每条关键日志有 `severity_text`
+- [ ] 每条关键日志有 `body`
 - [ ] 关键日志能带 `trace_id`
 - [ ] 错误日志能带 `error.message`
 
@@ -146,8 +146,8 @@ weight: 77
 ### 必查项
 
 - [ ] 有 HTTP 请求数 / 延迟 / 错误率类指标
-- [ ] Metrics labels 至少包含 `service.name`
-- [ ] HTTP 指标至少包含 `http.method` `http.route` `http.status_code`
+- [ ] Metrics labels 至少包含 `service_name`
+- [ ] HTTP 指标至少包含 `http_request_method` `http_route` `http_response_status_code`
 - [ ] 没有明显高基数 labels
 
 ### 不该放进 Metrics labels 的字段

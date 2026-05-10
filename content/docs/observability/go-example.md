@@ -35,7 +35,7 @@ weight: 76
 | 服务启动配置 | `service.name` `service.version` |
 | Collector 注入 | `k8s.cluster.name` `k8s.namespace.name` `k8s.pod.name` |
 | 服务代码设置 | `devflow.application.id` `devflow.release.id` |
-| 自动生成 | `trace_id` `span_id` `http.method` `http.route` |
+| 自动生成 | `trace_id` `span_id` `http.request.method` `http.route` |
 
 如果这几组字段都齐了，Grafana / Tempo / Loki 里的关联基本就能跑通。
 
@@ -192,9 +192,9 @@ func main() {
 
 - `trace_id`
 - `span_id`
-- `http.method`
+- `http.request.method`
 - `http.route`
-- `http.status_code`
+- `http.response.status_code`
 
 ---
 

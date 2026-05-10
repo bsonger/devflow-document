@@ -159,7 +159,7 @@ weight: 78
 
 ## ✅ 最佳实践
 
-1. **人能读懂 `log.message`**，机器读结构化字段
+1. **人能读懂 `body`**，机器读结构化字段
 2. **字段名和 Trace 统一**，不要日志叫 `releaseId`、Trace 叫 `devflow.release.id`
 3. **关键事件打 INFO，失败打 ERROR**
 4. **所有错误日志尽量带 `trace_id` 和业务对象 ID**
