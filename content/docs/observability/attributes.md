@@ -31,6 +31,34 @@ DevFlow 的 observability 文档需要先回答一个最实际的问题：**一�
 - **和“这次请求/发布在处理什么业务对象”有关** → 服务代码设置
 - **和“这个 Pod 跑在哪个集群节点上”有关** → Collector 注入
 
+## 🗂️ 一张总表先看明白
+
+| 字段 | 应该放哪 | 为什么 | 谁来做 |
+|------|----------|--------|--------|
+| `service.name` | 服务启动配置 | 进程级身份，进程启动后基本不变 | 平台模板 / 服务 Deployment |
+| `service.version` | 服务启动配置 | 标识当前版本，不应每条日志手填 | 平台模板 / 发布系统 |
+| `deployment.environment` | 服务启动配置 | 环境维度稳定存在 | 平台模板 / 环境变量 |
+| `service.instance.id` | 服务启动配置 | 实例级身份，适合启动时注入 | Deployment / Downward API |
+| `devflow.project.id` | 服务代码设置 | 只有业务处理逻辑知道当前项目 | 服务代码 |
+| `devflow.application.id` | 服务代码设置 | Collector 无法可靠推断业务应用对象 | 服务代码 |
+| `devflow.environment.id` | 服务代码设置 | 业务上下文，不是基础设施元数据 | 服务代码 |
+| `devflow.manifest.id` | 服务代码设置 | 发布链路业务对象 | 服务代码 |
+| `devflow.release.id` | 服务代码设置 | 发布链路业务对象 | 服务代码 |
+| `devflow.intent.kind` | 服务代码设置 | Worker / 异步任务语义只在代码里知道 | 服务代码 |
+| `error.message` | 服务代码设置 | 错误上下文来自业务执行结果 | 服务代码 |
+| `k8s.namespace.name` | Collector 公共注入 | 标准 K8s 元数据，平台统一最稳定 | OTel Collector |
+| `k8s.pod.name` | Collector 公共注入 | 标准 K8s 元数据，避免每个服务重复写 | OTel Collector |
+| `k8s.node.name` | Collector 公共注入 | 属于运行环境元数据 | OTel Collector |
+| `k8s.cluster.name` | Collector 公共注入 | 集群级公共维度 | OTel Collector |
+| `cloud.region` | Collector 公共注入 | 云环境公共维度 | OTel Collector |
+
+### 最短决策规则
+
+- **进程启动后基本不变** → 放启动配置
+- **需要读业务对象 / 请求上下文才知道** → 放服务代码
+- **Kubernetes / 云环境自己就能提供** → 放 Collector
+- **如果 Collector 需要“猜业务语义”** → 说明这个字段不该放 Collector
+
 ---
 
 ## ① 服务启动配置的标签
@@ -186,6 +214,37 @@ processors:
 - **Kubernetes 元数据尽量不要服务自己写**
 - 集群名、地域、可用区这类平台公共标签，统一由 Collector 或网关注入
 - Collector 负责的是“运行环境补充”，**不要把业务 ID 逻辑搬到 Collector 里做**
+
+## 📌 按信号类型怎么落地
+
+| 信号类型 | 启动配置字段 | 服务代码字段 | Collector 字段 |
+|----------|--------------|--------------|----------------|
+| Metrics | `service.*` `deployment.environment` | `devflow.*`（仅低基数）`http.route` | `k8s.*` `cloud.*` |
+| Traces | `service.*` | `devflow.*` `error.*` `db.operation` | `k8s.*` `cloud.*` |
+| Logs | `service.*` | `devflow.*` `error.*` `trace_id` `span_id` | `k8s.*` `cloud.*` |
+
+### 具体执行建议
+
+#### 服务模板至少统一好
+
+- `OTEL_SERVICE_NAME`
+- `OTEL_RESOURCE_ATTRIBUTES`
+- `OTEL_EXPORTER_OTLP_ENDPOINT`
+- Trace context propagators
+
+#### 每个服务开发至少补齐
+
+- API 入口日志里的 `trace_id`
+- 关键发布链路里的 `devflow.application.id`
+- 发布相关事件里的 `devflow.release.id`
+- 错误日志里的 `error.type` / `error.message`
+
+#### 平台侧至少统一好
+
+- `k8sattributes` processor
+- `k8s.cluster.name`
+- `cloud.region` / `cloud.availability_zone`
+- logs / metrics / traces 的公共 pipeline
 
 ---
 
