@@ -17,6 +17,18 @@ DevFlow 的 Metrics、Traces、Logs 使用统一的标签体系，确保三者�
 
 > **来源标注**：本文档中字段来源分为两类 — `🤖 OTel 自动`（SDK/Collector 自动注入，无需代码改动）和 `✍️ 手动添加`（需在代码中显式设置）。
 
+## 🧭 先分清“在哪配置”
+
+在 DevFlow 里，标签来源建议按三层理解：
+
+| 层级 | 典型字段 | 配置位置 |
+|------|----------|----------|
+| 服务启动层 | `service.name` `service.version` `deployment.environment` | SDK Resource / 环境变量 |
+| 服务代码层 | `devflow.*` `error.message` `db.operation` | Span / Log / Metric 代码 |
+| Collector 层 | `k8s.*` `cloud.region` | OTel Collector processors |
+
+如果你先关心“字段应该放哪”，优先看 [公共 Attributes](../attributes/)。
+
 ---
 
 ## 📈 Metrics（指标）标签
