@@ -2000,7 +2000,34 @@ Preview → Green(新, 3 Pod) ← 验证流量&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;
 &lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 服务配置了 &lt;code&gt;OTEL_EXPORTER_OTLP_ENDPOINT&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id="通过标准"&gt;通过标准&lt;a class="anchor" href="#%e9%80%9a%e8%bf%87%e6%a0%87%e5%87%86"&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;你应该能明确回答：&lt;/p&gt;</description></item><item><title>部署步骤</title><link>https://devflow.bei.com/document/docs/deployment/guide/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/deployment/guide/</guid><description>&lt;h1 id="部署步骤"&gt;部署步骤&lt;a class="anchor" href="#%e9%83%a8%e7%bd%b2%e6%ad%a5%e9%aa%a4"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;你应该能明确回答：&lt;/p&gt;</description></item><item><title>发布链路 Trace 示例</title><link>https://devflow.bei.com/document/docs/observability/release-trace-example/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/observability/release-trace-example/</guid><description>&lt;h1 id="-发布链路-trace-示例"&gt;🧵 发布链路 Trace 示例&lt;a class="anchor" href="#-%e5%8f%91%e5%b8%83%e9%93%be%e8%b7%af-trace-%e7%a4%ba%e4%be%8b"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;span class="df-badge"&gt;release-service&lt;/span&gt; &lt;span class="df-badge"&gt;runtime-service&lt;/span&gt; &lt;span class="df-badge"&gt;trace_id&lt;/span&gt; &lt;span class="df-badge"&gt;devflow.release.id&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;这页不是讲概念，而是回答一个更实际的问题：&lt;/p&gt;
+&lt;blockquote class='book-hint '&gt;
+&lt;p&gt;&lt;strong&gt;当一次发布变慢或失败时，一条“可排障”的 Trace 到底应该长什么样？&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;&lt;p&gt;适合的读者：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;想验证 release-service observability 是否打通的开发者&lt;/li&gt;
+&lt;li&gt;想知道 &lt;code&gt;devflow.*&lt;/code&gt; 字段该挂在哪些 Span 上的维护者&lt;/li&gt;
+&lt;li&gt;想从 Trace 继续跳日志、跳指标排查问题的值班工程师&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;读完后，你应该能完成一件事：&lt;/p&gt;
+&lt;blockquote class='book-hint '&gt;
+&lt;p&gt;&lt;strong&gt;对照一条发布 Trace，判断自己的发布链路字段是否足够支撑排障。&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;&lt;hr&gt;
+&lt;h2 id="-先看一条理想的发布链路"&gt;🧭 先看一条理想的发布链路&lt;a class="anchor" href="#-%e5%85%88%e7%9c%8b%e4%b8%80%e6%9d%a1%e7%90%86%e6%83%b3%e7%9a%84%e5%8f%91%e5%b8%83%e9%93%be%e8%b7%af"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;一次典型发布，链路通常会跨过这些阶段：&lt;/p&gt;
+&lt;pre class="mermaid"&gt;graph LR
+ A[API: Create Release] --&amp;gt; B[Load App Context]
+ B --&amp;gt; C[Create Manifest]
+ C --&amp;gt; D[Trigger Tekton]
+ D --&amp;gt; E[Render Bundle]
+ E --&amp;gt; F[Push OCI Bundle]
+ F --&amp;gt; G[Create Argo Application]
+ G --&amp;gt; H[Observe Runtime Status]&lt;/pre&gt;&lt;p&gt;如果 observability 接得足够完整，这些阶段应该出现在&lt;strong&gt;同一条 Trace&lt;/strong&gt;里，而不是散落在多个互不关联的日志里。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="-根-span-最少应该带什么"&gt;✅ 根 Span 最少应该带什么&lt;a class="anchor" href="#-%e6%a0%b9-span-%e6%9c%80%e5%b0%91%e5%ba%94%e8%af%a5%e5%b8%a6%e4%bb%80%e4%b9%88"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;发布链路最重要的是入口 Span，也就是用户或系统真正发起发布请求的那一层。&lt;/p&gt;</description></item><item><title>部署步骤</title><link>https://devflow.bei.com/document/docs/deployment/guide/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/deployment/guide/</guid><description>&lt;h1 id="部署步骤"&gt;部署步骤&lt;a class="anchor" href="#%e9%83%a8%e7%bd%b2%e6%ad%a5%e9%aa%a4"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;p&gt;把 DevFlow 部署到自己的 Kubernetes 集群，总共需要 11 步。&lt;/p&gt;
 &lt;blockquote class='book-hint '&gt;
 &lt;p&gt;如果你只是想&lt;strong&gt;体验&lt;/strong&gt; DevFlow，建议先用 Docker Compose 或 Kind 搭一个最小环境，不用一上来就生产级部署。&lt;/p&gt;

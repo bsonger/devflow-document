@@ -78,3 +78,4 @@ Observability 里最容易混乱的一点，不是“字段叫什么”，而是
 | [结构化日志规范](logging/) | DevFlow 日志字段与级别建议 |
 | [服务字段清单](service-checklist/) | 五大服务该打哪些关键观测字段 |
 | [OTel 接入检查清单](onboarding-checklist/) | 新服务接入 observability 的最小验收清单 |
+| [发布链路 Trace 示例](release-trace-example/) | 用一条完整发布链路说明 Trace / Log / Metric 如何串联排障 |
