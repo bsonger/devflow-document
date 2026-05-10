@@ -883,4 +883,67 @@
 &lt;li&gt;&lt;strong&gt;收到了但没转发出去&lt;/strong&gt; — 问题更可能在 Collector 自身&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;转发出去了但查询不到&lt;/strong&gt; — 问题更可能在后端存储 / 查询侧&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;先判断属于哪一类，效率最高。&lt;/p&gt;</description></item></channel></rss>
+&lt;p&gt;先判断属于哪一类，效率最高。&lt;/p&gt;</description></item><item><title>发布失败排障剧本</title><link>https://devflow.bei.com/document/docs/observability/release-failure-playbook/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/observability/release-failure-playbook/</guid><description>&lt;h1 id="-发布失败排障剧本"&gt;🚨 发布失败排障剧本&lt;a class="anchor" href="#-%e5%8f%91%e5%b8%83%e5%a4%b1%e8%b4%a5%e6%8e%92%e9%9a%9c%e5%89%a7%e6%9c%ac"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;span class="df-badge"&gt;Release&lt;/span&gt; &lt;span class="df-badge"&gt;Tekton&lt;/span&gt; &lt;span class="df-badge"&gt;Argo CD&lt;/span&gt; &lt;span class="df-badge"&gt;Runtime&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;这页不是讲“发布流程是什么”，而是讲：&lt;/p&gt;
+&lt;blockquote class='book-hint '&gt;
+&lt;p&gt;&lt;strong&gt;当一次发布失败时，值班的人应该先看哪一段、怎么缩小范围、怎么判断根因。&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;&lt;p&gt;适合的读者：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;值班工程师&lt;/li&gt;
+&lt;li&gt;release-service 维护者&lt;/li&gt;
+&lt;li&gt;平台工程师 / SRE&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;读完后，你应该能完成一件事：&lt;/p&gt;
+&lt;blockquote class='book-hint '&gt;
+&lt;p&gt;&lt;strong&gt;把一次失败发布快速归类到 Tekton / Render / OCI / Argo CD / Runtime 五段中的某一段。&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;&lt;hr&gt;
+&lt;h2 id="-先把失败分成-5-段"&gt;🧭 先把失败分成 5 段&lt;a class="anchor" href="#-%e5%85%88%e6%8a%8a%e5%a4%b1%e8%b4%a5%e5%88%86%e6%88%90-5-%e6%ae%b5"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;一次发布失败，通常不会“整个流程一起坏掉”，而是坏在某一段：&lt;/p&gt;
+&lt;pre class="mermaid"&gt;graph LR
+ A[Tekton 构建] --&amp;gt; B[Render 配置]
+ B --&amp;gt; C[推送 OCI Bundle]
+ C --&amp;gt; D[Argo CD 同步]
+ D --&amp;gt; E[Runtime 观察]&lt;/pre&gt;&lt;p&gt;排障时最重要的不是一开始就追根到底，而是：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;先判断失败卡在哪一段&lt;/li&gt;
+&lt;li&gt;再看这一段最典型的失败模式&lt;/li&gt;
+&lt;li&gt;最后结合 Trace / Log / 状态字段收敛到根因&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h2 id="-先按现象分流"&gt;🚦 先按现象分流&lt;a class="anchor" href="#-%e5%85%88%e6%8c%89%e7%8e%b0%e8%b1%a1%e5%88%86%e6%b5%81"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;table&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th&gt;现象&lt;/th&gt;
+ &lt;th&gt;更可能卡在哪&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td&gt;Release 很快失败，连镜像都没出来&lt;/td&gt;
+ &lt;td&gt;Tekton&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;镜像有了，但 Release 停在 Rendering / Publishing&lt;/td&gt;
+ &lt;td&gt;Render / OCI&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;Argo CD Application 没创建成功&lt;/td&gt;
+ &lt;td&gt;Argo CD 创建前后&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;Argo CD 创建了，但一直不同步&lt;/td&gt;
+ &lt;td&gt;Argo CD 同步阶段&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;Pod 拉起来了，但状态迟迟不 Ready&lt;/td&gt;
+ &lt;td&gt;Runtime&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;Canary / Blue-Green 卡在观察期&lt;/td&gt;
+ &lt;td&gt;Runtime / Metrics Gate&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;先定位大段，后面排查就会快很多。&lt;/p&gt;</description></item></channel></rss>

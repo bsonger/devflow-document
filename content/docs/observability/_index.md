@@ -80,3 +80,4 @@ Observability 里最容易混乱的一点，不是“字段叫什么”，而是
 | [OTel 接入检查清单](onboarding-checklist/) | 新服务接入 observability 的最小验收清单 |
 | [发布链路 Trace 示例](release-trace-example/) | 用一条完整发布链路说明 Trace / Log / Metric 如何串联排障 |
 | [Collector 生产排障 Runbook](collector-runbook/) | 线上 observability 断流、缺字段、延迟升高时的值班排障顺序 |
+| [发布失败排障剧本](release-failure-playbook/) | 按 Tekton / Render / OCI / Argo CD / Runtime 五段拆解发布失败排查 |
