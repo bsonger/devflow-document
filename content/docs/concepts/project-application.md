@@ -3,11 +3,48 @@ title: "Project 与 Application"
 weight: 41
 ---
 
-# Project 与 Application
+# 📁 Project 与 Application
 
 ## Project — 项目
 
 Project 是 DevFlow 中最顶层的组织单元。你可以把它理解成一个**文件夹**，把相关的应用放在一起。
+
+---
+
+## 为什么需要分层
+
+没有 Project/Application 分层时，你的应用列表可能是这样的：
+
+```
+payment-gateway
+order-service
+inventory-service
+user-service
+analytics-collector
+analytics-processor
+analytics-api
+```
+
+8 个服务混在一起，新来的同事完全不知道谁和谁有关系。
+
+有了分层之后：
+
+```
+电商中台
+  ├─ payment-gateway
+  ├─ order-service
+  ├─ inventory-service
+  └─ user-service
+
+数据中台
+  ├─ analytics-collector
+  ├─ analytics-processor
+  └─ analytics-api
+```
+
+一目了然。每个团队只看自己负责的项目，不会被别人家的服务干扰。
+
+> 分层不仅是组织问题，更是**权限隔离**的基础。你可以给"数据中台"团队只开放数据中台的权限，他们看不到电商中台的任何东西。
 
 ### 例子
 
@@ -44,20 +81,18 @@ Application 是 DevFlow 中**最核心的实体**。它代表一个可独立构�
 名称: order-service
 所属项目: 电商中台
 代码仓库: github.com/company/order-service
-部署类型: Canary
 ```
 
-### 部署类型
+### 当前实现里 Application 主要保存什么
 
-应用在创建时要选择一个默认的部署类型：
+当前 `devflow-service` 里的 `Application` 主要保存：
 
-| 类型 | 说明 | 适合什么 |
-|------|------|---------|
-| normal | 滚动更新 | 普通服务，资源敏感 |
-| canary | 灰度发布 | 核心服务，需要风险控制 |
-| blue-green | 蓝绿部署 | 关键业务，必须零停机 |
+- 所属 `Project`
+- 应用名称
+- 代码仓库地址（`repo_address`）
+- 描述和扩展标签
 
-这个类型只是**默认值**，发布时仍然可以手动选择其他策略。
+发布策略不是 `Application` 的创建字段，而是在创建 `Release` 时指定。
 
 ### 应用和 WorkloadConfig
 

@@ -3,21 +3,21 @@ title: "服务详解"
 weight: 30
 ---
 
-# 服务详解
+# 🧩 服务详解
 
 DevFlow 由 5 个微服务组成。你可以把它们理解成一个团队里的 5 个角色，各有分工，协同完成一次应用发布。
 
-| 服务 | 角色比喻 | 核心职责 |
+| ⚙️ 服务 | 👤 角色比喻 | 📝 核心职责 |
 |------|---------|---------|
-| [meta-service](meta-service/) | 档案管理员 | 管理所有应用的"户口本" |
-| [config-service](config-service/) | 配置专员 | 管理应用配置和环境差异 |
-| [network-service](network-service/) | 网络工程师 | 管理服务的网络拓扑和入口规则 |
-| [release-service](release-service/) | 发布经理 | 编排发布全流程 |
-| [runtime-service](runtime-service/) | 运维值班 | 实时观察集群状态，执行运维操作 |
+| [meta-service](meta-service/) | 📚 档案管理员 | 管理所有应用的"户口本" |
+| [config-service](config-service/) | 🧪 配置专员 | 管理应用配置和环境差异 |
+| [network-service](network-service/) | 🌐 网络工程师 | 管理服务的网络拓扑和入口规则 |
+| [release-service](release-service/) | 🚀 发布经理 | 编排发布全流程 |
+| [runtime-service](runtime-service/) | 🛠️ 运维值班 | 实时观察集群状态，执行运维操作 |
 
 ---
 
-## 它们怎么协作
+## 🤝 它们怎么协作
 
 ```mermaid
 graph LR
@@ -52,13 +52,13 @@ graph LR
 
 ---
 
-## 为什么拆成 5 个服务
+## 🧱 为什么拆成 5 个服务
 
 你可能会问：为什么不能做成一个大服务？
 
 原因很简单：**不同部分的变更频率和扩展需求不一样**。
 
-| 服务 | 变更频率 | 为什么需要独立 |
+| ⚙️ 服务 | 📈 变更频率 | 🧩 为什么需要独立 |
 |------|---------|--------------|
 | meta-service | 低 | 元数据相对稳定，独立出来不会频繁重启 |
 | config-service | 中 | 配置变更多，需要独立扩展 |

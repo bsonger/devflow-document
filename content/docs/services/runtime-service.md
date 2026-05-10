@@ -3,7 +3,7 @@ title: "runtime-service"
 weight: 35
 ---
 
-# runtime-service
+# 🛠️ runtime-service
 
 **运维值班** — 实时观察 Kubernetes 集群，执行运维操作。
 
@@ -27,7 +27,7 @@ runtime-service 是 DevFlow 与 Kubernetes 之间的**眼睛和手**：
 
 发布过程中，runtime-service 把 rollout 的实时进度回写给 release-service：
 
-> "新版本 3/10 个 Pod 已经 Ready 了"  
+> "新版本 3/10 个 Pod 已经 Ready 了"
 > "Canary 10% 流量阶段已完成"
 
 Console 上看到的发布进度条，数据来自这里。

@@ -3,13 +3,15 @@ title: "队列与并发控制"
 weight: 54
 ---
 
-# 队列与并发控制
+# 🧵 队列与并发控制
+
+<span class="df-badge">{{< brand-icon name="tekton" alt="Tekton" >}} Tekton</span> <span class="df-badge">⚖️ Priority</span> <span class="df-badge">📏 Quota</span>
 
 当很多人同时发版时，CI 集群可能会被压垮。DevFlow 提供了几种策略来控制构建的排队和并发。
 
 ---
 
-## 四种排队策略
+## 🛣️ 四种排队策略
 
 ### FIFO — 先来后到
 
@@ -43,7 +45,7 @@ weight: 54
 
 ---
 
-## Kubernetes 里的实现
+## ☸️ Kubernetes 里的实现
 
 Tekton 跑在 Kubernetes 上，排队和并发控制通过 K8s 原生机制实现：
 
@@ -61,7 +63,7 @@ Tekton 跑在 Kubernetes 上，排队和并发控制通过 K8s 原生机制实�
 
 ---
 
-## 关键监控指标
+## 📈 关键监控指标
 
 | 指标 | 说明 | 告警建议 |
 |------|------|---------|

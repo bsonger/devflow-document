@@ -3,13 +3,13 @@ title: "CI 架构"
 weight: 51
 ---
 
-# CI 架构
+# 🧪 CI 架构
 
 DevFlow 的 CI 基于 **Tekton**，一个云原生的 CI/CD 框架。当你发起发布时，release-service 触发 Tekton Pipeline，自动完成从代码到镜像的转换。
 
 ---
 
-## 流水线怎么跑
+## 🧭 流水线怎么跑
 
 ```mermaid
 graph LR
@@ -50,7 +50,7 @@ graph LR
 
 ---
 
-## 关键工具
+## 🧰 关键工具
 
 ### Tekton Pipelines — 流水线引擎
 
@@ -70,7 +70,7 @@ graph LR
 
 ---
 
-## release-service 和 Tekton 怎么交互
+## 🔌 release-service 和 Tekton 怎么交互
 
 **发起构建时**，release-service 告诉 Tekton：
 - 应用 ID、Manifest ID

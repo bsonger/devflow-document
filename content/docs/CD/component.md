@@ -3,13 +3,15 @@ title: "CD 组件矩阵"
 weight: 66
 ---
 
-# CD 用到哪些工具
+# 🧰 CD 用到哪些工具
+
+<span class="df-badge">GitOps</span> <span class="df-badge">{{< brand-icon name="zot" alt="Zot" >}} Zot</span> <span class="df-badge">{{< brand-icon name="istio" alt="Istio" >}} Istio</span>
 
 DevFlow 的 CD 依赖以下几个核心工具，各司其职。
 
 ---
 
-## 核心组件
+## 🧱 核心组件
 
 ### Argo CD — GitOps 引擎
 
@@ -17,7 +19,7 @@ Argo CD 是 CD 的核心。它盯着 OCI Registry 里的部署包，一旦发现
 
 你可以把它理解成一个**自动同步器**：你更新了仓库里的配置，它自动帮你 apply 到集群。
 
-### Argo Rollouts — 高级发布控制器
+### 🚦 Argo Rollouts — 高级发布控制器
 
 原生 Kubernetes 只支持简单的 Rolling Update。Argo Rollouts 扩展了这个能力，支持：
 
@@ -35,7 +37,7 @@ Istio 负责控制流量怎么分配：
 
 没有 Istio，Canary 和 Blue-Green 就做不了流量控制。
 
-### OCI Registry — 部署包仓库
+### OCI Registry（Zot）— 部署包仓库
 
 DevFlow 把渲染好的 Kubernetes 配置打包成 OCI artifact，和镜像存在同一个仓库里。
 
@@ -43,7 +45,7 @@ DevFlow 把渲染好的 Kubernetes 配置打包成 OCI artifact，和镜像存�
 
 ---
 
-## 组件关系
+## 🔗 组件关系
 
 ```
 DevFlow
@@ -59,13 +61,13 @@ Argo CD ←─────────────────────┘
 
 ---
 
-## 必须 vs 可选
+## ✅ 必须 vs 可选
 
 | 组件 | Rolling | Canary | Blue-Green |
 |------|---------|--------|------------|
-| Argo CD | ✅ 必须 | ✅ 必须 | ✅ 必须 |
-| OCI Registry | ✅ 必须 | ✅ 必须 | ✅ 必须 |
-| Argo Rollouts | ❌ 不需要 | ✅ 必须 | ✅ 必须 |
-| Istio | ❌ 不需要 | ✅ 必须 | ⚪ 可选 |
+| {{< brand-icon name="argocd" alt="Argo CD" >}} Argo CD | ✅ 必须 | ✅ 必须 | ✅ 必须 |
+| {{< brand-icon name="zot" alt="Zot" >}} OCI Registry | ✅ 必须 | ✅ 必须 | ✅ 必须 |
+| 🚦 Argo Rollouts | ❌ 不需要 | ✅ 必须 | ✅ 必须 |
+| {{< brand-icon name="istio" alt="Istio" >}} Istio | ❌ 不需要 | ✅ 必须 | ⚪ 可选 |
 
 如果你只需要 Rolling 发布，Argo Rollouts 和 Istio 可以不装。

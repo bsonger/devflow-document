@@ -1,43 +1,43 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>DevFlow</title><link>https://devflow.bei.com/document/</link><description>Recent content on DevFlow</description><generator>Hugo</generator><language>zh-cn</language><atom:link href="https://devflow.bei.com/document/index.xml" rel="self" type="application/rss+xml"/><item><title>五大微服务</title><link>https://devflow.bei.com/document/docs/architecture/services/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/architecture/services/</guid><description>&lt;h1 id="五大微服务"&gt;五大微服务&lt;a class="anchor" href="#%e4%ba%94%e5%a4%a7%e5%be%ae%e6%9c%8d%e5%8a%a1"&gt;#&lt;/a&gt;&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>DevFlow</title><link>https://devflow.bei.com/document/</link><description>Recent content on DevFlow</description><generator>Hugo</generator><language>zh-cn</language><atom:link href="https://devflow.bei.com/document/index.xml" rel="self" type="application/rss+xml"/><item><title>五大微服务</title><link>https://devflow.bei.com/document/docs/architecture/services/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/architecture/services/</guid><description>&lt;h1 id="-五大微服务"&gt;🧩 五大微服务&lt;a class="anchor" href="#-%e4%ba%94%e5%a4%a7%e5%be%ae%e6%9c%8d%e5%8a%a1"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;p&gt;DevFlow 由 5 个独立服务组成。你可以把它们理解成一个发布团队里的 5 个角色。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="服务总览"&gt;服务总览&lt;a class="anchor" href="#%e6%9c%8d%e5%8a%a1%e6%80%bb%e8%a7%88"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;table&gt;
+&lt;h2 id="-服务总览"&gt;📋 服务总览&lt;a class="anchor" href="#-%e6%9c%8d%e5%8a%a1%e6%80%bb%e8%a7%88"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;table class="df-table"&gt;
  &lt;thead&gt;
  &lt;tr&gt;
- &lt;th&gt;角色比喻&lt;/th&gt;
- &lt;th&gt;服务&lt;/th&gt;
- &lt;th&gt;核心职责&lt;/th&gt;
- &lt;th&gt;数据存储&lt;/th&gt;
+ &lt;th&gt;👤 角色比喻&lt;/th&gt;
+ &lt;th&gt;⚙️ 服务&lt;/th&gt;
+ &lt;th&gt;📝 核心职责&lt;/th&gt;
+ &lt;th&gt;🗄️ 数据存储&lt;/th&gt;
  &lt;/tr&gt;
  &lt;/thead&gt;
  &lt;tbody&gt;
  &lt;tr&gt;
- &lt;td&gt;档案管理员&lt;/td&gt;
+ &lt;td&gt;📚 档案管理员&lt;/td&gt;
  &lt;td&gt;meta-service&lt;/td&gt;
  &lt;td&gt;管理应用、环境、集群的元数据&lt;/td&gt;
  &lt;td&gt;PostgreSQL&lt;/td&gt;
  &lt;/tr&gt;
  &lt;tr&gt;
- &lt;td&gt;配置专员&lt;/td&gt;
+ &lt;td&gt;🧪 配置专员&lt;/td&gt;
  &lt;td&gt;config-service&lt;/td&gt;
  &lt;td&gt;管理应用配置和环境差异&lt;/td&gt;
  &lt;td&gt;PostgreSQL&lt;/td&gt;
  &lt;/tr&gt;
  &lt;tr&gt;
- &lt;td&gt;网络工程师&lt;/td&gt;
+ &lt;td&gt;🌐 网络工程师&lt;/td&gt;
  &lt;td&gt;network-service&lt;/td&gt;
  &lt;td&gt;管理网络拓扑和访问入口&lt;/td&gt;
  &lt;td&gt;PostgreSQL&lt;/td&gt;
  &lt;/tr&gt;
  &lt;tr&gt;
- &lt;td&gt;发布经理&lt;/td&gt;
+ &lt;td&gt;🚀 发布经理&lt;/td&gt;
  &lt;td&gt;release-service&lt;/td&gt;
  &lt;td&gt;编排发布全流程&lt;/td&gt;
  &lt;td&gt;PostgreSQL&lt;/td&gt;
  &lt;/tr&gt;
  &lt;tr&gt;
- &lt;td&gt;运维值班&lt;/td&gt;
+ &lt;td&gt;🛠️ 运维值班&lt;/td&gt;
  &lt;td&gt;runtime-service&lt;/td&gt;
  &lt;td&gt;观察集群状态，执行运维操作&lt;/td&gt;
  &lt;td&gt;内存索引&lt;/td&gt;
@@ -45,39 +45,20 @@
  &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;hr&gt;
-&lt;h2 id="meta-service--档案管理员"&gt;meta-service — 档案管理员&lt;a class="anchor" href="#meta-service--%e6%a1%a3%e6%a1%88%e7%ae%a1%e7%90%86%e5%91%98"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;管什么&lt;/strong&gt;：Project、Application、Environment、Cluster、ApplicationEnvironment&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;一句话&lt;/strong&gt;：所有应用的&amp;quot;户口本&amp;quot;都存在这里。其他服务想知道&amp;quot;这个应用叫什么名字&amp;quot;、&amp;ldquo;生产环境在哪个集群&amp;rdquo;，都来问它。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;为什么独立出来&lt;/strong&gt;：元数据相对稳定，独立后不会被频繁变更影响。同时保证所有服务看到的应用信息是一致的。&lt;/p&gt;
+&lt;div class="df-service-block"&gt;
+&lt;h2 id="-meta-service--档案管理员"&gt;📚 meta-service — 档案管理员&lt;a class="anchor" href="#-meta-service--%e6%a1%a3%e6%a1%88%e7%ae%a1%e7%90%86%e5%91%98"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;&lt;span class="df-badge"&gt;🏷️ 稳定性高&lt;/span&gt; &lt;span class="df-badge"&gt;🗂️ 元数据中心&lt;/span&gt; &lt;span class="df-badge"&gt;🔍 查询为主&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;📦 管什么&lt;/strong&gt;：Project、Application、Environment、Cluster、ApplicationEnvironment&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;💬 一句话&lt;/strong&gt;：所有应用的&amp;quot;户口本&amp;quot;都存在这里。其他服务想知道&amp;quot;这个应用叫什么名字&amp;quot;、&amp;ldquo;生产环境在哪个集群&amp;rdquo;，都来问它。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;🎯 为什么独立出来&lt;/strong&gt;：元数据相对稳定，独立后不会被频繁变更影响。同时保证所有服务看到的应用信息是一致的。&lt;/p&gt;
+&lt;/div&gt;
 &lt;hr&gt;
-&lt;h2 id="config-service--配置专员"&gt;config-service — 配置专员&lt;a class="anchor" href="#config-service--%e9%85%8d%e7%bd%ae%e4%b8%93%e5%91%98"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;管什么&lt;/strong&gt;：WorkloadConfig、AppConfig&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;一句话&lt;/strong&gt;：管理&amp;quot;应用默认怎么跑&amp;quot;（WorkloadConfig）和&amp;quot;这个环境有什么特殊要求&amp;quot;（AppConfig）。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;核心设计&lt;/strong&gt;：配置分层。&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;WorkloadConfig 是出厂设置，不随环境变化&lt;/li&gt;
-&lt;li&gt;AppConfig 是环境适配器，随环境变化&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;发布时自动叠加，测试环境不会串到生产配置。&lt;/p&gt;
-&lt;hr&gt;
-&lt;h2 id="network-service--网络工程师"&gt;network-service — 网络工程师&lt;a class="anchor" href="#network-service--%e7%bd%91%e7%bb%9c%e5%b7%a5%e7%a8%8b%e5%b8%88"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;管什么&lt;/strong&gt;：Service、Route&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;一句话&lt;/strong&gt;：管理&amp;quot;应用暴露了哪些端口&amp;quot;（Service）和&amp;quot;外部怎么访问这个环境&amp;quot;（Route）。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;核心设计&lt;/strong&gt;：网络和配置一样分层。&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Service 是应用的固有属性（我有哪些端口）&lt;/li&gt;
-&lt;li&gt;Route 是环境相关的（这个环境用什么域名）&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2 id="release-service--发布经理"&gt;release-service — 发布经理&lt;a class="anchor" href="#release-service--%e5%8f%91%e5%b8%83%e7%bb%8f%e7%90%86"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;管什么&lt;/strong&gt;：Manifest、Release、Intent、Image&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;一句话&lt;/strong&gt;：发布全流程的编排者。你点了&amp;quot;发布&amp;quot;后，它负责收集信息、冻结快照、触发构建、渲染配置、推送部署包、通知 Argo CD、接收状态回写。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;核心设计&lt;/strong&gt;：冻结点模式。&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Manifest：构建前快照，记录&amp;quot;构建时刻的应用状态&amp;quot;&lt;/li&gt;
-&lt;li&gt;Release：部署前快照，记录&amp;quot;这次发布的完整上下文&amp;quot;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;两份快照都不可变，确保发布可重现、可回滚。&lt;/p&gt;</description></item><item><title>领域模型</title><link>https://devflow.bei.com/document/docs/architecture/domain-model/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/architecture/domain-model/</guid><description>&lt;h1 id="领域模型"&gt;领域模型&lt;a class="anchor" href="#%e9%a2%86%e5%9f%9f%e6%a8%a1%e5%9e%8b"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;div class="df-service-block"&gt;
+&lt;h2 id="-config-service--配置专员"&gt;🧪 config-service — 配置专员&lt;a class="anchor" href="#-config-service--%e9%85%8d%e7%bd%ae%e4%b8%93%e5%91%98"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;&lt;span class="df-badge"&gt;🧱 配置分层&lt;/span&gt; &lt;span class="df-badge"&gt;🌱 环境差异&lt;/span&gt; &lt;span class="df-badge"&gt;📥 渲染输入&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;📦 管什么&lt;/strong&gt;：WorkloadConfig、AppConfig&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;💬 一句话&lt;/strong&gt;：管理&amp;quot;应用默认怎么跑&amp;quot;（WorkloadConfig）和&amp;quot;这个环境有什么特殊要求&amp;quot;（AppConfig）。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;🧠 核心设计&lt;/strong&gt;：配置分层。&lt;/p&gt;</description></item><item><title>领域模型</title><link>https://devflow.bei.com/document/docs/architecture/domain-model/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/architecture/domain-model/</guid><description>&lt;h1 id="领域模型"&gt;领域模型&lt;a class="anchor" href="#%e9%a2%86%e5%9f%9f%e6%a8%a1%e5%9e%8b"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;p&gt;想象你要开一家连锁餐厅。你需要：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;公司总部&lt;/strong&gt;（Project）— 管品牌、管战略&lt;/li&gt;
@@ -126,10 +107,14 @@
  Manifest --&amp;gt; Release&lt;/pre&gt;&lt;hr&gt;
 &lt;h2 id="四个层级"&gt;四个层级&lt;a class="anchor" href="#%e5%9b%9b%e4%b8%aa%e5%b1%82%e7%ba%a7"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;h3 id="第一层组织"&gt;第一层：组织&lt;a class="anchor" href="#%e7%ac%ac%e4%b8%80%e5%b1%82%e7%bb%84%e7%bb%87"&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;Project&lt;/strong&gt; 和 &lt;strong&gt;Application&lt;/strong&gt; 负责&amp;quot;谁拥有什么&amp;quot;。&lt;/p&gt;</description></item><item><title>发布生命周期</title><link>https://devflow.bei.com/document/docs/architecture/lifecycle/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/architecture/lifecycle/</guid><description>&lt;h1 id="发布生命周期"&gt;发布生命周期&lt;a class="anchor" href="#%e5%8f%91%e5%b8%83%e7%94%9f%e5%91%bd%e5%91%a8%e6%9c%9f"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;Project&lt;/strong&gt; 和 &lt;strong&gt;Application&lt;/strong&gt; 负责&amp;quot;谁拥有什么&amp;quot;。&lt;/p&gt;</description></item><item><title>发布生命周期</title><link>https://devflow.bei.com/document/docs/architecture/lifecycle/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/architecture/lifecycle/</guid><description>&lt;h1 id="-发布生命周期"&gt;🧭 发布生命周期&lt;a class="anchor" href="#-%e5%8f%91%e5%b8%83%e7%94%9f%e5%91%bd%e5%91%a8%e6%9c%9f"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;span class="df-badge"&gt;🧩 release-service&lt;/span&gt; &lt;span class="df-badge"&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/tekton.svg" alt="Tekton" loading="lazy" /&gt;
+ Tekton&lt;/span&gt; &lt;span class="df-badge"&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/zot.svg" alt="Zot" loading="lazy" /&gt;
+ Zot&lt;/span&gt; &lt;span class="df-badge"&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/argocd.svg" alt="Argo CD" loading="lazy" /&gt;
+ Argo CD&lt;/span&gt; &lt;span class="df-badge"&gt;👀 runtime-service&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;在 DevFlow 中发布一个应用，会经历 8 个阶段。理解这个流程，就能理解 DevFlow 是怎么保证发布安全可控的。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="整体流程"&gt;整体流程&lt;a class="anchor" href="#%e6%95%b4%e4%bd%93%e6%b5%81%e7%a8%8b"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id="-整体流程"&gt;🗺️ 整体流程&lt;a class="anchor" href="#-%e6%95%b4%e4%bd%93%e6%b5%81%e7%a8%8b"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;pre class="mermaid"&gt;graph LR
  A[&amp;#34;1. 收集信息&amp;#34;] --&amp;gt; B[&amp;#34;2. 冻结构建快照&amp;#34;]
  B --&amp;gt; C[&amp;#34;3. 构建镜像&amp;#34;]
@@ -138,7 +123,7 @@
  E --&amp;gt; F[&amp;#34;6. 推送到仓库&amp;#34;]
  F --&amp;gt; G[&amp;#34;7. 部署到集群&amp;#34;]
  G --&amp;gt; H[&amp;#34;8. 观察状态&amp;#34;]&lt;/pre&gt;&lt;hr&gt;
-&lt;h2 id="阶段-1收集信息"&gt;阶段 1：收集信息&lt;a class="anchor" href="#%e9%98%b6%e6%ae%b5-1%e6%94%b6%e9%9b%86%e4%bf%a1%e6%81%af"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id="-阶段-1收集信息"&gt;📥 阶段 1：收集信息&lt;a class="anchor" href="#-%e9%98%b6%e6%ae%b5-1%e6%94%b6%e9%9b%86%e4%bf%a1%e6%81%af"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;谁在干活&lt;/strong&gt;：release-service 问其他服务要资料&lt;/p&gt;
 &lt;p&gt;你在 Console 上点了&amp;quot;发布&amp;quot;，release-service 开始四处打听：&lt;/p&gt;
 &lt;blockquote class='book-hint '&gt;
@@ -147,13 +132,8 @@
 &amp;ldquo;network-service，它暴露了哪些端口？外部怎么访问？&amp;rdquo;&lt;/p&gt;
 &lt;/blockquote&gt;&lt;p&gt;&lt;strong&gt;输出&lt;/strong&gt;：一份完整的应用上下文&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="阶段-2冻结构建快照manifest"&gt;阶段 2：冻结构建快照（Manifest）&lt;a class="anchor" href="#%e9%98%b6%e6%ae%b5-2%e5%86%bb%e7%bb%93%e6%9e%84%e5%bb%ba%e5%bf%ab%e7%85%a7manifest"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;谁在干活&lt;/strong&gt;：release-service&lt;/p&gt;
-&lt;p&gt;release-service 把阶段 1 收集到的信息打包成第一份快照，叫 &lt;strong&gt;Manifest&lt;/strong&gt;：&lt;/p&gt;
-&lt;pre tabindex="0"&gt;&lt;code&gt;应用: order-service
-代码版本: main @ a1b2c3d4
-基础配置: 3 副本 / 1Gi 内存 / 健康检查...
-网络拓扑: 暴露 80 端口...&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Manifest 一旦创建就&lt;strong&gt;不能再改&lt;/strong&gt;。它记录了&amp;quot;这个应用在构建时刻长什么样&amp;quot;。&lt;/p&gt;</description></item><item><title>meta-service</title><link>https://devflow.bei.com/document/docs/services/meta-service/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/services/meta-service/</guid><description>&lt;h1 id="meta-service"&gt;meta-service&lt;a class="anchor" href="#meta-service"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;h2 id="-阶段-2冻结构建快照manifest"&gt;🧊 阶段 2：冻结构建快照（Manifest）&lt;a class="anchor" href="#-%e9%98%b6%e6%ae%b5-2%e5%86%bb%e7%bb%93%e6%9e%84%e5%bb%ba%e5%bf%ab%e7%85%a7manifest"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;谁在干活&lt;/strong&gt;：release-service&lt;/p&gt;</description></item><item><title>meta-service</title><link>https://devflow.bei.com/document/docs/services/meta-service/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/services/meta-service/</guid><description>&lt;h1 id="-meta-service"&gt;📚 meta-service&lt;a class="anchor" href="#-meta-service"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;p&gt;&lt;strong&gt;档案管理员&lt;/strong&gt; — 所有应用、环境、集群的权威信息库。&lt;/p&gt;
 &lt;h2 id="它是做什么的"&gt;它是做什么的&lt;a class="anchor" href="#%e5%ae%83%e6%98%af%e5%81%9a%e4%bb%80%e4%b9%88%e7%9a%84"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;meta-service 管理 DevFlow 中的&amp;quot;户口本信息&amp;quot;：&lt;/p&gt;
@@ -185,7 +165,7 @@ GET /api/v1/meta/clusters # 集群列表&lt;/code&gt;&lt;/pre&gt;&lt;h2 id="关�
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;只读为主&lt;/strong&gt; — 大部分场景是其他服务来查询元数据，写入操作相对较少&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;下游服务解耦&lt;/strong&gt; — config-service、network-service 通过 &lt;code&gt;application_environment_id&lt;/code&gt; 关联，不直接依赖 meta-service 的内部结构&lt;/li&gt;
-&lt;/ul&gt;</description></item><item><title>config-service</title><link>https://devflow.bei.com/document/docs/services/config-service/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/services/config-service/</guid><description>&lt;h1 id="config-service"&gt;config-service&lt;a class="anchor" href="#config-service"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;/ul&gt;</description></item><item><title>config-service</title><link>https://devflow.bei.com/document/docs/services/config-service/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/services/config-service/</guid><description>&lt;h1 id="-config-service"&gt;🧪 config-service&lt;a class="anchor" href="#-config-service"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;p&gt;&lt;strong&gt;配置专员&lt;/strong&gt; — 管理应用的运行时配置，确保不同环境的配置不会串台。&lt;/p&gt;
 &lt;h2 id="它是做什么的"&gt;它是做什么的&lt;a class="anchor" href="#%e5%ae%83%e6%98%af%e5%81%9a%e4%bb%80%e4%b9%88%e7%9a%84"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;config-service 管理两层配置：&lt;/p&gt;
@@ -201,29 +181,31 @@ GET /api/v1/meta/clusters # 集群列表&lt;/code&gt;&lt;/pre&gt;&lt;h2 id="关�
 &lt;h3 id="appconfig--环境级差异"&gt;AppConfig — 环境级差异&lt;a class="anchor" href="#appconfig--%e7%8e%af%e5%a2%83%e7%ba%a7%e5%b7%ae%e5%bc%82"&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;定义应用&lt;strong&gt;在不同环境下&lt;/strong&gt;的特殊配置：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;开发环境用开发数据库&lt;/li&gt;
-&lt;li&gt;生产环境用生产数据库&lt;/li&gt;
-&lt;li&gt;测试环境开 debug 日志，生产环境开 warn 日志&lt;/li&gt;
+&lt;li&gt;配置挂载目录&lt;/li&gt;
+&lt;li&gt;最近一次同步到的文件&lt;/li&gt;
+&lt;li&gt;来源配置目录和来源 commit&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;想象成给同一辆车配不同的轮胎：赛道用光头胎，雨天用雨胎。&lt;/p&gt;
 &lt;h2 id="一个例子"&gt;一个例子&lt;a class="anchor" href="#%e4%b8%80%e4%b8%aa%e4%be%8b%e5%ad%90"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;order-service 的基础配置（WorkloadConfig）：&lt;/strong&gt;&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;replicas&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;3&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;resources&lt;/span&gt;:
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;limits&lt;/span&gt;:
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;cpu&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;1000m&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;memory&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;1Gi&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;envs&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;size_class&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;medium&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;env&lt;/span&gt;:
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#f92672"&gt;name&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;SERVER_PORT&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;value&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;8080&amp;#34;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;order-service 在测试环境的差异（AppConfig）：&lt;/strong&gt;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;config_data&lt;/span&gt;:
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;DB_HOST&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;postgres-test.internal&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;LOG_LEVEL&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;debug&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;FEATURE_FLAG_NEW_CHECKOUT&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;true&amp;#34;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;order-service 在生产环境的差异（AppConfig）：&lt;/strong&gt;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;config_data&lt;/span&gt;:
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;DB_HOST&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;postgres-prod.internal&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;LOG_LEVEL&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;warn&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;FEATURE_FLAG_NEW_CHECKOUT&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;false&amp;#34;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;发布时，DevFlow 自动把基础配置和环境差异&lt;strong&gt;叠加&lt;/strong&gt;在一起，生成最终的 Kubernetes 配置。&lt;/p&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;value&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;8080&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;metrics&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;enabled&lt;/span&gt;: &lt;span style="color:#66d9ef"&gt;true&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;port&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;9090&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;scrape_profile&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;default&amp;#34;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;order-service 在测试环境的 AppConfig 记录：&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;application_id&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;order-service&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;environment_id&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;test&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;mount_path&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;/etc/config&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;source_directory&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;ecommerce/order-service/test&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;order-service 在生产环境的 AppConfig 记录：&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;application_id&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;order-service&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;environment_id&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;prod&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;mount_path&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;/etc/config&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;source_directory&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;ecommerce/order-service/prod&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;发布时，DevFlow 读取同步得到的文件内容，再和基础配置一起进入最终渲染。&lt;/p&gt;
 &lt;h2 id="为什么分层"&gt;为什么分层&lt;a class="anchor" href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e5%88%86%e5%b1%82"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;如果不分层，所有环境的配置混在一起，很容易出错：&lt;/p&gt;
 &lt;ul&gt;
@@ -238,7 +220,7 @@ GET /api/v1/meta/clusters # 集群列表&lt;/code&gt;&lt;/pre&gt;&lt;h2 id="关�
 &lt;/ul&gt;
 &lt;h2 id="api-入口"&gt;API 入口&lt;a class="anchor" href="#api-%e5%85%a5%e5%8f%a3"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;pre tabindex="0"&gt;&lt;code&gt;GET/POST/PUT/DELETE /api/v1/config/workload-configs
-GET/POST/PUT/DELETE /api/v1/config/app-configs&lt;/code&gt;&lt;/pre&gt;</description></item><item><title>network-service</title><link>https://devflow.bei.com/document/docs/services/network-service/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/services/network-service/</guid><description>&lt;h1 id="network-service"&gt;network-service&lt;a class="anchor" href="#network-service"&gt;#&lt;/a&gt;&lt;/h1&gt;
+GET/POST/PUT/DELETE /api/v1/config/app-configs&lt;/code&gt;&lt;/pre&gt;</description></item><item><title>network-service</title><link>https://devflow.bei.com/document/docs/services/network-service/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/services/network-service/</guid><description>&lt;h1 id="-network-service"&gt;🌐 network-service&lt;a class="anchor" href="#-network-service"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;p&gt;&lt;strong&gt;网络工程师&lt;/strong&gt; — 管理应用的网络拓扑和外部访问入口。&lt;/p&gt;
 &lt;h2 id="它是做什么的"&gt;它是做什么的&lt;a class="anchor" href="#%e5%ae%83%e6%98%af%e5%81%9a%e4%bb%80%e4%b9%88%e7%9a%84"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;network-service 管理两层网络定义：&lt;/p&gt;
@@ -281,35 +263,25 @@ GET/POST/PUT/DELETE /api/v1/config/app-configs&lt;/code&gt;&lt;/pre&gt;</descrip
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;tls&lt;/span&gt;:
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;enabled&lt;/span&gt;: &lt;span style="color:#66d9ef"&gt;false&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;同一个应用，测试环境用测试域名且不用 HTTPS，生产环境用正式域名且启用 HTTPS。&lt;/p&gt;
 &lt;h2 id="为什么分层"&gt;为什么分层&lt;a class="anchor" href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e5%88%86%e5%b1%82"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;和配置管理的思路一样：&lt;/p&gt;</description></item><item><title>release-service</title><link>https://devflow.bei.com/document/docs/services/release-service/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/services/release-service/</guid><description>&lt;h1 id="release-service"&gt;release-service&lt;a class="anchor" href="#release-service"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;和配置管理的思路一样：&lt;/p&gt;</description></item><item><title>release-service</title><link>https://devflow.bei.com/document/docs/services/release-service/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/services/release-service/</guid><description>&lt;h1 id="-release-service"&gt;🚀 release-service&lt;a class="anchor" href="#-release-service"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;p&gt;&lt;strong&gt;发布经理&lt;/strong&gt; — 发布全流程的编排者。从你在 Console 上点&amp;quot;发布&amp;quot;按钮，到应用真正跑在 Kubernetes 上，全是 release-service 在操心。&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id="它是做什么的"&gt;它是做什么的&lt;a class="anchor" href="#%e5%ae%83%e6%98%af%e5%81%9a%e4%bb%80%e4%b9%88%e7%9a%84"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;release-service 管理四样东西：&lt;/p&gt;
 &lt;h3 id="manifest--构建前快照"&gt;Manifest — 构建前快照&lt;a class="anchor" href="#manifest--%e6%9e%84%e5%bb%ba%e5%89%8d%e5%bf%ab%e7%85%a7"&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;发布开始时，release-service 先把当前应用的完整状态&amp;quot;拍一张照片&amp;quot;保存下来：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;代码版本（git revision + commit hash）&lt;/li&gt;
-&lt;li&gt;构建出来的镜像&lt;/li&gt;
-&lt;li&gt;基础配置（WorkloadConfig）&lt;/li&gt;
-&lt;li&gt;网络拓扑（Service）&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;这张照片一旦拍下就&lt;strong&gt;不能再改&lt;/strong&gt;。它记录了&amp;quot;这个应用在构建时刻长什么样&amp;quot;。&lt;/p&gt;
-&lt;h3 id="release--部署前快照"&gt;Release — 部署前快照&lt;a class="anchor" href="#release--%e9%83%a8%e7%bd%b2%e5%89%8d%e5%bf%ab%e7%85%a7"&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;构建成功后，release-service 再拍第二张照片：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;关联的 Manifest（哪次构建）&lt;/li&gt;
-&lt;li&gt;目标环境（发到哪）&lt;/li&gt;
-&lt;li&gt;环境配置（AppConfig）&lt;/li&gt;
-&lt;li&gt;网络规则（Route）&lt;/li&gt;
-&lt;li&gt;发布策略（Rolling / Canary / Blue-Green）&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;这张照片也&lt;strong&gt;不能再改&lt;/strong&gt;。它记录了&amp;quot;这次发布的完整上下文&amp;quot;。&lt;/p&gt;
-&lt;h3 id="intent--发布意图"&gt;Intent — 发布意图&lt;a class="anchor" href="#intent--%e5%8f%91%e5%b8%83%e6%84%8f%e5%9b%be"&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;记录&amp;quot;谁、为什么、什么时候&amp;quot;发起的发布：&lt;/p&gt;
-&lt;pre tabindex="0"&gt;&lt;code&gt;发布人: 张三
-原因: 修复支付回调超时问题
-时间: 2026-01-15 14:30&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;用于审计和追溯。&lt;/p&gt;
+&lt;p&gt;发布开始时，release-service 先把当前应用的完整状态冻结成一份不可变的快照（代码版本、镜像、基础配置、网络拓扑）。&lt;/p&gt;
+&lt;blockquote class='book-hint '&gt;
+&lt;p&gt;详细概念见 &lt;a href="../../concepts/manifest-release/"&gt;Manifest 与 Release&lt;/a&gt;。&lt;/p&gt;
+&lt;/blockquote&gt;&lt;h3 id="release--部署前快照"&gt;Release — 部署前快照&lt;a class="anchor" href="#release--%e9%83%a8%e7%bd%b2%e5%89%8d%e5%bf%ab%e7%85%a7"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;构建成功后，release-service 再创建第二份快照，绑定 Manifest 和目标环境。&lt;/p&gt;
+&lt;blockquote class='book-hint '&gt;
+&lt;p&gt;详细概念见 &lt;a href="../../concepts/manifest-release/"&gt;Manifest 与 Release&lt;/a&gt;。&lt;/p&gt;
+&lt;/blockquote&gt;&lt;h3 id="intent--执行意图"&gt;Intent — 执行意图&lt;a class="anchor" href="#intent--%e6%89%a7%e8%a1%8c%e6%84%8f%e5%9b%be"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;记录异步执行流程的运行状态：&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;kind: release
+status: Running
+claimed_by: release-worker-1
+attempt_count: 1&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;用于观察 build / release 这类异步执行任务的状态、租约、重试和错误信息。&lt;/p&gt;
 &lt;h3 id="image--镜像信息"&gt;Image — 镜像信息&lt;a class="anchor" href="#image--%e9%95%9c%e5%83%8f%e4%bf%a1%e6%81%af"&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;记录构建产物的元数据：&lt;/p&gt;
 &lt;ul&gt;
@@ -321,7 +293,11 @@ GET/POST/PUT/DELETE /api/v1/config/app-configs&lt;/code&gt;&lt;/pre&gt;</descrip
 &lt;h2 id="一次发布的完整旅程"&gt;一次发布的完整旅程&lt;a class="anchor" href="#%e4%b8%80%e6%ac%a1%e5%8f%91%e5%b8%83%e7%9a%84%e5%ae%8c%e6%95%b4%e6%97%85%e7%a8%8b"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;你在 Console 上点了&amp;quot;发布 order-service 到生产环境&amp;quot;，接下来 release-service 会：&lt;/p&gt;
 &lt;h3 id="第一步收集信息"&gt;第一步：收集信息&lt;a class="anchor" href="#%e7%ac%ac%e4%b8%80%e6%ad%a5%e6%94%b6%e9%9b%86%e4%bf%a1%e6%81%af"&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;release-service 先去找其他服务打听情况：&lt;/p&gt;</description></item><item><title>runtime-service</title><link>https://devflow.bei.com/document/docs/services/runtime-service/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/services/runtime-service/</guid><description>&lt;h1 id="runtime-service"&gt;runtime-service&lt;a class="anchor" href="#runtime-service"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;release-service 先去找其他服务打听情况：&lt;/p&gt;
+&lt;blockquote class='book-hint '&gt;
+&lt;p&gt;&amp;ldquo;meta-service，order-service 的代码仓库在哪？生产环境在哪个集群？&amp;rdquo;
+&amp;ldquo;config-service，order-service 的基础配置是什么？生产环境的特殊配置是什么？&amp;rdquo;
+&amp;ldquo;network-service，order-service 暴露了哪些端口？生产环境的域名是什么？&amp;rdquo;&lt;/p&gt;</description></item><item><title>runtime-service</title><link>https://devflow.bei.com/document/docs/services/runtime-service/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/services/runtime-service/</guid><description>&lt;h1 id="-runtime-service"&gt;🛠️ runtime-service&lt;a class="anchor" href="#-runtime-service"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;p&gt;&lt;strong&gt;运维值班&lt;/strong&gt; — 实时观察 Kubernetes 集群，执行运维操作。&lt;/p&gt;
 &lt;h2 id="它是做什么的"&gt;它是做什么的&lt;a class="anchor" href="#%e5%ae%83%e6%98%af%e5%81%9a%e4%bb%80%e4%b9%88%e7%9a%84"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;runtime-service 是 DevFlow 与 Kubernetes 之间的&lt;strong&gt;眼睛和手&lt;/strong&gt;：&lt;/p&gt;
@@ -340,16 +316,39 @@ GET/POST/PUT/DELETE /api/v1/config/app-configs&lt;/code&gt;&lt;/pre&gt;</descrip
 &lt;h3 id="写--回写发布进度"&gt;写 — 回写发布进度&lt;a class="anchor" href="#%e5%86%99--%e5%9b%9e%e5%86%99%e5%8f%91%e5%b8%83%e8%bf%9b%e5%ba%a6"&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;发布过程中，runtime-service 把 rollout 的实时进度回写给 release-service：&lt;/p&gt;
 &lt;blockquote class='book-hint '&gt;
-&lt;p&gt;&amp;ldquo;新版本 3/10 个 Pod 已经 Ready 了&amp;rdquo;&lt;br&gt;
+&lt;p&gt;&amp;ldquo;新版本 3/10 个 Pod 已经 Ready 了&amp;rdquo;
 &amp;ldquo;Canary 10% 流量阶段已完成&amp;rdquo;&lt;/p&gt;
 &lt;/blockquote&gt;&lt;p&gt;Console 上看到的发布进度条，数据来自这里。&lt;/p&gt;
 &lt;h2 id="为什么不用数据库"&gt;为什么不用数据库&lt;a class="anchor" href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e4%b8%8d%e7%94%a8%e6%95%b0%e6%8d%ae%e5%ba%93"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;runtime-service 是 DevFlow 中&lt;strong&gt;唯一不连 PostgreSQL&lt;/strong&gt; 的服务。&lt;/p&gt;
 &lt;p&gt;Kubernetes 的状态变化太快了：Pod 可能在几秒内创建、销毁、重启。如果每个变化都写数据库，数据库会被压垮。&lt;/p&gt;
-&lt;p&gt;runtime-service 的做法是：&lt;/p&gt;</description></item><item><title>Project 与 Application</title><link>https://devflow.bei.com/document/docs/concepts/project-application/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/concepts/project-application/</guid><description>&lt;h1 id="project-与-application"&gt;Project 与 Application&lt;a class="anchor" href="#project-%e4%b8%8e-application"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;runtime-service 的做法是：&lt;/p&gt;</description></item><item><title>Project 与 Application</title><link>https://devflow.bei.com/document/docs/concepts/project-application/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/concepts/project-application/</guid><description>&lt;h1 id="-project-与-application"&gt;📁 Project 与 Application&lt;a class="anchor" href="#-project-%e4%b8%8e-application"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;h2 id="project--项目"&gt;Project — 项目&lt;a class="anchor" href="#project--%e9%a1%b9%e7%9b%ae"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;Project 是 DevFlow 中最顶层的组织单元。你可以把它理解成一个&lt;strong&gt;文件夹&lt;/strong&gt;，把相关的应用放在一起。&lt;/p&gt;
-&lt;h3 id="例子"&gt;例子&lt;a class="anchor" href="#%e4%be%8b%e5%ad%90"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;hr&gt;
+&lt;h2 id="为什么需要分层"&gt;为什么需要分层&lt;a class="anchor" href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e9%9c%80%e8%a6%81%e5%88%86%e5%b1%82"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;没有 Project/Application 分层时，你的应用列表可能是这样的：&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;payment-gateway
+order-service
+inventory-service
+user-service
+analytics-collector
+analytics-processor
+analytics-api&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;8 个服务混在一起，新来的同事完全不知道谁和谁有关系。&lt;/p&gt;
+&lt;p&gt;有了分层之后：&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;电商中台
+ ├─ payment-gateway
+ ├─ order-service
+ ├─ inventory-service
+ └─ user-service
+
+数据中台
+ ├─ analytics-collector
+ ├─ analytics-processor
+ └─ analytics-api&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;一目了然。每个团队只看自己负责的项目，不会被别人家的服务干扰。&lt;/p&gt;
+&lt;blockquote class='book-hint '&gt;
+&lt;p&gt;分层不仅是组织问题，更是&lt;strong&gt;权限隔离&lt;/strong&gt;的基础。你可以给&amp;quot;数据中台&amp;quot;团队只开放数据中台的权限，他们看不到电商中台的任何东西。&lt;/p&gt;
+&lt;/blockquote&gt;&lt;h3 id="例子"&gt;例子&lt;a class="anchor" href="#%e4%be%8b%e5%ad%90"&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;pre tabindex="0"&gt;&lt;code&gt;Project: 电商中台
  ├─ order-service（订单服务）
  ├─ payment-service（支付服务）
@@ -369,53 +368,8 @@ GET/POST/PUT/DELETE /api/v1/config/app-configs&lt;/code&gt;&lt;/pre&gt;</descrip
 &lt;h3 id="一个应用包含什么"&gt;一个应用包含什么&lt;a class="anchor" href="#%e4%b8%80%e4%b8%aa%e5%ba%94%e7%94%a8%e5%8c%85%e5%90%ab%e4%bb%80%e4%b9%88"&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;名称&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;order-service&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;所属项目&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;电商中台&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;代码仓库&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;github.com/company/order-service&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;部署类型&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;Canary&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="部署类型"&gt;部署类型&lt;a class="anchor" href="#%e9%83%a8%e7%bd%b2%e7%b1%bb%e5%9e%8b"&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;应用在创建时要选择一个默认的部署类型：&lt;/p&gt;
-&lt;table&gt;
- &lt;thead&gt;
- &lt;tr&gt;
- &lt;th&gt;类型&lt;/th&gt;
- &lt;th&gt;说明&lt;/th&gt;
- &lt;th&gt;适合什么&lt;/th&gt;
- &lt;/tr&gt;
- &lt;/thead&gt;
- &lt;tbody&gt;
- &lt;tr&gt;
- &lt;td&gt;normal&lt;/td&gt;
- &lt;td&gt;滚动更新&lt;/td&gt;
- &lt;td&gt;普通服务，资源敏感&lt;/td&gt;
- &lt;/tr&gt;
- &lt;tr&gt;
- &lt;td&gt;canary&lt;/td&gt;
- &lt;td&gt;灰度发布&lt;/td&gt;
- &lt;td&gt;核心服务，需要风险控制&lt;/td&gt;
- &lt;/tr&gt;
- &lt;tr&gt;
- &lt;td&gt;blue-green&lt;/td&gt;
- &lt;td&gt;蓝绿部署&lt;/td&gt;
- &lt;td&gt;关键业务，必须零停机&lt;/td&gt;
- &lt;/tr&gt;
- &lt;/tbody&gt;
-&lt;/table&gt;
-&lt;p&gt;这个类型只是&lt;strong&gt;默认值&lt;/strong&gt;，发布时仍然可以手动选择其他策略。&lt;/p&gt;
-&lt;h3 id="应用和-workloadconfig"&gt;应用和 WorkloadConfig&lt;a class="anchor" href="#%e5%ba%94%e7%94%a8%e5%92%8c-workloadconfig"&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;每个应用有一个对应的 &lt;strong&gt;WorkloadConfig&lt;/strong&gt;，定义它的运行时基线（副本数、资源、探针等）。WorkloadConfig 不随环境变化，是应用的固有属性。&lt;/p&gt;
-&lt;h3 id="应用和-service"&gt;应用和 Service&lt;a class="anchor" href="#%e5%ba%94%e7%94%a8%e5%92%8c-service"&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;每个应用可以有一个或多个 &lt;strong&gt;Service&lt;/strong&gt;，定义它暴露的网络端口。Service 也不随环境变化。&lt;/p&gt;
-&lt;hr&gt;
-&lt;h2 id="它们的关系"&gt;它们的关系&lt;a class="anchor" href="#%e5%ae%83%e4%bb%ac%e7%9a%84%e5%85%b3%e7%b3%bb"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;pre class="mermaid"&gt;graph TB
- P[&amp;#34;Project: 电商中台&amp;#34;]
- A1[&amp;#34;Application: order-service&amp;#34;]
- A2[&amp;#34;Application: payment-service&amp;#34;]
- WL1[&amp;#34;WorkloadConfig&amp;#34;]
- S1[&amp;#34;Service&amp;#34;]
-
- P --&amp;gt; A1
- P --&amp;gt; A2
- A1 --&amp;gt; WL1
- A1 --&amp;gt; S1&lt;/pre&gt;&lt;p&gt;&lt;strong&gt;规则&lt;/strong&gt;：&lt;/p&gt;</description></item><item><title>Environment 与 Cluster</title><link>https://devflow.bei.com/document/docs/concepts/environment-cluster/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/concepts/environment-cluster/</guid><description>&lt;h1 id="environment-与-cluster"&gt;Environment 与 Cluster&lt;a class="anchor" href="#environment-%e4%b8%8e-cluster"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;代码仓库&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;github.com/company/order-service&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="当前实现里-application-主要保存什么"&gt;当前实现里 Application 主要保存什么&lt;a class="anchor" href="#%e5%bd%93%e5%89%8d%e5%ae%9e%e7%8e%b0%e9%87%8c-application-%e4%b8%bb%e8%a6%81%e4%bf%9d%e5%ad%98%e4%bb%80%e4%b9%88"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;当前 &lt;code&gt;devflow-service&lt;/code&gt; 里的 &lt;code&gt;Application&lt;/code&gt; 主要保存：&lt;/p&gt;</description></item><item><title>Environment 与 Cluster</title><link>https://devflow.bei.com/document/docs/concepts/environment-cluster/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/concepts/environment-cluster/</guid><description>&lt;h1 id="-environment-与-cluster"&gt;🌍 Environment 与 Cluster&lt;a class="anchor" href="#-environment-%e4%b8%8e-cluster"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;h2 id="cluster--kubernetes-集群"&gt;Cluster — Kubernetes 集群&lt;a class="anchor" href="#cluster--kubernetes-%e9%9b%86%e7%be%a4"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;Cluster 就是 Kubernetes 集群，是应用真正跑起来的地方。&lt;/p&gt;
 &lt;h3 id="例子"&gt;例子&lt;a class="anchor" href="#%e4%be%8b%e5%ad%90"&gt;#&lt;/a&gt;&lt;/h3&gt;
@@ -431,78 +385,64 @@ Cluster: prod-cluster
 &lt;p&gt;Environment 是一个&lt;strong&gt;逻辑运行环境&lt;/strong&gt;，比如开发、测试、预发布、生产。&lt;/p&gt;
 &lt;h3 id="例子-1"&gt;例子&lt;a class="anchor" href="#%e4%be%8b%e5%ad%90-1"&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;名称&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;production&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;所在集群&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;prod-cluster&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;命名空间&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;order-prod&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;名称&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;test&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;所在集群&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;dev-cluster&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;命名空间&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;order-test&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="环境隔离"&gt;环境隔离&lt;a class="anchor" href="#%e7%8e%af%e5%a2%83%e9%9a%94%e7%a6%bb"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;所在集群&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;prod-cluster&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;名称&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;test&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;所在集群&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;dev-cluster&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="环境隔离"&gt;环境隔离&lt;a class="anchor" href="#%e7%8e%af%e5%a2%83%e9%9a%94%e7%a6%bb"&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;Environment 通过三种机制实现隔离：&lt;/p&gt;
 &lt;ol&gt;
-&lt;li&gt;&lt;strong&gt;命名空间隔离&lt;/strong&gt; — 每个 Environment 对应一个 Kubernetes namespace&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;配置隔离&lt;/strong&gt; — AppConfig 和 Route 属于 ApplicationEnvironment，不同环境完全独立&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;网络隔离&lt;/strong&gt; — 不同环境的 Route 绑定不同的域名和证书&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;集群绑定隔离&lt;/strong&gt; — 每个 Environment 绑定一个目标 Cluster&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;配置隔离&lt;/strong&gt; — AppConfig 和 Route 跟随应用-环境关系表达环境差异&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;网络隔离&lt;/strong&gt; — 不同环境可以绑定不同的访问入口&lt;/li&gt;
 &lt;/ol&gt;
-&lt;hr&gt;
+&lt;blockquote class='book-hint '&gt;
+&lt;p&gt;当前 &lt;code&gt;devflow-service&lt;/code&gt; 实现里，&lt;code&gt;Environment&lt;/code&gt; 本身&lt;strong&gt;不接受用户写入 &lt;code&gt;namespace&lt;/code&gt; 字段&lt;/strong&gt;。&lt;/p&gt;
+&lt;/blockquote&gt;&lt;hr&gt;
 &lt;h2 id="applicationenvironment--应用绑定到环境"&gt;ApplicationEnvironment — 应用绑定到环境&lt;a class="anchor" href="#applicationenvironment--%e5%ba%94%e7%94%a8%e7%bb%91%e5%ae%9a%e5%88%b0%e7%8e%af%e5%a2%83"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;当应用要部署到某个环境时，需要先建立绑定关系。这个绑定关系叫 &lt;strong&gt;ApplicationEnvironment&lt;/strong&gt;。&lt;/p&gt;
 &lt;h3 id="为什么要先绑定"&gt;为什么要先绑定&lt;a class="anchor" href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e8%a6%81%e5%85%88%e7%bb%91%e5%ae%9a"&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;想象你想把 &lt;code&gt;order-service&lt;/code&gt; 部署到 &lt;code&gt;test&lt;/code&gt; 环境：&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;先创建绑定：&lt;code&gt;order-service&lt;/code&gt; + &lt;code&gt;test&lt;/code&gt; = &lt;code&gt;order-service-test&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;然后给这个绑定配置环境专属的东西：
-&lt;ul&gt;
-&lt;li&gt;AppConfig（测试数据库地址、debug 日志）&lt;/li&gt;
-&lt;li&gt;Route（测试域名）&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;pre class="mermaid"&gt;graph TB
- A[&amp;#34;Application: order-service&amp;#34;]
- E1[&amp;#34;Environment: test&amp;#34;]
- E2[&amp;#34;Environment: prod&amp;#34;]
-
- AE1[&amp;#34;order-service @ test&amp;#34;]
- AE2[&amp;#34;order-service @ prod&amp;#34;]
-
- A --&amp;gt; AE1
- A --&amp;gt; AE2
- AE1 --&amp;gt; E1
- AE2 --&amp;gt; E2
-
- AC1[&amp;#34;AppConfig: DB=test-db&amp;#34;]
- AC2[&amp;#34;AppConfig: DB=prod-db&amp;#34;]
- R1[&amp;#34;Route: test.example.com&amp;#34;]
- R2[&amp;#34;Route: example.com&amp;#34;]
-
- AE1 --&amp;gt; AC1
- AE1 --&amp;gt; R1
- AE2 --&amp;gt; AC2
- AE2 --&amp;gt; R2&lt;/pre&gt;&lt;h3 id="绑定后有什么用"&gt;绑定后有什么用&lt;a class="anchor" href="#%e7%bb%91%e5%ae%9a%e5%90%8e%e6%9c%89%e4%bb%80%e4%b9%88%e7%94%a8"&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;绑定后，你就可以：&lt;/p&gt;</description></item><item><title>WorkloadConfig</title><link>https://devflow.bei.com/document/docs/concepts/workload-config/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/concepts/workload-config/</guid><description>&lt;h1 id="workloadconfig"&gt;WorkloadConfig&lt;a class="anchor" href="#workloadconfig"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;想象你想把 &lt;code&gt;order-service&lt;/code&gt; 部署到 &lt;code&gt;test&lt;/code&gt; 环境：&lt;/p&gt;</description></item><item><title>WorkloadConfig</title><link>https://devflow.bei.com/document/docs/concepts/workload-config/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/concepts/workload-config/</guid><description>&lt;h1 id="-workloadconfig"&gt;🧱 WorkloadConfig&lt;a class="anchor" href="#-workloadconfig"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;p&gt;&lt;strong&gt;WorkloadConfig&lt;/strong&gt; 是应用的&amp;quot;出厂设置&amp;quot;，定义了应用在 Kubernetes 中怎么跑。&lt;/p&gt;
 &lt;h2 id="它回答什么问题"&gt;它回答什么问题&lt;a class="anchor" href="#%e5%ae%83%e5%9b%9e%e7%ad%94%e4%bb%80%e4%b9%88%e9%97%ae%e9%a2%98"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;blockquote class='book-hint '&gt;
 &lt;p&gt;这个应用默认应该有几个副本？用多少 CPU？怎么知道它是不是挂了？&lt;/p&gt;
-&lt;/blockquote&gt;&lt;h2 id="包含什么"&gt;包含什么&lt;a class="anchor" href="#%e5%8c%85%e5%90%ab%e4%bb%80%e4%b9%88"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;/blockquote&gt;&lt;hr&gt;
+&lt;h2 id="为什么需要它"&gt;为什么需要它&lt;a class="anchor" href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e9%9c%80%e8%a6%81%e5%ae%83"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;想象一下，每个开发者在各自的 Kubernetes YAML 里写配置：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 小明的 order-service&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;replicas&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;3&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;resources&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;size_class&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;medium&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 小红的 payment-gateway&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;replicas&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;2&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;resources&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;size_class&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;small&amp;#34;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;小明和小红各自为政，标准不统一。运维同学想统一调资源限制，得去改几十个文件。&lt;/p&gt;
+&lt;p&gt;WorkloadConfig 就是来解决这个问题的：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;每个应用有一份&lt;strong&gt;标准化的基线配置&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;运维团队可以统一调整资源策略&lt;/li&gt;
+&lt;li&gt;新应用创建时，可以直接复用已有模板&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;就像汽车的出厂配置：所有同款车都有相同的发动机参数、轮胎规格，4S 店可以按统一标准维护。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="包含什么"&gt;包含什么&lt;a class="anchor" href="#%e5%8c%85%e5%90%ab%e4%bb%80%e4%b9%88"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;h3 id="副本数"&gt;副本数&lt;a class="anchor" href="#%e5%89%af%e6%9c%ac%e6%95%b0"&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;replicas&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;3&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;应用跑几个 Pod。这是默认值，实际运行时可以通过 runtime-service 动态调整。&lt;/p&gt;
-&lt;h3 id="资源限制"&gt;资源限制&lt;a class="anchor" href="#%e8%b5%84%e6%ba%90%e9%99%90%e5%88%b6"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;h3 id="资源规格"&gt;资源规格&lt;a class="anchor" href="#%e8%b5%84%e6%ba%90%e8%a7%84%e6%a0%bc"&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;resources&lt;/span&gt;:
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;limits&lt;/span&gt;:
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;cpu&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;1000m&amp;#34;&lt;/span&gt; &lt;span style="color:#75715e"&gt;# 最多用 1 核&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;memory&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;1Gi&amp;#34;&lt;/span&gt; &lt;span style="color:#75715e"&gt;# 最多用 1GB 内存&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;requests&lt;/span&gt;:
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;cpu&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;100m&amp;#34;&lt;/span&gt; &lt;span style="color:#75715e"&gt;# 至少需要 0.1 核&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;memory&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;128Mi&amp;#34;&lt;/span&gt; &lt;span style="color:#75715e"&gt;# 至少需要 128MB 内存&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;limits&lt;/strong&gt; — 资源上限，超过会被限制或杀掉&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;requests&lt;/strong&gt; — 调度时保证的最低资源，K8s 按这个来分配节点&lt;/li&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;size_class&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;medium&amp;#34;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;当前实现里，写入时推荐的是 &lt;strong&gt;&lt;code&gt;size_class&lt;/code&gt;&lt;/strong&gt;，例如：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;small&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;medium&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;large&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;xlarge&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
+&lt;p&gt;具体的 &lt;code&gt;requests / limits&lt;/code&gt; 会在下游渲染阶段展开，不建议在这里把它当作主写入接口来理解。&lt;/p&gt;
 &lt;h3 id="健康探针"&gt;健康探针&lt;a class="anchor" href="#%e5%81%a5%e5%ba%b7%e6%8e%a2%e9%92%88"&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;K8s 通过探针判断 Pod 是不是健康：&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;probes&lt;/span&gt;:
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;liveness_probe&lt;/span&gt;:
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;http_get&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;liveness&lt;/span&gt;:
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;path&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;/health&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;port&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;8080&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;port&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;http&amp;#34;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;initial_delay_seconds&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;30&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;period_seconds&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;10&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;table&gt;
  &lt;thead&gt;
@@ -530,58 +470,68 @@ Cluster: prod-cluster
  &lt;/tr&gt;
  &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;h3 id="环境变量和启动命令"&gt;环境变量和启动命令&lt;a class="anchor" href="#%e7%8e%af%e5%a2%83%e5%8f%98%e9%87%8f%e5%92%8c%e5%90%af%e5%8a%a8%e5%91%bd%e4%bb%a4"&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;envs&lt;/span&gt;:
+&lt;h3 id="环境变量"&gt;环境变量&lt;a class="anchor" href="#%e7%8e%af%e5%a2%83%e5%8f%98%e9%87%8f"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;env&lt;/span&gt;:
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#f92672"&gt;name&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;LOG_LEVEL&amp;#34;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;value&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;info&amp;#34;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#f92672"&gt;name&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;SERVER_PORT&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;value&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;8080&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;command&lt;/span&gt;: [&lt;span style="color:#e6db74"&gt;&amp;#34;./server&amp;#34;&lt;/span&gt;]
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;args&lt;/span&gt;: [&lt;span style="color:#e6db74"&gt;&amp;#34;--port=8080&amp;#34;&lt;/span&gt;]&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
-&lt;h2 id="重要特性不随环境变化"&gt;重要特性：不随环境变化&lt;a class="anchor" href="#%e9%87%8d%e8%a6%81%e7%89%b9%e6%80%a7%e4%b8%8d%e9%9a%8f%e7%8e%af%e5%a2%83%e5%8f%98%e5%8c%96"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;WorkloadConfig 属于 &lt;strong&gt;Application&lt;/strong&gt;，不属于 Environment。&lt;/p&gt;</description></item><item><title>AppConfig</title><link>https://devflow.bei.com/document/docs/concepts/app-config/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/concepts/app-config/</guid><description>&lt;h1 id="appconfig"&gt;AppConfig&lt;a class="anchor" href="#appconfig"&gt;#&lt;/a&gt;&lt;/h1&gt;
-&lt;p&gt;&lt;strong&gt;AppConfig&lt;/strong&gt; 是环境级配置，解决&amp;quot;同一套应用在不同环境跑不同配置&amp;quot;的问题。&lt;/p&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;value&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;8080&amp;#34;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;当前实现里 &lt;code&gt;env&lt;/code&gt; 是一个有序数组，适合表达稳定的基础环境变量。&lt;/p&gt;</description></item><item><title>AppConfig</title><link>https://devflow.bei.com/document/docs/concepts/app-config/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/concepts/app-config/</guid><description>&lt;h1 id="-appconfig"&gt;🌱 AppConfig&lt;a class="anchor" href="#-appconfig"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;AppConfig&lt;/strong&gt; 是环境级配置记录，解决“同一套应用在不同环境挂载不同配置内容”的问题。&lt;/p&gt;
 &lt;h2 id="它回答什么问题"&gt;它回答什么问题&lt;a class="anchor" href="#%e5%ae%83%e5%9b%9e%e7%ad%94%e4%bb%80%e4%b9%88%e9%97%ae%e9%a2%98"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;blockquote class='book-hint '&gt;
 &lt;p&gt;order-service 在测试环境连哪个数据库？在生产环境连哪个数据库？&lt;/p&gt;
-&lt;/blockquote&gt;&lt;h2 id="包含什么"&gt;包含什么&lt;a class="anchor" href="#%e5%8c%85%e5%90%ab%e4%bb%80%e4%b9%88"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;h3 id="configdata--键值对"&gt;ConfigData — 键值对&lt;a class="anchor" href="#configdata--%e9%94%ae%e5%80%bc%e5%af%b9"&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;最简单的形式：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;config_data&lt;/span&gt;:
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;DB_HOST&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;postgres-test.internal&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;LOG_LEVEL&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;debug&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;FEATURE_FLAG_NEW_UI&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;true&amp;#34;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="configmaps--配置文件"&gt;ConfigMaps — 配置文件&lt;a class="anchor" href="#configmaps--%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6"&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;适合需要挂载成文件的场景：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;config_maps&lt;/span&gt;:
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#f92672"&gt;name&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;app-config&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;data&lt;/span&gt;:
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;database.yml&lt;/span&gt;: |&lt;span style="color:#e6db74"&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt; host: postgres-test.internal
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt; port: 5432
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt; pool_size: 10&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="secrets--敏感信息"&gt;Secrets — 敏感信息&lt;a class="anchor" href="#secrets--%e6%95%8f%e6%84%9f%e4%bf%a1%e6%81%af"&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;密码、Token 等敏感数据：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;secrets&lt;/span&gt;:
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#f92672"&gt;name&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;db-credentials&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;data&lt;/span&gt;:
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;username&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;&amp;lt;加密存储&amp;gt;&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;password&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;&amp;lt;加密存储&amp;gt;&amp;#34;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;/blockquote&gt;&lt;hr&gt;
+&lt;h2 id="为什么需要它"&gt;为什么需要它&lt;a class="anchor" href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e9%9c%80%e8%a6%81%e5%ae%83"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;想象一下，你没有 AppConfig，所有环境的配置都写在同一份文件里：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 测试环境配置&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;database&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;postgres-test.internal&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;log_level&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;debug&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 生产环境配置&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;database&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;postgres-prod.internal&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;log_level&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;warn&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;某天你改测试环境的数据库地址，不小心把生产环境的也改了。发布时没发现，结果生产环境连到了测试数据库，用户数据全丢了。&lt;/p&gt;
+&lt;p&gt;AppConfig 就是来解决这个问题的：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;每个环境独立管理自己的配置&lt;/li&gt;
+&lt;li&gt;发布时自动叠加到基线配置上&lt;/li&gt;
+&lt;li&gt;测试环境的改动永远不会影响生产环境&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="当前实现里包含什么"&gt;当前实现里包含什么&lt;a class="anchor" href="#%e5%bd%93%e5%89%8d%e5%ae%9e%e7%8e%b0%e9%87%8c%e5%8c%85%e5%90%ab%e4%bb%80%e4%b9%88"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;当前 &lt;code&gt;devflow-service&lt;/code&gt; 里的 &lt;code&gt;AppConfig&lt;/code&gt; 主要记录：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;application_id&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;environment_id&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;mount_path&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;latest_revision_no&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;latest_revision_id&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;files&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;source_directory&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;source_commit&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;它的配置内容不是通过页面上随手写一段 &lt;code&gt;config_data&lt;/code&gt; 保存，而是通过&lt;strong&gt;固定配置仓库同步&lt;/strong&gt;进入当前记录。&lt;/p&gt;
+&lt;hr&gt;
 &lt;h2 id="实际例子"&gt;实际例子&lt;a class="anchor" href="#%e5%ae%9e%e9%99%85%e4%be%8b%e5%ad%90"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;同一个应用，不同环境：&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;测试环境的 AppConfig：&lt;/strong&gt;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;config_data&lt;/span&gt;:
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;DB_HOST&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;postgres-test.internal&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;LOG_LEVEL&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;debug&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;CACHE_TTL&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;60&amp;#34;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;生产环境的 AppConfig：&lt;/strong&gt;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;config_data&lt;/span&gt;:
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;DB_HOST&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;postgres-prod.internal&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;LOG_LEVEL&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;warn&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;CACHE_TTL&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;300&amp;#34;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;发布时，DevFlow 自动把 AppConfig 叠加到 WorkloadConfig 上，生成最终的 K8s 配置。&lt;/p&gt;
-&lt;hr&gt;
-&lt;h2 id="叠加规则"&gt;叠加规则&lt;a class="anchor" href="#%e5%8f%a0%e5%8a%a0%e8%a7%84%e5%88%99"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;pre tabindex="0"&gt;&lt;code&gt;最终环境变量 = WorkloadConfig.envs（基线）
- + AppConfig.config_data（覆盖基线同名 key）&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;如果基线和环境差异有同名 key，&lt;strong&gt;环境差异优先&lt;/strong&gt;。&lt;/p&gt;</description></item><item><title>Service 与 Route</title><link>https://devflow.bei.com/document/docs/concepts/service-route/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/concepts/service-route/</guid><description>&lt;h1 id="service-与-route"&gt;Service 与 Route&lt;a class="anchor" href="#service-%e4%b8%8e-route"&gt;#&lt;/a&gt;&lt;/h1&gt;
-&lt;h2 id="service--应用的网络拓扑"&gt;Service — 应用的网络拓扑&lt;a class="anchor" href="#service--%e5%ba%94%e7%94%a8%e7%9a%84%e7%bd%91%e7%bb%9c%e6%8b%93%e6%89%91"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;测试环境的 AppConfig 记录：&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;application_id&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;order-service&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;environment_id&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;test&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;mount_path&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;/etc/config&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;source_directory&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;ecommerce/order-service/test&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;files&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#f92672"&gt;name&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;application.yaml&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#f92672"&gt;name&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;feature-flags.yaml&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;生产环境的 AppConfig 记录：&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;application_id&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;order-service&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;environment_id&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;prod&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;mount_path&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;/etc/config&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;source_directory&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;ecommerce/order-service/prod&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;files&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#f92672"&gt;name&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;application.yaml&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#f92672"&gt;name&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;feature-flags.yaml&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;发布时，DevFlow 读取这些同步过的文件，再和 WorkloadConfig 一起进入 release render。&lt;/p&gt;</description></item><item><title>Service 与 Route</title><link>https://devflow.bei.com/document/docs/concepts/service-route/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/concepts/service-route/</guid><description>&lt;h1 id="-service-与-route"&gt;🌐 Service 与 Route&lt;a class="anchor" href="#-service-%e4%b8%8e-route"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;span class="df-badge"&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/kubernetes.svg" alt="Kubernetes" loading="lazy" /&gt;
+ Service&lt;/span&gt; &lt;span class="df-badge"&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/istio.svg" alt="Istio" loading="lazy" /&gt;
+ Route&lt;/span&gt; &lt;span class="df-badge"&gt;Env Aware&lt;/span&gt;&lt;/p&gt;
+&lt;h2 id="-service--应用的网络拓扑"&gt;🔌 Service — 应用的网络拓扑&lt;a class="anchor" href="#-service--%e5%ba%94%e7%94%a8%e7%9a%84%e7%bd%91%e7%bb%9c%e6%8b%93%e6%89%91"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;Service&lt;/strong&gt; 定义了应用暴露了哪些端口，用什么协议。&lt;/p&gt;
 &lt;h3 id="例子"&gt;例子&lt;a class="anchor" href="#%e4%be%8b%e5%ad%90"&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;name&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;order-service&lt;/span&gt;
@@ -613,20 +563,14 @@ Cluster: prod-cluster
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;protocol&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;TCP&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="重要特性不随环境变化"&gt;重要特性：不随环境变化&lt;a class="anchor" href="#%e9%87%8d%e8%a6%81%e7%89%b9%e6%80%a7%e4%b8%8d%e9%9a%8f%e7%8e%af%e5%a2%83%e5%8f%98%e5%8c%96"&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;Service 是应用的固有属性。不管部署到测试还是生产，应用暴露的端口是一样的。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="route--环境的入口规则"&gt;Route — 环境的入口规则&lt;a class="anchor" href="#route--%e7%8e%af%e5%a2%83%e7%9a%84%e5%85%a5%e5%8f%a3%e8%a7%84%e5%88%99"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id="-route--环境的入口规则"&gt;🚪 Route — 环境的入口规则&lt;a class="anchor" href="#-route--%e7%8e%af%e5%a2%83%e7%9a%84%e5%85%a5%e5%8f%a3%e8%a7%84%e5%88%99"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;Route&lt;/strong&gt; 定义了外部流量怎么访问到这个应用的这个环境。&lt;/p&gt;
 &lt;h3 id="例子-1"&gt;例子&lt;a class="anchor" href="#%e4%be%8b%e5%ad%90-1"&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;生产环境的 Route：&lt;/strong&gt;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;host&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;order.example.com&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;path&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;/api/v1&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;service_name&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;order-service&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;service_port&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;80&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;tls&lt;/span&gt;:
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;enabled&lt;/span&gt;: &lt;span style="color:#66d9ef"&gt;true&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;secret_name&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;order-tls&amp;#34;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;这表示：访问 &lt;code&gt;order.example.com/api/v1&lt;/code&gt; 的请求，会被转发到 &lt;code&gt;order-service&lt;/code&gt; 的 80 端口，且启用了 HTTPS。&lt;/p&gt;</description></item><item><title>Manifest 与 Release</title><link>https://devflow.bei.com/document/docs/concepts/manifest-release/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/concepts/manifest-release/</guid><description>&lt;h1 id="manifest-与-release"&gt;Manifest 与 Release&lt;a class="anchor" href="#manifest-%e4%b8%8e-release"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;生产环境的 Route：&lt;/strong&gt;&lt;/p&gt;</description></item><item><title>Manifest 与 Release</title><link>https://devflow.bei.com/document/docs/concepts/manifest-release/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/concepts/manifest-release/</guid><description>&lt;h1 id="-manifest-与-release"&gt;🧊 Manifest 与 Release&lt;a class="anchor" href="#-manifest-%e4%b8%8e-release"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;span class="df-badge"&gt;Immutable Snapshot&lt;/span&gt; &lt;span class="df-badge"&gt;Build vs Deploy&lt;/span&gt; &lt;span class="df-badge"&gt;Rollback&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;Manifest 和 Release 是 DevFlow 最核心的设计。理解它们，就理解了 DevFlow 为什么能做到&lt;strong&gt;安全发布、一键回滚&lt;/strong&gt;。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="问题背景"&gt;问题背景&lt;a class="anchor" href="#%e9%97%ae%e9%a2%98%e8%83%8c%e6%99%af"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id="-问题背景"&gt;❓ 问题背景&lt;a class="anchor" href="#-%e9%97%ae%e9%a2%98%e8%83%8c%e6%99%af"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;传统的发布方式有什么问题？&lt;/p&gt;
 &lt;blockquote class='book-hint '&gt;
 &lt;p&gt;小明在周一发布了 order-service v2.0。周三发现有问题，想回滚。但他发现：&lt;/p&gt;
@@ -638,7 +582,7 @@ Cluster: prod-cluster
 &lt;p&gt;回滚变成了猜谜游戏。&lt;/p&gt;
 &lt;/blockquote&gt;&lt;p&gt;DevFlow 的解决方案是：&lt;strong&gt;发布前冻结两份不可变快照&lt;/strong&gt;。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="manifest--构建前快照"&gt;Manifest — 构建前快照&lt;a class="anchor" href="#manifest--%e6%9e%84%e5%bb%ba%e5%89%8d%e5%bf%ab%e7%85%a7"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id="-manifest--构建前快照"&gt;🧾 Manifest — 构建前快照&lt;a class="anchor" href="#-manifest--%e6%9e%84%e5%bb%ba%e5%89%8d%e5%bf%ab%e7%85%a7"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;Manifest 记录了&lt;strong&gt;构建时刻&lt;/strong&gt;的应用完整状态。&lt;/p&gt;
 &lt;h3 id="它包含什么"&gt;它包含什么&lt;a class="anchor" href="#%e5%ae%83%e5%8c%85%e5%90%ab%e4%bb%80%e4%b9%88"&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;manifest&lt;/span&gt;:
@@ -655,26 +599,11 @@ Cluster: prod-cluster
 &lt;h3 id="类比"&gt;类比&lt;a class="anchor" href="#%e7%b1%bb%e6%af%94"&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;Manifest 就像一张照片：拍的是应用在某个代码版本的样子。照片不会变，你可以把这张照片给任何人看。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="release--部署前快照"&gt;Release — 部署前快照&lt;a class="anchor" href="#release--%e9%83%a8%e7%bd%b2%e5%89%8d%e5%bf%ab%e7%85%a7"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;Release 记录了&lt;strong&gt;部署时刻&lt;/strong&gt;的完整状态，绑定了一个 Manifest 和一个目标环境。&lt;/p&gt;
-&lt;h3 id="它包含什么-1"&gt;它包含什么&lt;a class="anchor" href="#%e5%ae%83%e5%8c%85%e5%90%ab%e4%bb%80%e4%b9%88-1"&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;release&lt;/span&gt;:
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;关联的 Manifest&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;m-001（order-service @ a1b2c3d4）&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;目标环境&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;production&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;环境配置快照&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;DB_HOST=prod-db, LOG_LEVEL=warn...&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;网络规则快照&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;host=order.example.com, TLS=true...&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;发布策略&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;Canary&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;部署包&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;oci://registry.example.com/bundles/...&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="它的特点-1"&gt;它的特点&lt;a class="anchor" href="#%e5%ae%83%e7%9a%84%e7%89%b9%e7%82%b9-1"&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;部署时创建&lt;/strong&gt; — 构建成功后、部署前创建&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;不可变&lt;/strong&gt; — 创建后不能再改&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;绑定环境&lt;/strong&gt; — 每个 Release 对应一个具体的环境&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id="类比-1"&gt;类比&lt;a class="anchor" href="#%e7%b1%bb%e6%af%94-1"&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;Release 就像一张电影票：指定了看哪部电影（Manifest）、哪个影院（Environment）、哪个场次策略（Rolling/Canary/Blue-Green）。票买了就不能改。&lt;/p&gt;</description></item><item><title>CI 架构</title><link>https://devflow.bei.com/document/docs/ci/architecture/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/ci/architecture/</guid><description>&lt;h1 id="ci-架构"&gt;CI 架构&lt;a class="anchor" href="#ci-%e6%9e%b6%e6%9e%84"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;h2 id="-release--部署前快照"&gt;🎫 Release — 部署前快照&lt;a class="anchor" href="#-release--%e9%83%a8%e7%bd%b2%e5%89%8d%e5%bf%ab%e7%85%a7"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Release 记录了&lt;strong&gt;部署时刻&lt;/strong&gt;的完整状态，绑定了一个 Manifest 和一个目标环境。&lt;/p&gt;</description></item><item><title>CI 架构</title><link>https://devflow.bei.com/document/docs/ci/architecture/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/ci/architecture/</guid><description>&lt;h1 id="-ci-架构"&gt;🧪 CI 架构&lt;a class="anchor" href="#-ci-%e6%9e%b6%e6%9e%84"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;p&gt;DevFlow 的 CI 基于 &lt;strong&gt;Tekton&lt;/strong&gt;，一个云原生的 CI/CD 框架。当你发起发布时，release-service 触发 Tekton Pipeline，自动完成从代码到镜像的转换。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="流水线怎么跑"&gt;流水线怎么跑&lt;a class="anchor" href="#%e6%b5%81%e6%b0%b4%e7%ba%bf%e6%80%8e%e4%b9%88%e8%b7%91"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id="-流水线怎么跑"&gt;🧭 流水线怎么跑&lt;a class="anchor" href="#-%e6%b5%81%e6%b0%b4%e7%ba%bf%e6%80%8e%e4%b9%88%e8%b7%91"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;pre class="mermaid"&gt;graph LR
  Release[&amp;#34;release-service&amp;lt;br/&amp;gt;发起构建&amp;#34;]
  Trigger[&amp;#34;Tekton Triggers&amp;lt;br/&amp;gt;接收请求&amp;#34;]
@@ -739,12 +668,15 @@ Cluster: prod-cluster
  &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;hr&gt;
-&lt;h2 id="关键工具"&gt;关键工具&lt;a class="anchor" href="#%e5%85%b3%e9%94%ae%e5%b7%a5%e5%85%b7"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id="-关键工具"&gt;🧰 关键工具&lt;a class="anchor" href="#-%e5%85%b3%e9%94%ae%e5%b7%a5%e5%85%b7"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;h3 id="tekton-pipelines--流水线引擎"&gt;Tekton Pipelines — 流水线引擎&lt;a class="anchor" href="#tekton-pipelines--%e6%b5%81%e6%b0%b4%e7%ba%bf%e5%bc%95%e6%93%8e"&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;定义和执行 CI 流水线的框架。Pipeline 由多个 Task 组成，Task 之间通过共享目录传递数据（比如源码、构建产物）。&lt;/p&gt;</description></item><item><title>标准 CI 流程</title><link>https://devflow.bei.com/document/docs/ci/standard/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/ci/standard/</guid><description>&lt;h1 id="标准-ci-流程"&gt;标准 CI 流程&lt;a class="anchor" href="#%e6%a0%87%e5%87%86-ci-%e6%b5%81%e7%a8%8b"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;定义和执行 CI 流水线的框架。Pipeline 由多个 Task 组成，Task 之间通过共享目录传递数据（比如源码、构建产物）。&lt;/p&gt;</description></item><item><title>标准 CI 流程</title><link>https://devflow.bei.com/document/docs/ci/standard/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/ci/standard/</guid><description>&lt;h1 id="-标准-ci-流程"&gt;🏭 标准 CI 流程&lt;a class="anchor" href="#-%e6%a0%87%e5%87%86-ci-%e6%b5%81%e7%a8%8b"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;span class="df-badge"&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/tekton.svg" alt="Tekton" loading="lazy" /&gt;
+ Tekton&lt;/span&gt; &lt;span class="df-badge"&gt;📜 SBOM&lt;/span&gt; &lt;span class="df-badge"&gt;✍️ Cosign&lt;/span&gt; &lt;span class="df-badge"&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/zot.svg" alt="Zot" loading="lazy" /&gt;
+ Zot&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;DevFlow 的标准 CI 流水线确保每个镜像在发布前都经过完整的安全和质量检查。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="流程概览"&gt;流程概览&lt;a class="anchor" href="#%e6%b5%81%e7%a8%8b%e6%a6%82%e8%a7%88"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id="-流程概览"&gt;🗺️ 流程概览&lt;a class="anchor" href="#-%e6%b5%81%e7%a8%8b%e6%a6%82%e8%a7%88"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;pre class="mermaid"&gt;graph LR
  A[&amp;#34;拉代码&amp;#34;] --&amp;gt; B[&amp;#34;静态扫描&amp;#34;]
  B --&amp;gt; C[&amp;#34;单元测试&amp;#34;]
@@ -755,7 +687,7 @@ Cluster: prod-cluster
  G --&amp;gt; H[&amp;#34;漏洞扫描&amp;#34;]
  H --&amp;gt; I[&amp;#34;推送仓库&amp;#34;]
  I --&amp;gt; J[&amp;#34;通知 DevFlow&amp;#34;]&lt;/pre&gt;&lt;hr&gt;
-&lt;h2 id="各阶段说明"&gt;各阶段说明&lt;a class="anchor" href="#%e5%90%84%e9%98%b6%e6%ae%b5%e8%af%b4%e6%98%8e"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id="-各阶段说明"&gt;🔍 各阶段说明&lt;a class="anchor" href="#-%e5%90%84%e9%98%b6%e6%ae%b5%e8%af%b4%e6%98%8e"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;h3 id="1-拉代码"&gt;1. 拉代码&lt;a class="anchor" href="#1-%e6%8b%89%e4%bb%a3%e7%a0%81"&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;从 Git 仓库拉取指定版本的代码，验证 commit hash 与 Manifest 中记录的是否一致。&lt;/p&gt;
 &lt;p&gt;如果不一致，说明代码在发起发布后被人修改过，构建终止。&lt;/p&gt;
@@ -767,29 +699,28 @@ Cluster: prod-cluster
 &lt;li&gt;&lt;strong&gt;代码规范&lt;/strong&gt; — 是否符合团队编码规范&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id="3-单元测试"&gt;3. 单元测试&lt;a class="anchor" href="#3-%e5%8d%95%e5%85%83%e6%b5%8b%e8%af%95"&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;执行项目的单元测试。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;门禁&lt;/strong&gt;：覆盖率 ≥ 60%，且所有测试必须通过。&lt;/p&gt;
-&lt;h3 id="4-集成测试"&gt;4. 集成测试&lt;a class="anchor" href="#4-%e9%9b%86%e6%88%90%e6%b5%8b%e8%af%95"&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;在隔离环境中启动依赖服务（数据库、缓存等），执行端到端测试。&lt;/p&gt;</description></item><item><title>CI 组件矩阵</title><link>https://devflow.bei.com/document/docs/ci/component/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/ci/component/</guid><description>&lt;h1 id="ci-用到哪些工具"&gt;CI 用到哪些工具&lt;a class="anchor" href="#ci-%e7%94%a8%e5%88%b0%e5%93%aa%e4%ba%9b%e5%b7%a5%e5%85%b7"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;执行项目的单元测试。&lt;/p&gt;</description></item><item><title>CI 组件矩阵</title><link>https://devflow.bei.com/document/docs/ci/component/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/ci/component/</guid><description>&lt;h1 id="-ci-用到哪些工具"&gt;🧰 CI 用到哪些工具&lt;a class="anchor" href="#-ci-%e7%94%a8%e5%88%b0%e5%93%aa%e4%ba%9b%e5%b7%a5%e5%85%b7"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;span class="df-badge"&gt;Pipeline&lt;/span&gt; &lt;span class="df-badge"&gt;Security&lt;/span&gt; &lt;span class="df-badge"&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/zot.svg" alt="Zot" loading="lazy" /&gt;
+ OCI Registry&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;DevFlow 的 CI 流水线依赖以下工具，每个负责一个具体环节。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="核心工具"&gt;核心工具&lt;a class="anchor" href="#%e6%a0%b8%e5%bf%83%e5%b7%a5%e5%85%b7"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id="-核心工具"&gt;🧱 核心工具&lt;a class="anchor" href="#-%e6%a0%b8%e5%bf%83%e5%b7%a5%e5%85%b7"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;h3 id="tekton-pipelines--流水线引擎"&gt;Tekton Pipelines — 流水线引擎&lt;a class="anchor" href="#tekton-pipelines--%e6%b5%81%e6%b0%b4%e7%ba%bf%e5%bc%95%e6%93%8e"&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;CI 的&amp;quot;骨架&amp;quot;。定义流水线的结构：有哪些步骤、按什么顺序执行、步骤之间怎么共享数据。&lt;/p&gt;
 &lt;h3 id="tekton-triggers--触发器"&gt;Tekton Triggers — 触发器&lt;a class="anchor" href="#tekton-triggers--%e8%a7%a6%e5%8f%91%e5%99%a8"&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;接收 release-service 的 HTTP 请求，自动创建流水线执行实例。相当于 CI 的&amp;quot;入口门卫&amp;quot;。&lt;/p&gt;
-&lt;h3 id="buildah--镜像构建"&gt;Buildah — 镜像构建&lt;a class="anchor" href="#buildah--%e9%95%9c%e5%83%8f%e6%9e%84%e5%bb%ba"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;h3 id="-buildah--镜像构建"&gt;🏗️ Buildah — 镜像构建&lt;a class="anchor" href="#-buildah--%e9%95%9c%e5%83%8f%e6%9e%84%e5%bb%ba"&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;在容器里构建容器镜像，不需要 Docker Daemon。支持多阶段构建，可以做出很小的最终镜像。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="安全工具"&gt;安全工具&lt;a class="anchor" href="#%e5%ae%89%e5%85%a8%e5%b7%a5%e5%85%b7"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;h3 id="syft--sbom-生成"&gt;Syft — SBOM 生成&lt;a class="anchor" href="#syft--sbom-%e7%94%9f%e6%88%90"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;h2 id="-安全工具"&gt;🔐 安全工具&lt;a class="anchor" href="#-%e5%ae%89%e5%85%a8%e5%b7%a5%e5%85%b7"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;h3 id="-syft--sbom-生成"&gt;📜 Syft — SBOM 生成&lt;a class="anchor" href="#-syft--sbom-%e7%94%9f%e6%88%90"&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;分析镜像里装了什么软件、什么版本，生成&amp;quot;软件物料清单&amp;quot;。出了问题可以追溯：「这个漏洞影响我们吗？影响哪些服务？」&lt;/p&gt;
-&lt;h3 id="cosign--镜像签名"&gt;Cosign — 镜像签名&lt;a class="anchor" href="#cosign--%e9%95%9c%e5%83%8f%e7%ad%be%e5%90%8d"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;h3 id="-cosign--镜像签名"&gt;✍️ Cosign — 镜像签名&lt;a class="anchor" href="#-cosign--%e9%95%9c%e5%83%8f%e7%ad%be%e5%90%8d"&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;给镜像做数字签名，防止镜像被替换或篡改。就像给快递包裹贴防伪标签。&lt;/p&gt;
-&lt;h3 id="trivy--漏洞扫描"&gt;Trivy — 漏洞扫描&lt;a class="anchor" href="#trivy--%e6%bc%8f%e6%b4%9e%e6%89%ab%e6%8f%8f"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;h3 id="-trivy--漏洞扫描"&gt;🛡️ Trivy — 漏洞扫描&lt;a class="anchor" href="#-trivy--%e6%bc%8f%e6%b4%9e%e6%89%ab%e6%8f%8f"&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;扫描镜像里的已知安全漏洞。发现高危漏洞会直接阻断构建，不让有问题的镜像进入部署环节。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="工具清单"&gt;工具清单&lt;a class="anchor" href="#%e5%b7%a5%e5%85%b7%e6%b8%85%e5%8d%95"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id="-工具清单"&gt;🧰 工具清单&lt;a class="anchor" href="#-%e5%b7%a5%e5%85%b7%e6%b8%85%e5%8d%95"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;table&gt;
  &lt;thead&gt;
  &lt;tr&gt;
@@ -800,12 +731,14 @@ Cluster: prod-cluster
  &lt;/thead&gt;
  &lt;tbody&gt;
  &lt;tr&gt;
- &lt;td&gt;Tekton Pipelines&lt;/td&gt;
+ &lt;td&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/tekton.svg" alt="Tekton" loading="lazy" /&gt;
+ Tekton Pipelines&lt;/td&gt;
  &lt;td&gt;流水线编排&lt;/td&gt;
  &lt;td&gt;✅&lt;/td&gt;
  &lt;/tr&gt;
  &lt;tr&gt;
- &lt;td&gt;Tekton Triggers&lt;/td&gt;
+ &lt;td&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/tekton.svg" alt="Tekton" loading="lazy" /&gt;
+ Tekton Triggers&lt;/td&gt;
  &lt;td&gt;事件触发&lt;/td&gt;
  &lt;td&gt;✅&lt;/td&gt;
  &lt;/tr&gt;
@@ -830,20 +763,23 @@ Cluster: prod-cluster
  &lt;td&gt;✅&lt;/td&gt;
  &lt;/tr&gt;
  &lt;tr&gt;
- &lt;td&gt;OpenTelemetry&lt;/td&gt;
+ &lt;td&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/opentelemetry.svg" alt="OpenTelemetry" loading="lazy" /&gt;
+ OpenTelemetry&lt;/td&gt;
  &lt;td&gt;链路追踪&lt;/td&gt;
  &lt;td&gt;✅&lt;/td&gt;
  &lt;/tr&gt;
  &lt;tr&gt;
- &lt;td&gt;Tekton Dashboard&lt;/td&gt;
+ &lt;td&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/tekton.svg" alt="Tekton Dashboard" loading="lazy" /&gt;
+ Tekton Dashboard&lt;/td&gt;
  &lt;td&gt;流水线可视化&lt;/td&gt;
  &lt;td&gt;❌（可选）&lt;/td&gt;
  &lt;/tr&gt;
  &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;hr&gt;
-&lt;h2 id="流水线示意图"&gt;流水线示意图&lt;a class="anchor" href="#%e6%b5%81%e6%b0%b4%e7%ba%bf%e7%a4%ba%e6%84%8f%e5%9b%be"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;pre tabindex="0"&gt;&lt;code&gt;Tekton Trigger 接收请求
+&lt;h2 id="-流水线示意图"&gt;🏭 流水线示意图&lt;a class="anchor" href="#-%e6%b5%81%e6%b0%b4%e7%ba%bf%e7%a4%ba%e6%84%8f%e5%9b%be"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/tekton.svg" alt="Tekton" loading="lazy" /&gt;
+ Tekton Trigger 接收请求
  ↓
 创建 PipelineRun
  ↓
@@ -851,12 +787,15 @@ Cluster: prod-cluster
 │ 拉代码 → 扫描 → 测试 → 构建 → SBOM → 签名 → 再扫 │
 └─────────────────────────────────────────────┘
  ↓
-推送镜像到 OCI Registry
+推送镜像到 &lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/zot.svg" alt="Zot" loading="lazy" /&gt;
+ OCI Registry（Zot）
  ↓
-回调 release-service&lt;/code&gt;&lt;/pre&gt;</description></item><item><title>队列与并发控制</title><link>https://devflow.bei.com/document/docs/ci/queue/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/ci/queue/</guid><description>&lt;h1 id="队列与并发控制"&gt;队列与并发控制&lt;a class="anchor" href="#%e9%98%9f%e5%88%97%e4%b8%8e%e5%b9%b6%e5%8f%91%e6%8e%a7%e5%88%b6"&gt;#&lt;/a&gt;&lt;/h1&gt;
+回调 release-service&lt;/code&gt;&lt;/pre&gt;</description></item><item><title>队列与并发控制</title><link>https://devflow.bei.com/document/docs/ci/queue/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/ci/queue/</guid><description>&lt;h1 id="-队列与并发控制"&gt;🧵 队列与并发控制&lt;a class="anchor" href="#-%e9%98%9f%e5%88%97%e4%b8%8e%e5%b9%b6%e5%8f%91%e6%8e%a7%e5%88%b6"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;span class="df-badge"&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/tekton.svg" alt="Tekton" loading="lazy" /&gt;
+ Tekton&lt;/span&gt; &lt;span class="df-badge"&gt;⚖️ Priority&lt;/span&gt; &lt;span class="df-badge"&gt;📏 Quota&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;当很多人同时发版时，CI 集群可能会被压垮。DevFlow 提供了几种策略来控制构建的排队和并发。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="四种排队策略"&gt;四种排队策略&lt;a class="anchor" href="#%e5%9b%9b%e7%a7%8d%e6%8e%92%e9%98%9f%e7%ad%96%e7%95%a5"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id="-四种排队策略"&gt;🛣️ 四种排队策略&lt;a class="anchor" href="#-%e5%9b%9b%e7%a7%8d%e6%8e%92%e9%98%9f%e7%ad%96%e7%95%a5"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;h3 id="fifo--先来后到"&gt;FIFO — 先来后到&lt;a class="anchor" href="#fifo--%e5%85%88%e6%9d%a5%e5%90%8e%e5%88%b0"&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;按提交顺序排队，先到先构建。最简单、最公平。&lt;/p&gt;
 &lt;p&gt;适合：资源充足，不需要区分优先级的场景。&lt;/p&gt;
@@ -892,45 +831,15 @@ Cluster: prod-cluster
 &lt;p&gt;构建任务分发到多个 CI 集群执行，水平扩展。&lt;/p&gt;
 &lt;p&gt;适合：超大规模构建，单集群撑不住。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="kubernetes-里的实现"&gt;Kubernetes 里的实现&lt;a class="anchor" href="#kubernetes-%e9%87%8c%e7%9a%84%e5%ae%9e%e7%8e%b0"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id="-kubernetes-里的实现"&gt;☸️ Kubernetes 里的实现&lt;a class="anchor" href="#-kubernetes-%e9%87%8c%e7%9a%84%e5%ae%9e%e7%8e%b0"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;Tekton 跑在 Kubernetes 上，排队和并发控制通过 K8s 原生机制实现：&lt;/p&gt;
 &lt;h3 id="priorityclass--设置优先级"&gt;PriorityClass — 设置优先级&lt;a class="anchor" href="#priorityclass--%e8%ae%be%e7%bd%ae%e4%bc%98%e5%85%88%e7%ba%a7"&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;给 PipelineRun 打上优先级标签，高优先级的任务可以先调度。&lt;/p&gt;
 &lt;h3 id="resourcequota--限制总资源"&gt;ResourceQuota — 限制总资源&lt;a class="anchor" href="#resourcequota--%e9%99%90%e5%88%b6%e6%80%bb%e8%b5%84%e6%ba%90"&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;限制 CI 命名空间最多能用多少 CPU 和内存，防止构建把集群资源吃光。&lt;/p&gt;
-&lt;h3 id="limitrange--限制单个任务"&gt;LimitRange — 限制单个任务&lt;a class="anchor" href="#limitrange--%e9%99%90%e5%88%b6%e5%8d%95%e4%b8%aa%e4%bb%bb%e5%8a%a1"&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;限制单个构建 Pod 最多能用多少资源，防止一个构建任务独占节点。&lt;/p&gt;
-&lt;hr&gt;
-&lt;h2 id="关键监控指标"&gt;关键监控指标&lt;a class="anchor" href="#%e5%85%b3%e9%94%ae%e7%9b%91%e6%8e%a7%e6%8c%87%e6%a0%87"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;table&gt;
- &lt;thead&gt;
- &lt;tr&gt;
- &lt;th&gt;指标&lt;/th&gt;
- &lt;th&gt;说明&lt;/th&gt;
- &lt;th&gt;告警建议&lt;/th&gt;
- &lt;/tr&gt;
- &lt;/thead&gt;
- &lt;tbody&gt;
- &lt;tr&gt;
- &lt;td&gt;队列深度&lt;/td&gt;
- &lt;td&gt;有多少构建在排队&lt;/td&gt;
- &lt;td&gt;&amp;gt; 20 时告警&lt;/td&gt;
- &lt;/tr&gt;
- &lt;tr&gt;
- &lt;td&gt;等待时间&lt;/td&gt;
- &lt;td&gt;从提交到开始构建等了多久&lt;/td&gt;
- &lt;td&gt;&amp;gt; 5 分钟时告警&lt;/td&gt;
- &lt;/tr&gt;
- &lt;tr&gt;
- &lt;td&gt;构建成功率&lt;/td&gt;
- &lt;td&gt;失败构建的比例&lt;/td&gt;
- &lt;td&gt;&amp;gt; 5% 时告警&lt;/td&gt;
- &lt;/tr&gt;
- &lt;/tbody&gt;
-&lt;/table&gt;</description></item><item><title>CD 架构</title><link>https://devflow.bei.com/document/docs/cd/architecture/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/cd/architecture/</guid><description>&lt;h1 id="cd-架构"&gt;CD 架构&lt;a class="anchor" href="#cd-%e6%9e%b6%e6%9e%84"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;限制 CI 命名空间最多能用多少 CPU 和内存，防止构建把集群资源吃光。&lt;/p&gt;</description></item><item><title>CD 架构</title><link>https://devflow.bei.com/document/docs/cd/architecture/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/cd/architecture/</guid><description>&lt;h1 id="-cd-架构"&gt;🚀 CD 架构&lt;a class="anchor" href="#-cd-%e6%9e%b6%e6%9e%84"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;p&gt;DevFlow 的 CD 不直接操作 Kubernetes，而是通过 &lt;strong&gt;GitOps&lt;/strong&gt; 模式工作：release-service 生成部署包，推送到仓库，Argo CD 负责实际部署。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="为什么用-gitops"&gt;为什么用 GitOps&lt;a class="anchor" href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e7%94%a8-gitops"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id="-为什么用-gitops"&gt;🧠 为什么用 GitOps&lt;a class="anchor" href="#-%e4%b8%ba%e4%bb%80%e4%b9%88%e7%94%a8-gitops"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;传统的部署方式是&amp;quot;告诉 K8s 该怎么做&amp;quot;，DevFlow 的方式是&amp;quot;告诉 Argo CD 期望状态是什么，让它自己同步&amp;quot;。&lt;/p&gt;
 &lt;p&gt;好处：&lt;/p&gt;
 &lt;ul&gt;
@@ -939,7 +848,7 @@ Cluster: prod-cluster
 &lt;li&gt;&lt;strong&gt;安全&lt;/strong&gt; — DevFlow 不直接操作 K8s，降低了风险&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id="数据流"&gt;数据流&lt;a class="anchor" href="#%e6%95%b0%e6%8d%ae%e6%b5%81"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id="-数据流"&gt;🔄 数据流&lt;a class="anchor" href="#-%e6%95%b0%e6%8d%ae%e6%b5%81"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;pre class="mermaid"&gt;sequenceDiagram
  participant Release as release-service
  participant Registry as OCI Registry
@@ -996,8 +905,9 @@ Cluster: prod-cluster
  &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;hr&gt;
-&lt;h2 id="与旧架构的区别"&gt;与旧架构的区别&lt;a class="anchor" href="#%e4%b8%8e%e6%97%a7%e6%9e%b6%e6%9e%84%e7%9a%84%e5%8c%ba%e5%88%ab"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;DevFlow 早期版本是直接操作 K8s 的，现在改成了 GitOps：&lt;/p&gt;</description></item><item><title>发布策略选型</title><link>https://devflow.bei.com/document/docs/cd/standard/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/cd/standard/</guid><description>&lt;h1 id="发布策略选型"&gt;发布策略选型&lt;a class="anchor" href="#%e5%8f%91%e5%b8%83%e7%ad%96%e7%95%a5%e9%80%89%e5%9e%8b"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;h2 id="-与旧架构的区别"&gt;🆚 与旧架构的区别&lt;a class="anchor" href="#-%e4%b8%8e%e6%97%a7%e6%9e%b6%e6%9e%84%e7%9a%84%e5%8c%ba%e5%88%ab"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;DevFlow 早期版本是直接操作 K8s 的，现在改成了 GitOps：&lt;/p&gt;</description></item><item><title>发布策略选型</title><link>https://devflow.bei.com/document/docs/cd/standard/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/cd/standard/</guid><description>&lt;h1 id="-发布策略选型"&gt;🧭 发布策略选型&lt;a class="anchor" href="#-%e5%8f%91%e5%b8%83%e7%ad%96%e7%95%a5%e9%80%89%e5%9e%8b"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;span class="df-badge"&gt;Rolling&lt;/span&gt; &lt;span class="df-badge"&gt;Canary&lt;/span&gt; &lt;span class="df-badge"&gt;Blue-Green&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;选对发布策略，既能保证安全，又不浪费资源。这一页帮你做决定。&lt;/p&gt;
 &lt;blockquote class='book-hint '&gt;
 &lt;p&gt;选策略就像选交通工具：&lt;/p&gt;
@@ -1007,7 +917,7 @@ Cluster: prod-cluster
 &lt;li&gt;Blue-Green 是双轨地铁——新旧并行，瞬时切换&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/blockquote&gt;&lt;hr&gt;
-&lt;h2 id="三种策略对比"&gt;三种策略对比&lt;a class="anchor" href="#%e4%b8%89%e7%a7%8d%e7%ad%96%e7%95%a5%e5%af%b9%e6%af%94"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id="-三种策略对比"&gt;📊 三种策略对比&lt;a class="anchor" href="#-%e4%b8%89%e7%a7%8d%e7%ad%96%e7%95%a5%e5%af%b9%e6%af%94"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;table&gt;
  &lt;thead&gt;
  &lt;tr&gt;
@@ -1057,7 +967,7 @@ Cluster: prod-cluster
  &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;hr&gt;
-&lt;h2 id="选型决策树"&gt;选型决策树&lt;a class="anchor" href="#%e9%80%89%e5%9e%8b%e5%86%b3%e7%ad%96%e6%a0%91"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id="-选型决策树"&gt;🌲 选型决策树&lt;a class="anchor" href="#-%e9%80%89%e5%9e%8b%e5%86%b3%e7%ad%96%e6%a0%91"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;pre class="mermaid"&gt;graph TD
  A[&amp;#34;选择发布策略&amp;#34;] --&amp;gt; B{&amp;#34;需要零停机？&amp;#34;}
  B --&amp;gt;|否| C{&amp;#34;资源敏感？&amp;#34;}
@@ -1068,7 +978,7 @@ Cluster: prod-cluster
  F --&amp;gt;|否| H{&amp;#34;资源充足？&amp;#34;}
  H --&amp;gt;|是| I[&amp;#34;Blue-Green&amp;#34;]
  H --&amp;gt;|否| J[&amp;#34;Canary&amp;#34;]&lt;/pre&gt;&lt;hr&gt;
-&lt;h2 id="场景化建议"&gt;场景化建议&lt;a class="anchor" href="#%e5%9c%ba%e6%99%af%e5%8c%96%e5%bb%ba%e8%ae%ae"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id="-场景化建议"&gt;🎯 场景化建议&lt;a class="anchor" href="#-%e5%9c%ba%e6%99%af%e5%8c%96%e5%bb%ba%e8%ae%ae"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;table&gt;
  &lt;thead&gt;
  &lt;tr&gt;
@@ -1121,19 +1031,19 @@ Cluster: prod-cluster
  &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;hr&gt;
-&lt;h2 id="真实场景故事"&gt;真实场景故事&lt;a class="anchor" href="#%e7%9c%9f%e5%ae%9e%e5%9c%ba%e6%99%af%e6%95%85%e4%ba%8b"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id="-真实场景故事"&gt;🧪 真实场景故事&lt;a class="anchor" href="#-%e7%9c%9f%e5%ae%9e%e5%9c%ba%e6%99%af%e6%95%85%e4%ba%8b"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;h3 id="场景一小明的内部工具"&gt;场景一：小明的内部工具&lt;a class="anchor" href="#%e5%9c%ba%e6%99%af%e4%b8%80%e5%b0%8f%e6%98%8e%e7%9a%84%e5%86%85%e9%83%a8%e5%b7%a5%e5%85%b7"&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;小明负责一个内部数据分析工具，只有 20 个同事在用。他选 Rolling 发布：&lt;/p&gt;</description></item><item><title>Rolling 发布</title><link>https://devflow.bei.com/document/docs/cd/normal/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/cd/normal/</guid><description>&lt;h1 id="rolling-发布"&gt;Rolling 发布&lt;a class="anchor" href="#rolling-%e5%8f%91%e5%b8%83"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;小明负责一个内部数据分析工具，只有 20 个同事在用。他选 Rolling 发布：&lt;/p&gt;</description></item><item><title>Rolling 发布</title><link>https://devflow.bei.com/document/docs/cd/rolling/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/cd/rolling/</guid><description>&lt;h1 id="-rolling-发布"&gt;🛞 Rolling 发布&lt;a class="anchor" href="#-rolling-%e5%8f%91%e5%b8%83"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;p&gt;&lt;strong&gt;Rolling（滚动更新）&lt;/strong&gt; 是最简单的发布方式。Kubernetes 逐步创建新版本 Pod，同时销毁旧版本 Pod，就像换轮胎时一个一个换，车一直在跑。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="适合什么场景"&gt;适合什么场景&lt;a class="anchor" href="#%e9%80%82%e5%90%88%e4%bb%80%e4%b9%88%e5%9c%ba%e6%99%af"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id="-适合什么场景"&gt;🎯 适合什么场景&lt;a class="anchor" href="#-%e9%80%82%e5%90%88%e4%bb%80%e4%b9%88%e5%9c%ba%e6%99%af"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;内部工具、后台管理系统&lt;/li&gt;
 &lt;li&gt;资源敏感、成本优先的服务&lt;/li&gt;
 &lt;li&gt;对短暂波动容忍度较高的应用&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id="原理"&gt;原理&lt;a class="anchor" href="#%e5%8e%9f%e7%90%86"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id="-原理"&gt;🧠 原理&lt;a class="anchor" href="#-%e5%8e%9f%e7%90%86"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;pre class="mermaid"&gt;graph LR
  subgraph &amp;#34;Kubernetes&amp;#34;
  RS1[&amp;#34;旧版本 ReplicaSet&amp;#34;]
@@ -1156,7 +1066,7 @@ Cluster: prod-cluster
  RS2 --&amp;gt; P3
  RS2 --&amp;gt; P4&lt;/pre&gt;&lt;p&gt;Service 同时指向新旧 Pod，流量自然平滑过渡。K8s 控制每次最多多创建 25% 的新 Pod，最多只允许 25% 的 Pod 不可用。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="发布过程"&gt;发布过程&lt;a class="anchor" href="#%e5%8f%91%e5%b8%83%e8%bf%87%e7%a8%8b"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id="-发布过程"&gt;🚦 发布过程&lt;a class="anchor" href="#-%e5%8f%91%e5%b8%83%e8%bf%87%e7%a8%8b"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;pre tabindex="0"&gt;&lt;code&gt;开始: [旧][旧][旧] (3 Pod)
  ↓
 步骤 1: [旧][旧][旧][新] (创建 1 个新 Pod)
@@ -1167,18 +1077,20 @@ Cluster: prod-cluster
  ↓
 完成: [新][新][新] (全部替换完毕)&lt;/code&gt;&lt;/pre&gt;&lt;hr&gt;
 &lt;h2 id="回滚"&gt;回滚&lt;a class="anchor" href="#%e5%9b%9e%e6%bb%9a"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;Rolling 的回滚是反向的滚动更新：&lt;/p&gt;</description></item><item><title>Canary 发布</title><link>https://devflow.bei.com/document/docs/cd/canary/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/cd/canary/</guid><description>&lt;h1 id="canary-发布"&gt;Canary 发布&lt;a class="anchor" href="#canary-%e5%8f%91%e5%b8%83"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;Rolling 的回滚是反向的滚动更新：&lt;/p&gt;</description></item><item><title>Canary 发布</title><link>https://devflow.bei.com/document/docs/cd/canary/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/cd/canary/</guid><description>&lt;h1 id="-canary-发布"&gt;🐤 Canary 发布&lt;a class="anchor" href="#-canary-%e5%8f%91%e5%b8%83"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;span class="df-badge"&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/istio.svg" alt="Istio" loading="lazy" /&gt;
+ Weighted Traffic&lt;/span&gt; &lt;span class="df-badge"&gt;📈 Metrics Gate&lt;/span&gt; &lt;span class="df-badge"&gt;⚡ Fast Rollback&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Canary（灰度发布）&lt;/strong&gt; 是 DevFlow 最推荐的发布方式。它的核心思想是：&lt;strong&gt;先让一小部分用户试用新版本，验证没问题后再扩大范围&lt;/strong&gt;。&lt;/p&gt;
 &lt;p&gt;就像餐厅推出新菜品，先给 VIP 客人试吃，反馈好再全员推广。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="适合什么场景"&gt;适合什么场景&lt;a class="anchor" href="#%e9%80%82%e5%90%88%e4%bb%80%e4%b9%88%e5%9c%ba%e6%99%af"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id="-适合什么场景"&gt;🎯 适合什么场景&lt;a class="anchor" href="#-%e9%80%82%e5%90%88%e4%bb%80%e4%b9%88%e5%9c%ba%e6%99%af"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;核心 API、支付系统&lt;/li&gt;
 &lt;li&gt;用户量大的前端服务&lt;/li&gt;
 &lt;li&gt;任何需要风险控制的服务&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id="原理"&gt;原理&lt;a class="anchor" href="#%e5%8e%9f%e7%90%86"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id="-原理"&gt;🧠 原理&lt;a class="anchor" href="#-%e5%8e%9f%e7%90%86"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;pre class="mermaid"&gt;graph TB
  User[&amp;#34;用户流量&amp;#34;]
  GW[&amp;#34;Gateway&amp;#34;]
@@ -1198,55 +1110,19 @@ Cluster: prod-cluster
  VS --&amp;gt;|90%| Stable --&amp;gt; OldPod
  VS --&amp;gt;|10%| Canary --&amp;gt; NewPod&lt;/pre&gt;&lt;p&gt;Istio 通过 VirtualService 的权重控制流量分配。Argo Rollouts 管理新版本的 ReplicaSet，逐步调整权重。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="灰度节奏"&gt;灰度节奏&lt;a class="anchor" href="#%e7%81%b0%e5%ba%a6%e8%8a%82%e5%a5%8f"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;默认的灰度节奏是四阶段：&lt;/p&gt;
-&lt;table&gt;
- &lt;thead&gt;
- &lt;tr&gt;
- &lt;th&gt;阶段&lt;/th&gt;
- &lt;th&gt;流量&lt;/th&gt;
- &lt;th&gt;持续时间&lt;/th&gt;
- &lt;th&gt;做什么&lt;/th&gt;
- &lt;/tr&gt;
- &lt;/thead&gt;
- &lt;tbody&gt;
- &lt;tr&gt;
- &lt;td&gt;1&lt;/td&gt;
- &lt;td&gt;10%&lt;/td&gt;
- &lt;td&gt;5 分钟&lt;/td&gt;
- &lt;td&gt;观察错误率和延迟&lt;/td&gt;
- &lt;/tr&gt;
- &lt;tr&gt;
- &lt;td&gt;2&lt;/td&gt;
- &lt;td&gt;30%&lt;/td&gt;
- &lt;td&gt;10 分钟&lt;/td&gt;
- &lt;td&gt;观察吞吐量和资源使用&lt;/td&gt;
- &lt;/tr&gt;
- &lt;tr&gt;
- &lt;td&gt;3&lt;/td&gt;
- &lt;td&gt;50%&lt;/td&gt;
- &lt;td&gt;10 分钟&lt;/td&gt;
- &lt;td&gt;观察业务指标&lt;/td&gt;
- &lt;/tr&gt;
- &lt;tr&gt;
- &lt;td&gt;4&lt;/td&gt;
- &lt;td&gt;100%&lt;/td&gt;
- &lt;td&gt;—&lt;/td&gt;
- &lt;td&gt;全量切换完成&lt;/td&gt;
- &lt;/tr&gt;
- &lt;/tbody&gt;
-&lt;/table&gt;
-&lt;p&gt;每个阶段结束后，系统会自动检查 Prometheus 指标。如果错误率飙升或延迟异常，自动回滚到上一个阶段。&lt;/p&gt;</description></item><item><title>Blue-Green 发布</title><link>https://devflow.bei.com/document/docs/cd/blue-green/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/cd/blue-green/</guid><description>&lt;h1 id="blue-green-发布"&gt;Blue-Green 发布&lt;a class="anchor" href="#blue-green-%e5%8f%91%e5%b8%83"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;h2 id="-灰度节奏"&gt;⏱️ 灰度节奏&lt;a class="anchor" href="#-%e7%81%b0%e5%ba%a6%e8%8a%82%e5%a5%8f"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;默认的灰度节奏是四阶段：&lt;/p&gt;</description></item><item><title>Blue-Green 发布</title><link>https://devflow.bei.com/document/docs/cd/blue-green/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/cd/blue-green/</guid><description>&lt;h1 id="-blue-green-发布"&gt;🔵🟢 Blue-Green 发布&lt;a class="anchor" href="#-blue-green-%e5%8f%91%e5%b8%83"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;span class="df-badge"&gt;Zero Downtime&lt;/span&gt; &lt;span class="df-badge"&gt;Preview&lt;/span&gt; &lt;span class="df-badge"&gt;Fast Rollback&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Blue-Green（蓝绿部署）&lt;/strong&gt; 是最稳妥的发布方式。它同时维护两套完整实例，验证通过后瞬时切换流量。就像走天桥，旧路和新路同时在，随时可以退回来。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="适合什么场景"&gt;适合什么场景&lt;a class="anchor" href="#%e9%80%82%e5%90%88%e4%bb%80%e4%b9%88%e5%9c%ba%e6%99%af"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id="-适合什么场景"&gt;🎯 适合什么场景&lt;a class="anchor" href="#-%e9%80%82%e5%90%88%e4%bb%80%e4%b9%88%e5%9c%ba%e6%99%af"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;金融核心、关键交易&lt;/li&gt;
 &lt;li&gt;必须零停机的业务&lt;/li&gt;
 &lt;li&gt;数据库 schema 变更&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id="原理"&gt;原理&lt;a class="anchor" href="#%e5%8e%9f%e7%90%86"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id="-原理"&gt;🧠 原理&lt;a class="anchor" href="#-%e5%8e%9f%e7%90%86"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;pre class="mermaid"&gt;graph TB
  User[&amp;#34;用户流量&amp;#34;]
  VS[&amp;#34;VirtualService&amp;#34;]
@@ -1271,17 +1147,20 @@ Cluster: prod-cluster
 &lt;li&gt;&lt;strong&gt;Preview Service&lt;/strong&gt; 接收验证流量，用于测试新版本&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id="发布过程"&gt;发布过程&lt;a class="anchor" href="#%e5%8f%91%e5%b8%83%e8%bf%87%e7%a8%8b"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id="-发布过程"&gt;🚦 发布过程&lt;a class="anchor" href="#-%e5%8f%91%e5%b8%83%e8%bf%87%e7%a8%8b"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;h3 id="阶段-1部署新版本"&gt;阶段 1：部署新版本&lt;a class="anchor" href="#%e9%98%b6%e6%ae%b5-1%e9%83%a8%e7%bd%b2%e6%96%b0%e7%89%88%e6%9c%ac"&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;pre tabindex="0"&gt;&lt;code&gt;Active → Blue(旧, 3 Pod) ← 生产流量
-Preview → Green(新, 3 Pod) ← 验证流量&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Green 部署完成，可以通过 Preview Service 访问验证。&lt;/p&gt;</description></item><item><title>CD 组件矩阵</title><link>https://devflow.bei.com/document/docs/cd/component/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/cd/component/</guid><description>&lt;h1 id="cd-用到哪些工具"&gt;CD 用到哪些工具&lt;a class="anchor" href="#cd-%e7%94%a8%e5%88%b0%e5%93%aa%e4%ba%9b%e5%b7%a5%e5%85%b7"&gt;#&lt;/a&gt;&lt;/h1&gt;
+Preview → Green(新, 3 Pod) ← 验证流量&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Green 部署完成，可以通过 Preview Service 访问验证。&lt;/p&gt;</description></item><item><title>CD 组件矩阵</title><link>https://devflow.bei.com/document/docs/cd/component/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/cd/component/</guid><description>&lt;h1 id="-cd-用到哪些工具"&gt;🧰 CD 用到哪些工具&lt;a class="anchor" href="#-cd-%e7%94%a8%e5%88%b0%e5%93%aa%e4%ba%9b%e5%b7%a5%e5%85%b7"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;span class="df-badge"&gt;GitOps&lt;/span&gt; &lt;span class="df-badge"&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/zot.svg" alt="Zot" loading="lazy" /&gt;
+ Zot&lt;/span&gt; &lt;span class="df-badge"&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/istio.svg" alt="Istio" loading="lazy" /&gt;
+ Istio&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;DevFlow 的 CD 依赖以下几个核心工具，各司其职。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="核心组件"&gt;核心组件&lt;a class="anchor" href="#%e6%a0%b8%e5%bf%83%e7%bb%84%e4%bb%b6"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id="-核心组件"&gt;🧱 核心组件&lt;a class="anchor" href="#-%e6%a0%b8%e5%bf%83%e7%bb%84%e4%bb%b6"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;h3 id="argo-cd--gitops-引擎"&gt;Argo CD — GitOps 引擎&lt;a class="anchor" href="#argo-cd--gitops-%e5%bc%95%e6%93%8e"&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;Argo CD 是 CD 的核心。它盯着 OCI Registry 里的部署包，一旦发现新版本，就自动同步到 Kubernetes 集群。&lt;/p&gt;
 &lt;p&gt;你可以把它理解成一个&lt;strong&gt;自动同步器&lt;/strong&gt;：你更新了仓库里的配置，它自动帮你 apply 到集群。&lt;/p&gt;
-&lt;h3 id="argo-rollouts--高级发布控制器"&gt;Argo Rollouts — 高级发布控制器&lt;a class="anchor" href="#argo-rollouts--%e9%ab%98%e7%ba%a7%e5%8f%91%e5%b8%83%e6%8e%a7%e5%88%b6%e5%99%a8"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;h3 id="-argo-rollouts--高级发布控制器"&gt;🚦 Argo Rollouts — 高级发布控制器&lt;a class="anchor" href="#-argo-rollouts--%e9%ab%98%e7%ba%a7%e5%8f%91%e5%b8%83%e6%8e%a7%e5%88%b6%e5%99%a8"&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;原生 Kubernetes 只支持简单的 Rolling Update。Argo Rollouts 扩展了这个能力，支持：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;Canary&lt;/strong&gt; — 按权重逐步切流量&lt;/li&gt;
@@ -1295,14 +1174,18 @@ Preview → Green(新, 3 Pod) ← 验证流量&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;
 &lt;li&gt;&lt;strong&gt;DestinationRule&lt;/strong&gt; — 定义 Pod 分组（stable / canary）&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;Gateway&lt;/strong&gt; — 外部流量入口&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;没有 Istio，Canary 和 Blue-Green 就做不了流量控制。&lt;/p&gt;
-&lt;h3 id="oci-registry--部署包仓库"&gt;OCI Registry — 部署包仓库&lt;a class="anchor" href="#oci-registry--%e9%83%a8%e7%bd%b2%e5%8c%85%e4%bb%93%e5%ba%93"&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;DevFlow 把渲染好的 Kubernetes 配置打包成 OCI artifact，和镜像存在同一个仓库里。&lt;/p&gt;</description></item><item><title>可观测性组件矩阵</title><link>https://devflow.bei.com/document/docs/observability/component/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/observability/component/</guid><description>&lt;h1 id="可观测性技术栈"&gt;可观测性技术栈&lt;a class="anchor" href="#%e5%8f%af%e8%a7%82%e6%b5%8b%e6%80%a7%e6%8a%80%e6%9c%af%e6%a0%88"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;没有 Istio，Canary 和 Blue-Green 就做不了流量控制。&lt;/p&gt;</description></item><item><title>可观测性组件矩阵</title><link>https://devflow.bei.com/document/docs/observability/component/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/observability/component/</guid><description>&lt;h1 id="-可观测性技术栈"&gt;📡 可观测性技术栈&lt;a class="anchor" href="#-%e5%8f%af%e8%a7%82%e6%b5%8b%e6%80%a7%e6%8a%80%e6%9c%af%e6%a0%88"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;span class="df-badge"&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/prometheus.svg" alt="Prometheus" loading="lazy" /&gt;
+ Metrics&lt;/span&gt; &lt;span class="df-badge"&gt;📜 Logs&lt;/span&gt; &lt;span class="df-badge"&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/opentelemetry.svg" alt="OpenTelemetry" loading="lazy" /&gt;
+ Traces&lt;/span&gt; &lt;span class="df-badge"&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/grafana.svg" alt="Grafana" loading="lazy" /&gt;
+ Grafana&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;DevFlow 的可观测性由三个支柱组成：Metrics（指标）、Logs（日志）、Traces（链路）。每个支柱有专门的工具负责采集、存储和展示。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="metrics--系统的体检报告"&gt;Metrics — 系统的体检报告&lt;a class="anchor" href="#metrics--%e7%b3%bb%e7%bb%9f%e7%9a%84%e4%bd%93%e6%a3%80%e6%8a%a5%e5%91%8a"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;Prometheus&lt;/strong&gt; 负责采集和存储指标。DevFlow 所有服务都暴露 &lt;code&gt;/metrics&lt;/code&gt; 端点，Prometheus 定期来&amp;quot;查房&amp;quot;。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Grafana&lt;/strong&gt; 负责展示。预置了 10+ 个仪表盘：&lt;/p&gt;
+&lt;h2 id="-metrics--系统的体检报告"&gt;📈 Metrics — 系统的体检报告&lt;a class="anchor" href="#-metrics--%e7%b3%bb%e7%bb%9f%e7%9a%84%e4%bd%93%e6%a3%80%e6%8a%a5%e5%91%8a"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/prometheus.svg" alt="Prometheus" loading="lazy" /&gt;
+ Prometheus&lt;/strong&gt; 负责采集和存储指标。DevFlow 所有服务都暴露 &lt;code&gt;/metrics&lt;/code&gt; 端点，Prometheus 定期来&amp;quot;查房&amp;quot;。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/grafana.svg" alt="Grafana" loading="lazy" /&gt;
+ Grafana&lt;/strong&gt; 负责展示。预置了 10+ 个仪表盘：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;服务概览（QPS、延迟、错误率）&lt;/li&gt;
 &lt;li&gt;发布流水线（构建、渲染、部署各阶段耗时）&lt;/li&gt;
@@ -1322,7 +1205,8 @@ Preview → Green(新, 3 Pod) ← 验证流量&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;
  &lt;/thead&gt;
  &lt;tbody&gt;
  &lt;tr&gt;
- &lt;td&gt;Prometheus&lt;/td&gt;
+ &lt;td&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/prometheus.svg" alt="Prometheus" loading="lazy" /&gt;
+ Prometheus&lt;/td&gt;
  &lt;td&gt;Metrics&lt;/td&gt;
  &lt;td&gt;指标采集与查询&lt;/td&gt;
  &lt;td&gt;指标引擎&lt;/td&gt;
@@ -1330,7 +1214,8 @@ Preview → Green(新, 3 Pod) ← 验证流量&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;
  &lt;td&gt;VictoriaMetrics&lt;/td&gt;
  &lt;/tr&gt;
  &lt;tr&gt;
- &lt;td&gt;Prometheus Operator&lt;/td&gt;
+ &lt;td&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/prometheus.svg" alt="Prometheus Operator" loading="lazy" /&gt;
+ Prometheus Operator&lt;/td&gt;
  &lt;td&gt;运维自动化&lt;/td&gt;
  &lt;td&gt;Prometheus 生命周期管理&lt;/td&gt;
  &lt;td&gt;控制器&lt;/td&gt;
@@ -1338,7 +1223,8 @@ Preview → Green(新, 3 Pod) ← 验证流量&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;
  &lt;td&gt;手动部署&lt;/td&gt;
  &lt;/tr&gt;
  &lt;tr&gt;
- &lt;td&gt;kube-state-metrics&lt;/td&gt;
+ &lt;td&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/kubernetes.svg" alt="Kubernetes" loading="lazy" /&gt;
+ kube-state-metrics&lt;/td&gt;
  &lt;td&gt;K8s Metrics&lt;/td&gt;
  &lt;td&gt;Kubernetes 状态指标&lt;/td&gt;
  &lt;td&gt;指标源&lt;/td&gt;
@@ -1356,9 +1242,8 @@ Preview → Green(新, 3 Pod) ← 验证流量&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;
  &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;hr&gt;
-&lt;h2 id="logs--系统的日记"&gt;Logs — 系统的日记&lt;a class="anchor" href="#logs--%e7%b3%bb%e7%bb%9f%e7%9a%84%e6%97%a5%e8%ae%b0"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;Grafana Loki&lt;/strong&gt; 负责存储和查询日志。不像传统 ELK 那么重，Loki 只索引标签，不索引日志内容，更省资源。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Grafana Alloy&lt;/strong&gt;（原 Grafana Agent）负责在各节点采集日志，发送到 Loki。&lt;/p&gt;</description></item><item><title>公共 Attributes</title><link>https://devflow.bei.com/document/docs/observability/attributes/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/observability/attributes/</guid><description>&lt;h1 id="公共-attributes"&gt;公共 Attributes&lt;a class="anchor" href="#%e5%85%ac%e5%85%b1-attributes"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;h2 id="-logs--系统的日记"&gt;📜 Logs — 系统的日记&lt;a class="anchor" href="#-logs--%e7%b3%bb%e7%bb%9f%e7%9a%84%e6%97%a5%e8%ae%b0"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;📘 Loki&lt;/strong&gt; 负责存储和查询日志。不像传统 ELK 那么重，Loki 只索引标签，不索引日志内容，更省资源。&lt;/p&gt;</description></item><item><title>公共 Attributes</title><link>https://devflow.bei.com/document/docs/observability/attributes/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/observability/attributes/</guid><description>&lt;h1 id="-公共-attributes"&gt;🏷️ 公共 Attributes&lt;a class="anchor" href="#-%e5%85%ac%e5%85%b1-attributes"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;p&gt;DevFlow 的所有服务使用统一的标签（Attributes），这样 Metrics、Logs、Traces 才能互相关联。&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id="为什么要统一"&gt;为什么要统一&lt;a class="anchor" href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e8%a6%81%e7%bb%9f%e4%b8%80"&gt;#&lt;/a&gt;&lt;/h2&gt;
@@ -1370,138 +1255,84 @@ Preview → Green(新, 3 Pod) ← 验证流量&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;
 &lt;/ul&gt;
 &lt;p&gt;如果三个系统用的标签名字不一样，你就没法把它们串起来。统一标签后，通过 &lt;code&gt;trace_id&lt;/code&gt; 就能从 Metrics 跳到 Trace，再跳到 Log。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="服务相关-attributes公共"&gt;服务相关 Attributes（公共）&lt;a class="anchor" href="#%e6%9c%8d%e5%8a%a1%e7%9b%b8%e5%85%b3-attributes%e5%85%ac%e5%85%b1"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id="字段来源说明"&gt;字段来源说明&lt;a class="anchor" href="#%e5%ad%97%e6%ae%b5%e6%9d%a5%e6%ba%90%e8%af%b4%e6%98%8e"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;DevFlow 的 Attributes 来自两个渠道：&lt;/p&gt;
 &lt;table&gt;
  &lt;thead&gt;
  &lt;tr&gt;
- &lt;th&gt;Key&lt;/th&gt;
- &lt;th&gt;类型&lt;/th&gt;
+ &lt;th&gt;来源&lt;/th&gt;
  &lt;th&gt;说明&lt;/th&gt;
- &lt;th&gt;示例&lt;/th&gt;
- &lt;th&gt;适用类型&lt;/th&gt;
+ &lt;th&gt;谁负责&lt;/th&gt;
+ &lt;th&gt;是否需要代码改动&lt;/th&gt;
  &lt;/tr&gt;
  &lt;/thead&gt;
  &lt;tbody&gt;
  &lt;tr&gt;
- &lt;td&gt;&lt;code&gt;service.name&lt;/code&gt;&lt;/td&gt;
- &lt;td&gt;string&lt;/td&gt;
- &lt;td&gt;服务名称&lt;/td&gt;
- &lt;td&gt;&lt;code&gt;devflow&lt;/code&gt;&lt;/td&gt;
- &lt;td&gt;Metric / Log / Trace&lt;/td&gt;
+ &lt;td&gt;&lt;strong&gt;OTel 自动采集&lt;/strong&gt;&lt;/td&gt;
+ &lt;td&gt;OpenTelemetry SDK / Collector 自动注入&lt;/td&gt;
+ &lt;td&gt;基础设施（SRE/平台组）&lt;/td&gt;
+ &lt;td&gt;❌ 不需要&lt;/td&gt;
  &lt;/tr&gt;
  &lt;tr&gt;
- &lt;td&gt;&lt;code&gt;service.version&lt;/code&gt;&lt;/td&gt;
- &lt;td&gt;string&lt;/td&gt;
- &lt;td&gt;服务版本&lt;/td&gt;
- &lt;td&gt;&lt;code&gt;v1.2.3&lt;/code&gt;&lt;/td&gt;
- &lt;td&gt;Metric / Log / Trace&lt;/td&gt;
- &lt;/tr&gt;
- &lt;tr&gt;
- &lt;td&gt;&lt;code&gt;service.instance.id&lt;/code&gt;&lt;/td&gt;
- &lt;td&gt;string&lt;/td&gt;
- &lt;td&gt;服务实例 ID 或 Pod 名称&lt;/td&gt;
- &lt;td&gt;&lt;code&gt;devflow-abc123&lt;/code&gt;&lt;/td&gt;
- &lt;td&gt;Metric / Log / Trace&lt;/td&gt;
- &lt;/tr&gt;
- &lt;tr&gt;
- &lt;td&gt;&lt;code&gt;service.namespace&lt;/code&gt;&lt;/td&gt;
- &lt;td&gt;string&lt;/td&gt;
- &lt;td&gt;服务命名空间&lt;/td&gt;
- &lt;td&gt;&lt;code&gt;payments&lt;/code&gt;&lt;/td&gt;
- &lt;td&gt;Metric / Log / Trace&lt;/td&gt;
- &lt;/tr&gt;
- &lt;tr&gt;
- &lt;td&gt;&lt;code&gt;deployment.environment&lt;/code&gt;&lt;/td&gt;
- &lt;td&gt;string&lt;/td&gt;
- &lt;td&gt;部署环境&lt;/td&gt;
- &lt;td&gt;&lt;code&gt;prod&lt;/code&gt; / &lt;code&gt;staging&lt;/code&gt; / &lt;code&gt;dev&lt;/code&gt;&lt;/td&gt;
- &lt;td&gt;Metric / Log / Trace&lt;/td&gt;
+ &lt;td&gt;&lt;strong&gt;服务自行添加&lt;/strong&gt;&lt;/td&gt;
+ &lt;td&gt;开发者在代码中显式设置&lt;/td&gt;
+ &lt;td&gt;各服务团队&lt;/td&gt;
+ &lt;td&gt;✅ 需要&lt;/td&gt;
  &lt;/tr&gt;
  &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;hr&gt;
-&lt;h2 id="kubernetes-相关-attributes公共"&gt;Kubernetes 相关 Attributes（公共）&lt;a class="anchor" href="#kubernetes-%e7%9b%b8%e5%85%b3-attributes%e5%85%ac%e5%85%b1"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;h3 id="快速对照表"&gt;快速对照表&lt;a class="anchor" href="#%e5%bf%ab%e9%80%9f%e5%af%b9%e7%85%a7%e8%a1%a8"&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;table&gt;
  &lt;thead&gt;
  &lt;tr&gt;
- &lt;th&gt;Key&lt;/th&gt;
- &lt;th&gt;类型&lt;/th&gt;
- &lt;th&gt;说明&lt;/th&gt;
- &lt;th&gt;示例&lt;/th&gt;
- &lt;th&gt;适用类型&lt;/th&gt;
+ &lt;th&gt;字段&lt;/th&gt;
+ &lt;th&gt;来源&lt;/th&gt;
+ &lt;th&gt;谁来配置&lt;/th&gt;
  &lt;/tr&gt;
  &lt;/thead&gt;
  &lt;tbody&gt;
  &lt;tr&gt;
- &lt;td&gt;&lt;code&gt;k8s.cluster.name&lt;/code&gt;&lt;/td&gt;
- &lt;td&gt;string&lt;/td&gt;
- &lt;td&gt;集群名称&lt;/td&gt;
- &lt;td&gt;&lt;code&gt;cluster-prod&lt;/code&gt;&lt;/td&gt;
- &lt;td&gt;Metric / Log / Trace&lt;/td&gt;
+ &lt;td&gt;&lt;code&gt;service.name&lt;/code&gt; / &lt;code&gt;service.version&lt;/code&gt; / &lt;code&gt;service.instance.id&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;OTel SDK 自动从环境变量读取&lt;/td&gt;
+ &lt;td&gt;基础设施配置环境变量&lt;/td&gt;
  &lt;/tr&gt;
  &lt;tr&gt;
- &lt;td&gt;&lt;code&gt;k8s.namespace.name&lt;/code&gt;&lt;/td&gt;
- &lt;td&gt;string&lt;/td&gt;
- &lt;td&gt;Pod 所在命名空间&lt;/td&gt;
- &lt;td&gt;&lt;code&gt;applications&lt;/code&gt;&lt;/td&gt;
- &lt;td&gt;Metric / Log / Trace&lt;/td&gt;
+ &lt;td&gt;&lt;code&gt;k8s.*&lt;/code&gt;（Pod、Namespace、Node 等）&lt;/td&gt;
+ &lt;td&gt;OTel Collector &lt;code&gt;k8sattributes&lt;/code&gt; Processor 自动采集&lt;/td&gt;
+ &lt;td&gt;基础设施配置 Collector&lt;/td&gt;
  &lt;/tr&gt;
  &lt;tr&gt;
- &lt;td&gt;&lt;code&gt;k8s.pod.name&lt;/code&gt;&lt;/td&gt;
- &lt;td&gt;string&lt;/td&gt;
- &lt;td&gt;Pod 名称&lt;/td&gt;
- &lt;td&gt;&lt;code&gt;devflow-12345&lt;/code&gt;&lt;/td&gt;
- &lt;td&gt;Metric / Log / Trace&lt;/td&gt;
+ &lt;td&gt;&lt;code&gt;http.*&lt;/code&gt;（method、route、status_code 等）&lt;/td&gt;
+ &lt;td&gt;OTel HTTP Instrumentation 自动从请求中采集&lt;/td&gt;
+ &lt;td&gt;❌ 自动&lt;/td&gt;
  &lt;/tr&gt;
  &lt;tr&gt;
- &lt;td&gt;&lt;code&gt;k8s.container.name&lt;/code&gt;&lt;/td&gt;
- &lt;td&gt;string&lt;/td&gt;
- &lt;td&gt;容器名称&lt;/td&gt;
- &lt;td&gt;&lt;code&gt;devflow&lt;/code&gt;&lt;/td&gt;
- &lt;td&gt;Metric / Log / Trace&lt;/td&gt;
+ &lt;td&gt;&lt;code&gt;span.*&lt;/code&gt; / &lt;code&gt;trace.id&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;OTel SDK 自动生成&lt;/td&gt;
+ &lt;td&gt;❌ 自动&lt;/td&gt;
  &lt;/tr&gt;
  &lt;tr&gt;
- &lt;td&gt;&lt;code&gt;k8s.node.name&lt;/code&gt;&lt;/td&gt;
- &lt;td&gt;string&lt;/td&gt;
- &lt;td&gt;节点名称&lt;/td&gt;
- &lt;td&gt;&lt;code&gt;node-01&lt;/code&gt;&lt;/td&gt;
- &lt;td&gt;Metric / Log / Trace&lt;/td&gt;
+ &lt;td&gt;&lt;code&gt;devflow.*&lt;/code&gt;（project、application、environment、release 等）&lt;/td&gt;
+ &lt;td&gt;服务代码中手动设置&lt;/td&gt;
+ &lt;td&gt;&lt;strong&gt;各服务开发者&lt;/strong&gt;&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;db.*&lt;/code&gt;（system、statement、operation）&lt;/td&gt;
+ &lt;td&gt;服务代码中手动设置（或使用 ORM 插件自动）&lt;/td&gt;
+ &lt;td&gt;&lt;strong&gt;各服务开发者&lt;/strong&gt;&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;messaging.*&lt;/code&gt;（system、destination、operation）&lt;/td&gt;
+ &lt;td&gt;服务代码中手动设置（或使用消息队列插件自动）&lt;/td&gt;
+ &lt;td&gt;&lt;strong&gt;各服务开发者&lt;/strong&gt;&lt;/td&gt;
  &lt;/tr&gt;
  &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;hr&gt;
-&lt;h2 id="请求信息"&gt;请求信息&lt;a class="anchor" href="#%e8%af%b7%e6%b1%82%e4%bf%a1%e6%81%af"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;table&gt;
- &lt;thead&gt;
- &lt;tr&gt;
- &lt;th&gt;标签&lt;/th&gt;
- &lt;th&gt;例子&lt;/th&gt;
- &lt;th&gt;说明&lt;/th&gt;
- &lt;/tr&gt;
- &lt;/thead&gt;
- &lt;tbody&gt;
- &lt;tr&gt;
- &lt;td&gt;&lt;code&gt;http.method&lt;/code&gt;&lt;/td&gt;
- &lt;td&gt;GET&lt;/td&gt;
- &lt;td&gt;HTTP 方法&lt;/td&gt;
- &lt;/tr&gt;
- &lt;tr&gt;
- &lt;td&gt;&lt;code&gt;http.route&lt;/code&gt;&lt;/td&gt;
- &lt;td&gt;/api/v1/meta/projects&lt;/td&gt;
- &lt;td&gt;请求路径&lt;/td&gt;
- &lt;/tr&gt;
- &lt;tr&gt;
- &lt;td&gt;&lt;code&gt;http.status_code&lt;/code&gt;&lt;/td&gt;
- &lt;td&gt;200&lt;/td&gt;
- &lt;td&gt;响应状态码&lt;/td&gt;
- &lt;/tr&gt;
- &lt;/tbody&gt;
-&lt;/table&gt;
-&lt;hr&gt;
-&lt;h2 id="统一规范"&gt;统一规范&lt;a class="anchor" href="#%e7%bb%9f%e4%b8%80%e8%a7%84%e8%8c%83"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;ol&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;同一请求生命周期&lt;/strong&gt;内的 &lt;strong&gt;Metric / Log / Trace&lt;/strong&gt; 应共享以下 Attributes：&lt;/p&gt;</description></item><item><title>Labels / Attributes 规范</title><link>https://devflow.bei.com/document/docs/observability/standard/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/observability/standard/</guid><description>&lt;h1 id="标签使用规范"&gt;标签使用规范&lt;a class="anchor" href="#%e6%a0%87%e7%ad%be%e4%bd%bf%e7%94%a8%e8%a7%84%e8%8c%83"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;h2 id="otel-自动注入的-attributes"&gt;OTel 自动注入的 Attributes&lt;a class="anchor" href="#otel-%e8%87%aa%e5%8a%a8%e6%b3%a8%e5%85%a5%e7%9a%84-attributes"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;这些字段由 OpenTelemetry SDK 或 Collector 自动采集，&lt;strong&gt;服务代码中不需要手动设置&lt;/strong&gt;。&lt;/p&gt;</description></item><item><title>Labels / Attributes 规范</title><link>https://devflow.bei.com/document/docs/observability/standard/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/observability/standard/</guid><description>&lt;h1 id="-标签使用规范"&gt;🏷️ 标签使用规范&lt;a class="anchor" href="#-%e6%a0%87%e7%ad%be%e4%bd%bf%e7%94%a8%e8%a7%84%e8%8c%83"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;span class="df-badge"&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/opentelemetry.svg" alt="OpenTelemetry" loading="lazy" /&gt;
+ OTel&lt;/span&gt; &lt;span class="df-badge"&gt;Metrics&lt;/span&gt; &lt;span class="df-badge"&gt;Logs&lt;/span&gt; &lt;span class="df-badge"&gt;Traces&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;DevFlow 的 Metrics、Traces、Logs 使用统一的标签体系，确保三者可以互相关联。&lt;/p&gt;
 &lt;p&gt;本文档定义了 &lt;strong&gt;Metric / Trace / Log&lt;/strong&gt; 的标准 Labels / Attributes，用于统一收集、查询和关联数据。&lt;/p&gt;
 &lt;p&gt;其中 Labels / Attributes 主要分为两类：&lt;/p&gt;
@@ -1509,8 +1340,10 @@ Preview → Green(新, 3 Pod) ← 验证流量&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;
 &lt;li&gt;&lt;strong&gt;必选&lt;/strong&gt;：核心维度，用于聚合和拆分指标&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;可选&lt;/strong&gt;：辅助维度，可用于多集群、多环境、灰度或团队统计&lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2 id="metrics指标标签"&gt;Metrics（指标）标签&lt;a class="anchor" href="#metrics%e6%8c%87%e6%a0%87%e6%a0%87%e7%ad%be"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;blockquote class='book-hint '&gt;
+&lt;p&gt;&lt;strong&gt;来源标注&lt;/strong&gt;：本文档中字段来源分为两类 — &lt;code&gt;🤖 OTel 自动&lt;/code&gt;（SDK/Collector 自动注入，无需代码改动）和 &lt;code&gt;✍️ 手动添加&lt;/code&gt;（需在代码中显式设置）。&lt;/p&gt;
+&lt;/blockquote&gt;&lt;hr&gt;
+&lt;h2 id="-metrics指标标签"&gt;📈 Metrics（指标）标签&lt;a class="anchor" href="#-metrics%e6%8c%87%e6%a0%87%e6%a0%87%e7%ad%be"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;用于统计和聚合指标数据&lt;/strong&gt;&lt;/p&gt;
 &lt;h3 id="必选-labels"&gt;必选 Labels&lt;a class="anchor" href="#%e5%bf%85%e9%80%89-labels"&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;table&gt;
@@ -1618,24 +1451,58 @@ Preview → Green(新, 3 Pod) ← 验证流量&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;
 &lt;/table&gt;
 &lt;h3 id="不能作为标签的字段"&gt;不能作为标签的字段&lt;a class="anchor" href="#%e4%b8%8d%e8%83%bd%e4%bd%9c%e4%b8%ba%e6%a0%87%e7%ad%be%e7%9a%84%e5%ad%97%e6%ae%b5"&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;有些字段不适合做标签，因为值太多会导致存储爆炸：&lt;/p&gt;</description></item><item><title>部署步骤</title><link>https://devflow.bei.com/document/docs/deployment/guide/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/deployment/guide/</guid><description>&lt;h1 id="部署步骤"&gt;部署步骤&lt;a class="anchor" href="#%e9%83%a8%e7%bd%b2%e6%ad%a5%e9%aa%a4"&gt;#&lt;/a&gt;&lt;/h1&gt;
-&lt;p&gt;把 DevFlow 部署到自己的 Kubernetes 集群，总共需要 12 步。&lt;/p&gt;
+&lt;p&gt;把 DevFlow 部署到自己的 Kubernetes 集群，总共需要 11 步。&lt;/p&gt;
 &lt;blockquote class='book-hint '&gt;
 &lt;p&gt;如果你只是想&lt;strong&gt;体验&lt;/strong&gt; DevFlow，建议先用 Docker Compose 或 Kind 搭一个最小环境，不用一上来就生产级部署。&lt;/p&gt;
 &lt;/blockquote&gt;&lt;hr&gt;
-&lt;h2 id="部署前的灵魂拷问"&gt;部署前的灵魂拷问&lt;a class="anchor" href="#%e9%83%a8%e7%bd%b2%e5%89%8d%e7%9a%84%e7%81%b5%e9%ad%82%e6%8b%b7%e9%97%ae"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;在动手之前，先问自己几个问题：&lt;/p&gt;
+&lt;h2 id="先看这页怎么用"&gt;先看这页怎么用&lt;a class="anchor" href="#%e5%85%88%e7%9c%8b%e8%bf%99%e9%a1%b5%e6%80%8e%e4%b9%88%e7%94%a8"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;这页有两种读法：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;体验路径&lt;/strong&gt;：先看“部署前检查表”，再直接跳到每一步里的安装命令，最后执行“验证端到端流程”&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;生产路径&lt;/strong&gt;：按顺序完成全部 12 步，并保留可观测性、权限和仓库配置&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;如果你只想验证 &lt;strong&gt;Rolling&lt;/strong&gt; 发布，可以跳过 Argo Rollouts；如果你要验证 &lt;strong&gt;Canary&lt;/strong&gt;，还必须安装 Istio。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="部署前检查表"&gt;部署前检查表&lt;a class="anchor" href="#%e9%83%a8%e7%bd%b2%e5%89%8d%e6%a3%80%e6%9f%a5%e8%a1%a8"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;在动手之前，至少确认下面这些输入已经准备好：&lt;/p&gt;
+&lt;table&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th&gt;检查项&lt;/th&gt;
+ &lt;th&gt;为什么需要&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td&gt;Kubernetes 集群（1.30+）&lt;/td&gt;
+ &lt;td&gt;DevFlow 的运行底座&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;至少 3 个 Worker 节点&lt;/td&gt;
+ &lt;td&gt;给平台服务、数据库和周边组件留资源&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;一个 OCI Registry&lt;/td&gt;
+ &lt;td&gt;同时存镜像和部署包&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;一个对外访问域名&lt;/td&gt;
+ &lt;td&gt;暴露 DevFlow Console / API&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;一个 PostgreSQL 实例或安装方案&lt;/td&gt;
+ &lt;td&gt;meta/config/network/release 四个服务要落库&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;一个可访问的 Git 仓库示例应用&lt;/td&gt;
+ &lt;td&gt;用来验证端到端发布&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;还要想清楚几个决策：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;我的集群有几个 Worker 节点？DevFlow itself 需要跑 5 个服务 + PostgreSQL + Tekton + Istio，资源不够会很痛苦。&lt;/li&gt;
 &lt;li&gt;我需要 Canary 和 Blue-Green 吗？如果只需要 Rolling，可以跳过 Argo Rollouts 和 Istio 的部分步骤。&lt;/li&gt;
 &lt;li&gt;我的镜像仓库准备好了吗？DevFlow 需要同时存镜像和部署包（OCI artifact）。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;想清楚这些问题，部署过程会顺畅很多。&lt;/p&gt;
-&lt;hr&gt;
-&lt;h2 id="前置条件"&gt;前置条件&lt;a class="anchor" href="#%e5%89%8d%e7%bd%ae%e6%9d%a1%e4%bb%b6"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;在开始之前，你需要有一个 Kubernetes 集群（v1.30+），至少 3 个 Worker 节点。&lt;/p&gt;
-&lt;hr&gt;
-&lt;h2 id="第-1-步部署-istio"&gt;第 1 步：部署 Istio&lt;a class="anchor" href="#%e7%ac%ac-1-%e6%ad%a5%e9%83%a8%e7%bd%b2-istio"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;Istio 是流量治理的基础设施，Canary 和 Blue-Green 发布都依赖它。&lt;/p&gt;
-&lt;blockquote class='book-hint '&gt;
-&lt;p&gt;💡 &lt;strong&gt;为什么先装 Istio？&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;想象一下，你的应用是一栋公寓楼，Istio 就是楼里的智能电梯系统。没有它，每个住户（Pod）只能走楼梯串门，又慢又乱。有了 Istio，流量想去哪一层、坐哪部电梯，全部智能调度。Canary 发布就是靠这个电梯系统实现的：先让 10% 的住户坐新电梯试试，没问题再全员换。&lt;/p&gt;</description></item></channel></rss>
+&lt;p&gt;想清楚这些问题，部署过程会顺畅很多。&lt;/p&gt;</description></item></channel></rss>

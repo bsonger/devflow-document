@@ -3,13 +3,13 @@ title: "CD 架构"
 weight: 61
 ---
 
-# CD 架构
+# 🚀 CD 架构
 
 DevFlow 的 CD 不直接操作 Kubernetes，而是通过 **GitOps** 模式工作：release-service 生成部署包，推送到仓库，Argo CD 负责实际部署。
 
 ---
 
-## 为什么用 GitOps
+## 🧠 为什么用 GitOps
 
 传统的部署方式是"告诉 K8s 该怎么做"，DevFlow 的方式是"告诉 Argo CD 期望状态是什么，让它自己同步"。
 
@@ -20,7 +20,7 @@ DevFlow 的 CD 不直接操作 Kubernetes，而是通过 **GitOps** 模式工作
 
 ---
 
-## 数据流
+## 🔄 数据流
 
 ```mermaid
 sequenceDiagram
@@ -57,7 +57,7 @@ sequenceDiagram
 
 ---
 
-## 与旧架构的区别
+## 🆚 与旧架构的区别
 
 DevFlow 早期版本是直接操作 K8s 的，现在改成了 GitOps：
 

@@ -3,13 +3,15 @@ title: "Manifest 与 Release"
 weight: 46
 ---
 
-# Manifest 与 Release
+# 🧊 Manifest 与 Release
+
+<span class="df-badge">Immutable Snapshot</span> <span class="df-badge">Build vs Deploy</span> <span class="df-badge">Rollback</span>
 
 Manifest 和 Release 是 DevFlow 最核心的设计。理解它们，就理解了 DevFlow 为什么能做到**安全发布、一键回滚**。
 
 ---
 
-## 问题背景
+## ❓ 问题背景
 
 传统的发布方式有什么问题？
 
@@ -24,7 +26,7 @@ DevFlow 的解决方案是：**发布前冻结两份不可变快照**。
 
 ---
 
-## Manifest — 构建前快照
+## 🧾 Manifest — 构建前快照
 
 Manifest 记录了**构建时刻**的应用完整状态。
 
@@ -51,7 +53,7 @@ Manifest 就像一张照片：拍的是应用在某个代码版本的样子。�
 
 ---
 
-## Release — 部署前快照
+## 🎫 Release — 部署前快照
 
 Release 记录了**部署时刻**的完整状态，绑定了一个 Manifest 和一个目标环境。
 

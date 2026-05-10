@@ -1,0 +1,4 @@
+{{- $name := .Get "name" -}}
+{{- $alt := .Get "alt" | default $name -}}
+{{- $class := .Get "class" | default "df-inline-icon" -}}
+<img class="{{ $class }}" src="{{ (printf "icons/brands/%s.svg" $name) | relURL }}" alt="{{ $alt }}" loading="lazy" />

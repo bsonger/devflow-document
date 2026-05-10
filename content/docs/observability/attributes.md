@@ -3,7 +3,7 @@ title: "公共 Attributes"
 weight: 72
 ---
 
-# 公共 Attributes
+# 🏷️ 公共 Attributes
 
 DevFlow 的所有服务使用统一的标签（Attributes），这样 Metrics、Logs、Traces 才能互相关联。
 
@@ -21,37 +21,109 @@ DevFlow 的所有服务使用统一的标签（Attributes），这样 Metrics、
 
 ---
 
-## 服务相关 Attributes（公共）
+## 字段来源说明
 
-| Key | 类型 | 说明 | 示例 | 适用类型 |
-|-----|-----|-----|-----|---------|
-| `service.name` | string | 服务名称 | `devflow` | Metric / Log / Trace |
-| `service.version` | string | 服务版本 | `v1.2.3` | Metric / Log / Trace |
-| `service.instance.id` | string | 服务实例 ID 或 Pod 名称 | `devflow-abc123` | Metric / Log / Trace |
-| `service.namespace` | string | 服务命名空间 | `payments`| Metric / Log / Trace |
-| `deployment.environment` | string | 部署环境 | `prod` / `staging` / `dev` | Metric / Log / Trace |
+DevFlow 的 Attributes 来自两个渠道：
+
+| 来源 | 说明 | 谁负责 | 是否需要代码改动 |
+|------|------|--------|-----------------|
+| **OTel 自动采集** | OpenTelemetry SDK / Collector 自动注入 | 基础设施（SRE/平台组） | ❌ 不需要 |
+| **服务自行添加** | 开发者在代码中显式设置 | 各服务团队 | ✅ 需要 |
+
+### 快速对照表
+
+| 字段 | 来源 | 谁来配置 |
+|------|------|---------|
+| `service.name` / `service.version` / `service.instance.id` | OTel SDK 自动从环境变量读取 | 基础设施配置环境变量 |
+| `k8s.*`（Pod、Namespace、Node 等） | OTel Collector `k8sattributes` Processor 自动采集 | 基础设施配置 Collector |
+| `http.*`（method、route、status_code 等） | OTel HTTP Instrumentation 自动从请求中采集 | ❌ 自动 |
+| `span.*` / `trace.id` | OTel SDK 自动生成 | ❌ 自动 |
+| `devflow.*`（project、application、environment、release 等） | 服务代码中手动设置 | **各服务开发者** |
+| `db.*`（system、statement、operation） | 服务代码中手动设置（或使用 ORM 插件自动） | **各服务开发者** |
+| `messaging.*`（system、destination、operation） | 服务代码中手动设置（或使用消息队列插件自动） | **各服务开发者** |
 
 ---
 
-## Kubernetes 相关 Attributes（公共）
+## OTel 自动注入的 Attributes
 
-| Key | 类型 | 说明 | 示例 | 适用类型 |
-|-----|-----|-----|-----|---------|
-| `k8s.cluster.name` | string | 集群名称 | `cluster-prod` | Metric / Log / Trace |
-| `k8s.namespace.name` | string | Pod 所在命名空间 | `applications` | Metric / Log / Trace |
-| `k8s.pod.name` | string | Pod 名称 | `devflow-12345` | Metric / Log / Trace |
-| `k8s.container.name` | string | 容器名称 | `devflow` | Metric / Log / Trace |
-| `k8s.node.name` | string | 节点名称 | `node-01` | Metric / Log / Trace |
+这些字段由 OpenTelemetry SDK 或 Collector 自动采集，**服务代码中不需要手动设置**。
+
+### 服务资源信息（Resource Attributes）
+
+OTel SDK 启动时会自动从环境变量、K8s Downward API 等渠道采集：
+
+| Key | 类型 | 说明 | 示例 | 注入方式 |
+|-----|-----|-----|------|---------|
+| `service.name` | string | 服务名称 | `meta-service` | `OTEL_SERVICE_NAME` 环境变量 |
+| `service.version` | string | 服务版本 | `v1.2.3` | `OTEL_RESOURCE_ATTRIBUTES` 环境变量 |
+| `service.instance.id` | string | Pod 名称 | `meta-service-abc123` | K8s Downward API 自动注入 |
+| `service.namespace` | string | 服务命名空间 | `devflow` | `OTEL_RESOURCE_ATTRIBUTES` 环境变量 |
+| `deployment.environment` | string | 部署环境 | `prod` / `staging` | `OTEL_RESOURCE_ATTRIBUTES` 环境变量 |
+
+### Kubernetes 信息（Resource Attributes）
+
+OTel Collector 的 `k8sattributes` Processor 会自动从 K8s API 采集：
+
+| Key | 类型 | 说明 | 示例 |
+|-----|-----|-----|------|
+| `k8s.cluster.name` | string | 集群名称 | `cluster-prod` |
+| `k8s.namespace.name` | string | Pod 所在命名空间 | `devflow` |
+| `k8s.pod.name` | string | Pod 名称 | `meta-service-12345` |
+| `k8s.container.name` | string | 容器名称 | `meta-service` |
+| `k8s.node.name` | string | 节点名称 | `node-01` |
+
+### HTTP 请求信息（Span Attributes）
+
+OTel HTTP Instrumentation 自动从请求中采集：
+
+| Key | 类型 | 说明 | 示例 |
+|-----|-----|-----|------|
+| `http.method` | string | HTTP 方法 | `GET` |
+| `http.route` | string | 请求路由模板 | `/api/v1/meta/projects` |
+| `http.status_code` | int | 响应状态码 | `200` |
+| `http.url` | string | 完整请求 URL | `https://devflow.bei.com/api/v1/meta/projects` |
+
+### Span 链路信息（Span Attributes）
+
+OTel SDK 自动为每个 Span 生成：
+
+| Key | 类型 | 说明 | 示例 |
+|-----|-----|-----|------|
+| `span.kind` | string | Span 类型 | `server` / `client` / `internal` |
+| `span.id` | string | 当前 Span ID | `a1b2c3d4e5f6` |
+| `trace.id` | string | Trace ID | `abc123def456` |
 
 ---
 
-## 请求信息
+## 服务自行添加的 Attributes
 
-| 标签 | 例子 | 说明 |
-|------|------|------|
-| `http.method` | GET | HTTP 方法 |
-| `http.route` | /api/v1/meta/projects | 请求路径 |
-| `http.status_code` | 200 | 响应状态码 |
+这些字段需要在**代码中显式设置**，OTel 不会自动采集。
+
+### 业务上下文
+
+| Key | 类型 | 说明 | 示例 | 添加位置 |
+|-----|-----|-----|------|---------|
+| `devflow.project.id` | string | Project ID | `proj-123` | 接口入口 Span |
+| `devflow.application.id` | string | Application ID | `app-456` | 接口入口 Span |
+| `devflow.environment.id` | string | Environment ID | `env-789` | 接口入口 Span |
+| `devflow.release.id` | string | Release ID | `rel-abc` | 发布相关 Span |
+| `devflow.user.id` | string | 操作者用户 ID | `user-001` | 接口入口 Span |
+
+### 数据库操作
+
+| Key | 类型 | 说明 | 示例 | 添加位置 |
+|-----|-----|-----|------|---------|
+| `db.system` | string | 数据库类型 | `postgresql` | 数据库 Span |
+| `db.statement` | string | SQL 语句（脱敏） | `SELECT * FROM projects` | 数据库 Span |
+| `db.operation` | string | 操作类型 | `SELECT` / `INSERT` | 数据库 Span |
+
+### 队列/消息
+
+| Key | 类型 | 说明 | 示例 | 添加位置 |
+|-----|-----|-----|------|---------|
+| `messaging.system` | string | 消息系统 | `kafka` / `rabbitmq` | 消息 Span |
+| `messaging.destination` | string | 队列/Topic 名称 | `build-events` | 消息 Span |
+| `messaging.operation` | string | 操作类型 | `publish` / `receive` | 消息 Span |
 
 ---
 
@@ -71,9 +143,11 @@ DevFlow 的所有服务使用统一的标签（Attributes），这样 Metrics、
    - HTTP 相关字段加前缀 `http.`
    - 日志相关字段加前缀 `log.`
    - Span 相关字段加前缀 `span.`
+   - DevFlow 业务字段加前缀 `devflow.`
 
 3. **来源要求**：
-   - 所有 Attribute 应来源于 **环境变量** 或 **资源信息**，避免硬编码。
+   - OTel 自动注入的字段：**不要**在代码中重复设置
+   - 服务自行添加的字段：在关键 Span 上统一设置
 
 ---
 
@@ -87,7 +161,7 @@ DevFlow 的所有服务使用统一的标签（Attributes），这样 Metrics、
 
 ## 来源
 
-这些标签通过环境变量注入到服务中：
+OTel 自动注入的字段通过环境变量配置：
 
 ```yaml
 env:
@@ -95,4 +169,13 @@ env:
     value: "meta-service"
   - name: OTEL_RESOURCE_ATTRIBUTES
     value: "service.version=1.0.0,deployment.environment=production"
+```
+
+服务自行添加的字段在代码中设置（以 Go 为例）：
+
+```go
+span.SetAttributes(
+    attribute.String("devflow.project.id", projectID),
+    attribute.String("devflow.application.id", appID),
+)
 ```

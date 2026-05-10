@@ -3,13 +3,13 @@ title: "核心概念"
 weight: 40
 ---
 
-# 核心概念
+# 🧠 核心概念
 
 DevFlow 中有一些关键概念，理解它们就能理解整个平台的工作方式。
 
 ---
 
-## 概念地图
+## 🗺️ 概念地图
 
 ```mermaid
 graph TB
@@ -30,11 +30,11 @@ graph TB
 
 ---
 
-## 四个层级
+## 🪜 四个层级
 
 DevFlow 的资源模型分为四个层级，从大到小：
 
-### 第一层：Project（项目）
+### 第一层：📁 Project（项目）
 
 业务域的顶层组织。比如：
 
@@ -45,37 +45,33 @@ Project: 电商中台
   └─ 库存系统
 ```
 
-### 第二层：Application（应用）
+### 第二层：📦 Application（应用）
 
 一个可独立构建和部署的服务。比如：
 
 ```
 Application: order-service
   代码仓库: github.com/company/order-service
-  部署类型: Canary
 ```
 
-**部署类型**决定了这个应用默认用什么方式发布：
+当前实现里，`Application` 主要负责保存元数据（项目归属、名称、仓库地址、描述、标签）。
 
-| 类型 | 含义 |
-|------|------|
-| normal | 滚动更新 |
-| canary | 灰度发布 |
-| blue-green | 蓝绿部署 |
+发布策略不固化在 `Application` 上，而是在创建 `Release` 时指定。
 
-### 第三层：Environment（环境）
+### 第三层：🌍 Environment（环境）
 
 应用运行的逻辑环境。比如：
 
 ```
 Environment: test
   所在集群: dev-cluster
-  命名空间: order-test
 ```
 
 常见环境：开发（dev）、测试（test）、预发布（staging）、生产（prod）。
 
-### 第四层：ApplicationEnvironment（应用-环境绑定）
+> 当前实现里，`Environment` 主要表达环境名称和目标集群绑定，不把 `namespace` 作为用户可写字段。
+
+### 第四层：🔗 ApplicationEnvironment（应用-环境绑定）
 
 一个应用部署到一个环境，就形成了绑定关系。这个绑定是配置差异的载体：
 
@@ -87,7 +83,7 @@ order-service + test 环境 = order-service-test
 
 ---
 
-## 配置与网络的分层
+## 🧩 配置与网络的分层
 
 理解了上面的层级，配置和网络的分层就好理解了：
 
@@ -98,7 +94,7 @@ order-service + test 环境 = order-service-test
 
 ### 随环境变化的（属于 ApplicationEnvironment）
 
-- **AppConfig** — 这个环境下的数据库地址、日志级别
+- **AppConfig** — 这个环境下的配置来源、挂载位置和同步结果
 - **Route** — 这个环境下的域名、HTTPS 证书
 
 ```mermaid
@@ -109,13 +105,13 @@ graph TB
     A --> WL[WorkloadConfig<br/>副本数、资源、探针]
     A --> S[Service<br/>端口拓扑]
 
-    AE --> AC[AppConfig<br/>数据库地址、日志级别]
+    AE --> AC[AppConfig<br/>配置来源、挂载位置]
     AE --> R[Route<br/>域名、证书]
 ```
 
 ---
 
-## 发布的两个快照
+## 🧊 发布的两个快照
 
 DevFlow 最核心的设计是**冻结点** — 发布过程中创建两份不可变快照：
 
@@ -157,16 +153,16 @@ graph LR
 - Release 绑定特定环境（测试配置和生产配置不一样）
 - 出了问题回滚时，回滚的是 Release 快照，完全可重现
 
-## 概念速查表
+## 📚 概念速查表
 
-| 概念 | 一句话解释 | 类比 |
+| 🧠 概念 | 💬 一句话解释 | 🪞 类比 |
 |------|-----------|------|
 | Project | 项目，组织多个应用 | 文件夹 |
 | Application | 单个可部署的服务 | 文件 |
 | Environment | 运行环境 | 运行环境（dev/test/prod）|
 | Cluster | Kubernetes 集群 | 物理机器 |
 | WorkloadConfig | 应用级运行时基线 | 出厂设置 |
-| AppConfig | 环境级配置差异 | 环境适配器 |
+| AppConfig | 环境级配置来源记录 | 环境适配器 |
 | Service | 应用暴露的端口 | 插座 |
 | Route | 外部流量入口规则 | 门牌号 |
 | Manifest | 构建前冻结快照 | 照片 |

@@ -5,17 +5,39 @@ weight: 81
 
 # 部署步骤
 
-把 DevFlow 部署到自己的 Kubernetes 集群，总共需要 12 步。
+把 DevFlow 部署到自己的 Kubernetes 集群，总共需要 11 步。
 
 > 如果你只是想**体验** DevFlow，建议先用 Docker Compose 或 Kind 搭一个最小环境，不用一上来就生产级部署。
 
 ---
 
-## 部署前的灵魂拷问
+## 先看这页怎么用
 
-在动手之前，先问自己几个问题：
+这页有两种读法：
 
-- 我的集群有几个 Worker 节点？DevFlow  itself 需要跑 5 个服务 + PostgreSQL + Tekton + Istio，资源不够会很痛苦。
+1. **体验路径**：先看“部署前检查表”，再直接跳到每一步里的安装命令，最后执行“验证端到端流程”
+2. **生产路径**：按顺序完成全部 12 步，并保留可观测性、权限和仓库配置
+
+如果你只想验证 **Rolling** 发布，可以跳过 Argo Rollouts；如果你要验证 **Canary**，还必须安装 Istio。
+
+---
+
+## 部署前检查表
+
+在动手之前，至少确认下面这些输入已经准备好：
+
+| 检查项 | 为什么需要 |
+|------|-----------|
+| Kubernetes 集群（1.30+） | DevFlow 的运行底座 |
+| 至少 3 个 Worker 节点 | 给平台服务、数据库和周边组件留资源 |
+| 一个 OCI Registry | 同时存镜像和部署包 |
+| 一个对外访问域名 | 暴露 DevFlow Console / API |
+| 一个 PostgreSQL 实例或安装方案 | meta/config/network/release 四个服务要落库 |
+| 一个可访问的 Git 仓库示例应用 | 用来验证端到端发布 |
+
+还要想清楚几个决策：
+
+- 我的集群有几个 Worker 节点？DevFlow itself 需要跑 5 个服务 + PostgreSQL + Tekton + Istio，资源不够会很痛苦。
 - 我需要 Canary 和 Blue-Green 吗？如果只需要 Rolling，可以跳过 Argo Rollouts 和 Istio 的部分步骤。
 - 我的镜像仓库准备好了吗？DevFlow 需要同时存镜像和部署包（OCI artifact）。
 
@@ -76,7 +98,7 @@ kubectl create namespace argocd
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v3.2.2/manifests/install.yaml
 ```
 
-配置 OCI Registry 访问权限，让 Argo CD 能拉取部署包：
+配置 {{< brand-icon name="zot" alt="Zot" >}} OCI Registry 访问权限，让 Argo CD 能拉取部署包：
 
 ```yaml
 apiVersion: v1
@@ -382,24 +404,48 @@ helm install grafana grafana/grafana \
 恭喜！如果你走到这一步，DevFlow 已经跑起来了。现在用 curl 走一遍完整的发布流程，就像新车提车后第一次上路——确认油门、刹车、方向盘都正常。
 
 ```bash
+export DEVFLOW_BASE_URL="https://devflow.bei.com"
+export DEVFLOW_TOKEN="<your-token>"
+
 # 1. 创建项目
-curl -X POST https://devflow.bei.com/api/v1/meta/projects \
+curl -X POST "$DEVFLOW_BASE_URL/api/v1/meta/projects" \
+  -H "Authorization: Bearer $DEVFLOW_TOKEN" \
+  -H "Content-Type: application/json" \
   -d '{"name":"demo"}'
 
 # 2. 注册应用
-curl -X POST https://devflow.bei.com/api/v1/meta/applications \
-  -d '{"name":"hello","repo_url":"github.com/example/hello","type":"Rolling"}'
+curl -X POST "$DEVFLOW_BASE_URL/api/v1/meta/applications" \
+  -H "Authorization: Bearer $DEVFLOW_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"project_id":"proj-001","name":"hello","repo_address":"github.com/example/hello"}'
 
 # 3. 创建环境
-curl -X POST https://devflow.bei.com/api/v1/meta/environments \
-  -d '{"name":"test","cluster_id":"cluster-001","namespace":"test"}'
+curl -X POST "$DEVFLOW_BASE_URL/api/v1/meta/environments" \
+  -H "Authorization: Bearer $DEVFLOW_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"name":"test","cluster_id":"cluster-001"}'
 
-# 4. 发起发布
-curl -X POST https://devflow.bei.com/api/v1/release/releases \
-  -d '{"manifest_id":"m-001","environment_id":"env-001","strategy":"Rolling"}'
+# 4. 创建应用和环境绑定
+curl -X POST "$DEVFLOW_BASE_URL/api/v1/meta/applications/app-001/environments" \
+  -H "Authorization: Bearer $DEVFLOW_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"environment_id":"env-001"}'
 
-# 5. 查看状态
-curl https://devflow.bei.com/api/v1/release/releases/rel-001
+# 5. 创建 Manifest
+curl -X POST "$DEVFLOW_BASE_URL/api/v1/release/manifests" \
+  -H "Authorization: Bearer $DEVFLOW_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"application_id":"app-001","git_revision":"main"}'
+
+# 6. 创建 Release
+curl -X POST "$DEVFLOW_BASE_URL/api/v1/release/releases" \
+  -H "Authorization: Bearer $DEVFLOW_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"manifest_id":"m-001","environment_id":"env-001","strategy":"rolling"}'
+
+# 7. 查看状态
+curl "$DEVFLOW_BASE_URL/api/v1/release/releases/rel-001" \
+  -H "Authorization: Bearer $DEVFLOW_TOKEN"
 ```
 
 如果 Release 状态从 Pending → Running → Completed，说明部署成功。🎉
@@ -408,26 +454,3 @@ curl https://devflow.bei.com/api/v1/release/releases/rel-001
 > - Tekton 的 PipelineRun 是不是成功了？（`kubectl get pipelinerun -n tekton-pipelines`）
 > - Argo CD 的 Application 是不是同步了？（Argo CD UI 里看）
 > - runtime-service 有没有权限问题？（看 Pod 日志）
-
-```bash
-# 1. 创建项目
-curl -X POST https://devflow.bei.com/api/v1/meta/projects \
-  -d '{"name":"demo"}'
-
-# 2. 注册应用
-curl -X POST https://devflow.bei.com/api/v1/meta/applications \
-  -d '{"name":"hello","repo_url":"github.com/example/hello","type":"Rolling"}'
-
-# 3. 创建环境
-curl -X POST https://devflow.bei.com/api/v1/meta/environments \
-  -d '{"name":"test","cluster_id":"cluster-001","namespace":"test"}'
-
-# 4. 发起发布
-curl -X POST https://devflow.bei.com/api/v1/release/releases \
-  -d '{"manifest_id":"m-001","environment_id":"env-001","strategy":"Rolling"}'
-
-# 5. 查看状态
-curl https://devflow.bei.com/api/v1/release/releases/rel-001
-```
-
-如果 Release 状态从 Pending → Running → Completed，说明部署成功。

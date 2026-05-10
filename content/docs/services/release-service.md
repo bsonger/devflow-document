@@ -3,7 +3,7 @@ title: "release-service"
 weight: 34
 ---
 
-# release-service
+# 🚀 release-service
 
 **发布经理** — 发布全流程的编排者。从你在 Console 上点"发布"按钮，到应用真正跑在 Kubernetes 上，全是 release-service 在操心。
 
@@ -15,38 +15,28 @@ release-service 管理四样东西：
 
 ### Manifest — 构建前快照
 
-发布开始时，release-service 先把当前应用的完整状态"拍一张照片"保存下来：
+发布开始时，release-service 先把当前应用的完整状态冻结成一份不可变的快照（代码版本、镜像、基础配置、网络拓扑）。
 
-- 代码版本（git revision + commit hash）
-- 构建出来的镜像
-- 基础配置（WorkloadConfig）
-- 网络拓扑（Service）
-
-这张照片一旦拍下就**不能再改**。它记录了"这个应用在构建时刻长什么样"。
+> 详细概念见 [Manifest 与 Release](../../concepts/manifest-release/)。
 
 ### Release — 部署前快照
 
-构建成功后，release-service 再拍第二张照片：
+构建成功后，release-service 再创建第二份快照，绑定 Manifest 和目标环境。
 
-- 关联的 Manifest（哪次构建）
-- 目标环境（发到哪）
-- 环境配置（AppConfig）
-- 网络规则（Route）
-- 发布策略（Rolling / Canary / Blue-Green）
+> 详细概念见 [Manifest 与 Release](../../concepts/manifest-release/)。
 
-这张照片也**不能再改**。它记录了"这次发布的完整上下文"。
+### Intent — 执行意图
 
-### Intent — 发布意图
-
-记录"谁、为什么、什么时候"发起的发布：
+记录异步执行流程的运行状态：
 
 ```
-发布人: 张三
-原因: 修复支付回调超时问题
-时间: 2026-01-15 14:30
+kind: release
+status: Running
+claimed_by: release-worker-1
+attempt_count: 1
 ```
 
-用于审计和追溯。
+用于观察 build / release 这类异步执行任务的状态、租约、重试和错误信息。
 
 ### Image — 镜像信息
 
@@ -66,8 +56,8 @@ release-service 管理四样东西：
 
 release-service 先去找其他服务打听情况：
 
-> "meta-service，order-service 的代码仓库在哪？生产环境在哪个集群？"  
-> "config-service，order-service 的基础配置是什么？生产环境的特殊配置是什么？"  
+> "meta-service，order-service 的代码仓库在哪？生产环境在哪个集群？"
+> "config-service，order-service 的基础配置是什么？生产环境的特殊配置是什么？"
 > "network-service，order-service 暴露了哪些端口？生产环境的域名是什么？"
 
 ### 第二步：冻结 Manifest
@@ -121,7 +111,7 @@ WorkloadConfig（3 副本、1Gi 内存）
 
 runtime-service 盯着 Kubernetes，实时把发布进度回写给 release-service：
 
-> "新版本 3/10 个 Pod 已经 Ready"  
+> "新版本 3/10 个 Pod 已经 Ready"
 > "Canary 10% 流量切换完成"
 
 你在 Console 上看到的进度条，数据来源就是这里。
@@ -158,16 +148,14 @@ release-service 支持三种发布策略，在 Release 创建时确定：
 
 ### 快照 = 可追溯
 
-传统发布最大的痛点是"不知道当时到底发了什么"。配置可能被中途改过，镜像 tag 可能记不清。
-
-DevFlow 的解决方案是：**发布前先冻结两份不可变快照**。出了问题，你总能精确知道当时的状态。
+传统发布最大的痛点是"不知道当时到底发了什么"。DevFlow 通过两份不可变快照解决这个问题。详情见 [Manifest 与 Release](../../concepts/manifest-release/)。
 
 ### 异步 = 不卡主流程
 
 构建可能要 10 分钟，部署可能要 5 分钟。release-service 不会傻等，而是：
 
-1. 触发构建后立刻返回 Release ID
-2. 构建完成后自动继续下一步
+1. 先创建 Manifest，触发构建
+2. 再基于 Manifest 创建 Release
 3. 每个阶段的状态都写到 Release 记录里
 
 你可以随时查询进度，不用守着屏幕等。

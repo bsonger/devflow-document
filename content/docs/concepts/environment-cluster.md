@@ -3,7 +3,7 @@ title: "Environment 与 Cluster"
 weight: 42
 ---
 
-# Environment 与 Cluster
+# 🌍 Environment 与 Cluster
 
 ## Cluster — Kubernetes 集群
 
@@ -34,22 +34,22 @@ Environment 是一个**逻辑运行环境**，比如开发、测试、预发布�
 ```yaml
 名称: production
 所在集群: prod-cluster
-命名空间: order-prod
 ```
 
 ```yaml
 名称: test
 所在集群: dev-cluster
-命名空间: order-test
 ```
 
 ### 环境隔离
 
 Environment 通过三种机制实现隔离：
 
-1. **命名空间隔离** — 每个 Environment 对应一个 Kubernetes namespace
-2. **配置隔离** — AppConfig 和 Route 属于 ApplicationEnvironment，不同环境完全独立
-3. **网络隔离** — 不同环境的 Route 绑定不同的域名和证书
+1. **集群绑定隔离** — 每个 Environment 绑定一个目标 Cluster
+2. **配置隔离** — AppConfig 和 Route 跟随应用-环境关系表达环境差异
+3. **网络隔离** — 不同环境可以绑定不同的访问入口
+
+> 当前 `devflow-service` 实现里，`Environment` 本身**不接受用户写入 `namespace` 字段**。
 
 ---
 
@@ -125,5 +125,5 @@ graph TB
 
 **规则**：
 - 一个 Cluster 可以承载多个 Environment
-- 一个 Environment 只能属于一个 Cluster（但可以跨集群扩展）
-- 不同 Environment 使用不同的 namespace 隔离
+- 一个 Environment 只能属于一个 Cluster
+- 当前实现以环境元数据和集群绑定为主，不把 namespace 作为 Environment 的用户输入字段

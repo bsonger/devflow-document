@@ -3,9 +3,11 @@ title: "Service 与 Route"
 weight: 45
 ---
 
-# Service 与 Route
+# 🌐 Service 与 Route
 
-## Service — 应用的网络拓扑
+<span class="df-badge">{{< brand-icon name="kubernetes" alt="Kubernetes" >}} Service</span> <span class="df-badge">{{< brand-icon name="istio" alt="Istio" >}} Route</span> <span class="df-badge">Env Aware</span>
+
+## 🔌 Service — 应用的网络拓扑
 
 **Service** 定义了应用暴露了哪些端口，用什么协议。
 
@@ -52,7 +54,7 @@ Service 是应用的固有属性。不管部署到测试还是生产，应用暴
 
 ---
 
-## Route — 环境的入口规则
+## 🚪 Route — 环境的入口规则
 
 **Route** 定义了外部流量怎么访问到这个应用的这个环境。
 

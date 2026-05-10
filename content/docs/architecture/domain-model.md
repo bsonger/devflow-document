@@ -78,8 +78,8 @@ Project: 电商中台
 
 ```
 Cluster: prod-cluster
-  └─ Environment: production (namespace: order-prod)
-  └─ Environment: staging (namespace: order-staging)
+  └─ Environment: production
+  └─ Environment: staging
 ```
 
 **ApplicationEnvironment** 是应用和环境的"绑定关系"，它承载了环境专属的配置：
@@ -97,7 +97,7 @@ order-service + production = order-service-prod
 | 资源 | 属于 | 用途 | 随环境变化 |
 |------|------|------|-----------|
 | **WorkloadConfig** | Application | 副本数、资源、探针 | 否 |
-| **AppConfig** | ApplicationEnvironment | 数据库地址、日志级别 | 是 |
+| **AppConfig** | ApplicationEnvironment | 配置来源、挂载目录、同步结果 | 是 |
 | **Service** | Application | 暴露哪些端口 | 否 |
 | **Route** | ApplicationEnvironment | 域名、证书 | 是 |
 

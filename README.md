@@ -19,7 +19,7 @@ DevFlow 官方文档站点，使用 [Hugo](https://gohugo.io/) + [hugo-book](htt
 
 ### 前置要求
 
-- [Hugo Extended](https://gohugo.io/installation/) v0.120+
+- [Hugo Extended](https://gohugo.io/installation/) v0.154+
 
 ### 启动开发服务器
 

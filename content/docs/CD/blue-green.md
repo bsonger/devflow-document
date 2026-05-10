@@ -3,13 +3,15 @@ title: "Blue-Green 发布"
 weight: 65
 ---
 
-# Blue-Green 发布
+# 🔵🟢 Blue-Green 发布
+
+<span class="df-badge">Zero Downtime</span> <span class="df-badge">Preview</span> <span class="df-badge">Fast Rollback</span>
 
 **Blue-Green（蓝绿部署）** 是最稳妥的发布方式。它同时维护两套完整实例，验证通过后瞬时切换流量。就像走天桥，旧路和新路同时在，随时可以退回来。
 
 ---
 
-## 适合什么场景
+## 🎯 适合什么场景
 
 - 金融核心、关键交易
 - 必须零停机的业务
@@ -17,7 +19,7 @@ weight: 65
 
 ---
 
-## 原理
+## 🧠 原理
 
 ```mermaid
 graph TB
@@ -47,7 +49,7 @@ graph TB
 
 ---
 
-## 发布过程
+## 🚦 发布过程
 
 ### 阶段 1：部署新版本
 

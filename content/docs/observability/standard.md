@@ -3,7 +3,9 @@ title: "Labels / Attributes 规范"
 weight: 73
 ---
 
-# 标签使用规范
+# 🏷️ 标签使用规范
+
+<span class="df-badge">{{< brand-icon name="opentelemetry" alt="OpenTelemetry" >}} OTel</span> <span class="df-badge">Metrics</span> <span class="df-badge">Logs</span> <span class="df-badge">Traces</span>
 
 DevFlow 的 Metrics、Traces、Logs 使用统一的标签体系，确保三者可以互相关联。
 
@@ -13,9 +15,11 @@ DevFlow 的 Metrics、Traces、Logs 使用统一的标签体系，确保三者�
 - **必选**：核心维度，用于聚合和拆分指标
 - **可选**：辅助维度，可用于多集群、多环境、灰度或团队统计
 
+> **来源标注**：本文档中字段来源分为两类 — `🤖 OTel 自动`（SDK/Collector 自动注入，无需代码改动）和 `✍️ 手动添加`（需在代码中显式设置）。
+
 ---
 
-## Metrics（指标）标签
+## 📈 Metrics（指标）标签
 
 **用于统计和聚合指标数据**
 
@@ -64,7 +68,7 @@ DevFlow 的 Metrics、Traces、Logs 使用统一的标签体系，确保三者�
 
 ---
 
-## Traces（链路）标签
+## 🔗 Traces（链路）标签
 
 **用于分布式请求链路追踪**
 
@@ -141,7 +145,7 @@ DevFlow 的 Metrics、Traces、Logs 使用统一的标签体系，确保三者�
 
 ---
 
-## Logs（日志）标签
+## 📜 Logs（日志）标签
 
 **用于记录系统或业务日志**
 

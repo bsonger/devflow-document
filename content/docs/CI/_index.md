@@ -3,13 +3,15 @@ title: "持续集成"
 weight: 50
 ---
 
-# 持续集成（CI）
+# 🧪 持续集成（CI）
+
+<span class="df-badge">🏗️ Build</span> <span class="df-badge">🔐 Supply Chain</span> <span class="df-badge">{{< brand-icon name="zot" alt="Zot" >}} Registry</span>
 
 DevFlow 的 CI 基于 **Tekton Pipeline**。当你发起一次发布时，release-service 会自动触发构建流水线，把代码变成可信的容器镜像。
 
 ---
 
-## CI 在发布流程中的位置
+## 📍 CI 在发布流程中的位置
 
 ```mermaid
 graph LR
@@ -24,7 +26,7 @@ CI 是发布流程的第 3 步。只有构建成功，才会继续创建 Release
 
 ---
 
-## 标准 CI 流程
+## 🏭 标准 CI 流程
 
 一次完整的构建要走 10 个步骤：
 
@@ -73,9 +75,9 @@ graph LR
 
 ---
 
-## 质量门禁
+## 🚨 质量门禁
 
-| 检查项 | 失败后果 |
+| 🔍 检查项 | ⛔ 失败后果 |
 |--------|---------|
 | 静态扫描发现敏感信息 | 构建终止 |
 | 单元测试失败或覆盖率不足 | 构建终止 |
@@ -86,9 +88,9 @@ graph LR
 
 ---
 
-## 文档导航
+## 🧭 文档导航
 
-| 文档 | 内容 |
+| 📄 文档 | 📝 内容 |
 |------|------|
 | [CI 架构](architecture/) | Tekton 怎么和 DevFlow 配合 |
 | [标准流程](standard/) | 每个步骤的详细说明 |

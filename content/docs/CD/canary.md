@@ -3,7 +3,9 @@ title: "Canary 发布"
 weight: 64
 ---
 
-# Canary 发布
+# 🐤 Canary 发布
+
+<span class="df-badge">{{< brand-icon name="istio" alt="Istio" >}} Weighted Traffic</span> <span class="df-badge">📈 Metrics Gate</span> <span class="df-badge">⚡ Fast Rollback</span>
 
 **Canary（灰度发布）** 是 DevFlow 最推荐的发布方式。它的核心思想是：**先让一小部分用户试用新版本，验证没问题后再扩大范围**。
 
@@ -11,7 +13,7 @@ weight: 64
 
 ---
 
-## 适合什么场景
+## 🎯 适合什么场景
 
 - 核心 API、支付系统
 - 用户量大的前端服务
@@ -19,7 +21,7 @@ weight: 64
 
 ---
 
-## 原理
+## 🧠 原理
 
 ```mermaid
 graph TB
@@ -46,7 +48,7 @@ Istio 通过 VirtualService 的权重控制流量分配。Argo Rollouts 管理�
 
 ---
 
-## 灰度节奏
+## ⏱️ 灰度节奏
 
 默认的灰度节奏是四阶段：
 
@@ -61,7 +63,7 @@ Istio 通过 VirtualService 的权重控制流量分配。Argo Rollouts 管理�
 
 ---
 
-## 发布过程
+## 🚦 发布过程
 
 ```mermaid
 graph LR

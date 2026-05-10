@@ -3,13 +3,15 @@ title: "标准 CI 流程"
 weight: 52
 ---
 
-# 标准 CI 流程
+# 🏭 标准 CI 流程
+
+<span class="df-badge">{{< brand-icon name="tekton" alt="Tekton" >}} Tekton</span> <span class="df-badge">📜 SBOM</span> <span class="df-badge">✍️ Cosign</span> <span class="df-badge">{{< brand-icon name="zot" alt="Zot" >}} Zot</span>
 
 DevFlow 的标准 CI 流水线确保每个镜像在发布前都经过完整的安全和质量检查。
 
 ---
 
-## 流程概览
+## 🗺️ 流程概览
 
 ```mermaid
 graph LR
@@ -26,7 +28,7 @@ graph LR
 
 ---
 
-## 各阶段说明
+## 🔍 各阶段说明
 
 ### 1. 拉代码
 
@@ -89,7 +91,7 @@ graph LR
 
 ### 9. 推送仓库
 
-将镜像、SBOM 和签名推送到 OCI Registry（Zot）。
+将镜像、SBOM 和签名推送到 {{< brand-icon name="zot" alt="Zot" >}} OCI Registry（Zot）。
 
 ### 10. 通知 DevFlow
 
@@ -100,7 +102,7 @@ graph LR
 
 ---
 
-## 质量门禁总结
+## ✅ 质量门禁总结
 
 | 阶段 | 门禁条件 | 失败后果 |
 |------|---------|---------|

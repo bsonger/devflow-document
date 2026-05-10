@@ -3,7 +3,7 @@ title: "config-service"
 weight: 32
 ---
 
-# config-service
+# 🧪 config-service
 
 **配置专员** — 管理应用的运行时配置，确保不同环境的配置不会串台。
 
@@ -26,9 +26,9 @@ config-service 管理两层配置：
 
 定义应用**在不同环境下**的特殊配置：
 
-- 开发环境用开发数据库
-- 生产环境用生产数据库
-- 测试环境开 debug 日志，生产环境开 warn 日志
+- 配置挂载目录
+- 最近一次同步到的文件
+- 来源配置目录和来源 commit
 
 想象成给同一辆车配不同的轮胎：赛道用光头胎，雨天用雨胎。
 
@@ -39,33 +39,35 @@ config-service 管理两层配置：
 ```yaml
 replicas: 3
 resources:
-  limits:
-    cpu: "1000m"
-    memory: "1Gi"
-envs:
+  size_class: "medium"
+env:
   - name: SERVER_PORT
     value: "8080"
+metrics:
+  enabled: true
+  port: 9090
+  scrape_profile: "default"
 ```
 
-**order-service 在测试环境的差异（AppConfig）：**
+**order-service 在测试环境的 AppConfig 记录：**
 
 ```yaml
-config_data:
-  DB_HOST: "postgres-test.internal"
-  LOG_LEVEL: "debug"
-  FEATURE_FLAG_NEW_CHECKOUT: "true"
+application_id: order-service
+environment_id: test
+mount_path: /etc/config
+source_directory: ecommerce/order-service/test
 ```
 
-**order-service 在生产环境的差异（AppConfig）：**
+**order-service 在生产环境的 AppConfig 记录：**
 
 ```yaml
-config_data:
-  DB_HOST: "postgres-prod.internal"
-  LOG_LEVEL: "warn"
-  FEATURE_FLAG_NEW_CHECKOUT: "false"
+application_id: order-service
+environment_id: prod
+mount_path: /etc/config
+source_directory: ecommerce/order-service/prod
 ```
 
-发布时，DevFlow 自动把基础配置和环境差异**叠加**在一起，生成最终的 Kubernetes 配置。
+发布时，DevFlow 读取同步得到的文件内容，再和基础配置一起进入最终渲染。
 
 ## 为什么分层
 

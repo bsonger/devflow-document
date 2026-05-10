@@ -3,13 +3,15 @@ title: "发布生命周期"
 weight: 23
 ---
 
-# 发布生命周期
+# 🧭 发布生命周期
+
+<span class="df-badge">🧩 release-service</span> <span class="df-badge">{{< brand-icon name="tekton" alt="Tekton" >}} Tekton</span> <span class="df-badge">{{< brand-icon name="zot" alt="Zot" >}} Zot</span> <span class="df-badge">{{< brand-icon name="argocd" alt="Argo CD" >}} Argo CD</span> <span class="df-badge">👀 runtime-service</span>
 
 在 DevFlow 中发布一个应用，会经历 8 个阶段。理解这个流程，就能理解 DevFlow 是怎么保证发布安全可控的。
 
 ---
 
-## 整体流程
+## 🗺️ 整体流程
 
 ```mermaid
 graph LR
@@ -24,7 +26,7 @@ graph LR
 
 ---
 
-## 阶段 1：收集信息
+## 📥 阶段 1：收集信息
 
 **谁在干活**：release-service 问其他服务要资料
 
@@ -38,7 +40,7 @@ graph LR
 
 ---
 
-## 阶段 2：冻结构建快照（Manifest）
+## 🧊 阶段 2：冻结构建快照（Manifest）
 
 **谁在干活**：release-service
 
@@ -57,7 +59,7 @@ Manifest 一旦创建就**不能再改**。它记录了"这个应用在构建时
 
 ---
 
-## 阶段 3：构建镜像
+## 🏗️ 阶段 3：构建镜像
 
 **谁在干活**：Tekton Pipeline
 
@@ -76,7 +78,7 @@ Tekton 开始跑标准流水线：
 
 ---
 
-## 阶段 4：冻结部署快照（Release）
+## 🎫 阶段 4：冻结部署快照（Release）
 
 **谁在干活**：release-service
 
@@ -96,7 +98,7 @@ Release 也**不能再改**。它记录了"这次发布要部署到哪、用什�
 
 ---
 
-## 阶段 5：打包配置
+## 📦 阶段 5：打包配置
 
 **谁在干活**：release-service
 
@@ -122,7 +124,7 @@ WorkloadConfig（基础运行规格）
 
 ---
 
-## 阶段 6：推送到仓库
+## 📤 阶段 6：推送到仓库
 
 **谁在干活**：release-service → OCI Registry
 
@@ -134,7 +136,7 @@ release-service 把渲染好的部署包打包成 OCI artifact，推送到镜像
 
 ---
 
-## 阶段 7：部署到集群
+## 🚀 阶段 7：部署到集群
 
 **谁在干活**：Argo CD
 
@@ -153,13 +155,13 @@ Argo CD 开始干活：
 
 ---
 
-## 阶段 8：观察状态
+## 👀 阶段 8：观察状态
 
 **谁在干活**：runtime-service
 
 runtime-service 盯着 Kubernetes，实时看 Pod 的状态变化，然后回写给 release-service：
 
-> "新版本 3/10 个 Pod 已经 Ready"  
+> "新版本 3/10 个 Pod 已经 Ready"
 > "Canary 10% 流量切换完成，正在观察指标"
 
 你在 Console 上看到的发布进度条、Pod 状态、流量切换百分比，全部来自这里。
@@ -168,7 +170,7 @@ runtime-service 盯着 Kubernetes，实时看 Pod 的状态变化，然后回写
 
 ---
 
-## Release 状态机
+## 🔄 Release 状态机
 
 Release 从创建到完成，会经历以下状态：
 
@@ -203,7 +205,7 @@ stateDiagram-v2
 
 ---
 
-## 关键设计
+## 🧠 关键设计
 
 ### 为什么先冻结 Manifest，再冻结 Release？
 

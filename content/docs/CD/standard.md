@@ -3,7 +3,9 @@ title: "发布策略选型"
 weight: 62
 ---
 
-# 发布策略选型
+# 🧭 发布策略选型
+
+<span class="df-badge">Rolling</span> <span class="df-badge">Canary</span> <span class="df-badge">Blue-Green</span>
 
 选对发布策略，既能保证安全，又不浪费资源。这一页帮你做决定。
 
@@ -14,7 +16,7 @@ weight: 62
 
 ---
 
-## 三种策略对比
+## 📊 三种策略对比
 
 | 维度 | Rolling | Canary | Blue-Green |
 |------|---------|--------|------------|
@@ -27,7 +29,7 @@ weight: 62
 
 ---
 
-## 选型决策树
+## 🌲 选型决策树
 
 ```mermaid
 graph TD
@@ -44,7 +46,7 @@ graph TD
 
 ---
 
-## 场景化建议
+## 🎯 场景化建议
 
 | 场景 | 推荐 | 理由 |
 |------|------|------|
@@ -59,7 +61,7 @@ graph TD
 
 ---
 
-## 真实场景故事
+## 🧪 真实场景故事
 
 ### 场景一：小明的内部工具
 
