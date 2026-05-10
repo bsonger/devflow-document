@@ -68,17 +68,29 @@ Observability 里最容易混乱的一点，不是“字段叫什么”，而是
 
 ## 🧭 文档导航
 
+### 1. 先理解原则
+
 | 📄 文档 | 📝 内容 |
 |------|------|
-| [组件矩阵](component/) | 可观测性技术栈详细对比 |
-| [Attributes 规范](attributes/) | 统一的标签命名规范 |
-| [Labels 规范](standard/) | Metric / Trace / Log 的标准字段完整定义 |
+| [组件矩阵](component/) | 先看可观测性技术栈由哪些组件组成 |
+| [Attributes 规范](attributes/) | 先分清标签到底该配在哪一层 |
+| [Labels 规范](standard/) | 明确 Metric / Trace / Log 的字段标准 |
+| [信号标签矩阵](signal-label-matrix/) | 汇总 Metrics / Traces / Logs 需要哪些标签，以及这些标签该由谁维护 |
+
+### 2. 再做接入
+
+| 📄 文档 | 📝 内容 |
+|------|------|
 | [Collector 模板](collector/) | OTel Collector 的推荐配置模板 |
 | [Go 接入示例](go-example/) | Go 服务最小 OTel 接入示例 |
+| [OTel 接入检查清单](onboarding-checklist/) | 新服务接入 observability 的最小验收清单 |
 | [结构化日志规范](logging/) | DevFlow 日志字段与级别建议 |
 | [服务字段清单](service-checklist/) | 五大服务该打哪些关键观测字段 |
-| [OTel 接入检查清单](onboarding-checklist/) | 新服务接入 observability 的最小验收清单 |
+
+### 3. 最后看排障
+
+| 📄 文档 | 📝 内容 |
+|------|------|
 | [发布链路 Trace 示例](release-trace-example/) | 用一条完整发布链路说明 Trace / Log / Metric 如何串联排障 |
 | [Collector 生产排障 Runbook](collector-runbook/) | 线上 observability 断流、缺字段、延迟升高时的值班排障顺序 |
 | [发布失败排障剧本](release-failure-playbook/) | 按 Tekton / Render / OCI / Argo CD / Runtime 五段拆解发布失败排查 |
-| [信号标签矩阵](signal-label-matrix/) | 汇总 Metrics / Traces / Logs 需要哪些标签，以及这些标签该由谁维护 |

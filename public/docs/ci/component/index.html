@@ -1,33 +1,954 @@
-<!doctype html><html lang=zh-cn dir=ltr><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content='🧰 CI 用到哪些工具# Pipeline Security 📦 OCI Registry
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+<head><script src="/document/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=document/livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="🧰 CI 用到哪些工具# Pipeline Security 📦 OCI Registry
 DevFlow 的 CI 流水线依赖以下工具，每个负责一个具体环节。
-🧱 核心工具# Tekton Pipelines — 流水线引擎# CI 的"骨架"。定义流水线的结构：有哪些步骤、按什么顺序执行、步骤之间怎么共享数据。
-Tekton Triggers — 触发器# 接收 release-service 的 HTTP 请求，自动创建流水线执行实例。相当于 CI 的"入口门卫"。
+🧱 核心工具# Tekton Pipelines — 流水线引擎# CI 的&#34;骨架&#34;。定义流水线的结构：有哪些步骤、按什么顺序执行、步骤之间怎么共享数据。
+Tekton Triggers — 触发器# 接收 release-service 的 HTTP 请求，自动创建流水线执行实例。相当于 CI 的&#34;入口门卫&#34;。
 🏗️ Buildah — 镜像构建# 在容器里构建容器镜像，不需要 Docker Daemon。支持多阶段构建，可以做出很小的最终镜像。
-🔐 安全工具# 📜 Syft — SBOM 生成# 分析镜像里装了什么软件、什么版本，生成"软件物料清单"。出了问题可以追溯：「这个漏洞影响我们吗？影响哪些服务？」
+🔐 安全工具# 📜 Syft — SBOM 生成# 分析镜像里装了什么软件、什么版本，生成&#34;软件物料清单&#34;。出了问题可以追溯：「这个漏洞影响我们吗？影响哪些服务？」
 ✍️ Cosign — 镜像签名# 给镜像做数字签名，防止镜像被替换或篡改。就像给快递包裹贴防伪标签。
 🛡️ Trivy — 漏洞扫描# 扫描镜像里的已知安全漏洞。发现高危漏洞会直接阻断构建，不让有问题的镜像进入部署环节。
-🧰 工具清单# 工具 用途 是否必须 Tekton Pipelines 流水线编排 ✅ Tekton Triggers 事件触发 ✅ Buildah 镜像构建 ✅ Syft SBOM 生成 ✅ Cosign 镜像签名 ✅ Trivy 漏洞扫描 ✅ OpenTelemetry 链路追踪 ✅ Tekton Dashboard 流水线可视化 ❌（可选） 🏭 流水线示意图# Tekton Trigger 接收请求 ↓ 创建 PipelineRun ↓ ┌─────────────────────────────────────────────┐ │ 拉代码 → 扫描 → 测试 → 构建 → SBOM → 签名 → 再扫 │ └─────────────────────────────────────────────┘ ↓ 推送镜像到 OCI Registry ↓ 回调 release-service'><meta name=theme-color media="(prefers-color-scheme: light)" content="#ffffff"><meta name=theme-color media="(prefers-color-scheme: dark)" content="#343a40"><meta name=color-scheme content="light dark"><meta property="og:url" content="https://devflow.bei.com/document/docs/ci/component/"><meta property="og:site_name" content="DevFlow"><meta property="og:title" content="CI 组件矩阵"><meta property="og:description" content='🧰 CI 用到哪些工具# Pipeline Security 📦 OCI Registry
+🧰 工具清单# 工具 用途 是否必须 Tekton Pipelines 流水线编排 ✅ Tekton Triggers 事件触发 ✅ Buildah 镜像构建 ✅ Syft SBOM 生成 ✅ Cosign 镜像签名 ✅ Trivy 漏洞扫描 ✅ OpenTelemetry 链路追踪 ✅ Tekton Dashboard 流水线可视化 ❌（可选） 🏭 流水线示意图# Tekton Trigger 接收请求 ↓ 创建 PipelineRun ↓ ┌─────────────────────────────────────────────┐ │ 拉代码 → 扫描 → 测试 → 构建 → SBOM → 签名 → 再扫 │ └─────────────────────────────────────────────┘ ↓ 推送镜像到 OCI Registry ↓ 回调 release-service">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/document/docs/ci/component/">
+  <meta property="og:site_name" content="DevFlow">
+  <meta property="og:title" content="CI 组件矩阵">
+  <meta property="og:description" content="🧰 CI 用到哪些工具# Pipeline Security 📦 OCI Registry
 DevFlow 的 CI 流水线依赖以下工具，每个负责一个具体环节。
-🧱 核心工具# Tekton Pipelines — 流水线引擎# CI 的"骨架"。定义流水线的结构：有哪些步骤、按什么顺序执行、步骤之间怎么共享数据。
-Tekton Triggers — 触发器# 接收 release-service 的 HTTP 请求，自动创建流水线执行实例。相当于 CI 的"入口门卫"。
+🧱 核心工具# Tekton Pipelines — 流水线引擎# CI 的&#34;骨架&#34;。定义流水线的结构：有哪些步骤、按什么顺序执行、步骤之间怎么共享数据。
+Tekton Triggers — 触发器# 接收 release-service 的 HTTP 请求，自动创建流水线执行实例。相当于 CI 的&#34;入口门卫&#34;。
 🏗️ Buildah — 镜像构建# 在容器里构建容器镜像，不需要 Docker Daemon。支持多阶段构建，可以做出很小的最终镜像。
-🔐 安全工具# 📜 Syft — SBOM 生成# 分析镜像里装了什么软件、什么版本，生成"软件物料清单"。出了问题可以追溯：「这个漏洞影响我们吗？影响哪些服务？」
+🔐 安全工具# 📜 Syft — SBOM 生成# 分析镜像里装了什么软件、什么版本，生成&#34;软件物料清单&#34;。出了问题可以追溯：「这个漏洞影响我们吗？影响哪些服务？」
 ✍️ Cosign — 镜像签名# 给镜像做数字签名，防止镜像被替换或篡改。就像给快递包裹贴防伪标签。
 🛡️ Trivy — 漏洞扫描# 扫描镜像里的已知安全漏洞。发现高危漏洞会直接阻断构建，不让有问题的镜像进入部署环节。
-🧰 工具清单# 工具 用途 是否必须 Tekton Pipelines 流水线编排 ✅ Tekton Triggers 事件触发 ✅ Buildah 镜像构建 ✅ Syft SBOM 生成 ✅ Cosign 镜像签名 ✅ Trivy 漏洞扫描 ✅ OpenTelemetry 链路追踪 ✅ Tekton Dashboard 流水线可视化 ❌（可选） 🏭 流水线示意图# Tekton Trigger 接收请求 ↓ 创建 PipelineRun ↓ ┌─────────────────────────────────────────────┐ │ 拉代码 → 扫描 → 测试 → 构建 → SBOM → 签名 → 再扫 │ └─────────────────────────────────────────────┘ ↓ 推送镜像到 OCI Registry ↓ 回调 release-service'><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta itemprop=name content="CI 组件矩阵"><meta itemprop=description content='🧰 CI 用到哪些工具# Pipeline Security 📦 OCI Registry
+🧰 工具清单# 工具 用途 是否必须 Tekton Pipelines 流水线编排 ✅ Tekton Triggers 事件触发 ✅ Buildah 镜像构建 ✅ Syft SBOM 生成 ✅ Cosign 镜像签名 ✅ Trivy 漏洞扫描 ✅ OpenTelemetry 链路追踪 ✅ Tekton Dashboard 流水线可视化 ❌（可选） 🏭 流水线示意图# Tekton Trigger 接收请求 ↓ 创建 PipelineRun ↓ ┌─────────────────────────────────────────────┐ │ 拉代码 → 扫描 → 测试 → 构建 → SBOM → 签名 → 再扫 │ └─────────────────────────────────────────────┘ ↓ 推送镜像到 OCI Registry ↓ 回调 release-service">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+
+
+  <meta itemprop="name" content="CI 组件矩阵">
+  <meta itemprop="description" content="🧰 CI 用到哪些工具# Pipeline Security 📦 OCI Registry
 DevFlow 的 CI 流水线依赖以下工具，每个负责一个具体环节。
-🧱 核心工具# Tekton Pipelines — 流水线引擎# CI 的"骨架"。定义流水线的结构：有哪些步骤、按什么顺序执行、步骤之间怎么共享数据。
-Tekton Triggers — 触发器# 接收 release-service 的 HTTP 请求，自动创建流水线执行实例。相当于 CI 的"入口门卫"。
+🧱 核心工具# Tekton Pipelines — 流水线引擎# CI 的&#34;骨架&#34;。定义流水线的结构：有哪些步骤、按什么顺序执行、步骤之间怎么共享数据。
+Tekton Triggers — 触发器# 接收 release-service 的 HTTP 请求，自动创建流水线执行实例。相当于 CI 的&#34;入口门卫&#34;。
 🏗️ Buildah — 镜像构建# 在容器里构建容器镜像，不需要 Docker Daemon。支持多阶段构建，可以做出很小的最终镜像。
-🔐 安全工具# 📜 Syft — SBOM 生成# 分析镜像里装了什么软件、什么版本，生成"软件物料清单"。出了问题可以追溯：「这个漏洞影响我们吗？影响哪些服务？」
+🔐 安全工具# 📜 Syft — SBOM 生成# 分析镜像里装了什么软件、什么版本，生成&#34;软件物料清单&#34;。出了问题可以追溯：「这个漏洞影响我们吗？影响哪些服务？」
 ✍️ Cosign — 镜像签名# 给镜像做数字签名，防止镜像被替换或篡改。就像给快递包裹贴防伪标签。
 🛡️ Trivy — 漏洞扫描# 扫描镜像里的已知安全漏洞。发现高危漏洞会直接阻断构建，不让有问题的镜像进入部署环节。
-🧰 工具清单# 工具 用途 是否必须 Tekton Pipelines 流水线编排 ✅ Tekton Triggers 事件触发 ✅ Buildah 镜像构建 ✅ Syft SBOM 生成 ✅ Cosign 镜像签名 ✅ Trivy 漏洞扫描 ✅ OpenTelemetry 链路追踪 ✅ Tekton Dashboard 流水线可视化 ❌（可选） 🏭 流水线示意图# Tekton Trigger 接收请求 ↓ 创建 PipelineRun ↓ ┌─────────────────────────────────────────────┐ │ 拉代码 → 扫描 → 测试 → 构建 → SBOM → 签名 → 再扫 │ └─────────────────────────────────────────────┘ ↓ 推送镜像到 OCI Registry ↓ 回调 release-service'><meta itemprop=wordCount content="122"><title>CI 组件矩阵 | DevFlow</title><link rel=icon href=/document/favicon.png><link rel=manifest href=/document/manifest.json><link rel=canonical href=https://devflow.bei.com/document/docs/ci/component/><link rel=stylesheet href=/document/book.min.8cd0206dd84616a7d412f4d11b03bd0f5f8254beac611979660997cdbce2a6d1.css integrity="sha256-jNAgbdhGFqfUEvTRGwO9D1+CVL6sYRl5ZgmXzbziptE=" crossorigin=anonymous><script defer src=/document/fuse.min.js></script><script defer src=/document/en.search.min.219eedb5fd5496d5774df183ec204184521c0bb1d5e51055046588c14cd38397.js integrity="sha256-IZ7ttf1UltV3TfGD7CBBhFIcC7HV5RBVBGWIwUzTg5c=" crossorigin=anonymous></script></head><body dir=ltr class="book-kind-page book-type-docs"><input type=checkbox class="hidden toggle" id=menu-control>
-<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/document/><span>DevFlow</span></a></h2><div class="book-search hidden"><input id=book-search-input type=text placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><script>document.querySelector(".book-search").classList.remove("hidden")</script><ul><li><a href=/document/docs/getting-started/>快速开始</a><ul></ul></li><li><a href=/document/docs/overview/>平台概览</a><ul></ul></li><li><a href=/document/docs/architecture/>架构设计</a><ul><li><a href=/document/docs/architecture/services/>五大微服务</a></li><li><a href=/document/docs/architecture/domain-model/>领域模型</a></li><li><a href=/document/docs/architecture/lifecycle/>发布生命周期</a></li></ul></li><li><a href=/document/docs/services/>服务详解</a><ul><li><a href=/document/docs/services/meta-service/>meta-service</a></li><li><a href=/document/docs/services/config-service/>config-service</a></li><li><a href=/document/docs/services/network-service/>network-service</a></li><li><a href=/document/docs/services/release-service/>release-service</a></li><li><a href=/document/docs/services/runtime-service/>runtime-service</a></li></ul></li><li><a href=/document/docs/concepts/>核心概念</a><ul><li><a href=/document/docs/concepts/project-application/>Project 与 Application</a></li><li><a href=/document/docs/concepts/environment-cluster/>Environment 与 Cluster</a></li><li><a href=/document/docs/concepts/workload-config/>WorkloadConfig</a></li><li><a href=/document/docs/concepts/app-config/>AppConfig</a></li><li><a href=/document/docs/concepts/service-route/>Service 与 Route</a></li><li><a href=/document/docs/concepts/manifest-release/>Manifest 与 Release</a></li></ul></li><li><a href=/document/docs/ci/>持续集成</a><ul><li><a href=/document/docs/ci/architecture/>CI 架构</a></li><li><a href=/document/docs/ci/standard/>标准 CI 流程</a></li><li><a href=/document/docs/ci/component/ class=active>CI 组件矩阵</a></li><li><a href=/document/docs/ci/queue/>队列与并发控制</a></li></ul></li><li><a href=/document/docs/cd/>持续交付</a><ul><li><a href=/document/docs/cd/architecture/>CD 架构</a></li><li><a href=/document/docs/cd/standard/>发布策略选型</a></li><li><a href=/document/docs/cd/rolling/>Rolling 发布</a></li><li><a href=/document/docs/cd/canary/>Canary 发布</a></li><li><a href=/document/docs/cd/blue-green/>Blue-Green 发布</a></li><li><a href=/document/docs/cd/component/>CD 组件矩阵</a></li></ul></li><li><a href=/document/docs/observability/>可观测性</a><ul><li><a href=/document/docs/observability/component/>可观测性组件矩阵</a></li><li><a href=/document/docs/observability/attributes/>公共 Attributes</a></li><li><a href=/document/docs/observability/standard/>Labels / Attributes 规范</a></li><li><a href=/document/docs/observability/collector/>OTel Collector 配置模板</a></li><li><a href=/document/docs/observability/go-example/>Go 服务最小 OTel 接入示例</a></li><li><a href=/document/docs/observability/logging/>结构化日志规范</a></li><li><a href=/document/docs/observability/service-checklist/>五大服务观测字段清单</a></li><li><a href=/document/docs/observability/onboarding-checklist/>OTel 接入检查清单</a></li><li><a href=/document/docs/observability/release-trace-example/>发布链路 Trace 示例</a></li><li><a href=/document/docs/observability/collector-runbook/>Collector 生产排障 Runbook</a></li><li><a href=/document/docs/observability/release-failure-playbook/>发布失败排障剧本</a></li><li><a href=/document/docs/observability/signal-label-matrix/>信号标签矩阵</a></li></ul></li><li><a href=/document/docs/deployment/>部署指南</a><ul><li><a href=/document/docs/deployment/guide/>部署步骤</a></li></ul></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class="book-header hidden"><div class="flex align-center justify-between"><label for=menu-control><img src=/document/icons/menu.svg class=book-icon alt=Menu></label><h3>CI 组件矩阵</h3><label for=toc-control><img src=/document/icons/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class=hidden><nav id=TableOfContents><ul><li><a href=#-核心工具>🧱 核心工具</a><ul><li><a href=#tekton-pipelines--流水线引擎>Tekton Pipelines — 流水线引擎</a></li><li><a href=#tekton-triggers--触发器>Tekton Triggers — 触发器</a></li><li><a href=#-buildah--镜像构建>🏗️ Buildah — 镜像构建</a></li></ul></li><li><a href=#-安全工具>🔐 安全工具</a><ul><li><a href=#-syft--sbom-生成>📜 Syft — SBOM 生成</a></li><li><a href=#-cosign--镜像签名>✍️ Cosign — 镜像签名</a></li><li><a href=#-trivy--漏洞扫描>🛡️ Trivy — 漏洞扫描</a></li></ul></li><li><a href=#-工具清单>🧰 工具清单</a></li><li><a href=#-流水线示意图>🏭 流水线示意图</a></li></ul></nav></aside></header><article class="markdown book-article"><h1 id=-ci-用到哪些工具>🧰 CI 用到哪些工具<a class=anchor href=#-ci-%e7%94%a8%e5%88%b0%e5%93%aa%e4%ba%9b%e5%b7%a5%e5%85%b7>#</a></h1><p><span class=df-badge>Pipeline</span> <span class=df-badge>Security</span> <span class=df-badge>📦 OCI Registry</span></p><p>DevFlow 的 CI 流水线依赖以下工具，每个负责一个具体环节。</p><hr><h2 id=-核心工具>🧱 核心工具<a class=anchor href=#-%e6%a0%b8%e5%bf%83%e5%b7%a5%e5%85%b7>#</a></h2><h3 id=tekton-pipelines--流水线引擎>Tekton Pipelines — 流水线引擎<a class=anchor href=#tekton-pipelines--%e6%b5%81%e6%b0%b4%e7%ba%bf%e5%bc%95%e6%93%8e>#</a></h3><p>CI 的"骨架"。定义流水线的结构：有哪些步骤、按什么顺序执行、步骤之间怎么共享数据。</p><h3 id=tekton-triggers--触发器>Tekton Triggers — 触发器<a class=anchor href=#tekton-triggers--%e8%a7%a6%e5%8f%91%e5%99%a8>#</a></h3><p>接收 release-service 的 HTTP 请求，自动创建流水线执行实例。相当于 CI 的"入口门卫"。</p><h3 id=-buildah--镜像构建>🏗️ Buildah — 镜像构建<a class=anchor href=#-buildah--%e9%95%9c%e5%83%8f%e6%9e%84%e5%bb%ba>#</a></h3><p>在容器里构建容器镜像，不需要 Docker Daemon。支持多阶段构建，可以做出很小的最终镜像。</p><hr><h2 id=-安全工具>🔐 安全工具<a class=anchor href=#-%e5%ae%89%e5%85%a8%e5%b7%a5%e5%85%b7>#</a></h2><h3 id=-syft--sbom-生成>📜 Syft — SBOM 生成<a class=anchor href=#-syft--sbom-%e7%94%9f%e6%88%90>#</a></h3><p>分析镜像里装了什么软件、什么版本，生成"软件物料清单"。出了问题可以追溯：「这个漏洞影响我们吗？影响哪些服务？」</p><h3 id=-cosign--镜像签名>✍️ Cosign — 镜像签名<a class=anchor href=#-cosign--%e9%95%9c%e5%83%8f%e7%ad%be%e5%90%8d>#</a></h3><p>给镜像做数字签名，防止镜像被替换或篡改。就像给快递包裹贴防伪标签。</p><h3 id=-trivy--漏洞扫描>🛡️ Trivy — 漏洞扫描<a class=anchor href=#-trivy--%e6%bc%8f%e6%b4%9e%e6%89%ab%e6%8f%8f>#</a></h3><p>扫描镜像里的已知安全漏洞。发现高危漏洞会直接阻断构建，不让有问题的镜像进入部署环节。</p><hr><h2 id=-工具清单>🧰 工具清单<a class=anchor href=#-%e5%b7%a5%e5%85%b7%e6%b8%85%e5%8d%95>#</a></h2><table><thead><tr><th>工具</th><th>用途</th><th>是否必须</th></tr></thead><tbody><tr><td><img class=df-inline-icon src=/document/icons/brands/tekton.svg alt=Tekton loading=lazy>
-Tekton Pipelines</td><td>流水线编排</td><td>✅</td></tr><tr><td><img class=df-inline-icon src=/document/icons/brands/tekton.svg alt=Tekton loading=lazy>
-Tekton Triggers</td><td>事件触发</td><td>✅</td></tr><tr><td>Buildah</td><td>镜像构建</td><td>✅</td></tr><tr><td>Syft</td><td>SBOM 生成</td><td>✅</td></tr><tr><td>Cosign</td><td>镜像签名</td><td>✅</td></tr><tr><td>Trivy</td><td>漏洞扫描</td><td>✅</td></tr><tr><td><img class=df-inline-icon src=/document/icons/brands/opentelemetry.svg alt=OpenTelemetry loading=lazy>
-OpenTelemetry</td><td>链路追踪</td><td>✅</td></tr><tr><td><img class=df-inline-icon src=/document/icons/brands/tekton.svg alt="Tekton Dashboard" loading=lazy>
-Tekton Dashboard</td><td>流水线可视化</td><td>❌（可选）</td></tr></tbody></table><hr><h2 id=-流水线示意图>🏭 流水线示意图<a class=anchor href=#-%e6%b5%81%e6%b0%b4%e7%ba%bf%e7%a4%ba%e6%84%8f%e5%9b%be>#</a></h2><pre tabindex=0><code><img class=df-inline-icon src=/document/icons/brands/tekton.svg alt=Tekton loading=lazy>
+🧰 工具清单# 工具 用途 是否必须 Tekton Pipelines 流水线编排 ✅ Tekton Triggers 事件触发 ✅ Buildah 镜像构建 ✅ Syft SBOM 生成 ✅ Cosign 镜像签名 ✅ Trivy 漏洞扫描 ✅ OpenTelemetry 链路追踪 ✅ Tekton Dashboard 流水线可视化 ❌（可选） 🏭 流水线示意图# Tekton Trigger 接收请求 ↓ 创建 PipelineRun ↓ ┌─────────────────────────────────────────────┐ │ 拉代码 → 扫描 → 测试 → 构建 → SBOM → 签名 → 再扫 │ └─────────────────────────────────────────────┘ ↓ 推送镜像到 OCI Registry ↓ 回调 release-service">
+  <meta itemprop="wordCount" content="122">
+
+<title>CI 组件矩阵 | DevFlow</title>
+<link rel="icon" href="/document/favicon.png" >
+<link rel="manifest" href="/document/manifest.json">
+<link rel="canonical" href="http://localhost:1313/document/docs/ci/component/">
+<link rel="stylesheet" href="/document/book.min.6b7eb9d4a200f83e29d176bd87cbdeded0c65bdbc07ff82b31ab586d1a18b715.css" integrity="sha256-a3651KIA&#43;D4p0Xa9h8ve3tDGW9vAf/grMatYbRoYtxU=" crossorigin="anonymous">
+
+
+  <script defer src="/document/fuse.min.js"></script>
+  <script defer src="/document/en.search.min.2fbabda576e1cb001293be3ca3453b414208f8cbe7e6d4b8fe3a39eea9e07d89.js" integrity="sha256-L7q9pXbhywASk748o0U7QUII&#43;Mvn5tS4/jo57qngfYk=" crossorigin="anonymous"></script>
+
+
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/document/"><span>DevFlow</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/getting-started/" class="">
+      快速开始</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/overview/" class="">
+      平台概览</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/architecture/" class="">
+      架构设计</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/architecture/services/" class="">
+      五大微服务</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/architecture/domain-model/" class="">
+      领域模型</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/architecture/lifecycle/" class="">
+      发布生命周期</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/services/" class="">
+      服务详解</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/services/meta-service/" class="">
+      meta-service</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/services/config-service/" class="">
+      config-service</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/services/network-service/" class="">
+      network-service</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/services/release-service/" class="">
+      release-service</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/services/runtime-service/" class="">
+      runtime-service</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/" class="">
+      核心概念</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/project-application/" class="">
+      Project 与 Application</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/environment-cluster/" class="">
+      Environment 与 Cluster</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/workload-config/" class="">
+      WorkloadConfig</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/app-config/" class="">
+      AppConfig</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/service-route/" class="">
+      Service 与 Route</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/manifest-release/" class="">
+      Manifest 与 Release</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/ci/" class="">
+      持续集成</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/ci/architecture/" class="">
+      CI 架构</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/ci/standard/" class="">
+      标准 CI 流程</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/ci/component/" class="active">
+      CI 组件矩阵</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/ci/queue/" class="">
+      队列与并发控制</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/" class="">
+      持续交付</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/architecture/" class="">
+      CD 架构</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/standard/" class="">
+      发布策略选型</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/rolling/" class="">
+      Rolling 发布</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/canary/" class="">
+      Canary 发布</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/blue-green/" class="">
+      Blue-Green 发布</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/component/" class="">
+      CD 组件矩阵</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/" class="">
+      可观测性</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/component/" class="">
+      可观测性组件矩阵</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/attributes/" class="">
+      公共 Attributes</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/standard/" class="">
+      Labels / Attributes 规范</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/collector/" class="">
+      OTel Collector 配置模板</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/go-example/" class="">
+      Go 服务最小 OTel 接入示例</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/logging/" class="">
+      结构化日志规范</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/service-checklist/" class="">
+      五大服务观测字段清单</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/onboarding-checklist/" class="">
+      OTel 接入检查清单</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/release-trace-example/" class="">
+      发布链路 Trace 示例</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/collector-runbook/" class="">
+      Collector 生产排障 Runbook</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/release-failure-playbook/" class="">
+      发布失败排障剧本</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/signal-label-matrix/" class="">
+      信号标签矩阵</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/deployment/" class="">
+      部署指南</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/deployment/guide/" class="">
+      部署步骤</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/document/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>CI 组件矩阵</h3>
+
+  <label for="toc-control">
+    
+    <img src="/document/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#-核心工具">🧱 核心工具</a>
+      <ul>
+        <li><a href="#tekton-pipelines--流水线引擎">Tekton Pipelines — 流水线引擎</a></li>
+        <li><a href="#tekton-triggers--触发器">Tekton Triggers — 触发器</a></li>
+        <li><a href="#-buildah--镜像构建">🏗️ Buildah — 镜像构建</a></li>
+      </ul>
+    </li>
+    <li><a href="#-安全工具">🔐 安全工具</a>
+      <ul>
+        <li><a href="#-syft--sbom-生成">📜 Syft — SBOM 生成</a></li>
+        <li><a href="#-cosign--镜像签名">✍️ Cosign — 镜像签名</a></li>
+        <li><a href="#-trivy--漏洞扫描">🛡️ Trivy — 漏洞扫描</a></li>
+      </ul>
+    </li>
+    <li><a href="#-工具清单">🧰 工具清单</a></li>
+    <li><a href="#-流水线示意图">🏭 流水线示意图</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="-ci-用到哪些工具">🧰 CI 用到哪些工具<a class="anchor" href="#-ci-%e7%94%a8%e5%88%b0%e5%93%aa%e4%ba%9b%e5%b7%a5%e5%85%b7">#</a></h1>
+<p><span class="df-badge">Pipeline</span> <span class="df-badge">Security</span> <span class="df-badge">📦 OCI Registry</span></p>
+<p>DevFlow 的 CI 流水线依赖以下工具，每个负责一个具体环节。</p>
+<hr>
+<h2 id="-核心工具">🧱 核心工具<a class="anchor" href="#-%e6%a0%b8%e5%bf%83%e5%b7%a5%e5%85%b7">#</a></h2>
+<h3 id="tekton-pipelines--流水线引擎">Tekton Pipelines — 流水线引擎<a class="anchor" href="#tekton-pipelines--%e6%b5%81%e6%b0%b4%e7%ba%bf%e5%bc%95%e6%93%8e">#</a></h3>
+<p>CI 的&quot;骨架&quot;。定义流水线的结构：有哪些步骤、按什么顺序执行、步骤之间怎么共享数据。</p>
+<h3 id="tekton-triggers--触发器">Tekton Triggers — 触发器<a class="anchor" href="#tekton-triggers--%e8%a7%a6%e5%8f%91%e5%99%a8">#</a></h3>
+<p>接收 release-service 的 HTTP 请求，自动创建流水线执行实例。相当于 CI 的&quot;入口门卫&quot;。</p>
+<h3 id="-buildah--镜像构建">🏗️ Buildah — 镜像构建<a class="anchor" href="#-buildah--%e9%95%9c%e5%83%8f%e6%9e%84%e5%bb%ba">#</a></h3>
+<p>在容器里构建容器镜像，不需要 Docker Daemon。支持多阶段构建，可以做出很小的最终镜像。</p>
+<hr>
+<h2 id="-安全工具">🔐 安全工具<a class="anchor" href="#-%e5%ae%89%e5%85%a8%e5%b7%a5%e5%85%b7">#</a></h2>
+<h3 id="-syft--sbom-生成">📜 Syft — SBOM 生成<a class="anchor" href="#-syft--sbom-%e7%94%9f%e6%88%90">#</a></h3>
+<p>分析镜像里装了什么软件、什么版本，生成&quot;软件物料清单&quot;。出了问题可以追溯：「这个漏洞影响我们吗？影响哪些服务？」</p>
+<h3 id="-cosign--镜像签名">✍️ Cosign — 镜像签名<a class="anchor" href="#-cosign--%e9%95%9c%e5%83%8f%e7%ad%be%e5%90%8d">#</a></h3>
+<p>给镜像做数字签名，防止镜像被替换或篡改。就像给快递包裹贴防伪标签。</p>
+<h3 id="-trivy--漏洞扫描">🛡️ Trivy — 漏洞扫描<a class="anchor" href="#-trivy--%e6%bc%8f%e6%b4%9e%e6%89%ab%e6%8f%8f">#</a></h3>
+<p>扫描镜像里的已知安全漏洞。发现高危漏洞会直接阻断构建，不让有问题的镜像进入部署环节。</p>
+<hr>
+<h2 id="-工具清单">🧰 工具清单<a class="anchor" href="#-%e5%b7%a5%e5%85%b7%e6%b8%85%e5%8d%95">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>工具</th>
+          <th>用途</th>
+          <th>是否必须</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><img class="df-inline-icon" src="/document/icons/brands/tekton.svg" alt="Tekton" loading="lazy" />
+ Tekton Pipelines</td>
+          <td>流水线编排</td>
+          <td>✅</td>
+      </tr>
+      <tr>
+          <td><img class="df-inline-icon" src="/document/icons/brands/tekton.svg" alt="Tekton" loading="lazy" />
+ Tekton Triggers</td>
+          <td>事件触发</td>
+          <td>✅</td>
+      </tr>
+      <tr>
+          <td>Buildah</td>
+          <td>镜像构建</td>
+          <td>✅</td>
+      </tr>
+      <tr>
+          <td>Syft</td>
+          <td>SBOM 生成</td>
+          <td>✅</td>
+      </tr>
+      <tr>
+          <td>Cosign</td>
+          <td>镜像签名</td>
+          <td>✅</td>
+      </tr>
+      <tr>
+          <td>Trivy</td>
+          <td>漏洞扫描</td>
+          <td>✅</td>
+      </tr>
+      <tr>
+          <td><img class="df-inline-icon" src="/document/icons/brands/opentelemetry.svg" alt="OpenTelemetry" loading="lazy" />
+ OpenTelemetry</td>
+          <td>链路追踪</td>
+          <td>✅</td>
+      </tr>
+      <tr>
+          <td><img class="df-inline-icon" src="/document/icons/brands/tekton.svg" alt="Tekton Dashboard" loading="lazy" />
+ Tekton Dashboard</td>
+          <td>流水线可视化</td>
+          <td>❌（可选）</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="-流水线示意图">🏭 流水线示意图<a class="anchor" href="#-%e6%b5%81%e6%b0%b4%e7%ba%bf%e7%a4%ba%e6%84%8f%e5%9b%be">#</a></h2>
+<pre tabindex="0"><code><img class="df-inline-icon" src="/document/icons/brands/tekton.svg" alt="Tekton" loading="lazy" />
  Tekton Trigger 接收请求
         ↓
 创建 PipelineRun
@@ -38,7 +959,126 @@ Tekton Dashboard</td><td>流水线可视化</td><td>❌（可选）</td></tr></t
         ↓
 推送镜像到 OCI Registry
         ↓
-回调 release-service</code></pre></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div></div><div></div></div><div class="flex flex-wrap justify-between"><span><a href=/document/docs/ci/standard/ class="flex align-center"><img src=/document/icons/backward.svg class=book-icon alt=Backward>
-<span>标准 CI 流程</span>
-</a></span><span><a href=/document/docs/ci/queue/ class="flex align-center"><span>队列与并发控制</span>
-<img src=/document/icons/forward.svg class=book-icon alt=Forward></a></span></div><script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script></footer><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#-核心工具>🧱 核心工具</a><ul><li><a href=#tekton-pipelines--流水线引擎>Tekton Pipelines — 流水线引擎</a></li><li><a href=#tekton-triggers--触发器>Tekton Triggers — 触发器</a></li><li><a href=#-buildah--镜像构建>🏗️ Buildah — 镜像构建</a></li></ul></li><li><a href=#-安全工具>🔐 安全工具</a><ul><li><a href=#-syft--sbom-生成>📜 Syft — SBOM 生成</a></li><li><a href=#-cosign--镜像签名>✍️ Cosign — 镜像签名</a></li><li><a href=#-trivy--漏洞扫描>🛡️ Trivy — 漏洞扫描</a></li></ul></li><li><a href=#-工具清单>🧰 工具清单</a></li><li><a href=#-流水线示意图>🏭 流水线示意图</a></li></ul></nav></div></aside></main></body></html>
+回调 release-service</code></pre></article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/document/docs/ci/standard/" class="flex align-center">
+        <img src="/document/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>标准 CI 流程</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/document/docs/ci/queue/" class="flex align-center">
+        <span>队列与并发控制</span>
+        <img src="/document/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+ 
+        
+        
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#-核心工具">🧱 核心工具</a>
+      <ul>
+        <li><a href="#tekton-pipelines--流水线引擎">Tekton Pipelines — 流水线引擎</a></li>
+        <li><a href="#tekton-triggers--触发器">Tekton Triggers — 触发器</a></li>
+        <li><a href="#-buildah--镜像构建">🏗️ Buildah — 镜像构建</a></li>
+      </ul>
+    </li>
+    <li><a href="#-安全工具">🔐 安全工具</a>
+      <ul>
+        <li><a href="#-syft--sbom-生成">📜 Syft — SBOM 生成</a></li>
+        <li><a href="#-cosign--镜像签名">✍️ Cosign — 镜像签名</a></li>
+        <li><a href="#-trivy--漏洞扫描">🛡️ Trivy — 漏洞扫描</a></li>
+      </ul>
+    </li>
+    <li><a href="#-工具清单">🧰 工具清单</a></li>
+    <li><a href="#-流水线示意图">🏭 流水线示意图</a></li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

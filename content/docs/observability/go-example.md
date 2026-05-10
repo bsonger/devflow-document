@@ -32,7 +32,7 @@ weight: 75
 
 | 层级 | 字段 |
 |------|------|
-| 服务启动配置 | `service.name` `service.version` `deployment.environment` |
+| 服务启动配置 | `service.name` `service.version` |
 | Collector 注入 | `k8s.cluster.name` `k8s.namespace.name` `k8s.pod.name` |
 | 服务代码设置 | `devflow.application.id` `devflow.release.id` |
 | 自动生成 | `trace_id` `span_id` `http.method` `http.route` |
@@ -80,7 +80,8 @@ env:
 - `service.name`
 - `service.version`
 - `service.namespace`
-- `deployment.environment`
+
+`deployment.environment` 如果平台已经通过 OTel Collector 统一注入，就不要再让每个服务重复维护；只有平台暂时做不到时，才在这里兜底。
 
 不要在这里塞 `devflow.release.id` 这类请求级字段。
 
@@ -283,10 +284,10 @@ logger.Info("release fetched",
 
 - `service.name=release-service`
 - `service.version=1.4.2`
-- `deployment.environment=prod`
 
 ### Collector 层
 
+- `deployment.environment=prod`
 - `k8s.cluster.name=devflow-prod`
 - `k8s.namespace.name=devflow`
 - `k8s.pod.name=release-service-xxxx`

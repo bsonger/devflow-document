@@ -1,12 +1,860 @@
-<!doctype html><html lang=zh-cn dir=ltr><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content='🛞 Rolling 发布# Rolling（滚动更新） 是最简单的发布方式。Kubernetes 逐步创建新版本 Pod，同时销毁旧版本 Pod，就像换轮胎时一个一个换，车一直在跑。
-🎯 适合什么场景# 内部工具、后台管理系统 资源敏感、成本优先的服务 对短暂波动容忍度较高的应用 🧠 原理# graph LR subgraph "Kubernetes" RS1["旧版本 ReplicaSet"] RS2["新版本 ReplicaSet"] Svc["Service"] end subgraph "Pod" P1["旧 Pod"] P2["旧 Pod"] P3["新 Pod"] P4["新 Pod"] end Svc --> P1 Svc --> P2 Svc --> P3 Svc --> P4 RS1 --> P1 RS1 --> P2 RS2 --> P3 RS2 --> P4Service 同时指向新旧 Pod，流量自然平滑过渡。K8s 控制每次最多多创建 25% 的新 Pod，最多只允许 25% 的 Pod 不可用。
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+<head><script src="/document/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=document/livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="🛞 Rolling 发布# Rolling（滚动更新） 是最简单的发布方式。Kubernetes 逐步创建新版本 Pod，同时销毁旧版本 Pod，就像换轮胎时一个一个换，车一直在跑。
+🎯 适合什么场景# 内部工具、后台管理系统 资源敏感、成本优先的服务 对短暂波动容忍度较高的应用 🧠 原理# graph LR subgraph &#34;Kubernetes&#34; RS1[&#34;旧版本 ReplicaSet&#34;] RS2[&#34;新版本 ReplicaSet&#34;] Svc[&#34;Service&#34;] end subgraph &#34;Pod&#34; P1[&#34;旧 Pod&#34;] P2[&#34;旧 Pod&#34;] P3[&#34;新 Pod&#34;] P4[&#34;新 Pod&#34;] end Svc --&gt; P1 Svc --&gt; P2 Svc --&gt; P3 Svc --&gt; P4 RS1 --&gt; P1 RS1 --&gt; P2 RS2 --&gt; P3 RS2 --&gt; P4Service 同时指向新旧 Pod，流量自然平滑过渡。K8s 控制每次最多多创建 25% 的新 Pod，最多只允许 25% 的 Pod 不可用。
 🚦 发布过程# 开始: [旧][旧][旧] (3 Pod) ↓ 步骤 1: [旧][旧][旧][新] (创建 1 个新 Pod) ↓ 步骤 2: [旧][旧][新][新] (销毁 1 个旧 Pod) ↓ 步骤 3: [旧][新][新][新] (继续替换) ↓ 完成: [新][新][新] (全部替换完毕) 回滚# Rolling 的回滚是反向的滚动更新：
-'><meta name=theme-color media="(prefers-color-scheme: light)" content="#ffffff"><meta name=theme-color media="(prefers-color-scheme: dark)" content="#343a40"><meta name=color-scheme content="light dark"><meta property="og:url" content="https://devflow.bei.com/document/docs/cd/rolling/"><meta property="og:site_name" content="DevFlow"><meta property="og:title" content="Rolling 发布"><meta property="og:description" content='🛞 Rolling 发布# Rolling（滚动更新） 是最简单的发布方式。Kubernetes 逐步创建新版本 Pod，同时销毁旧版本 Pod，就像换轮胎时一个一个换，车一直在跑。
-🎯 适合什么场景# 内部工具、后台管理系统 资源敏感、成本优先的服务 对短暂波动容忍度较高的应用 🧠 原理# graph LR subgraph "Kubernetes" RS1["旧版本 ReplicaSet"] RS2["新版本 ReplicaSet"] Svc["Service"] end subgraph "Pod" P1["旧 Pod"] P2["旧 Pod"] P3["新 Pod"] P4["新 Pod"] end Svc --> P1 Svc --> P2 Svc --> P3 Svc --> P4 RS1 --> P1 RS1 --> P2 RS2 --> P3 RS2 --> P4Service 同时指向新旧 Pod，流量自然平滑过渡。K8s 控制每次最多多创建 25% 的新 Pod，最多只允许 25% 的 Pod 不可用。
-🚦 发布过程# 开始: [旧][旧][旧] (3 Pod) ↓ 步骤 1: [旧][旧][旧][新] (创建 1 个新 Pod) ↓ 步骤 2: [旧][旧][新][新] (销毁 1 个旧 Pod) ↓ 步骤 3: [旧][新][新][新] (继续替换) ↓ 完成: [新][新][新] (全部替换完毕) 回滚# Rolling 的回滚是反向的滚动更新：'><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta itemprop=name content="Rolling 发布"><meta itemprop=description content='🛞 Rolling 发布# Rolling（滚动更新） 是最简单的发布方式。Kubernetes 逐步创建新版本 Pod，同时销毁旧版本 Pod，就像换轮胎时一个一个换，车一直在跑。
-🎯 适合什么场景# 内部工具、后台管理系统 资源敏感、成本优先的服务 对短暂波动容忍度较高的应用 🧠 原理# graph LR subgraph "Kubernetes" RS1["旧版本 ReplicaSet"] RS2["新版本 ReplicaSet"] Svc["Service"] end subgraph "Pod" P1["旧 Pod"] P2["旧 Pod"] P3["新 Pod"] P4["新 Pod"] end Svc --> P1 Svc --> P2 Svc --> P3 Svc --> P4 RS1 --> P1 RS1 --> P2 RS2 --> P3 RS2 --> P4Service 同时指向新旧 Pod，流量自然平滑过渡。K8s 控制每次最多多创建 25% 的新 Pod，最多只允许 25% 的 Pod 不可用。
-🚦 发布过程# 开始: [旧][旧][旧] (3 Pod) ↓ 步骤 1: [旧][旧][旧][新] (创建 1 个新 Pod) ↓ 步骤 2: [旧][旧][新][新] (销毁 1 个旧 Pod) ↓ 步骤 3: [旧][新][新][新] (继续替换) ↓ 完成: [新][新][新] (全部替换完毕) 回滚# Rolling 的回滚是反向的滚动更新：'><meta itemprop=wordCount content="129"><title>Rolling 发布 | DevFlow</title><link rel=icon href=/document/favicon.png><link rel=manifest href=/document/manifest.json><link rel=canonical href=https://devflow.bei.com/document/docs/cd/rolling/><link rel=stylesheet href=/document/book.min.8cd0206dd84616a7d412f4d11b03bd0f5f8254beac611979660997cdbce2a6d1.css integrity="sha256-jNAgbdhGFqfUEvTRGwO9D1+CVL6sYRl5ZgmXzbziptE=" crossorigin=anonymous><script defer src=/document/fuse.min.js></script><script defer src=/document/en.search.min.219eedb5fd5496d5774df183ec204184521c0bb1d5e51055046588c14cd38397.js integrity="sha256-IZ7ttf1UltV3TfGD7CBBhFIcC7HV5RBVBGWIwUzTg5c=" crossorigin=anonymous></script></head><body dir=ltr class="book-kind-page book-type-docs"><input type=checkbox class="hidden toggle" id=menu-control>
-<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/document/><span>DevFlow</span></a></h2><div class="book-search hidden"><input id=book-search-input type=text placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><script>document.querySelector(".book-search").classList.remove("hidden")</script><ul><li><a href=/document/docs/getting-started/>快速开始</a><ul></ul></li><li><a href=/document/docs/overview/>平台概览</a><ul></ul></li><li><a href=/document/docs/architecture/>架构设计</a><ul><li><a href=/document/docs/architecture/services/>五大微服务</a></li><li><a href=/document/docs/architecture/domain-model/>领域模型</a></li><li><a href=/document/docs/architecture/lifecycle/>发布生命周期</a></li></ul></li><li><a href=/document/docs/services/>服务详解</a><ul><li><a href=/document/docs/services/meta-service/>meta-service</a></li><li><a href=/document/docs/services/config-service/>config-service</a></li><li><a href=/document/docs/services/network-service/>network-service</a></li><li><a href=/document/docs/services/release-service/>release-service</a></li><li><a href=/document/docs/services/runtime-service/>runtime-service</a></li></ul></li><li><a href=/document/docs/concepts/>核心概念</a><ul><li><a href=/document/docs/concepts/project-application/>Project 与 Application</a></li><li><a href=/document/docs/concepts/environment-cluster/>Environment 与 Cluster</a></li><li><a href=/document/docs/concepts/workload-config/>WorkloadConfig</a></li><li><a href=/document/docs/concepts/app-config/>AppConfig</a></li><li><a href=/document/docs/concepts/service-route/>Service 与 Route</a></li><li><a href=/document/docs/concepts/manifest-release/>Manifest 与 Release</a></li></ul></li><li><a href=/document/docs/ci/>持续集成</a><ul><li><a href=/document/docs/ci/architecture/>CI 架构</a></li><li><a href=/document/docs/ci/standard/>标准 CI 流程</a></li><li><a href=/document/docs/ci/component/>CI 组件矩阵</a></li><li><a href=/document/docs/ci/queue/>队列与并发控制</a></li></ul></li><li><a href=/document/docs/cd/>持续交付</a><ul><li><a href=/document/docs/cd/architecture/>CD 架构</a></li><li><a href=/document/docs/cd/standard/>发布策略选型</a></li><li><a href=/document/docs/cd/rolling/ class=active>Rolling 发布</a></li><li><a href=/document/docs/cd/canary/>Canary 发布</a></li><li><a href=/document/docs/cd/blue-green/>Blue-Green 发布</a></li><li><a href=/document/docs/cd/component/>CD 组件矩阵</a></li></ul></li><li><a href=/document/docs/observability/>可观测性</a><ul><li><a href=/document/docs/observability/component/>可观测性组件矩阵</a></li><li><a href=/document/docs/observability/attributes/>公共 Attributes</a></li><li><a href=/document/docs/observability/standard/>Labels / Attributes 规范</a></li><li><a href=/document/docs/observability/collector/>OTel Collector 配置模板</a></li><li><a href=/document/docs/observability/go-example/>Go 服务最小 OTel 接入示例</a></li><li><a href=/document/docs/observability/logging/>结构化日志规范</a></li><li><a href=/document/docs/observability/service-checklist/>五大服务观测字段清单</a></li><li><a href=/document/docs/observability/onboarding-checklist/>OTel 接入检查清单</a></li><li><a href=/document/docs/observability/release-trace-example/>发布链路 Trace 示例</a></li><li><a href=/document/docs/observability/collector-runbook/>Collector 生产排障 Runbook</a></li><li><a href=/document/docs/observability/release-failure-playbook/>发布失败排障剧本</a></li><li><a href=/document/docs/observability/signal-label-matrix/>信号标签矩阵</a></li></ul></li><li><a href=/document/docs/deployment/>部署指南</a><ul><li><a href=/document/docs/deployment/guide/>部署步骤</a></li></ul></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class="book-header hidden"><div class="flex align-center justify-between"><label for=menu-control><img src=/document/icons/menu.svg class=book-icon alt=Menu></label><h3>Rolling 发布</h3><label for=toc-control><img src=/document/icons/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class=hidden><nav id=TableOfContents><ul><li><a href=#-适合什么场景>🎯 适合什么场景</a></li><li><a href=#-原理>🧠 原理</a></li><li><a href=#-发布过程>🚦 发布过程</a></li><li><a href=#回滚>回滚</a></li><li><a href=#优缺点>优缺点</a></li><li><a href=#一句话总结>一句话总结</a></li></ul></nav></aside></header><article class="markdown book-article"><h1 id=-rolling-发布>🛞 Rolling 发布<a class=anchor href=#-rolling-%e5%8f%91%e5%b8%83>#</a></h1><p><strong>Rolling（滚动更新）</strong> 是最简单的发布方式。Kubernetes 逐步创建新版本 Pod，同时销毁旧版本 Pod，就像换轮胎时一个一个换，车一直在跑。</p><hr><h2 id=-适合什么场景>🎯 适合什么场景<a class=anchor href=#-%e9%80%82%e5%90%88%e4%bb%80%e4%b9%88%e5%9c%ba%e6%99%af>#</a></h2><ul><li>内部工具、后台管理系统</li><li>资源敏感、成本优先的服务</li><li>对短暂波动容忍度较高的应用</li></ul><hr><h2 id=-原理>🧠 原理<a class=anchor href=#-%e5%8e%9f%e7%90%86>#</a></h2><pre class=mermaid>graph LR
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/document/docs/cd/rolling/">
+  <meta property="og:site_name" content="DevFlow">
+  <meta property="og:title" content="Rolling 发布">
+  <meta property="og:description" content="🛞 Rolling 发布# Rolling（滚动更新） 是最简单的发布方式。Kubernetes 逐步创建新版本 Pod，同时销毁旧版本 Pod，就像换轮胎时一个一个换，车一直在跑。
+🎯 适合什么场景# 内部工具、后台管理系统 资源敏感、成本优先的服务 对短暂波动容忍度较高的应用 🧠 原理# graph LR subgraph &#34;Kubernetes&#34; RS1[&#34;旧版本 ReplicaSet&#34;] RS2[&#34;新版本 ReplicaSet&#34;] Svc[&#34;Service&#34;] end subgraph &#34;Pod&#34; P1[&#34;旧 Pod&#34;] P2[&#34;旧 Pod&#34;] P3[&#34;新 Pod&#34;] P4[&#34;新 Pod&#34;] end Svc --&gt; P1 Svc --&gt; P2 Svc --&gt; P3 Svc --&gt; P4 RS1 --&gt; P1 RS1 --&gt; P2 RS2 --&gt; P3 RS2 --&gt; P4Service 同时指向新旧 Pod，流量自然平滑过渡。K8s 控制每次最多多创建 25% 的新 Pod，最多只允许 25% 的 Pod 不可用。
+🚦 发布过程# 开始: [旧][旧][旧] (3 Pod) ↓ 步骤 1: [旧][旧][旧][新] (创建 1 个新 Pod) ↓ 步骤 2: [旧][旧][新][新] (销毁 1 个旧 Pod) ↓ 步骤 3: [旧][新][新][新] (继续替换) ↓ 完成: [新][新][新] (全部替换完毕) 回滚# Rolling 的回滚是反向的滚动更新：">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+
+
+  <meta itemprop="name" content="Rolling 发布">
+  <meta itemprop="description" content="🛞 Rolling 发布# Rolling（滚动更新） 是最简单的发布方式。Kubernetes 逐步创建新版本 Pod，同时销毁旧版本 Pod，就像换轮胎时一个一个换，车一直在跑。
+🎯 适合什么场景# 内部工具、后台管理系统 资源敏感、成本优先的服务 对短暂波动容忍度较高的应用 🧠 原理# graph LR subgraph &#34;Kubernetes&#34; RS1[&#34;旧版本 ReplicaSet&#34;] RS2[&#34;新版本 ReplicaSet&#34;] Svc[&#34;Service&#34;] end subgraph &#34;Pod&#34; P1[&#34;旧 Pod&#34;] P2[&#34;旧 Pod&#34;] P3[&#34;新 Pod&#34;] P4[&#34;新 Pod&#34;] end Svc --&gt; P1 Svc --&gt; P2 Svc --&gt; P3 Svc --&gt; P4 RS1 --&gt; P1 RS1 --&gt; P2 RS2 --&gt; P3 RS2 --&gt; P4Service 同时指向新旧 Pod，流量自然平滑过渡。K8s 控制每次最多多创建 25% 的新 Pod，最多只允许 25% 的 Pod 不可用。
+🚦 发布过程# 开始: [旧][旧][旧] (3 Pod) ↓ 步骤 1: [旧][旧][旧][新] (创建 1 个新 Pod) ↓ 步骤 2: [旧][旧][新][新] (销毁 1 个旧 Pod) ↓ 步骤 3: [旧][新][新][新] (继续替换) ↓ 完成: [新][新][新] (全部替换完毕) 回滚# Rolling 的回滚是反向的滚动更新：">
+  <meta itemprop="wordCount" content="129">
+
+<title>Rolling 发布 | DevFlow</title>
+<link rel="icon" href="/document/favicon.png" >
+<link rel="manifest" href="/document/manifest.json">
+<link rel="canonical" href="http://localhost:1313/document/docs/cd/rolling/">
+<link rel="stylesheet" href="/document/book.min.6b7eb9d4a200f83e29d176bd87cbdeded0c65bdbc07ff82b31ab586d1a18b715.css" integrity="sha256-a3651KIA&#43;D4p0Xa9h8ve3tDGW9vAf/grMatYbRoYtxU=" crossorigin="anonymous">
+
+
+  <script defer src="/document/fuse.min.js"></script>
+  <script defer src="/document/en.search.min.2fbabda576e1cb001293be3ca3453b414208f8cbe7e6d4b8fe3a39eea9e07d89.js" integrity="sha256-L7q9pXbhywASk748o0U7QUII&#43;Mvn5tS4/jo57qngfYk=" crossorigin="anonymous"></script>
+
+
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/document/"><span>DevFlow</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/getting-started/" class="">
+      快速开始</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/overview/" class="">
+      平台概览</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/architecture/" class="">
+      架构设计</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/architecture/services/" class="">
+      五大微服务</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/architecture/domain-model/" class="">
+      领域模型</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/architecture/lifecycle/" class="">
+      发布生命周期</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/services/" class="">
+      服务详解</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/services/meta-service/" class="">
+      meta-service</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/services/config-service/" class="">
+      config-service</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/services/network-service/" class="">
+      network-service</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/services/release-service/" class="">
+      release-service</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/services/runtime-service/" class="">
+      runtime-service</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/" class="">
+      核心概念</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/project-application/" class="">
+      Project 与 Application</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/environment-cluster/" class="">
+      Environment 与 Cluster</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/workload-config/" class="">
+      WorkloadConfig</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/app-config/" class="">
+      AppConfig</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/service-route/" class="">
+      Service 与 Route</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/manifest-release/" class="">
+      Manifest 与 Release</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/ci/" class="">
+      持续集成</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/ci/architecture/" class="">
+      CI 架构</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/ci/standard/" class="">
+      标准 CI 流程</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/ci/component/" class="">
+      CI 组件矩阵</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/ci/queue/" class="">
+      队列与并发控制</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/" class="">
+      持续交付</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/architecture/" class="">
+      CD 架构</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/standard/" class="">
+      发布策略选型</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/rolling/" class="active">
+      Rolling 发布</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/canary/" class="">
+      Canary 发布</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/blue-green/" class="">
+      Blue-Green 发布</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/component/" class="">
+      CD 组件矩阵</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/" class="">
+      可观测性</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/component/" class="">
+      可观测性组件矩阵</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/attributes/" class="">
+      公共 Attributes</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/standard/" class="">
+      Labels / Attributes 规范</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/collector/" class="">
+      OTel Collector 配置模板</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/go-example/" class="">
+      Go 服务最小 OTel 接入示例</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/logging/" class="">
+      结构化日志规范</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/service-checklist/" class="">
+      五大服务观测字段清单</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/onboarding-checklist/" class="">
+      OTel 接入检查清单</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/release-trace-example/" class="">
+      发布链路 Trace 示例</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/collector-runbook/" class="">
+      Collector 生产排障 Runbook</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/release-failure-playbook/" class="">
+      发布失败排障剧本</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/signal-label-matrix/" class="">
+      信号标签矩阵</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/deployment/" class="">
+      部署指南</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/deployment/guide/" class="">
+      部署步骤</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/document/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Rolling 发布</h3>
+
+  <label for="toc-control">
+    
+    <img src="/document/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#-适合什么场景">🎯 适合什么场景</a></li>
+    <li><a href="#-原理">🧠 原理</a></li>
+    <li><a href="#-发布过程">🚦 发布过程</a></li>
+    <li><a href="#回滚">回滚</a></li>
+    <li><a href="#优缺点">优缺点</a></li>
+    <li><a href="#一句话总结">一句话总结</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="-rolling-发布">🛞 Rolling 发布<a class="anchor" href="#-rolling-%e5%8f%91%e5%b8%83">#</a></h1>
+<p><strong>Rolling（滚动更新）</strong> 是最简单的发布方式。Kubernetes 逐步创建新版本 Pod，同时销毁旧版本 Pod，就像换轮胎时一个一个换，车一直在跑。</p>
+<hr>
+<h2 id="-适合什么场景">🎯 适合什么场景<a class="anchor" href="#-%e9%80%82%e5%90%88%e4%bb%80%e4%b9%88%e5%9c%ba%e6%99%af">#</a></h2>
+<ul>
+<li>内部工具、后台管理系统</li>
+<li>资源敏感、成本优先的服务</li>
+<li>对短暂波动容忍度较高的应用</li>
+</ul>
+<hr>
+<h2 id="-原理">🧠 原理<a class="anchor" href="#-%e5%8e%9f%e7%90%86">#</a></h2>
+<pre class="mermaid">graph LR
     subgraph &#34;Kubernetes&#34;
         RS1[&#34;旧版本 ReplicaSet&#34;]
         RS2[&#34;新版本 ReplicaSet&#34;]
@@ -26,7 +874,10 @@
     RS1 --&gt; P1
     RS1 --&gt; P2
     RS2 --&gt; P3
-    RS2 --&gt; P4</pre><script src=/document/mermaid.min.js></script><script>mermaid.initialize({flowchart:{useMaxWidth:!0},theme:"default"})</script><p>Service 同时指向新旧 Pod，流量自然平滑过渡。K8s 控制每次最多多创建 25% 的新 Pod，最多只允许 25% 的 Pod 不可用。</p><hr><h2 id=-发布过程>🚦 发布过程<a class=anchor href=#-%e5%8f%91%e5%b8%83%e8%bf%87%e7%a8%8b>#</a></h2><pre tabindex=0><code>开始: [旧][旧][旧]           (3 Pod)
+    RS2 --&gt; P4</pre><script src="/document/mermaid.min.js"></script><script>mermaid.initialize({"flowchart":{"useMaxWidth":true},"theme":"default"})</script><p>Service 同时指向新旧 Pod，流量自然平滑过渡。K8s 控制每次最多多创建 25% 的新 Pod，最多只允许 25% 的 Pod 不可用。</p>
+<hr>
+<h2 id="-发布过程">🚦 发布过程<a class="anchor" href="#-%e5%8f%91%e5%b8%83%e8%bf%87%e7%a8%8b">#</a></h2>
+<pre tabindex="0"><code>开始: [旧][旧][旧]           (3 Pod)
       ↓
 步骤 1: [旧][旧][旧][新]       (创建 1 个新 Pod)
       ↓
@@ -34,11 +885,151 @@
       ↓
 步骤 3: [旧][新][新][新]       (继续替换)
       ↓
-完成: [新][新][新]           (全部替换完毕)</code></pre><hr><h2 id=回滚>回滚<a class=anchor href=#%e5%9b%9e%e6%bb%9a>#</a></h2><p>Rolling 的回滚是反向的滚动更新：</p><pre tabindex=0><code>当前: [新][新][新]
+完成: [新][新][新]           (全部替换完毕)</code></pre><hr>
+<h2 id="回滚">回滚<a class="anchor" href="#%e5%9b%9e%e6%bb%9a">#</a></h2>
+<p>Rolling 的回滚是反向的滚动更新：</p>
+<pre tabindex="0"><code>当前: [新][新][新]
       ↓
 回滚: [新][新][旧]
       ↓
-完成: [旧][旧][旧]</code></pre><p><strong>回滚时间</strong>：1-5 分钟（取决于副本数和替换速度）。</p><hr><h2 id=优缺点>优缺点<a class=anchor href=#%e4%bc%98%e7%bc%ba%e7%82%b9>#</a></h2><table><thead><tr><th>✅ 优点</th><th>❌ 缺点</th></tr></thead><tbody><tr><td>资源占用最低</td><td>回滚速度慢</td></tr><tr><td>无需额外组件</td><td>出问题影响所有用户</td></tr><tr><td>实现最简单</td><td>无法控制流量比例</td></tr></tbody></table><hr><h2 id=一句话总结>一句话总结<a class=anchor href=#%e4%b8%80%e5%8f%a5%e8%af%9d%e6%80%bb%e7%bb%93>#</a></h2><p>Rolling 就是"稳扎稳打" — 成本低、实现简单，适合不那么关键的服务。</p></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div></div><div></div></div><div class="flex flex-wrap justify-between"><span><a href=/document/docs/cd/standard/ class="flex align-center"><img src=/document/icons/backward.svg class=book-icon alt=Backward>
-<span>发布策略选型</span>
-</a></span><span><a href=/document/docs/cd/canary/ class="flex align-center"><span>Canary 发布</span>
-<img src=/document/icons/forward.svg class=book-icon alt=Forward></a></span></div><script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script></footer><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#-适合什么场景>🎯 适合什么场景</a></li><li><a href=#-原理>🧠 原理</a></li><li><a href=#-发布过程>🚦 发布过程</a></li><li><a href=#回滚>回滚</a></li><li><a href=#优缺点>优缺点</a></li><li><a href=#一句话总结>一句话总结</a></li></ul></nav></div></aside></main></body></html>
+完成: [旧][旧][旧]</code></pre><p><strong>回滚时间</strong>：1-5 分钟（取决于副本数和替换速度）。</p>
+<hr>
+<h2 id="优缺点">优缺点<a class="anchor" href="#%e4%bc%98%e7%bc%ba%e7%82%b9">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>✅ 优点</th>
+          <th>❌ 缺点</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>资源占用最低</td>
+          <td>回滚速度慢</td>
+      </tr>
+      <tr>
+          <td>无需额外组件</td>
+          <td>出问题影响所有用户</td>
+      </tr>
+      <tr>
+          <td>实现最简单</td>
+          <td>无法控制流量比例</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="一句话总结">一句话总结<a class="anchor" href="#%e4%b8%80%e5%8f%a5%e8%af%9d%e6%80%bb%e7%bb%93">#</a></h2>
+<p>Rolling 就是&quot;稳扎稳打&quot; — 成本低、实现简单，适合不那么关键的服务。</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/document/docs/cd/standard/" class="flex align-center">
+        <img src="/document/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>发布策略选型</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/document/docs/cd/canary/" class="flex align-center">
+        <span>Canary 发布</span>
+        <img src="/document/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+ 
+        
+        
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#-适合什么场景">🎯 适合什么场景</a></li>
+    <li><a href="#-原理">🧠 原理</a></li>
+    <li><a href="#-发布过程">🚦 发布过程</a></li>
+    <li><a href="#回滚">回滚</a></li>
+    <li><a href="#优缺点">优缺点</a></li>
+    <li><a href="#一句话总结">一句话总结</a></li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

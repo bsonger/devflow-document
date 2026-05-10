@@ -15,7 +15,7 @@ weight: 74
 
 1. 统一接收应用侧上报的 Metrics / Logs / Traces
 2. 自动补齐 Kubernetes 公共元数据
-3. 给所有 telemetry 统一补充集群级 Resource Attributes
+3. 给所有 telemetry 统一补充环境与集群级 Resource Attributes
 
 ---
 
@@ -26,7 +26,7 @@ Collector 这一层，建议只做**运行环境增强**和**统一转发**：
 | 负责内容 | 示例 |
 |----------|------|
 | K8s 元数据补齐 | `k8s.pod.name` `k8s.namespace.name` `k8s.node.name` |
-| 集群级公共字段 | `k8s.cluster.name` `cloud.region` |
+| 集群级公共字段 | `deployment.environment` `k8s.cluster.name` `cloud.region` |
 | 统一导出 | Prometheus / Loki / Tempo / OTLP backend |
 | 基础清洗 | 删除无用属性、限制标签爆炸 |
 
@@ -101,6 +101,9 @@ processors:
 
   resource:
     attributes:
+      - key: deployment.environment
+        value: prod
+        action: upsert
       - key: k8s.cluster.name
         value: devflow-prod
         action: upsert
@@ -198,6 +201,7 @@ service:
 
 适合放这里的字段：
 
+- `deployment.environment`
 - `k8s.cluster.name`
 - `cloud.region`
 - `cloud.availability_zone`

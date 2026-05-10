@@ -1,57 +1,1092 @@
-<!doctype html><html lang=zh-cn dir=ltr><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content='🧱 WorkloadConfig# WorkloadConfig 是应用的"出厂设置"，定义了应用在 Kubernetes 中怎么跑。
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+<head><script src="/document/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=document/livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="🧱 WorkloadConfig# WorkloadConfig 是应用的&#34;出厂设置&#34;，定义了应用在 Kubernetes 中怎么跑。
 它回答什么问题# 这个应用默认应该有几个副本？用多少 CPU？怎么知道它是不是挂了？
 为什么需要它# 想象一下，每个开发者在各自的 Kubernetes YAML 里写配置：
-# 小明的 order-service replicas: 3 resources: size_class: "medium" # 小红的 payment-gateway replicas: 2 resources: size_class: "small"小明和小红各自为政，标准不统一。运维同学想统一调资源限制，得去改几十个文件。
+# 小明的 order-service replicas: 3 resources: size_class: &#34;medium&#34; # 小红的 payment-gateway replicas: 2 resources: size_class: &#34;small&#34;小明和小红各自为政，标准不统一。运维同学想统一调资源限制，得去改几十个文件。
 WorkloadConfig 就是来解决这个问题的：
 每个应用有一份标准化的基线配置 运维团队可以统一调整资源策略 新应用创建时，可以直接复用已有模板 就像汽车的出厂配置：所有同款车都有相同的发动机参数、轮胎规格，4S 店可以按统一标准维护。
 包含什么# 副本数# replicas: 3应用跑几个 Pod。这是默认值，实际运行时可以通过 runtime-service 动态调整。
-资源规格# resources: size_class: "medium"当前实现里，写入时推荐的是 size_class，例如：
+资源规格# resources: size_class: &#34;medium&#34;当前实现里，写入时推荐的是 size_class，例如：
 small medium large xlarge 具体的 requests / limits 会在下游渲染阶段展开，不建议在这里把它当作主写入接口来理解。
 健康探针# K8s 通过探针判断 Pod 是不是健康：
-probes: liveness: path: "/health" port: "http" initial_delay_seconds: 30 period_seconds: 10 探针 作用 失败会怎样 Liveness 还活着吗？ 不健康就重启容器 Readiness 能接收流量吗？ 不健康就移出负载均衡 Startup 启动完成了吗？ 启动慢的应用用，避免被误杀 环境变量# env: - name: "LOG_LEVEL" value: "info" - name: "SERVER_PORT" value: "8080"当前实现里 env 是一个有序数组，适合表达稳定的基础环境变量。
-'><meta name=theme-color media="(prefers-color-scheme: light)" content="#ffffff"><meta name=theme-color media="(prefers-color-scheme: dark)" content="#343a40"><meta name=color-scheme content="light dark"><meta property="og:url" content="https://devflow.bei.com/document/docs/concepts/workload-config/"><meta property="og:site_name" content="DevFlow"><meta property="og:title" content="WorkloadConfig"><meta property="og:description" content='🧱 WorkloadConfig# WorkloadConfig 是应用的"出厂设置"，定义了应用在 Kubernetes 中怎么跑。
+probes: liveness: path: &#34;/health&#34; port: &#34;http&#34; initial_delay_seconds: 30 period_seconds: 10 探针 作用 失败会怎样 Liveness 还活着吗？ 不健康就重启容器 Readiness 能接收流量吗？ 不健康就移出负载均衡 Startup 启动完成了吗？ 启动慢的应用用，避免被误杀 环境变量# env: - name: &#34;LOG_LEVEL&#34; value: &#34;info&#34; - name: &#34;SERVER_PORT&#34; value: &#34;8080&#34;当前实现里 env 是一个有序数组，适合表达稳定的基础环境变量。
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/document/docs/concepts/workload-config/">
+  <meta property="og:site_name" content="DevFlow">
+  <meta property="og:title" content="WorkloadConfig">
+  <meta property="og:description" content="🧱 WorkloadConfig# WorkloadConfig 是应用的&#34;出厂设置&#34;，定义了应用在 Kubernetes 中怎么跑。
 它回答什么问题# 这个应用默认应该有几个副本？用多少 CPU？怎么知道它是不是挂了？
 为什么需要它# 想象一下，每个开发者在各自的 Kubernetes YAML 里写配置：
-# 小明的 order-service replicas: 3 resources: size_class: "medium" # 小红的 payment-gateway replicas: 2 resources: size_class: "small"小明和小红各自为政，标准不统一。运维同学想统一调资源限制，得去改几十个文件。
+# 小明的 order-service replicas: 3 resources: size_class: &#34;medium&#34; # 小红的 payment-gateway replicas: 2 resources: size_class: &#34;small&#34;小明和小红各自为政，标准不统一。运维同学想统一调资源限制，得去改几十个文件。
 WorkloadConfig 就是来解决这个问题的：
 每个应用有一份标准化的基线配置 运维团队可以统一调整资源策略 新应用创建时，可以直接复用已有模板 就像汽车的出厂配置：所有同款车都有相同的发动机参数、轮胎规格，4S 店可以按统一标准维护。
 包含什么# 副本数# replicas: 3应用跑几个 Pod。这是默认值，实际运行时可以通过 runtime-service 动态调整。
-资源规格# resources: size_class: "medium"当前实现里，写入时推荐的是 size_class，例如：
+资源规格# resources: size_class: &#34;medium&#34;当前实现里，写入时推荐的是 size_class，例如：
 small medium large xlarge 具体的 requests / limits 会在下游渲染阶段展开，不建议在这里把它当作主写入接口来理解。
 健康探针# K8s 通过探针判断 Pod 是不是健康：
-probes: liveness: path: "/health" port: "http" initial_delay_seconds: 30 period_seconds: 10 探针 作用 失败会怎样 Liveness 还活着吗？ 不健康就重启容器 Readiness 能接收流量吗？ 不健康就移出负载均衡 Startup 启动完成了吗？ 启动慢的应用用，避免被误杀 环境变量# env: - name: "LOG_LEVEL" value: "info" - name: "SERVER_PORT" value: "8080"当前实现里 env 是一个有序数组，适合表达稳定的基础环境变量。'><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta itemprop=name content="WorkloadConfig"><meta itemprop=description content='🧱 WorkloadConfig# WorkloadConfig 是应用的"出厂设置"，定义了应用在 Kubernetes 中怎么跑。
+probes: liveness: path: &#34;/health&#34; port: &#34;http&#34; initial_delay_seconds: 30 period_seconds: 10 探针 作用 失败会怎样 Liveness 还活着吗？ 不健康就重启容器 Readiness 能接收流量吗？ 不健康就移出负载均衡 Startup 启动完成了吗？ 启动慢的应用用，避免被误杀 环境变量# env: - name: &#34;LOG_LEVEL&#34; value: &#34;info&#34; - name: &#34;SERVER_PORT&#34; value: &#34;8080&#34;当前实现里 env 是一个有序数组，适合表达稳定的基础环境变量。">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+
+
+  <meta itemprop="name" content="WorkloadConfig">
+  <meta itemprop="description" content="🧱 WorkloadConfig# WorkloadConfig 是应用的&#34;出厂设置&#34;，定义了应用在 Kubernetes 中怎么跑。
 它回答什么问题# 这个应用默认应该有几个副本？用多少 CPU？怎么知道它是不是挂了？
 为什么需要它# 想象一下，每个开发者在各自的 Kubernetes YAML 里写配置：
-# 小明的 order-service replicas: 3 resources: size_class: "medium" # 小红的 payment-gateway replicas: 2 resources: size_class: "small"小明和小红各自为政，标准不统一。运维同学想统一调资源限制，得去改几十个文件。
+# 小明的 order-service replicas: 3 resources: size_class: &#34;medium&#34; # 小红的 payment-gateway replicas: 2 resources: size_class: &#34;small&#34;小明和小红各自为政，标准不统一。运维同学想统一调资源限制，得去改几十个文件。
 WorkloadConfig 就是来解决这个问题的：
 每个应用有一份标准化的基线配置 运维团队可以统一调整资源策略 新应用创建时，可以直接复用已有模板 就像汽车的出厂配置：所有同款车都有相同的发动机参数、轮胎规格，4S 店可以按统一标准维护。
 包含什么# 副本数# replicas: 3应用跑几个 Pod。这是默认值，实际运行时可以通过 runtime-service 动态调整。
-资源规格# resources: size_class: "medium"当前实现里，写入时推荐的是 size_class，例如：
+资源规格# resources: size_class: &#34;medium&#34;当前实现里，写入时推荐的是 size_class，例如：
 small medium large xlarge 具体的 requests / limits 会在下游渲染阶段展开，不建议在这里把它当作主写入接口来理解。
 健康探针# K8s 通过探针判断 Pod 是不是健康：
-probes: liveness: path: "/health" port: "http" initial_delay_seconds: 30 period_seconds: 10 探针 作用 失败会怎样 Liveness 还活着吗？ 不健康就重启容器 Readiness 能接收流量吗？ 不健康就移出负载均衡 Startup 启动完成了吗？ 启动慢的应用用，避免被误杀 环境变量# env: - name: "LOG_LEVEL" value: "info" - name: "SERVER_PORT" value: "8080"当前实现里 env 是一个有序数组，适合表达稳定的基础环境变量。'><meta itemprop=wordCount content="139"><title>WorkloadConfig | DevFlow</title><link rel=icon href=/document/favicon.png><link rel=manifest href=/document/manifest.json><link rel=canonical href=https://devflow.bei.com/document/docs/concepts/workload-config/><link rel=stylesheet href=/document/book.min.8cd0206dd84616a7d412f4d11b03bd0f5f8254beac611979660997cdbce2a6d1.css integrity="sha256-jNAgbdhGFqfUEvTRGwO9D1+CVL6sYRl5ZgmXzbziptE=" crossorigin=anonymous><script defer src=/document/fuse.min.js></script><script defer src=/document/en.search.min.219eedb5fd5496d5774df183ec204184521c0bb1d5e51055046588c14cd38397.js integrity="sha256-IZ7ttf1UltV3TfGD7CBBhFIcC7HV5RBVBGWIwUzTg5c=" crossorigin=anonymous></script></head><body dir=ltr class="book-kind-page book-type-docs"><input type=checkbox class="hidden toggle" id=menu-control>
-<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/document/><span>DevFlow</span></a></h2><div class="book-search hidden"><input id=book-search-input type=text placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><script>document.querySelector(".book-search").classList.remove("hidden")</script><ul><li><a href=/document/docs/getting-started/>快速开始</a><ul></ul></li><li><a href=/document/docs/overview/>平台概览</a><ul></ul></li><li><a href=/document/docs/architecture/>架构设计</a><ul><li><a href=/document/docs/architecture/services/>五大微服务</a></li><li><a href=/document/docs/architecture/domain-model/>领域模型</a></li><li><a href=/document/docs/architecture/lifecycle/>发布生命周期</a></li></ul></li><li><a href=/document/docs/services/>服务详解</a><ul><li><a href=/document/docs/services/meta-service/>meta-service</a></li><li><a href=/document/docs/services/config-service/>config-service</a></li><li><a href=/document/docs/services/network-service/>network-service</a></li><li><a href=/document/docs/services/release-service/>release-service</a></li><li><a href=/document/docs/services/runtime-service/>runtime-service</a></li></ul></li><li><a href=/document/docs/concepts/>核心概念</a><ul><li><a href=/document/docs/concepts/project-application/>Project 与 Application</a></li><li><a href=/document/docs/concepts/environment-cluster/>Environment 与 Cluster</a></li><li><a href=/document/docs/concepts/workload-config/ class=active>WorkloadConfig</a></li><li><a href=/document/docs/concepts/app-config/>AppConfig</a></li><li><a href=/document/docs/concepts/service-route/>Service 与 Route</a></li><li><a href=/document/docs/concepts/manifest-release/>Manifest 与 Release</a></li></ul></li><li><a href=/document/docs/ci/>持续集成</a><ul><li><a href=/document/docs/ci/architecture/>CI 架构</a></li><li><a href=/document/docs/ci/standard/>标准 CI 流程</a></li><li><a href=/document/docs/ci/component/>CI 组件矩阵</a></li><li><a href=/document/docs/ci/queue/>队列与并发控制</a></li></ul></li><li><a href=/document/docs/cd/>持续交付</a><ul><li><a href=/document/docs/cd/architecture/>CD 架构</a></li><li><a href=/document/docs/cd/standard/>发布策略选型</a></li><li><a href=/document/docs/cd/rolling/>Rolling 发布</a></li><li><a href=/document/docs/cd/canary/>Canary 发布</a></li><li><a href=/document/docs/cd/blue-green/>Blue-Green 发布</a></li><li><a href=/document/docs/cd/component/>CD 组件矩阵</a></li></ul></li><li><a href=/document/docs/observability/>可观测性</a><ul><li><a href=/document/docs/observability/component/>可观测性组件矩阵</a></li><li><a href=/document/docs/observability/attributes/>公共 Attributes</a></li><li><a href=/document/docs/observability/standard/>Labels / Attributes 规范</a></li><li><a href=/document/docs/observability/collector/>OTel Collector 配置模板</a></li><li><a href=/document/docs/observability/go-example/>Go 服务最小 OTel 接入示例</a></li><li><a href=/document/docs/observability/logging/>结构化日志规范</a></li><li><a href=/document/docs/observability/service-checklist/>五大服务观测字段清单</a></li><li><a href=/document/docs/observability/onboarding-checklist/>OTel 接入检查清单</a></li><li><a href=/document/docs/observability/release-trace-example/>发布链路 Trace 示例</a></li><li><a href=/document/docs/observability/collector-runbook/>Collector 生产排障 Runbook</a></li><li><a href=/document/docs/observability/release-failure-playbook/>发布失败排障剧本</a></li><li><a href=/document/docs/observability/signal-label-matrix/>信号标签矩阵</a></li></ul></li><li><a href=/document/docs/deployment/>部署指南</a><ul><li><a href=/document/docs/deployment/guide/>部署步骤</a></li></ul></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class="book-header hidden"><div class="flex align-center justify-between"><label for=menu-control><img src=/document/icons/menu.svg class=book-icon alt=Menu></label><h3>WorkloadConfig</h3><label for=toc-control><img src=/document/icons/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class=hidden><nav id=TableOfContents><ul><li><a href=#它回答什么问题>它回答什么问题</a></li><li><a href=#为什么需要它>为什么需要它</a></li><li><a href=#包含什么>包含什么</a><ul><li><a href=#副本数>副本数</a></li><li><a href=#资源规格>资源规格</a></li><li><a href=#健康探针>健康探针</a></li><li><a href=#环境变量>环境变量</a></li><li><a href=#metrics>Metrics</a></li></ul></li><li><a href=#重要特性不随环境变化>重要特性：不随环境变化</a></li><li><a href=#和发布渲染的关系>和发布渲染的关系</a></li></ul></nav></aside></header><article class="markdown book-article"><h1 id=-workloadconfig>🧱 WorkloadConfig<a class=anchor href=#-workloadconfig>#</a></h1><p><strong>WorkloadConfig</strong> 是应用的"出厂设置"，定义了应用在 Kubernetes 中怎么跑。</p><h2 id=它回答什么问题>它回答什么问题<a class=anchor href=#%e5%ae%83%e5%9b%9e%e7%ad%94%e4%bb%80%e4%b9%88%e9%97%ae%e9%a2%98>#</a></h2><blockquote class=book-hint><p>这个应用默认应该有几个副本？用多少 CPU？怎么知道它是不是挂了？</p></blockquote><hr><h2 id=为什么需要它>为什么需要它<a class=anchor href=#%e4%b8%ba%e4%bb%80%e4%b9%88%e9%9c%80%e8%a6%81%e5%ae%83>#</a></h2><p>想象一下，每个开发者在各自的 Kubernetes YAML 里写配置：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#75715e># 小明的 order-service</span>
-</span></span><span style=display:flex><span><span style=color:#f92672>replicas</span>: <span style=color:#ae81ff>3</span>
-</span></span><span style=display:flex><span><span style=color:#f92672>resources</span>:
-</span></span><span style=display:flex><span>  <span style=color:#f92672>size_class</span>: <span style=color:#e6db74>&#34;medium&#34;</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># 小红的 payment-gateway</span>
-</span></span><span style=display:flex><span><span style=color:#f92672>replicas</span>: <span style=color:#ae81ff>2</span>
-</span></span><span style=display:flex><span><span style=color:#f92672>resources</span>:
-</span></span><span style=display:flex><span>  <span style=color:#f92672>size_class</span>: <span style=color:#e6db74>&#34;small&#34;</span></span></span></code></pre></div><p>小明和小红各自为政，标准不统一。运维同学想统一调资源限制，得去改几十个文件。</p><p>WorkloadConfig 就是来解决这个问题的：</p><ul><li>每个应用有一份<strong>标准化的基线配置</strong></li><li>运维团队可以统一调整资源策略</li><li>新应用创建时，可以直接复用已有模板</li></ul><p>就像汽车的出厂配置：所有同款车都有相同的发动机参数、轮胎规格，4S 店可以按统一标准维护。</p><hr><h2 id=包含什么>包含什么<a class=anchor href=#%e5%8c%85%e5%90%ab%e4%bb%80%e4%b9%88>#</a></h2><h3 id=副本数>副本数<a class=anchor href=#%e5%89%af%e6%9c%ac%e6%95%b0>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>replicas</span>: <span style=color:#ae81ff>3</span></span></span></code></pre></div><p>应用跑几个 Pod。这是默认值，实际运行时可以通过 runtime-service 动态调整。</p><h3 id=资源规格>资源规格<a class=anchor href=#%e8%b5%84%e6%ba%90%e8%a7%84%e6%a0%bc>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>resources</span>:
-</span></span><span style=display:flex><span>  <span style=color:#f92672>size_class</span>: <span style=color:#e6db74>&#34;medium&#34;</span></span></span></code></pre></div><p>当前实现里，写入时推荐的是 <strong><code>size_class</code></strong>，例如：</p><ul><li><code>small</code></li><li><code>medium</code></li><li><code>large</code></li><li><code>xlarge</code></li></ul><p>具体的 <code>requests / limits</code> 会在下游渲染阶段展开，不建议在这里把它当作主写入接口来理解。</p><h3 id=健康探针>健康探针<a class=anchor href=#%e5%81%a5%e5%ba%b7%e6%8e%a2%e9%92%88>#</a></h3><p>K8s 通过探针判断 Pod 是不是健康：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>probes</span>:
-</span></span><span style=display:flex><span>  <span style=color:#f92672>liveness</span>:
-</span></span><span style=display:flex><span>    <span style=color:#f92672>path</span>: <span style=color:#e6db74>&#34;/health&#34;</span>
-</span></span><span style=display:flex><span>    <span style=color:#f92672>port</span>: <span style=color:#e6db74>&#34;http&#34;</span>
-</span></span><span style=display:flex><span>    <span style=color:#f92672>initial_delay_seconds</span>: <span style=color:#ae81ff>30</span>
-</span></span><span style=display:flex><span>    <span style=color:#f92672>period_seconds</span>: <span style=color:#ae81ff>10</span></span></span></code></pre></div><table><thead><tr><th>探针</th><th>作用</th><th>失败会怎样</th></tr></thead><tbody><tr><td><strong>Liveness</strong></td><td>还活着吗？</td><td>不健康就重启容器</td></tr><tr><td><strong>Readiness</strong></td><td>能接收流量吗？</td><td>不健康就移出负载均衡</td></tr><tr><td><strong>Startup</strong></td><td>启动完成了吗？</td><td>启动慢的应用用，避免被误杀</td></tr></tbody></table><h3 id=环境变量>环境变量<a class=anchor href=#%e7%8e%af%e5%a2%83%e5%8f%98%e9%87%8f>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>env</span>:
-</span></span><span style=display:flex><span>  - <span style=color:#f92672>name</span>: <span style=color:#e6db74>&#34;LOG_LEVEL&#34;</span>
-</span></span><span style=display:flex><span>    <span style=color:#f92672>value</span>: <span style=color:#e6db74>&#34;info&#34;</span>
-</span></span><span style=display:flex><span>  - <span style=color:#f92672>name</span>: <span style=color:#e6db74>&#34;SERVER_PORT&#34;</span>
-</span></span><span style=display:flex><span>    <span style=color:#f92672>value</span>: <span style=color:#e6db74>&#34;8080&#34;</span></span></span></code></pre></div><p>当前实现里 <code>env</code> 是一个有序数组，适合表达稳定的基础环境变量。</p><h3 id=metrics>Metrics<a class=anchor href=#metrics>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>metrics</span>:
-</span></span><span style=display:flex><span>  <span style=color:#f92672>enabled</span>: <span style=color:#66d9ef>true</span>
-</span></span><span style=display:flex><span>  <span style=color:#f92672>port</span>: <span style=color:#ae81ff>9090</span>
-</span></span><span style=display:flex><span>  <span style=color:#f92672>scrape_profile</span>: <span style=color:#e6db74>&#34;default&#34;</span></span></span></code></pre></div><p>这部分描述“这个应用是否暴露 metrics 监听口”，后续 release render 会据此生成相关运行时配置。</p><hr><h2 id=重要特性不随环境变化>重要特性：不随环境变化<a class=anchor href=#%e9%87%8d%e8%a6%81%e7%89%b9%e6%80%a7%e4%b8%8d%e9%9a%8f%e7%8e%af%e5%a2%83%e5%8f%98%e5%8c%96>#</a></h2><p>WorkloadConfig 属于 <strong>Application</strong>，不属于 Environment。</p><p>这意味着：order-service 在测试环境和生产环境，默认共享同一份应用级基线。</p><p>如果你要改副本数、探针、资源规格，应该优先理解为“修改这份应用基线”，而不是把它当成环境级开关。</p><p>这种设计避免了"测试环境改了副本数，不小心把生产也改了"的坑。</p><hr><h2 id=和发布渲染的关系>和发布渲染的关系<a class=anchor href=#%e5%92%8c%e5%8f%91%e5%b8%83%e6%b8%b2%e6%9f%93%e7%9a%84%e5%85%b3%e7%b3%bb>#</a></h2><p>WorkloadConfig 是基础定义。实际部署时，Manifest / Release 渲染会把它翻译成最终 K8s 工作负载字段。</p><ul><li>Rolling 发布通常渲染成 <code>Deployment</code></li><li>Canary / Blue-Green 发布通常渲染成 <code>Rollout</code></li></ul><p>也就是说，<code>WorkloadConfig</code> 关注的是<strong>应用级运行基线</strong>，不是直接声明“我要生成哪种发布策略资源”。</p></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div></div><div></div></div><div class="flex flex-wrap justify-between"><span><a href=/document/docs/concepts/environment-cluster/ class="flex align-center"><img src=/document/icons/backward.svg class=book-icon alt=Backward>
-<span>Environment 与 Cluster</span>
-</a></span><span><a href=/document/docs/concepts/app-config/ class="flex align-center"><span>AppConfig</span>
-<img src=/document/icons/forward.svg class=book-icon alt=Forward></a></span></div><script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script></footer><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#它回答什么问题>它回答什么问题</a></li><li><a href=#为什么需要它>为什么需要它</a></li><li><a href=#包含什么>包含什么</a><ul><li><a href=#副本数>副本数</a></li><li><a href=#资源规格>资源规格</a></li><li><a href=#健康探针>健康探针</a></li><li><a href=#环境变量>环境变量</a></li><li><a href=#metrics>Metrics</a></li></ul></li><li><a href=#重要特性不随环境变化>重要特性：不随环境变化</a></li><li><a href=#和发布渲染的关系>和发布渲染的关系</a></li></ul></nav></div></aside></main></body></html>
+probes: liveness: path: &#34;/health&#34; port: &#34;http&#34; initial_delay_seconds: 30 period_seconds: 10 探针 作用 失败会怎样 Liveness 还活着吗？ 不健康就重启容器 Readiness 能接收流量吗？ 不健康就移出负载均衡 Startup 启动完成了吗？ 启动慢的应用用，避免被误杀 环境变量# env: - name: &#34;LOG_LEVEL&#34; value: &#34;info&#34; - name: &#34;SERVER_PORT&#34; value: &#34;8080&#34;当前实现里 env 是一个有序数组，适合表达稳定的基础环境变量。">
+  <meta itemprop="wordCount" content="139">
+
+<title>WorkloadConfig | DevFlow</title>
+<link rel="icon" href="/document/favicon.png" >
+<link rel="manifest" href="/document/manifest.json">
+<link rel="canonical" href="http://localhost:1313/document/docs/concepts/workload-config/">
+<link rel="stylesheet" href="/document/book.min.6b7eb9d4a200f83e29d176bd87cbdeded0c65bdbc07ff82b31ab586d1a18b715.css" integrity="sha256-a3651KIA&#43;D4p0Xa9h8ve3tDGW9vAf/grMatYbRoYtxU=" crossorigin="anonymous">
+
+
+  <script defer src="/document/fuse.min.js"></script>
+  <script defer src="/document/en.search.min.2fbabda576e1cb001293be3ca3453b414208f8cbe7e6d4b8fe3a39eea9e07d89.js" integrity="sha256-L7q9pXbhywASk748o0U7QUII&#43;Mvn5tS4/jo57qngfYk=" crossorigin="anonymous"></script>
+
+
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/document/"><span>DevFlow</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/getting-started/" class="">
+      快速开始</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/overview/" class="">
+      平台概览</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/architecture/" class="">
+      架构设计</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/architecture/services/" class="">
+      五大微服务</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/architecture/domain-model/" class="">
+      领域模型</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/architecture/lifecycle/" class="">
+      发布生命周期</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/services/" class="">
+      服务详解</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/services/meta-service/" class="">
+      meta-service</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/services/config-service/" class="">
+      config-service</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/services/network-service/" class="">
+      network-service</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/services/release-service/" class="">
+      release-service</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/services/runtime-service/" class="">
+      runtime-service</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/" class="">
+      核心概念</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/project-application/" class="">
+      Project 与 Application</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/environment-cluster/" class="">
+      Environment 与 Cluster</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/workload-config/" class="active">
+      WorkloadConfig</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/app-config/" class="">
+      AppConfig</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/service-route/" class="">
+      Service 与 Route</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/manifest-release/" class="">
+      Manifest 与 Release</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/ci/" class="">
+      持续集成</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/ci/architecture/" class="">
+      CI 架构</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/ci/standard/" class="">
+      标准 CI 流程</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/ci/component/" class="">
+      CI 组件矩阵</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/ci/queue/" class="">
+      队列与并发控制</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/" class="">
+      持续交付</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/architecture/" class="">
+      CD 架构</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/standard/" class="">
+      发布策略选型</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/rolling/" class="">
+      Rolling 发布</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/canary/" class="">
+      Canary 发布</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/blue-green/" class="">
+      Blue-Green 发布</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/component/" class="">
+      CD 组件矩阵</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/" class="">
+      可观测性</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/component/" class="">
+      可观测性组件矩阵</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/attributes/" class="">
+      公共 Attributes</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/standard/" class="">
+      Labels / Attributes 规范</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/collector/" class="">
+      OTel Collector 配置模板</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/go-example/" class="">
+      Go 服务最小 OTel 接入示例</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/logging/" class="">
+      结构化日志规范</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/service-checklist/" class="">
+      五大服务观测字段清单</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/onboarding-checklist/" class="">
+      OTel 接入检查清单</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/release-trace-example/" class="">
+      发布链路 Trace 示例</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/collector-runbook/" class="">
+      Collector 生产排障 Runbook</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/release-failure-playbook/" class="">
+      发布失败排障剧本</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/signal-label-matrix/" class="">
+      信号标签矩阵</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/deployment/" class="">
+      部署指南</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/deployment/guide/" class="">
+      部署步骤</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/document/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>WorkloadConfig</h3>
+
+  <label for="toc-control">
+    
+    <img src="/document/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#它回答什么问题">它回答什么问题</a></li>
+    <li><a href="#为什么需要它">为什么需要它</a></li>
+    <li><a href="#包含什么">包含什么</a>
+      <ul>
+        <li><a href="#副本数">副本数</a></li>
+        <li><a href="#资源规格">资源规格</a></li>
+        <li><a href="#健康探针">健康探针</a></li>
+        <li><a href="#环境变量">环境变量</a></li>
+        <li><a href="#metrics">Metrics</a></li>
+      </ul>
+    </li>
+    <li><a href="#重要特性不随环境变化">重要特性：不随环境变化</a></li>
+    <li><a href="#和发布渲染的关系">和发布渲染的关系</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="-workloadconfig">🧱 WorkloadConfig<a class="anchor" href="#-workloadconfig">#</a></h1>
+<p><strong>WorkloadConfig</strong> 是应用的&quot;出厂设置&quot;，定义了应用在 Kubernetes 中怎么跑。</p>
+<h2 id="它回答什么问题">它回答什么问题<a class="anchor" href="#%e5%ae%83%e5%9b%9e%e7%ad%94%e4%bb%80%e4%b9%88%e9%97%ae%e9%a2%98">#</a></h2>
+<blockquote class='book-hint '>
+<p>这个应用默认应该有几个副本？用多少 CPU？怎么知道它是不是挂了？</p>
+</blockquote><hr>
+<h2 id="为什么需要它">为什么需要它<a class="anchor" href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e9%9c%80%e8%a6%81%e5%ae%83">#</a></h2>
+<p>想象一下，每个开发者在各自的 Kubernetes YAML 里写配置：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#75715e"># 小明的 order-service</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">replicas</span>: <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">resources</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">size_class</span>: <span style="color:#e6db74">&#34;medium&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 小红的 payment-gateway</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">replicas</span>: <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">resources</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">size_class</span>: <span style="color:#e6db74">&#34;small&#34;</span></span></span></code></pre></div><p>小明和小红各自为政，标准不统一。运维同学想统一调资源限制，得去改几十个文件。</p>
+<p>WorkloadConfig 就是来解决这个问题的：</p>
+<ul>
+<li>每个应用有一份<strong>标准化的基线配置</strong></li>
+<li>运维团队可以统一调整资源策略</li>
+<li>新应用创建时，可以直接复用已有模板</li>
+</ul>
+<p>就像汽车的出厂配置：所有同款车都有相同的发动机参数、轮胎规格，4S 店可以按统一标准维护。</p>
+<hr>
+<h2 id="包含什么">包含什么<a class="anchor" href="#%e5%8c%85%e5%90%ab%e4%bb%80%e4%b9%88">#</a></h2>
+<h3 id="副本数">副本数<a class="anchor" href="#%e5%89%af%e6%9c%ac%e6%95%b0">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">replicas</span>: <span style="color:#ae81ff">3</span></span></span></code></pre></div><p>应用跑几个 Pod。这是默认值，实际运行时可以通过 runtime-service 动态调整。</p>
+<h3 id="资源规格">资源规格<a class="anchor" href="#%e8%b5%84%e6%ba%90%e8%a7%84%e6%a0%bc">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">resources</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">size_class</span>: <span style="color:#e6db74">&#34;medium&#34;</span></span></span></code></pre></div><p>当前实现里，写入时推荐的是 <strong><code>size_class</code></strong>，例如：</p>
+<ul>
+<li><code>small</code></li>
+<li><code>medium</code></li>
+<li><code>large</code></li>
+<li><code>xlarge</code></li>
+</ul>
+<p>具体的 <code>requests / limits</code> 会在下游渲染阶段展开，不建议在这里把它当作主写入接口来理解。</p>
+<h3 id="健康探针">健康探针<a class="anchor" href="#%e5%81%a5%e5%ba%b7%e6%8e%a2%e9%92%88">#</a></h3>
+<p>K8s 通过探针判断 Pod 是不是健康：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">probes</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">liveness</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">path</span>: <span style="color:#e6db74">&#34;/health&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">port</span>: <span style="color:#e6db74">&#34;http&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">initial_delay_seconds</span>: <span style="color:#ae81ff">30</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">period_seconds</span>: <span style="color:#ae81ff">10</span></span></span></code></pre></div><table>
+  <thead>
+      <tr>
+          <th>探针</th>
+          <th>作用</th>
+          <th>失败会怎样</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>Liveness</strong></td>
+          <td>还活着吗？</td>
+          <td>不健康就重启容器</td>
+      </tr>
+      <tr>
+          <td><strong>Readiness</strong></td>
+          <td>能接收流量吗？</td>
+          <td>不健康就移出负载均衡</td>
+      </tr>
+      <tr>
+          <td><strong>Startup</strong></td>
+          <td>启动完成了吗？</td>
+          <td>启动慢的应用用，避免被误杀</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="环境变量">环境变量<a class="anchor" href="#%e7%8e%af%e5%a2%83%e5%8f%98%e9%87%8f">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">env</span>:
+</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">name</span>: <span style="color:#e6db74">&#34;LOG_LEVEL&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">value</span>: <span style="color:#e6db74">&#34;info&#34;</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">name</span>: <span style="color:#e6db74">&#34;SERVER_PORT&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">value</span>: <span style="color:#e6db74">&#34;8080&#34;</span></span></span></code></pre></div><p>当前实现里 <code>env</code> 是一个有序数组，适合表达稳定的基础环境变量。</p>
+<h3 id="metrics">Metrics<a class="anchor" href="#metrics">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">metrics</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">enabled</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">port</span>: <span style="color:#ae81ff">9090</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">scrape_profile</span>: <span style="color:#e6db74">&#34;default&#34;</span></span></span></code></pre></div><p>这部分描述“这个应用是否暴露 metrics 监听口”，后续 release render 会据此生成相关运行时配置。</p>
+<hr>
+<h2 id="重要特性不随环境变化">重要特性：不随环境变化<a class="anchor" href="#%e9%87%8d%e8%a6%81%e7%89%b9%e6%80%a7%e4%b8%8d%e9%9a%8f%e7%8e%af%e5%a2%83%e5%8f%98%e5%8c%96">#</a></h2>
+<p>WorkloadConfig 属于 <strong>Application</strong>，不属于 Environment。</p>
+<p>这意味着：order-service 在测试环境和生产环境，默认共享同一份应用级基线。</p>
+<p>如果你要改副本数、探针、资源规格，应该优先理解为“修改这份应用基线”，而不是把它当成环境级开关。</p>
+<p>这种设计避免了&quot;测试环境改了副本数，不小心把生产也改了&quot;的坑。</p>
+<hr>
+<h2 id="和发布渲染的关系">和发布渲染的关系<a class="anchor" href="#%e5%92%8c%e5%8f%91%e5%b8%83%e6%b8%b2%e6%9f%93%e7%9a%84%e5%85%b3%e7%b3%bb">#</a></h2>
+<p>WorkloadConfig 是基础定义。实际部署时，Manifest / Release 渲染会把它翻译成最终 K8s 工作负载字段。</p>
+<ul>
+<li>Rolling 发布通常渲染成 <code>Deployment</code></li>
+<li>Canary / Blue-Green 发布通常渲染成 <code>Rollout</code></li>
+</ul>
+<p>也就是说，<code>WorkloadConfig</code> 关注的是<strong>应用级运行基线</strong>，不是直接声明“我要生成哪种发布策略资源”。</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/document/docs/concepts/environment-cluster/" class="flex align-center">
+        <img src="/document/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>Environment 与 Cluster</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/document/docs/concepts/app-config/" class="flex align-center">
+        <span>AppConfig</span>
+        <img src="/document/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+ 
+        
+        
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#它回答什么问题">它回答什么问题</a></li>
+    <li><a href="#为什么需要它">为什么需要它</a></li>
+    <li><a href="#包含什么">包含什么</a>
+      <ul>
+        <li><a href="#副本数">副本数</a></li>
+        <li><a href="#资源规格">资源规格</a></li>
+        <li><a href="#健康探针">健康探针</a></li>
+        <li><a href="#环境变量">环境变量</a></li>
+        <li><a href="#metrics">Metrics</a></li>
+      </ul>
+    </li>
+    <li><a href="#重要特性不随环境变化">重要特性：不随环境变化</a></li>
+    <li><a href="#和发布渲染的关系">和发布渲染的关系</a></li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

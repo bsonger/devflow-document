@@ -1,4 +1,14 @@
-<!doctype html><html lang=zh-cn dir=ltr><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="🌱 AppConfig# AppConfig 是环境级配置记录，解决“同一套应用在不同环境挂载不同配置内容”的问题。
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+<head><script src="/document/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=document/livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="🌱 AppConfig# AppConfig 是环境级配置记录，解决“同一套应用在不同环境挂载不同配置内容”的问题。
 它回答什么问题# order-service 在测试环境连哪个数据库？在生产环境连哪个数据库？
 为什么需要它# 想象一下，你没有 AppConfig，所有环境的配置都写在同一份文件里：
 # 测试环境配置 database: postgres-test.internal log_level: debug # 生产环境配置 database: postgres-prod.internal log_level: warn某天你改测试环境的数据库地址，不小心把生产环境的也改了。发布时没发现，结果生产环境连到了测试数据库，用户数据全丢了。
@@ -9,7 +19,13 @@ application_id environment_id mount_path latest_revision_no latest_revision_id f
 测试环境的 AppConfig 记录：
 application_id: order-service environment_id: test mount_path: /etc/config source_directory: ecommerce/order-service/test files: - name: application.yaml - name: feature-flags.yaml生产环境的 AppConfig 记录：
 application_id: order-service environment_id: prod mount_path: /etc/config source_directory: ecommerce/order-service/prod files: - name: application.yaml - name: feature-flags.yaml发布时，DevFlow 读取这些同步过的文件，再和 WorkloadConfig 一起进入 release render。
-"><meta name=theme-color media="(prefers-color-scheme: light)" content="#ffffff"><meta name=theme-color media="(prefers-color-scheme: dark)" content="#343a40"><meta name=color-scheme content="light dark"><meta property="og:url" content="https://devflow.bei.com/document/docs/concepts/app-config/"><meta property="og:site_name" content="DevFlow"><meta property="og:title" content="AppConfig"><meta property="og:description" content="🌱 AppConfig# AppConfig 是环境级配置记录，解决“同一套应用在不同环境挂载不同配置内容”的问题。
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/document/docs/concepts/app-config/">
+  <meta property="og:site_name" content="DevFlow">
+  <meta property="og:title" content="AppConfig">
+  <meta property="og:description" content="🌱 AppConfig# AppConfig 是环境级配置记录，解决“同一套应用在不同环境挂载不同配置内容”的问题。
 它回答什么问题# order-service 在测试环境连哪个数据库？在生产环境连哪个数据库？
 为什么需要它# 想象一下，你没有 AppConfig，所有环境的配置都写在同一份文件里：
 # 测试环境配置 database: postgres-test.internal log_level: debug # 生产环境配置 database: postgres-prod.internal log_level: warn某天你改测试环境的数据库地址，不小心把生产环境的也改了。发布时没发现，结果生产环境连到了测试数据库，用户数据全丢了。
@@ -19,7 +35,14 @@ application_id environment_id mount_path latest_revision_no latest_revision_id f
 实际例子# 同一个应用，不同环境：
 测试环境的 AppConfig 记录：
 application_id: order-service environment_id: test mount_path: /etc/config source_directory: ecommerce/order-service/test files: - name: application.yaml - name: feature-flags.yaml生产环境的 AppConfig 记录：
-application_id: order-service environment_id: prod mount_path: /etc/config source_directory: ecommerce/order-service/prod files: - name: application.yaml - name: feature-flags.yaml发布时，DevFlow 读取这些同步过的文件，再和 WorkloadConfig 一起进入 release render。"><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta itemprop=name content="AppConfig"><meta itemprop=description content="🌱 AppConfig# AppConfig 是环境级配置记录，解决“同一套应用在不同环境挂载不同配置内容”的问题。
+application_id: order-service environment_id: prod mount_path: /etc/config source_directory: ecommerce/order-service/prod files: - name: application.yaml - name: feature-flags.yaml发布时，DevFlow 读取这些同步过的文件，再和 WorkloadConfig 一起进入 release render。">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+
+
+  <meta itemprop="name" content="AppConfig">
+  <meta itemprop="description" content="🌱 AppConfig# AppConfig 是环境级配置记录，解决“同一套应用在不同环境挂载不同配置内容”的问题。
 它回答什么问题# order-service 在测试环境连哪个数据库？在生产环境连哪个数据库？
 为什么需要它# 想象一下，你没有 AppConfig，所有环境的配置都写在同一份文件里：
 # 测试环境配置 database: postgres-test.internal log_level: debug # 生产环境配置 database: postgres-prod.internal log_level: warn某天你改测试环境的数据库地址，不小心把生产环境的也改了。发布时没发现，结果生产环境连到了测试数据库，用户数据全丢了。
@@ -29,28 +52,1032 @@ application_id environment_id mount_path latest_revision_no latest_revision_id f
 实际例子# 同一个应用，不同环境：
 测试环境的 AppConfig 记录：
 application_id: order-service environment_id: test mount_path: /etc/config source_directory: ecommerce/order-service/test files: - name: application.yaml - name: feature-flags.yaml生产环境的 AppConfig 记录：
-application_id: order-service environment_id: prod mount_path: /etc/config source_directory: ecommerce/order-service/prod files: - name: application.yaml - name: feature-flags.yaml发布时，DevFlow 读取这些同步过的文件，再和 WorkloadConfig 一起进入 release render。"><meta itemprop=wordCount content="126"><title>AppConfig | DevFlow</title><link rel=icon href=/document/favicon.png><link rel=manifest href=/document/manifest.json><link rel=canonical href=https://devflow.bei.com/document/docs/concepts/app-config/><link rel=stylesheet href=/document/book.min.8cd0206dd84616a7d412f4d11b03bd0f5f8254beac611979660997cdbce2a6d1.css integrity="sha256-jNAgbdhGFqfUEvTRGwO9D1+CVL6sYRl5ZgmXzbziptE=" crossorigin=anonymous><script defer src=/document/fuse.min.js></script><script defer src=/document/en.search.min.219eedb5fd5496d5774df183ec204184521c0bb1d5e51055046588c14cd38397.js integrity="sha256-IZ7ttf1UltV3TfGD7CBBhFIcC7HV5RBVBGWIwUzTg5c=" crossorigin=anonymous></script></head><body dir=ltr class="book-kind-page book-type-docs"><input type=checkbox class="hidden toggle" id=menu-control>
-<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/document/><span>DevFlow</span></a></h2><div class="book-search hidden"><input id=book-search-input type=text placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><script>document.querySelector(".book-search").classList.remove("hidden")</script><ul><li><a href=/document/docs/getting-started/>快速开始</a><ul></ul></li><li><a href=/document/docs/overview/>平台概览</a><ul></ul></li><li><a href=/document/docs/architecture/>架构设计</a><ul><li><a href=/document/docs/architecture/services/>五大微服务</a></li><li><a href=/document/docs/architecture/domain-model/>领域模型</a></li><li><a href=/document/docs/architecture/lifecycle/>发布生命周期</a></li></ul></li><li><a href=/document/docs/services/>服务详解</a><ul><li><a href=/document/docs/services/meta-service/>meta-service</a></li><li><a href=/document/docs/services/config-service/>config-service</a></li><li><a href=/document/docs/services/network-service/>network-service</a></li><li><a href=/document/docs/services/release-service/>release-service</a></li><li><a href=/document/docs/services/runtime-service/>runtime-service</a></li></ul></li><li><a href=/document/docs/concepts/>核心概念</a><ul><li><a href=/document/docs/concepts/project-application/>Project 与 Application</a></li><li><a href=/document/docs/concepts/environment-cluster/>Environment 与 Cluster</a></li><li><a href=/document/docs/concepts/workload-config/>WorkloadConfig</a></li><li><a href=/document/docs/concepts/app-config/ class=active>AppConfig</a></li><li><a href=/document/docs/concepts/service-route/>Service 与 Route</a></li><li><a href=/document/docs/concepts/manifest-release/>Manifest 与 Release</a></li></ul></li><li><a href=/document/docs/ci/>持续集成</a><ul><li><a href=/document/docs/ci/architecture/>CI 架构</a></li><li><a href=/document/docs/ci/standard/>标准 CI 流程</a></li><li><a href=/document/docs/ci/component/>CI 组件矩阵</a></li><li><a href=/document/docs/ci/queue/>队列与并发控制</a></li></ul></li><li><a href=/document/docs/cd/>持续交付</a><ul><li><a href=/document/docs/cd/architecture/>CD 架构</a></li><li><a href=/document/docs/cd/standard/>发布策略选型</a></li><li><a href=/document/docs/cd/rolling/>Rolling 发布</a></li><li><a href=/document/docs/cd/canary/>Canary 发布</a></li><li><a href=/document/docs/cd/blue-green/>Blue-Green 发布</a></li><li><a href=/document/docs/cd/component/>CD 组件矩阵</a></li></ul></li><li><a href=/document/docs/observability/>可观测性</a><ul><li><a href=/document/docs/observability/component/>可观测性组件矩阵</a></li><li><a href=/document/docs/observability/attributes/>公共 Attributes</a></li><li><a href=/document/docs/observability/standard/>Labels / Attributes 规范</a></li><li><a href=/document/docs/observability/collector/>OTel Collector 配置模板</a></li><li><a href=/document/docs/observability/go-example/>Go 服务最小 OTel 接入示例</a></li><li><a href=/document/docs/observability/logging/>结构化日志规范</a></li><li><a href=/document/docs/observability/service-checklist/>五大服务观测字段清单</a></li><li><a href=/document/docs/observability/onboarding-checklist/>OTel 接入检查清单</a></li><li><a href=/document/docs/observability/release-trace-example/>发布链路 Trace 示例</a></li><li><a href=/document/docs/observability/collector-runbook/>Collector 生产排障 Runbook</a></li><li><a href=/document/docs/observability/release-failure-playbook/>发布失败排障剧本</a></li><li><a href=/document/docs/observability/signal-label-matrix/>信号标签矩阵</a></li></ul></li><li><a href=/document/docs/deployment/>部署指南</a><ul><li><a href=/document/docs/deployment/guide/>部署步骤</a></li></ul></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class="book-header hidden"><div class="flex align-center justify-between"><label for=menu-control><img src=/document/icons/menu.svg class=book-icon alt=Menu></label><h3>AppConfig</h3><label for=toc-control><img src=/document/icons/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class=hidden><nav id=TableOfContents><ul><li><a href=#它回答什么问题>它回答什么问题</a></li><li><a href=#为什么需要它>为什么需要它</a></li><li><a href=#当前实现里包含什么>当前实现里包含什么</a></li><li><a href=#实际例子>实际例子</a></li><li><a href=#当前实现里的心智模型>当前实现里的心智模型</a></li><li><a href=#和-workloadconfig-的区别>和 WorkloadConfig 的区别</a></li><li><a href=#安全>安全</a></li></ul></nav></aside></header><article class="markdown book-article"><h1 id=-appconfig>🌱 AppConfig<a class=anchor href=#-appconfig>#</a></h1><p><strong>AppConfig</strong> 是环境级配置记录，解决“同一套应用在不同环境挂载不同配置内容”的问题。</p><h2 id=它回答什么问题>它回答什么问题<a class=anchor href=#%e5%ae%83%e5%9b%9e%e7%ad%94%e4%bb%80%e4%b9%88%e9%97%ae%e9%a2%98>#</a></h2><blockquote class=book-hint><p>order-service 在测试环境连哪个数据库？在生产环境连哪个数据库？</p></blockquote><hr><h2 id=为什么需要它>为什么需要它<a class=anchor href=#%e4%b8%ba%e4%bb%80%e4%b9%88%e9%9c%80%e8%a6%81%e5%ae%83>#</a></h2><p>想象一下，你没有 AppConfig，所有环境的配置都写在同一份文件里：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#75715e># 测试环境配置</span>
-</span></span><span style=display:flex><span><span style=color:#f92672>database</span>: <span style=color:#ae81ff>postgres-test.internal</span>
-</span></span><span style=display:flex><span><span style=color:#f92672>log_level</span>: <span style=color:#ae81ff>debug</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># 生产环境配置</span>
-</span></span><span style=display:flex><span><span style=color:#f92672>database</span>: <span style=color:#ae81ff>postgres-prod.internal</span>
-</span></span><span style=display:flex><span><span style=color:#f92672>log_level</span>: <span style=color:#ae81ff>warn</span></span></span></code></pre></div><p>某天你改测试环境的数据库地址，不小心把生产环境的也改了。发布时没发现，结果生产环境连到了测试数据库，用户数据全丢了。</p><p>AppConfig 就是来解决这个问题的：</p><ul><li>每个环境独立管理自己的配置</li><li>发布时自动叠加到基线配置上</li><li>测试环境的改动永远不会影响生产环境</li></ul><hr><h2 id=当前实现里包含什么>当前实现里包含什么<a class=anchor href=#%e5%bd%93%e5%89%8d%e5%ae%9e%e7%8e%b0%e9%87%8c%e5%8c%85%e5%90%ab%e4%bb%80%e4%b9%88>#</a></h2><p>当前 <code>devflow-service</code> 里的 <code>AppConfig</code> 主要记录：</p><ul><li><code>application_id</code></li><li><code>environment_id</code></li><li><code>mount_path</code></li><li><code>latest_revision_no</code></li><li><code>latest_revision_id</code></li><li><code>files</code></li><li><code>source_directory</code></li><li><code>source_commit</code></li></ul><p>它的配置内容不是通过页面上随手写一段 <code>config_data</code> 保存，而是通过<strong>固定配置仓库同步</strong>进入当前记录。</p><hr><h2 id=实际例子>实际例子<a class=anchor href=#%e5%ae%9e%e9%99%85%e4%be%8b%e5%ad%90>#</a></h2><p>同一个应用，不同环境：</p><p><strong>测试环境的 AppConfig 记录：</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>application_id</span>: <span style=color:#ae81ff>order-service</span>
-</span></span><span style=display:flex><span><span style=color:#f92672>environment_id</span>: <span style=color:#ae81ff>test</span>
-</span></span><span style=display:flex><span><span style=color:#f92672>mount_path</span>: <span style=color:#ae81ff>/etc/config</span>
-</span></span><span style=display:flex><span><span style=color:#f92672>source_directory</span>: <span style=color:#ae81ff>ecommerce/order-service/test</span>
-</span></span><span style=display:flex><span><span style=color:#f92672>files</span>:
-</span></span><span style=display:flex><span>  - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>application.yaml</span>
-</span></span><span style=display:flex><span>  - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>feature-flags.yaml</span></span></span></code></pre></div><p><strong>生产环境的 AppConfig 记录：</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>application_id</span>: <span style=color:#ae81ff>order-service</span>
-</span></span><span style=display:flex><span><span style=color:#f92672>environment_id</span>: <span style=color:#ae81ff>prod</span>
-</span></span><span style=display:flex><span><span style=color:#f92672>mount_path</span>: <span style=color:#ae81ff>/etc/config</span>
-</span></span><span style=display:flex><span><span style=color:#f92672>source_directory</span>: <span style=color:#ae81ff>ecommerce/order-service/prod</span>
-</span></span><span style=display:flex><span><span style=color:#f92672>files</span>:
-</span></span><span style=display:flex><span>  - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>application.yaml</span>
-</span></span><span style=display:flex><span>  - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>feature-flags.yaml</span></span></span></code></pre></div><p>发布时，DevFlow 读取这些同步过的文件，再和 WorkloadConfig 一起进入 release render。</p><hr><h2 id=当前实现里的心智模型>当前实现里的心智模型<a class=anchor href=#%e5%bd%93%e5%89%8d%e5%ae%9e%e7%8e%b0%e9%87%8c%e7%9a%84%e5%bf%83%e6%99%ba%e6%a8%a1%e5%9e%8b>#</a></h2><pre tabindex=0><code>WorkloadConfig = 应用级运行基线
+application_id: order-service environment_id: prod mount_path: /etc/config source_directory: ecommerce/order-service/prod files: - name: application.yaml - name: feature-flags.yaml发布时，DevFlow 读取这些同步过的文件，再和 WorkloadConfig 一起进入 release render。">
+  <meta itemprop="wordCount" content="126">
+
+<title>AppConfig | DevFlow</title>
+<link rel="icon" href="/document/favicon.png" >
+<link rel="manifest" href="/document/manifest.json">
+<link rel="canonical" href="http://localhost:1313/document/docs/concepts/app-config/">
+<link rel="stylesheet" href="/document/book.min.6b7eb9d4a200f83e29d176bd87cbdeded0c65bdbc07ff82b31ab586d1a18b715.css" integrity="sha256-a3651KIA&#43;D4p0Xa9h8ve3tDGW9vAf/grMatYbRoYtxU=" crossorigin="anonymous">
+
+
+  <script defer src="/document/fuse.min.js"></script>
+  <script defer src="/document/en.search.min.2fbabda576e1cb001293be3ca3453b414208f8cbe7e6d4b8fe3a39eea9e07d89.js" integrity="sha256-L7q9pXbhywASk748o0U7QUII&#43;Mvn5tS4/jo57qngfYk=" crossorigin="anonymous"></script>
+
+
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/document/"><span>DevFlow</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/getting-started/" class="">
+      快速开始</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/overview/" class="">
+      平台概览</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/architecture/" class="">
+      架构设计</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/architecture/services/" class="">
+      五大微服务</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/architecture/domain-model/" class="">
+      领域模型</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/architecture/lifecycle/" class="">
+      发布生命周期</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/services/" class="">
+      服务详解</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/services/meta-service/" class="">
+      meta-service</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/services/config-service/" class="">
+      config-service</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/services/network-service/" class="">
+      network-service</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/services/release-service/" class="">
+      release-service</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/services/runtime-service/" class="">
+      runtime-service</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/" class="">
+      核心概念</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/project-application/" class="">
+      Project 与 Application</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/environment-cluster/" class="">
+      Environment 与 Cluster</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/workload-config/" class="">
+      WorkloadConfig</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/app-config/" class="active">
+      AppConfig</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/service-route/" class="">
+      Service 与 Route</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/manifest-release/" class="">
+      Manifest 与 Release</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/ci/" class="">
+      持续集成</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/ci/architecture/" class="">
+      CI 架构</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/ci/standard/" class="">
+      标准 CI 流程</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/ci/component/" class="">
+      CI 组件矩阵</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/ci/queue/" class="">
+      队列与并发控制</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/" class="">
+      持续交付</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/architecture/" class="">
+      CD 架构</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/standard/" class="">
+      发布策略选型</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/rolling/" class="">
+      Rolling 发布</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/canary/" class="">
+      Canary 发布</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/blue-green/" class="">
+      Blue-Green 发布</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/component/" class="">
+      CD 组件矩阵</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/" class="">
+      可观测性</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/component/" class="">
+      可观测性组件矩阵</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/attributes/" class="">
+      公共 Attributes</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/standard/" class="">
+      Labels / Attributes 规范</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/collector/" class="">
+      OTel Collector 配置模板</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/go-example/" class="">
+      Go 服务最小 OTel 接入示例</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/logging/" class="">
+      结构化日志规范</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/service-checklist/" class="">
+      五大服务观测字段清单</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/onboarding-checklist/" class="">
+      OTel 接入检查清单</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/release-trace-example/" class="">
+      发布链路 Trace 示例</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/collector-runbook/" class="">
+      Collector 生产排障 Runbook</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/release-failure-playbook/" class="">
+      发布失败排障剧本</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/signal-label-matrix/" class="">
+      信号标签矩阵</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/deployment/" class="">
+      部署指南</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/deployment/guide/" class="">
+      部署步骤</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/document/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>AppConfig</h3>
+
+  <label for="toc-control">
+    
+    <img src="/document/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#它回答什么问题">它回答什么问题</a></li>
+    <li><a href="#为什么需要它">为什么需要它</a></li>
+    <li><a href="#当前实现里包含什么">当前实现里包含什么</a></li>
+    <li><a href="#实际例子">实际例子</a></li>
+    <li><a href="#当前实现里的心智模型">当前实现里的心智模型</a></li>
+    <li><a href="#和-workloadconfig-的区别">和 WorkloadConfig 的区别</a></li>
+    <li><a href="#安全">安全</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="-appconfig">🌱 AppConfig<a class="anchor" href="#-appconfig">#</a></h1>
+<p><strong>AppConfig</strong> 是环境级配置记录，解决“同一套应用在不同环境挂载不同配置内容”的问题。</p>
+<h2 id="它回答什么问题">它回答什么问题<a class="anchor" href="#%e5%ae%83%e5%9b%9e%e7%ad%94%e4%bb%80%e4%b9%88%e9%97%ae%e9%a2%98">#</a></h2>
+<blockquote class='book-hint '>
+<p>order-service 在测试环境连哪个数据库？在生产环境连哪个数据库？</p>
+</blockquote><hr>
+<h2 id="为什么需要它">为什么需要它<a class="anchor" href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e9%9c%80%e8%a6%81%e5%ae%83">#</a></h2>
+<p>想象一下，你没有 AppConfig，所有环境的配置都写在同一份文件里：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#75715e"># 测试环境配置</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">database</span>: <span style="color:#ae81ff">postgres-test.internal</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">log_level</span>: <span style="color:#ae81ff">debug</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 生产环境配置</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">database</span>: <span style="color:#ae81ff">postgres-prod.internal</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">log_level</span>: <span style="color:#ae81ff">warn</span></span></span></code></pre></div><p>某天你改测试环境的数据库地址，不小心把生产环境的也改了。发布时没发现，结果生产环境连到了测试数据库，用户数据全丢了。</p>
+<p>AppConfig 就是来解决这个问题的：</p>
+<ul>
+<li>每个环境独立管理自己的配置</li>
+<li>发布时自动叠加到基线配置上</li>
+<li>测试环境的改动永远不会影响生产环境</li>
+</ul>
+<hr>
+<h2 id="当前实现里包含什么">当前实现里包含什么<a class="anchor" href="#%e5%bd%93%e5%89%8d%e5%ae%9e%e7%8e%b0%e9%87%8c%e5%8c%85%e5%90%ab%e4%bb%80%e4%b9%88">#</a></h2>
+<p>当前 <code>devflow-service</code> 里的 <code>AppConfig</code> 主要记录：</p>
+<ul>
+<li><code>application_id</code></li>
+<li><code>environment_id</code></li>
+<li><code>mount_path</code></li>
+<li><code>latest_revision_no</code></li>
+<li><code>latest_revision_id</code></li>
+<li><code>files</code></li>
+<li><code>source_directory</code></li>
+<li><code>source_commit</code></li>
+</ul>
+<p>它的配置内容不是通过页面上随手写一段 <code>config_data</code> 保存，而是通过<strong>固定配置仓库同步</strong>进入当前记录。</p>
+<hr>
+<h2 id="实际例子">实际例子<a class="anchor" href="#%e5%ae%9e%e9%99%85%e4%be%8b%e5%ad%90">#</a></h2>
+<p>同一个应用，不同环境：</p>
+<p><strong>测试环境的 AppConfig 记录：</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">application_id</span>: <span style="color:#ae81ff">order-service</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">environment_id</span>: <span style="color:#ae81ff">test</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">mount_path</span>: <span style="color:#ae81ff">/etc/config</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">source_directory</span>: <span style="color:#ae81ff">ecommerce/order-service/test</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">files</span>:
+</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">application.yaml</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">feature-flags.yaml</span></span></span></code></pre></div><p><strong>生产环境的 AppConfig 记录：</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">application_id</span>: <span style="color:#ae81ff">order-service</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">environment_id</span>: <span style="color:#ae81ff">prod</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">mount_path</span>: <span style="color:#ae81ff">/etc/config</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">source_directory</span>: <span style="color:#ae81ff">ecommerce/order-service/prod</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">files</span>:
+</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">application.yaml</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">feature-flags.yaml</span></span></span></code></pre></div><p>发布时，DevFlow 读取这些同步过的文件，再和 WorkloadConfig 一起进入 release render。</p>
+<hr>
+<h2 id="当前实现里的心智模型">当前实现里的心智模型<a class="anchor" href="#%e5%bd%93%e5%89%8d%e5%ae%9e%e7%8e%b0%e9%87%8c%e7%9a%84%e5%bf%83%e6%99%ba%e6%a8%a1%e5%9e%8b">#</a></h2>
+<pre tabindex="0"><code>WorkloadConfig = 应用级运行基线
 AppConfig = 环境级配置文件来源
-Release render = 把两者翻译成最终部署内容</code></pre><p>也就是说：</p><ul><li><code>AppConfig</code> 不是最终 ConfigMap</li><li><code>AppConfig</code> 也不是自由结构的键值数据库</li><li><code>AppConfig</code> 更像“当前环境配置文件挂载与同步状态的资源记录”</li></ul><hr><h2 id=和-workloadconfig-的区别>和 WorkloadConfig 的区别<a class=anchor href=#%e5%92%8c-workloadconfig-%e7%9a%84%e5%8c%ba%e5%88%ab>#</a></h2><table><thead><tr><th></th><th>WorkloadConfig</th><th>AppConfig</th></tr></thead><tbody><tr><td>属于</td><td>Application</td><td>ApplicationEnvironment</td></tr><tr><td>用途</td><td>运行时基线</td><td>环境级配置来源记录</td></tr><tr><td>随环境变化</td><td>否</td><td>是</td></tr><tr><td>例子</td><td>副本数、资源规格</td><td>mount_path、同步文件、source_directory</td></tr></tbody></table><hr><h2 id=安全>安全<a class=anchor href=#%e5%ae%89%e5%85%a8>#</a></h2><p>当前实现里，配置来源受固定配置仓库和同步流程约束。用户主要维护的是挂载位置和环境归属，而不是直接在 API 中提交一整套自由格式 secrets/config_data。</p></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div></div><div></div></div><div class="flex flex-wrap justify-between"><span><a href=/document/docs/concepts/workload-config/ class="flex align-center"><img src=/document/icons/backward.svg class=book-icon alt=Backward>
-<span>WorkloadConfig</span>
-</a></span><span><a href=/document/docs/concepts/service-route/ class="flex align-center"><span>Service 与 Route</span>
-<img src=/document/icons/forward.svg class=book-icon alt=Forward></a></span></div><script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script></footer><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#它回答什么问题>它回答什么问题</a></li><li><a href=#为什么需要它>为什么需要它</a></li><li><a href=#当前实现里包含什么>当前实现里包含什么</a></li><li><a href=#实际例子>实际例子</a></li><li><a href=#当前实现里的心智模型>当前实现里的心智模型</a></li><li><a href=#和-workloadconfig-的区别>和 WorkloadConfig 的区别</a></li><li><a href=#安全>安全</a></li></ul></nav></div></aside></main></body></html>
+Release render = 把两者翻译成最终部署内容</code></pre><p>也就是说：</p>
+<ul>
+<li><code>AppConfig</code> 不是最终 ConfigMap</li>
+<li><code>AppConfig</code> 也不是自由结构的键值数据库</li>
+<li><code>AppConfig</code> 更像“当前环境配置文件挂载与同步状态的资源记录”</li>
+</ul>
+<hr>
+<h2 id="和-workloadconfig-的区别">和 WorkloadConfig 的区别<a class="anchor" href="#%e5%92%8c-workloadconfig-%e7%9a%84%e5%8c%ba%e5%88%ab">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th></th>
+          <th>WorkloadConfig</th>
+          <th>AppConfig</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>属于</td>
+          <td>Application</td>
+          <td>ApplicationEnvironment</td>
+      </tr>
+      <tr>
+          <td>用途</td>
+          <td>运行时基线</td>
+          <td>环境级配置来源记录</td>
+      </tr>
+      <tr>
+          <td>随环境变化</td>
+          <td>否</td>
+          <td>是</td>
+      </tr>
+      <tr>
+          <td>例子</td>
+          <td>副本数、资源规格</td>
+          <td>mount_path、同步文件、source_directory</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="安全">安全<a class="anchor" href="#%e5%ae%89%e5%85%a8">#</a></h2>
+<p>当前实现里，配置来源受固定配置仓库和同步流程约束。用户主要维护的是挂载位置和环境归属，而不是直接在 API 中提交一整套自由格式 secrets/config_data。</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/document/docs/concepts/workload-config/" class="flex align-center">
+        <img src="/document/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>WorkloadConfig</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/document/docs/concepts/service-route/" class="flex align-center">
+        <span>Service 与 Route</span>
+        <img src="/document/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+ 
+        
+        
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#它回答什么问题">它回答什么问题</a></li>
+    <li><a href="#为什么需要它">为什么需要它</a></li>
+    <li><a href="#当前实现里包含什么">当前实现里包含什么</a></li>
+    <li><a href="#实际例子">实际例子</a></li>
+    <li><a href="#当前实现里的心智模型">当前实现里的心智模型</a></li>
+    <li><a href="#和-workloadconfig-的区别">和 WorkloadConfig 的区别</a></li>
+    <li><a href="#安全">安全</a></li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

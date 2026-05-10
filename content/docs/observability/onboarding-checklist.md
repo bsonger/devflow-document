@@ -27,10 +27,10 @@ weight: 78
 
 | 维度 | 必须具备 |
 |------|----------|
-| 启动配置 | `service.name` `service.version` `deployment.environment` |
+| 启动配置 | `service.name` `service.version` |
 | Trace 基础链路 | `trace_id` `span_id` `http.method` `http.route` |
 | 业务上下文 | `devflow.application.id`，发布链路再加 `devflow.release.id` |
-| 平台公共元数据 | `k8s.cluster.name` `k8s.namespace.name` `k8s.pod.name` |
+| 平台公共元数据 | `deployment.environment` `k8s.cluster.name` `k8s.namespace.name` `k8s.pod.name` |
 
 如果缺少其中任何一组，排障链路都会断。
 
@@ -44,7 +44,6 @@ weight: 78
 - [ ] 服务配置了 `OTEL_RESOURCE_ATTRIBUTES`
 - [ ] `OTEL_RESOURCE_ATTRIBUTES` 里至少包含：
   - [ ] `service.version`
-  - [ ] `deployment.environment`
 - [ ] 服务配置了 `OTEL_EXPORTER_OTLP_ENDPOINT`
 
 ### 通过标准
@@ -59,7 +58,7 @@ weight: 78
 
 - 把 `devflow.release.id` 塞进 `OTEL_RESOURCE_ATTRIBUTES`
 - 漏掉 `service.name`
-- 所有环境都写成同一个 `deployment.environment`
+- 把本应平台统一注入的 `deployment.environment` 分散到每个服务手工维护
 
 ---
 
@@ -220,8 +219,9 @@ Prometheus / Grafana 中应该能按：
    - `service.name`
    - `deployment.environment`
    - `devflow.application.id`
-4. 在日志系统确认同一次请求能按 `trace_id` 查到日志
-5. 在指标系统确认该路由有延迟 / 请求数 / 错误率指标
+4. 在 Span 或日志中确认存在 `deployment.environment`
+5. 在日志系统确认同一次请求能按 `trace_id` 查到日志
+6. 在指标系统确认该路由有延迟 / 请求数 / 错误率指标
 
 如果这 5 步都通过，说明基础链路已经打通。
 

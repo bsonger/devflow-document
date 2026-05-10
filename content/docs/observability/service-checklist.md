@@ -19,10 +19,10 @@ weight: 77
 
 - `service.name`
 - `service.version`
-- `deployment.environment`
 
 ### Collector 层
 
+- `deployment.environment`
 - `k8s.cluster.name`
 - `k8s.namespace.name`
 - `k8s.pod.name`
