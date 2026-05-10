@@ -1,32 +1,135 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>架构设计 on DevFlow</title>
-    <link>http://127.0.0.1:1313/document/docs/architecture/</link>
-    <description>Recent content in 架构设计 on DevFlow</description>
-    <generator>Hugo</generator>
-    <language>zh-cn</language>
-    <atom:link href="http://127.0.0.1:1313/document/docs/architecture/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>五大微服务</title>
-      <link>http://127.0.0.1:1313/document/docs/architecture/services/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://127.0.0.1:1313/document/docs/architecture/services/</guid>
-      <description>&lt;h1 id=&#34;-五大微服务&#34;&gt;🧩 五大微服务&lt;a class=&#34;anchor&#34; href=&#34;#-%e4%ba%94%e5%a4%a7%e5%be%ae%e6%9c%8d%e5%8a%a1&#34;&gt;#&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;DevFlow 由 5 个独立服务组成。你可以把它们理解成一个发布团队里的 5 个角色。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;-服务总览&#34;&gt;📋 服务总览&lt;a class=&#34;anchor&#34; href=&#34;#-%e6%9c%8d%e5%8a%a1%e6%80%bb%e8%a7%88&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;table class=&#34;df-table&#34;&gt;&#xA;  &lt;thead&gt;&#xA;    &lt;tr&gt;&#xA;      &lt;th&gt;👤 角色比喻&lt;/th&gt;&#xA;      &lt;th&gt;⚙️ 服务&lt;/th&gt;&#xA;      &lt;th&gt;📝 核心职责&lt;/th&gt;&#xA;      &lt;th&gt;🗄️ 数据存储&lt;/th&gt;&#xA;    &lt;/tr&gt;&#xA;  &lt;/thead&gt;&#xA;  &lt;tbody&gt;&#xA;    &lt;tr&gt;&#xA;      &lt;td&gt;📚 档案管理员&lt;/td&gt;&#xA;      &lt;td&gt;meta-service&lt;/td&gt;&#xA;      &lt;td&gt;管理应用、环境、集群的元数据&lt;/td&gt;&#xA;      &lt;td&gt;PostgreSQL&lt;/td&gt;&#xA;    &lt;/tr&gt;&#xA;    &lt;tr&gt;&#xA;      &lt;td&gt;🧪 配置专员&lt;/td&gt;&#xA;      &lt;td&gt;config-service&lt;/td&gt;&#xA;      &lt;td&gt;管理应用配置和环境差异&lt;/td&gt;&#xA;      &lt;td&gt;PostgreSQL&lt;/td&gt;&#xA;    &lt;/tr&gt;&#xA;    &lt;tr&gt;&#xA;      &lt;td&gt;🌐 网络工程师&lt;/td&gt;&#xA;      &lt;td&gt;network-service&lt;/td&gt;&#xA;      &lt;td&gt;管理网络拓扑和访问入口&lt;/td&gt;&#xA;      &lt;td&gt;PostgreSQL&lt;/td&gt;&#xA;    &lt;/tr&gt;&#xA;    &lt;tr&gt;&#xA;      &lt;td&gt;🚀 发布经理&lt;/td&gt;&#xA;      &lt;td&gt;release-service&lt;/td&gt;&#xA;      &lt;td&gt;编排发布全流程&lt;/td&gt;&#xA;      &lt;td&gt;PostgreSQL&lt;/td&gt;&#xA;    &lt;/tr&gt;&#xA;    &lt;tr&gt;&#xA;      &lt;td&gt;🛠️ 运维值班&lt;/td&gt;&#xA;      &lt;td&gt;runtime-service&lt;/td&gt;&#xA;      &lt;td&gt;观察集群状态，执行运维操作&lt;/td&gt;&#xA;      &lt;td&gt;内存索引&lt;/td&gt;&#xA;    &lt;/tr&gt;&#xA;  &lt;/tbody&gt;&#xA;&lt;/table&gt;&#xA;&lt;hr&gt;&#xA;&lt;div class=&#34;df-service-block&#34;&gt;&#xA;&lt;h2 id=&#34;-meta-service--档案管理员&#34;&gt;📚 meta-service — 档案管理员&lt;a class=&#34;anchor&#34; href=&#34;#-meta-service--%e6%a1%a3%e6%a1%88%e7%ae%a1%e7%90%86%e5%91%98&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;p&gt;&lt;span class=&#34;df-badge&#34;&gt;🏷️ 稳定性高&lt;/span&gt; &lt;span class=&#34;df-badge&#34;&gt;🗂️ 元数据中心&lt;/span&gt; &lt;span class=&#34;df-badge&#34;&gt;🔍 查询为主&lt;/span&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;📦 管什么&lt;/strong&gt;：Project、Application、Environment、Cluster、ApplicationEnvironment&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;💬 一句话&lt;/strong&gt;：所有应用的&amp;quot;户口本&amp;quot;都存在这里。其他服务想知道&amp;quot;这个应用叫什么名字&amp;quot;、&amp;ldquo;生产环境在哪个集群&amp;rdquo;，都来问它。&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;🎯 为什么独立出来&lt;/strong&gt;：元数据相对稳定，独立后不会被频繁变更影响。同时保证所有服务看到的应用信息是一致的。&lt;/p&gt;&#xA;&lt;/div&gt;&#xA;&lt;hr&gt;&#xA;&lt;div class=&#34;df-service-block&#34;&gt;&#xA;&lt;h2 id=&#34;-config-service--配置专员&#34;&gt;🧪 config-service — 配置专员&lt;a class=&#34;anchor&#34; href=&#34;#-config-service--%e9%85%8d%e7%bd%ae%e4%b8%93%e5%91%98&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;p&gt;&lt;span class=&#34;df-badge&#34;&gt;🧱 配置分层&lt;/span&gt; &lt;span class=&#34;df-badge&#34;&gt;🌱 环境差异&lt;/span&gt; &lt;span class=&#34;df-badge&#34;&gt;📥 渲染输入&lt;/span&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;📦 管什么&lt;/strong&gt;：WorkloadConfig、AppConfig&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;💬 一句话&lt;/strong&gt;：管理&amp;quot;应用默认怎么跑&amp;quot;（WorkloadConfig）和&amp;quot;这个环境有什么特殊要求&amp;quot;（AppConfig）。&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;🧠 核心设计&lt;/strong&gt;：配置分层。&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>领域模型</title>
-      <link>http://127.0.0.1:1313/document/docs/architecture/domain-model/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://127.0.0.1:1313/document/docs/architecture/domain-model/</guid>
-      <description>&lt;h1 id=&#34;领域模型&#34;&gt;领域模型&lt;a class=&#34;anchor&#34; href=&#34;#%e9%a2%86%e5%9f%9f%e6%a8%a1%e5%9e%8b&#34;&gt;#&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;想象你要开一家连锁餐厅。你需要：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;公司总部&lt;/strong&gt;（Project）— 管品牌、管战略&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;具体门店&lt;/strong&gt;（Application）— 每一家店的菜单、装修、员工配置&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;城市分区&lt;/strong&gt;（Environment）— 北京店、上海店，不同城市有不同的运营策略&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;物业大楼&lt;/strong&gt;（Cluster）— 门店实际开在哪个商场&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;DevFlow 的领域模型就是这套&amp;quot;连锁餐厅管理体系&amp;quot;。&lt;/p&gt;&#xA;&lt;p&gt;DevFlow 中的资源模型分为四个层级，从组织到部署，层层递进。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;资源关系总览&#34;&gt;资源关系总览&lt;a class=&#34;anchor&#34; href=&#34;#%e8%b5%84%e6%ba%90%e5%85%b3%e7%b3%bb%e6%80%bb%e8%a7%88&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;pre class=&#34;mermaid&#34;&gt;graph TB&#xA;    subgraph &amp;#34;组织层&amp;#34;&#xA;        Project[&amp;#34;Project 项目&amp;#34;]&#xA;        Application[&amp;#34;Application 应用&amp;#34;]&#xA;    end&#xA;&#xA;    subgraph &amp;#34;环境层&amp;#34;&#xA;        Environment[&amp;#34;Environment 环境&amp;#34;]&#xA;        Cluster[&amp;#34;Cluster 集群&amp;#34;]&#xA;        AppEnv[&amp;#34;ApplicationEnvironment&amp;lt;br/&amp;gt;应用-环境绑定&amp;#34;]&#xA;    end&#xA;&#xA;    subgraph &amp;#34;配置与网络&amp;#34;&#xA;        WorkloadConfig[&amp;#34;WorkloadConfig&amp;lt;br/&amp;gt;应用级基线&amp;#34;]&#xA;        AppConfig[&amp;#34;AppConfig&amp;lt;br/&amp;gt;环境级差异&amp;#34;]&#xA;        Service[&amp;#34;Service&amp;lt;br/&amp;gt;网络拓扑&amp;#34;]&#xA;        Route[&amp;#34;Route&amp;lt;br/&amp;gt;入口规则&amp;#34;]&#xA;    end&#xA;&#xA;    subgraph &amp;#34;发布&amp;#34;&#xA;        Manifest[&amp;#34;Manifest&amp;lt;br/&amp;gt;构建快照&amp;#34;]&#xA;        Release[&amp;#34;Release&amp;lt;br/&amp;gt;部署快照&amp;#34;]&#xA;    end&#xA;&#xA;    Project --&amp;gt; Application&#xA;    Application --&amp;gt; AppEnv&#xA;    Application --&amp;gt; WorkloadConfig&#xA;    Application --&amp;gt; Service&#xA;    AppEnv --&amp;gt; Environment&#xA;    Environment --&amp;gt; Cluster&#xA;    AppEnv --&amp;gt; AppConfig&#xA;    AppEnv --&amp;gt; Route&#xA;    WorkloadConfig --&amp;gt; Manifest&#xA;    Service --&amp;gt; Manifest&#xA;    Manifest --&amp;gt; Release&lt;/pre&gt;&lt;hr&gt;&#xA;&lt;h2 id=&#34;四个层级&#34;&gt;四个层级&lt;a class=&#34;anchor&#34; href=&#34;#%e5%9b%9b%e4%b8%aa%e5%b1%82%e7%ba%a7&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;h3 id=&#34;第一层组织&#34;&gt;第一层：组织&lt;a class=&#34;anchor&#34; href=&#34;#%e7%ac%ac%e4%b8%80%e5%b1%82%e7%bb%84%e7%bb%87&#34;&gt;#&lt;/a&gt;&lt;/h3&gt;&#xA;&lt;p&gt;&lt;strong&gt;Project&lt;/strong&gt; 和 &lt;strong&gt;Application&lt;/strong&gt; 负责&amp;quot;谁拥有什么&amp;quot;。&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>发布生命周期</title>
-      <link>http://127.0.0.1:1313/document/docs/architecture/lifecycle/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://127.0.0.1:1313/document/docs/architecture/lifecycle/</guid>
-      <description>&lt;h1 id=&#34;-发布生命周期&#34;&gt;🧭 发布生命周期&lt;a class=&#34;anchor&#34; href=&#34;#-%e5%8f%91%e5%b8%83%e7%94%9f%e5%91%bd%e5%91%a8%e6%9c%9f&#34;&gt;#&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;&lt;span class=&#34;df-badge&#34;&gt;🧩 release-service&lt;/span&gt; &lt;span class=&#34;df-badge&#34;&gt;&lt;img class=&#34;df-inline-icon&#34; src=&#34;http://127.0.0.1:1313/document/icons/brands/tekton.svg&#34; alt=&#34;Tekton&#34; loading=&#34;lazy&#34; /&gt;&#xA; Tekton&lt;/span&gt; &lt;span class=&#34;df-badge&#34;&gt;📦 OCI Registry&lt;/span&gt; &lt;span class=&#34;df-badge&#34;&gt;&lt;img class=&#34;df-inline-icon&#34; src=&#34;http://127.0.0.1:1313/document/icons/brands/argocd.svg&#34; alt=&#34;Argo CD&#34; loading=&#34;lazy&#34; /&gt;&#xA; Argo CD&lt;/span&gt; &lt;span class=&#34;df-badge&#34;&gt;👀 runtime-service&lt;/span&gt;&lt;/p&gt;&#xA;&lt;p&gt;在 DevFlow 中发布一个应用，会经历 8 个阶段。理解这个流程，就能理解 DevFlow 是怎么保证发布安全可控的。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;-整体流程&#34;&gt;🗺️ 整体流程&lt;a class=&#34;anchor&#34; href=&#34;#-%e6%95%b4%e4%bd%93%e6%b5%81%e7%a8%8b&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;pre class=&#34;mermaid&#34;&gt;graph LR&#xA;    A[&amp;#34;1. 收集信息&amp;#34;] --&amp;gt; B[&amp;#34;2. 冻结构建快照&amp;#34;]&#xA;    B --&amp;gt; C[&amp;#34;3. 构建镜像&amp;#34;]&#xA;    C --&amp;gt; D[&amp;#34;4. 冻结部署快照&amp;#34;]&#xA;    D --&amp;gt; E[&amp;#34;5. 打包配置&amp;#34;]&#xA;    E --&amp;gt; F[&amp;#34;6. 推送到仓库&amp;#34;]&#xA;    F --&amp;gt; G[&amp;#34;7. 部署到集群&amp;#34;]&#xA;    G --&amp;gt; H[&amp;#34;8. 观察状态&amp;#34;]&lt;/pre&gt;&lt;hr&gt;&#xA;&lt;h2 id=&#34;-阶段-1收集信息&#34;&gt;📥 阶段 1：收集信息&lt;a class=&#34;anchor&#34; href=&#34;#-%e9%98%b6%e6%ae%b5-1%e6%94%b6%e9%9b%86%e4%bf%a1%e6%81%af&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;谁在干活&lt;/strong&gt;：release-service 问其他服务要资料&lt;/p&gt;&#xA;&lt;p&gt;你在 Console 上点了&amp;quot;发布&amp;quot;，release-service 开始四处打听：&lt;/p&gt;&#xA;&lt;blockquote class=&#39;book-hint &#39;&gt;&#xA;&lt;p&gt;&amp;ldquo;meta-service，这个应用叫什么？代码仓库在哪？要发到哪个环境？&amp;rdquo;&#xA;&amp;ldquo;config-service，它的基础配置是什么？目标环境有什么特殊配置？&amp;rdquo;&#xA;&amp;ldquo;network-service，它暴露了哪些端口？外部怎么访问？&amp;rdquo;&lt;/p&gt;&#xA;&lt;/blockquote&gt;&lt;p&gt;&lt;strong&gt;输出&lt;/strong&gt;：一份完整的应用上下文&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;-阶段-2冻结构建快照manifest&#34;&gt;🧊 阶段 2：冻结构建快照（Manifest）&lt;a class=&#34;anchor&#34; href=&#34;#-%e9%98%b6%e6%ae%b5-2%e5%86%bb%e7%bb%93%e6%9e%84%e5%bb%ba%e5%bf%ab%e7%85%a7manifest&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;谁在干活&lt;/strong&gt;：release-service&lt;/p&gt;</description>
-    </item>
-  </channel>
-</rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>架构设计 on DevFlow</title><link>https://devflow.bei.com/document/docs/architecture/</link><description>Recent content in 架构设计 on DevFlow</description><generator>Hugo</generator><language>zh-cn</language><atom:link href="https://devflow.bei.com/document/docs/architecture/index.xml" rel="self" type="application/rss+xml"/><item><title>五大微服务</title><link>https://devflow.bei.com/document/docs/architecture/services/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/architecture/services/</guid><description>&lt;h1 id="-五大微服务"&gt;🧩 五大微服务&lt;a class="anchor" href="#-%e4%ba%94%e5%a4%a7%e5%be%ae%e6%9c%8d%e5%8a%a1"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;DevFlow 由 5 个独立服务组成。你可以把它们理解成一个发布团队里的 5 个角色。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="-服务总览"&gt;📋 服务总览&lt;a class="anchor" href="#-%e6%9c%8d%e5%8a%a1%e6%80%bb%e8%a7%88"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;table class="df-table"&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th&gt;👤 角色比喻&lt;/th&gt;
+ &lt;th&gt;⚙️ 服务&lt;/th&gt;
+ &lt;th&gt;📝 核心职责&lt;/th&gt;
+ &lt;th&gt;🗄️ 数据存储&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td&gt;📚 档案管理员&lt;/td&gt;
+ &lt;td&gt;meta-service&lt;/td&gt;
+ &lt;td&gt;管理应用、环境、集群的元数据&lt;/td&gt;
+ &lt;td&gt;PostgreSQL&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;🧪 配置专员&lt;/td&gt;
+ &lt;td&gt;config-service&lt;/td&gt;
+ &lt;td&gt;管理应用配置和环境差异&lt;/td&gt;
+ &lt;td&gt;PostgreSQL&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;🌐 网络工程师&lt;/td&gt;
+ &lt;td&gt;network-service&lt;/td&gt;
+ &lt;td&gt;管理网络拓扑和访问入口&lt;/td&gt;
+ &lt;td&gt;PostgreSQL&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;🚀 发布经理&lt;/td&gt;
+ &lt;td&gt;release-service&lt;/td&gt;
+ &lt;td&gt;编排发布全流程&lt;/td&gt;
+ &lt;td&gt;PostgreSQL&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;🛠️ 运维值班&lt;/td&gt;
+ &lt;td&gt;runtime-service&lt;/td&gt;
+ &lt;td&gt;观察集群状态，执行运维操作&lt;/td&gt;
+ &lt;td&gt;内存索引&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;div class="df-service-block"&gt;
+&lt;h2 id="-meta-service--档案管理员"&gt;📚 meta-service — 档案管理员&lt;a class="anchor" href="#-meta-service--%e6%a1%a3%e6%a1%88%e7%ae%a1%e7%90%86%e5%91%98"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;&lt;span class="df-badge"&gt;🏷️ 稳定性高&lt;/span&gt; &lt;span class="df-badge"&gt;🗂️ 元数据中心&lt;/span&gt; &lt;span class="df-badge"&gt;🔍 查询为主&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;📦 管什么&lt;/strong&gt;：Project、Application、Environment、Cluster、ApplicationEnvironment&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;💬 一句话&lt;/strong&gt;：所有应用的&amp;quot;户口本&amp;quot;都存在这里。其他服务想知道&amp;quot;这个应用叫什么名字&amp;quot;、&amp;ldquo;生产环境在哪个集群&amp;rdquo;，都来问它。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;🎯 为什么独立出来&lt;/strong&gt;：元数据相对稳定，独立后不会被频繁变更影响。同时保证所有服务看到的应用信息是一致的。&lt;/p&gt;
+&lt;/div&gt;
+&lt;hr&gt;
+&lt;div class="df-service-block"&gt;
+&lt;h2 id="-config-service--配置专员"&gt;🧪 config-service — 配置专员&lt;a class="anchor" href="#-config-service--%e9%85%8d%e7%bd%ae%e4%b8%93%e5%91%98"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;&lt;span class="df-badge"&gt;🧱 配置分层&lt;/span&gt; &lt;span class="df-badge"&gt;🌱 环境差异&lt;/span&gt; &lt;span class="df-badge"&gt;📥 渲染输入&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;📦 管什么&lt;/strong&gt;：WorkloadConfig、AppConfig&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;💬 一句话&lt;/strong&gt;：管理&amp;quot;应用默认怎么跑&amp;quot;（WorkloadConfig）和&amp;quot;这个环境有什么特殊要求&amp;quot;（AppConfig）。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;🧠 核心设计&lt;/strong&gt;：配置分层。&lt;/p&gt;</description></item><item><title>领域模型</title><link>https://devflow.bei.com/document/docs/architecture/domain-model/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/architecture/domain-model/</guid><description>&lt;h1 id="领域模型"&gt;领域模型&lt;a class="anchor" href="#%e9%a2%86%e5%9f%9f%e6%a8%a1%e5%9e%8b"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;想象你要开一家连锁餐厅。你需要：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;公司总部&lt;/strong&gt;（Project）— 管品牌、管战略&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;具体门店&lt;/strong&gt;（Application）— 每一家店的菜单、装修、员工配置&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;城市分区&lt;/strong&gt;（Environment）— 北京店、上海店，不同城市有不同的运营策略&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;物业大楼&lt;/strong&gt;（Cluster）— 门店实际开在哪个商场&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;DevFlow 的领域模型就是这套&amp;quot;连锁餐厅管理体系&amp;quot;。&lt;/p&gt;
+&lt;p&gt;DevFlow 中的资源模型分为四个层级，从组织到部署，层层递进。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="资源关系总览"&gt;资源关系总览&lt;a class="anchor" href="#%e8%b5%84%e6%ba%90%e5%85%b3%e7%b3%bb%e6%80%bb%e8%a7%88"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;pre class="mermaid"&gt;graph TB
+ subgraph &amp;#34;组织层&amp;#34;
+ Project[&amp;#34;Project 项目&amp;#34;]
+ Application[&amp;#34;Application 应用&amp;#34;]
+ end
+
+ subgraph &amp;#34;环境层&amp;#34;
+ Environment[&amp;#34;Environment 环境&amp;#34;]
+ Cluster[&amp;#34;Cluster 集群&amp;#34;]
+ AppEnv[&amp;#34;ApplicationEnvironment&amp;lt;br/&amp;gt;应用-环境绑定&amp;#34;]
+ end
+
+ subgraph &amp;#34;配置与网络&amp;#34;
+ WorkloadConfig[&amp;#34;WorkloadConfig&amp;lt;br/&amp;gt;应用级基线&amp;#34;]
+ AppConfig[&amp;#34;AppConfig&amp;lt;br/&amp;gt;环境级差异&amp;#34;]
+ Service[&amp;#34;Service&amp;lt;br/&amp;gt;网络拓扑&amp;#34;]
+ Route[&amp;#34;Route&amp;lt;br/&amp;gt;入口规则&amp;#34;]
+ end
+
+ subgraph &amp;#34;发布&amp;#34;
+ Manifest[&amp;#34;Manifest&amp;lt;br/&amp;gt;构建快照&amp;#34;]
+ Release[&amp;#34;Release&amp;lt;br/&amp;gt;部署快照&amp;#34;]
+ end
+
+ Project --&amp;gt; Application
+ Application --&amp;gt; AppEnv
+ Application --&amp;gt; WorkloadConfig
+ Application --&amp;gt; Service
+ AppEnv --&amp;gt; Environment
+ Environment --&amp;gt; Cluster
+ AppEnv --&amp;gt; AppConfig
+ AppEnv --&amp;gt; Route
+ WorkloadConfig --&amp;gt; Manifest
+ Service --&amp;gt; Manifest
+ Manifest --&amp;gt; Release&lt;/pre&gt;&lt;hr&gt;
+&lt;h2 id="四个层级"&gt;四个层级&lt;a class="anchor" href="#%e5%9b%9b%e4%b8%aa%e5%b1%82%e7%ba%a7"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;h3 id="第一层组织"&gt;第一层：组织&lt;a class="anchor" href="#%e7%ac%ac%e4%b8%80%e5%b1%82%e7%bb%84%e7%bb%87"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Project&lt;/strong&gt; 和 &lt;strong&gt;Application&lt;/strong&gt; 负责&amp;quot;谁拥有什么&amp;quot;。&lt;/p&gt;</description></item><item><title>发布生命周期</title><link>https://devflow.bei.com/document/docs/architecture/lifecycle/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/architecture/lifecycle/</guid><description>&lt;h1 id="-发布生命周期"&gt;🧭 发布生命周期&lt;a class="anchor" href="#-%e5%8f%91%e5%b8%83%e7%94%9f%e5%91%bd%e5%91%a8%e6%9c%9f"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;span class="df-badge"&gt;🧩 release-service&lt;/span&gt; &lt;span class="df-badge"&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/tekton.svg" alt="Tekton" loading="lazy" /&gt;
+ Tekton&lt;/span&gt; &lt;span class="df-badge"&gt;📦 OCI Registry&lt;/span&gt; &lt;span class="df-badge"&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/argocd.svg" alt="Argo CD" loading="lazy" /&gt;
+ Argo CD&lt;/span&gt; &lt;span class="df-badge"&gt;👀 runtime-service&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;在 DevFlow 中发布一个应用，会经历 8 个阶段。理解这个流程，就能理解 DevFlow 是怎么保证发布安全可控的。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="-整体流程"&gt;🗺️ 整体流程&lt;a class="anchor" href="#-%e6%95%b4%e4%bd%93%e6%b5%81%e7%a8%8b"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;pre class="mermaid"&gt;graph LR
+ A[&amp;#34;1. 收集信息&amp;#34;] --&amp;gt; B[&amp;#34;2. 冻结构建快照&amp;#34;]
+ B --&amp;gt; C[&amp;#34;3. 构建镜像&amp;#34;]
+ C --&amp;gt; D[&amp;#34;4. 冻结部署快照&amp;#34;]
+ D --&amp;gt; E[&amp;#34;5. 打包配置&amp;#34;]
+ E --&amp;gt; F[&amp;#34;6. 推送到仓库&amp;#34;]
+ F --&amp;gt; G[&amp;#34;7. 部署到集群&amp;#34;]
+ G --&amp;gt; H[&amp;#34;8. 观察状态&amp;#34;]&lt;/pre&gt;&lt;hr&gt;
+&lt;h2 id="-阶段-1收集信息"&gt;📥 阶段 1：收集信息&lt;a class="anchor" href="#-%e9%98%b6%e6%ae%b5-1%e6%94%b6%e9%9b%86%e4%bf%a1%e6%81%af"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;谁在干活&lt;/strong&gt;：release-service 问其他服务要资料&lt;/p&gt;
+&lt;p&gt;你在 Console 上点了&amp;quot;发布&amp;quot;，release-service 开始四处打听：&lt;/p&gt;
+&lt;blockquote class='book-hint '&gt;
+&lt;p&gt;&amp;ldquo;meta-service，这个应用叫什么？代码仓库在哪？要发到哪个环境？&amp;rdquo;
+&amp;ldquo;config-service，它的基础配置是什么？目标环境有什么特殊配置？&amp;rdquo;
+&amp;ldquo;network-service，它暴露了哪些端口？外部怎么访问？&amp;rdquo;&lt;/p&gt;
+&lt;/blockquote&gt;&lt;p&gt;&lt;strong&gt;输出&lt;/strong&gt;：一份完整的应用上下文&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="-阶段-2冻结构建快照manifest"&gt;🧊 阶段 2：冻结构建快照（Manifest）&lt;a class="anchor" href="#-%e9%98%b6%e6%ae%b5-2%e5%86%bb%e7%bb%93%e6%9e%84%e5%bb%ba%e5%bf%ab%e7%85%a7manifest"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;谁在干活&lt;/strong&gt;：release-service&lt;/p&gt;</description></item></channel></rss>

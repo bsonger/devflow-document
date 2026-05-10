@@ -7,13 +7,14 @@ weight: 73
 
 <span class="df-badge">{{< brand-icon name="opentelemetry" alt="OpenTelemetry" >}} OTel</span> <span class="df-badge">Metrics</span> <span class="df-badge">Logs</span> <span class="df-badge">Traces</span>
 
-DevFlow 的 Metrics、Traces、Logs 使用统一的标签体系，确保三者可以互相关联。
+DevFlow 的 Metrics、Traces、Logs 需要能互相关联，但三者不是同一种东西。
 
-本文档定义了 **Metric / Trace / Log** 的标准 Labels / Attributes，用于统一收集、查询和关联数据。
+- Metrics 负责错误率、流量、延迟、SLO 和告警
+- Traces 负责请求链路、慢点定位、下游瓶颈
+- Logs 负责错误文本、业务事件、panic 细节
 
-其中 Labels / Attributes 主要分为两类：
-- **必选**：核心维度，用于聚合和拆分指标
-- **可选**：辅助维度，可用于多集群、多环境、灰度或团队统计
+本文档定义三种信号的标准 Labels / Attributes，并明确哪些字段适合做
+metrics label，哪些字段只能留在 trace 或 log 中。
 
 > **来源标注**：本文档中字段来源分为两类 — `🤖 OTel 自动`（SDK/Collector 自动注入，无需代码改动）和 `✍️ 手动添加`（需在代码中显式设置）。
 
@@ -33,30 +34,35 @@ DevFlow 的 Metrics、Traces、Logs 使用统一的标签体系，确保三者�
 
 ## 📈 Metrics（指标）标签
 
-**用于统计和聚合指标数据**
+**用于统计和聚合指标数据，是主事实源**
 
 ### 必选 Labels
 
 | Key | 类型 | 说明 | 示例 |
 |-----|-----|-----|-----|
-| `metric.name` | string | 指标名称 | `http_request_duration_seconds` |
-| `service.name` | string | 服务名称 | `user-service` |
-| `http.method` | string | HTTP 方法 | `GET` |
-| `http.route` | string | 路由模板 | `/users/:id` |
-| `http.status_code` | int | HTTP 状态码 | `200` |
-| `k8s.cluster.name` | string | 集群名称或 ID | `k8s-prod-01` |
+| `service_name` | string | 服务名称 | `meta-service` |
+| `service_namespace` | string | 服务命名空间 | `devflow` |
+| `deployment_environment_name` | string | 部署环境名 | `production` |
+| `http_request_method` | string | HTTP 方法 | `GET` |
+| `http_route` | string | 路由模板 | `/api/v1/releases/:id` |
+| `http_response_status_code` | string | HTTP 状态码 | `200` |
+| `http_response_status_class` | string | HTTP 状态类别 | `2xx` |
 
-### 可选 Labels（强烈建议）
+### 可选 Labels（受限）
 
 | Key | 类型 | 说明 | 示例 |
 |-----|-----|-----|----|
-| `deployment.environment` | string | 部署环境 | `prod` / `staging` |
-| `trace_id` | string | Trace ID（可选，用于关联 Metric 和 Trace） | `2e71abb92e031efc2a7a1c4280959f4b` |
 | `k8s.namespace.name` | string | K8s 命名空间 | `applications` |
 | `k8s.pod.name` | string | Pod 名称 | `user-service-5c7d8b9d7f-xyz12` |
 | `k8s.container.name` | string | 容器名称 | `user-service` |
 | `k8s.node.name` | string | 节点名称 | `node-01` |
 | `region` / `zone` | string | 地域 / 可用区 | `ap-southeast-1a` |
+
+说明：
+
+- `trace_id` 不能作为 metrics label
+- Metrics 到 Trace 的关联应通过 exemplar，而不是高基数 label
+- `devflow.release.id`、`request_id`、`user_id`、`url.path` 都不应进入高频 metrics label
 
 ### 不能作为标签的字段
 
@@ -67,8 +73,25 @@ DevFlow 的 Metrics、Traces、Logs 使用统一的标签体系，确保三者�
 | `user_id` | 用户可能有几千万，每个用户一条时间线 |
 | `request_id` | 每个请求唯一，基数无限 |
 | `ip_address` | IP 数量无界 |
+| `trace_id` | 每个请求唯一，基数无限 |
+| `release_id` | 发布频繁变化，会打碎高频时间序列 |
+| `url.path` | 原始路径通常包含动态 ID，基数失控 |
 
 这些字段应该放在 Logs 或 Traces 里，而不是 Metrics 标签里。
+
+### Trace-derived metrics
+
+Trace 可以派生出一部分 RED 指标，比如 request rate、5xx error rate、
+latency histogram，典型做法是使用 OTel Collector 的 `spanmetrics`
+connector。
+
+但这类 trace-derived metrics 只能作为补充面，不能替代原生 metrics：
+
+- 原生 metrics：主事实源，用于告警、SLO、长趋势
+- trace-derived metrics：补充分析面，用于 trace-first 视角和关联排障
+
+不要因为 Trace 里已经有 method / route / status / duration，就删除原生
+HTTP metrics。
 
 ### Metric Value / Measurement
 
@@ -82,7 +105,7 @@ DevFlow 的 Metrics、Traces、Logs 使用统一的标签体系，确保三者�
 
 ## 🔗 Traces（链路）标签
 
-**用于分布式请求链路追踪**
+**用于分布式请求链路追踪和根因定位**
 
 ### Span Attributes
 
@@ -98,9 +121,9 @@ DevFlow 的 Metrics、Traces、Logs 使用统一的标签体系，确保三者�
 | `span.kind` | string | Span 类型 | `server` / `client` / `producer` / `consumer` |
 | `span.status` | string | Span 状态 | `ok` / `error` |
 | `span.duration` | duration | Span 耗时 | `120ms` |
-| `http.method` | string | HTTP 方法 | `GET` |
+| `http.request.method` | string | HTTP 方法 | `GET` |
 | `http.route` | string | 路由模板 | `/users/:id` |
-| `http.status_code` | int | HTTP 状态码 | `200` |
+| `http.response.status_code` | int | HTTP 状态码 | `200` |
 | `url.path` | string | 请求路径 | `/api/v1/users/123` |
 | `url.scheme` | string | 协议 | `http` / `https` |
 
@@ -137,7 +160,7 @@ DevFlow 的 Metrics、Traces、Logs 使用统一的标签体系，确保三者�
 | Key | 类型 | 说明 | 示例 |
 |-----|-----|-----|-----|
 | `service.name` | string | 服务名称 | `devflow` |
-| `deployment.environment` | string | 部署环境 | `prod` / `staging` / `dev` |
+| `deployment.environment.name` | string | 部署环境 | `prod` / `staging` / `dev` |
 | `k8s.cluster.name` | string | 集群名称 | `cluster-prod` |
 | `k8s.namespace.name` | string | Pod 所在命名空间 | `applications` |
 | `k8s.pod.name` | string | Pod 名称 | `devflow-12345` |
@@ -159,24 +182,26 @@ DevFlow 的 Metrics、Traces、Logs 使用统一的标签体系，确保三者�
 
 ## 📜 Logs（日志）标签
 
-**用于记录系统或业务日志**
+**用于记录系统或业务事件，不替代 Trace**
 
 ### 必选 Attributes
 
 | Key | 类型 | 说明 | 示例 |
 |-----|-----|-----|-----|
-| `log.level` | string | 日志级别 | `INFO` / `WARN` / `ERROR` |
-| `log.message` | string | 日志内容 | `http request completed` |
-| `trace_id` | string | Trace ID（可选，用于关联 Trace / Metric） | `2e71abb92e031efc2a7a1c4280959f4b` |
+| `severity_text` | string | 日志级别 | `INFO` / `WARN` / `ERROR` |
+| `body` | string | 日志内容 | `http request completed` |
+| `logger.name` | string | 日志分类名 | `http.access` / `http.error` |
+| `trace_id` | string | Trace ID（强烈建议） | `2e71abb92e031efc2a7a1c4280959f4b` |
 
 ### 可选 Attributes
 
 | Key | 类型 | 说明 | 示例 |
 |-----|-----|-----|-----|
-| `log.logger` | string | 日志记录器名称 | `gin` / `otelzap` |
+| `caller` | string | 调试辅助字段 | `routercore/gin.go:180` |
 | `span_id` | string | Span ID（可选） | `abc123def456` |
 | `service.name` | string | 服务名称 | `user-service` |
-| `deployment.environment` | string | 部署环境 | `prod` |
+| `service.namespace` | string | 服务命名空间 | `devflow` |
+| `service.version` | string | 服务版本 | `sha256:03b4a60ec604` |
 | `k8s.cluster.name` | string | 集群名称 | `cluster-prod` |
 | `k8s.namespace.name` | string | Pod 所在命名空间 | `applications` |
 | `k8s.pod.name` | string | Pod 名称 | `devflow-12345` |
@@ -184,16 +209,19 @@ DevFlow 的 Metrics、Traces、Logs 使用统一的标签体系，确保三者�
 | `k8s.node.name` | string | 节点名称 | `node-01` |
 | `k8s.region` | string | 集群所在地域 | `ap-southeast-1` |
 | `k8s.zone` | string | 集群可用区 | `ap-southeast-1a` |
-| `client.ip` | string | 客户端 IP | `10.0.0.1` |
+| `client.address` | string | 客户端地址 | `10.0.0.1` |
 | `user_agent.original` | string | User-Agent | `curl/7.68.0` |
-| `error.message` | string | 错误信息 | `database timeout` |
+| `http.request.method` | string | HTTP 方法 | `GET` |
+| `http.route` | string | 路由模板 | `/api/v1/releases/:id` |
+| `url.path` | string | 实际路径 | `/api/v1/releases/123` |
+| `http.response.status_code` | int | 状态码 | `500` |
 
 ### Value / Measurement
 
 | Key | 类型 | 说明 | 示例 |
 |-----|-----|-----|-----|
-| `log.stacktrace` | string | 错误堆栈信息（可选） | `at main.go:45` |
-| `http.server.duration` | duration | 请求耗时（可选，用于排查慢请求） | `120ms` |
+| `stacktrace` | string | 错误堆栈信息（可选） | `at main.go:45` |
+| `duration_ms` | float | 请求耗时（毫秒） | `120.4` |
 
 ---
 
@@ -205,7 +233,7 @@ DevFlow 的 Metrics、Traces、Logs 使用统一的标签体系，确保三者�
 2. 点击指标上的 exemplar，跳转到对应 Trace
 3. 从 Trace 找到具体服务，再跳转到该服务的 Log
 
-三个系统通过统一的 `trace_id` 和 `service.name` 串在一起。
+三个系统通过统一的 `trace_id` 和服务维度串在一起。
 
 ```mermaid
 graph LR

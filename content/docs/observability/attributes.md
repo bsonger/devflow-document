@@ -9,6 +9,12 @@ weight: 72
 
 DevFlow 的 observability 文档需要先回答一个最实际的问题：**一个标签到底该配在哪里？**
 
+Metrics、Logs、Traces 需要能互相关联，但三者不是同一种东西：
+
+- Metrics：看 rate / error / latency / SLO
+- Traces：看调用链、慢点、下游瓶颈
+- Logs：看错误文本、业务事件、panic 细节
+
 这页把 Attributes 拆成 3 类：
 
 1. **服务启动时配置的标签**：服务自己不在业务代码里写死，而是通过环境变量/SDK 初始化统一带上
@@ -23,7 +29,7 @@ DevFlow 的 observability 文档需要先回答一个最实际的问题：**一�
 |------|----------|----------|--------|
 | **服务启动配置** | `service.name` `service.version` | Deployment 环境变量 / SDK Resource 初始化 | 服务模板 / 平台基础设施 |
 | **服务代码设置** | `devflow.application.id` `devflow.release.id` `error.message` | 业务代码里的 Span / Log / Metric | 各服务开发者 |
-| **Collector 公共注入** | `deployment.environment` `k8s.pod.name` `k8s.namespace.name` `k8s.node.name` `k8s.cluster.name` | OTel Collector Processor | SRE / 平台组 |
+| **Collector 公共注入** | `deployment.environment.name` `k8s.pod.name` `k8s.namespace.name` `k8s.node.name` `k8s.cluster.name` | OTel Collector Processor | SRE / 平台组 |
 
 一句话判断：
 
@@ -37,7 +43,7 @@ DevFlow 的 observability 文档需要先回答一个最实际的问题：**一�
 |------|----------|--------|--------|
 | `service.name` | 服务启动配置 | 进程级身份，进程启动后基本不变 | 平台模板 / 服务 Deployment |
 | `service.version` | 服务启动配置 | 标识当前版本，不应每条日志手填 | 平台模板 / 发布系统 |
-| `deployment.environment` | Collector 公共注入优先 | 多服务共用且值通常一致，平台统一注入更不容易错配 | OTel Collector / 平台规则 |
+| `deployment.environment.name` | Collector 公共注入优先 | 多服务共用且值通常一致，平台统一注入更不容易错配 | OTel Collector / 平台规则 |
 | `service.instance.id` | 服务启动配置 | 实例级身份，适合启动时注入 | Deployment / Downward API |
 | `devflow.project.id` | 服务代码设置 | 只有业务处理逻辑知道当前项目 | 服务代码 |
 | `devflow.application.id` | 服务代码设置 | Collector 无法可靠推断业务应用对象 | 服务代码 |
@@ -76,10 +82,10 @@ DevFlow 的 observability 文档需要先回答一个最实际的问题：**一�
 | Key | 说明 | 推荐来源 | 示例 |
 |-----|------|----------|------|
 | `service.name` | 服务名 | `OTEL_SERVICE_NAME` | `meta-service` |
-| `service.version` | 当前发布版本 | `OTEL_RESOURCE_ATTRIBUTES` | `1.4.2` |
-| `service.namespace` | 逻辑服务域/业务域 | `OTEL_RESOURCE_ATTRIBUTES` | `devflow` |
+| `service.version` | 当前发布版本 | `SERVICE_VERSION` 或 `OTEL_RESOURCE_ATTRIBUTES` | `1.4.2` |
+| `service.namespace` | 逻辑服务域/业务域 | `OTEL_SERVICE_NAMESPACE` 或 `OTEL_RESOURCE_ATTRIBUTES` | `devflow` |
 | `service.instance.id` | 实例唯一标识 | Downward API / Pod 名 | `meta-service-7f8c9d` |
-| `deployment.environment` | 部署环境（如平台无法统一注入时再兜底） | `OTEL_RESOURCE_ATTRIBUTES` | `prod` |
+| `deployment.environment.name` | 部署环境（如平台无法统一注入时再兜底） | `DEPLOYMENT_ENVIRONMENT` 或 `OTEL_RESOURCE_ATTRIBUTES` | `prod` |
 
 ### 这类字段应该怎么配
 
@@ -87,8 +93,10 @@ DevFlow 的 observability 文档需要先回答一个最实际的问题：**一�
 env:
   - name: OTEL_SERVICE_NAME
     value: "meta-service"
-  - name: OTEL_RESOURCE_ATTRIBUTES
-    value: "service.version=1.4.2,service.namespace=devflow,deployment.environment=prod"
+  - name: OTEL_SERVICE_NAMESPACE
+    value: "devflow"
+  - name: SERVICE_VERSION
+    value: "sha256:03b4a60ec604"
 ```
 
 ### 规则
@@ -159,7 +167,7 @@ logger.Info("release started",
 
 - 业务标签优先使用 `devflow.*` 前缀
 - 只在**关键 Span / 关键日志 / 关键指标**上打，不要无脑全量铺
-- 高基数字段不要进 Metrics labels，例如 `user_id`、`request_id`、自由文本错误
+- 高基数字段不要进 Metrics labels，例如 `user_id`、`request_id`、`trace_id`、`release_id`、自由文本错误
 
 ---
 
@@ -219,7 +227,7 @@ processors:
 
 | 信号类型 | 启动配置字段 | 服务代码字段 | Collector 字段 |
 |----------|--------------|--------------|----------------|
-| Metrics | `service.*` `deployment.environment` | `devflow.*`（仅低基数）`http.route` | `k8s.*` `cloud.*` |
+| Metrics | `service_*` `deployment_environment_name` | `devflow.*`（仅低基数）`http_route` | `k8s.*` `cloud.*` |
 | Traces | `service.*` | `devflow.*` `error.*` `db.operation` | `k8s.*` `cloud.*` |
 | Logs | `service.*` | `devflow.*` `error.*` `trace_id` `span_id` | `k8s.*` `cloud.*` |
 
@@ -228,7 +236,8 @@ processors:
 #### 服务模板至少统一好
 
 - `OTEL_SERVICE_NAME`
-- `OTEL_RESOURCE_ATTRIBUTES`
+- `OTEL_SERVICE_NAMESPACE`
+- `SERVICE_VERSION`
 - `OTEL_EXPORTER_OTLP_ENDPOINT`
 - Trace context propagators
 
@@ -245,6 +254,12 @@ processors:
 - `k8s.cluster.name`
 - `cloud.region` / `cloud.availability_zone`
 - logs / metrics / traces 的公共 pipeline
+
+## 补充约束
+
+- Metrics 到 Trace 的跳转应使用 exemplar，而不是把 `trace_id` 当成 metrics label
+- Trace 可以通过 `spanmetrics` 派生补充 RED 指标，但不能替代原生 metrics
+- Kubernetes / Host / Cloud 字段优先由 Collector 补充，不要在业务代码里硬编码
 
 ---
 
