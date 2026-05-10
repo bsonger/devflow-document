@@ -47,7 +47,7 @@ weight: 76
 | `log.level` | 日志级别 | ✅ |
 | `log.message` | 日志消息 | ✅ |
 | `service.name` | 服务名 | ✅ |
-| `deployment.environment` | 环境 | ✅ |
+| `deployment.environment` | 环境（建议平台统一注入） | ✅ |
 
 ### 关联字段
 

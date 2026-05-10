@@ -23,9 +23,9 @@ DevFlow 的 Metrics、Traces、Logs 使用统一的标签体系，确保三者�
 
 | 层级 | 典型字段 | 配置位置 |
 |------|----------|----------|
-| 服务启动层 | `service.name` `service.version` `deployment.environment` | SDK Resource / 环境变量 |
+| 服务启动层 | `service.name` `service.version` | SDK Resource / 环境变量 |
 | 服务代码层 | `devflow.*` `error.message` `db.operation` | Span / Log / Metric 代码 |
-| Collector 层 | `k8s.*` `cloud.region` | OTel Collector processors |
+| Collector 层 | `deployment.environment` `k8s.*` `cloud.region` | OTel Collector processors |
 
 如果你先关心“字段应该放哪”，优先看 [公共 Attributes](../attributes/)。
 
