@@ -1,12 +1,885 @@
-<!doctype html><html lang=zh-cn dir=ltr><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content='🧩 服务详解# DevFlow 由 5 个微服务组成。你可以把它们理解成一个团队里的 5 个角色，各有分工，协同完成一次应用发布。
-⚙️ 服务 👤 角色比喻 📝 核心职责 meta-service 📚 档案管理员 管理所有应用的"户口本" config-service 🧪 配置专员 管理应用配置和环境差异 network-service 🌐 网络工程师 管理服务的网络拓扑和入口规则 release-service 🚀 发布经理 编排发布全流程 runtime-service 🛠️ 运维值班 实时观察集群状态，执行运维操作 🤝 它们怎么协作# graph LR subgraph "发布前准备" Meta["meta-service<br/>提供应用信息"] Config["config-service<br/>提供配置"] Network["network-service<br/>提供网络定义"] end subgraph "发布执行" Release["release-service<br/>编排发布"] end subgraph "发布后观察" Runtime["runtime-service<br/>观察状态"] end Release --> Meta Release --> Config Release --> Network Runtime --> Release一次典型的发布流程：
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+<head><script src="/document/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=document/livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="🧩 服务详解# DevFlow 由 5 个微服务组成。你可以把它们理解成一个团队里的 5 个角色，各有分工，协同完成一次应用发布。
+⚙️ 服务 👤 角色比喻 📝 核心职责 meta-service 📚 档案管理员 管理所有应用的&#34;户口本&#34; config-service 🧪 配置专员 管理应用配置和环境差异 network-service 🌐 网络工程师 管理服务的网络拓扑和入口规则 release-service 🚀 发布经理 编排发布全流程 runtime-service 🛠️ 运维值班 实时观察集群状态，执行运维操作 🤝 它们怎么协作# graph LR subgraph &#34;发布前准备&#34; Meta[&#34;meta-service&lt;br/&gt;提供应用信息&#34;] Config[&#34;config-service&lt;br/&gt;提供配置&#34;] Network[&#34;network-service&lt;br/&gt;提供网络定义&#34;] end subgraph &#34;发布执行&#34; Release[&#34;release-service&lt;br/&gt;编排发布&#34;] end subgraph &#34;发布后观察&#34; Runtime[&#34;runtime-service&lt;br/&gt;观察状态&#34;] end Release --&gt; Meta Release --&gt; Config Release --&gt; Network Runtime --&gt; Release一次典型的发布流程：
 release-service 说：“我要发布 payment-gateway 到生产环境” meta-service 说：“payment-gateway 的代码仓库是 xxx，生产环境在 cluster-beijing” config-service 说：“它的基础配置是 3 个副本、1Gi 内存，生产环境的特殊配置是数据库地址 xxx” network-service 说：“它暴露了 80 端口，生产环境的域名是 payment.example.com” release-service 把这些信息打包成快照，触发构建和部署 runtime-service 实时观察集群，告诉 release-service：“新版本 Pod 已经全部 Ready 了” 🧱 为什么拆成 5 个服务# 你可能会问：为什么不能做成一个大服务？
-'><meta name=theme-color media="(prefers-color-scheme: light)" content="#ffffff"><meta name=theme-color media="(prefers-color-scheme: dark)" content="#343a40"><meta name=color-scheme content="light dark"><meta property="og:url" content="https://devflow.bei.com/document/docs/services/"><meta property="og:site_name" content="DevFlow"><meta property="og:title" content="服务详解"><meta property="og:description" content='🧩 服务详解# DevFlow 由 5 个微服务组成。你可以把它们理解成一个团队里的 5 个角色，各有分工，协同完成一次应用发布。
-⚙️ 服务 👤 角色比喻 📝 核心职责 meta-service 📚 档案管理员 管理所有应用的"户口本" config-service 🧪 配置专员 管理应用配置和环境差异 network-service 🌐 网络工程师 管理服务的网络拓扑和入口规则 release-service 🚀 发布经理 编排发布全流程 runtime-service 🛠️ 运维值班 实时观察集群状态，执行运维操作 🤝 它们怎么协作# graph LR subgraph "发布前准备" Meta["meta-service<br/>提供应用信息"] Config["config-service<br/>提供配置"] Network["network-service<br/>提供网络定义"] end subgraph "发布执行" Release["release-service<br/>编排发布"] end subgraph "发布后观察" Runtime["runtime-service<br/>观察状态"] end Release --> Meta Release --> Config Release --> Network Runtime --> Release一次典型的发布流程：
-release-service 说：“我要发布 payment-gateway 到生产环境” meta-service 说：“payment-gateway 的代码仓库是 xxx，生产环境在 cluster-beijing” config-service 说：“它的基础配置是 3 个副本、1Gi 内存，生产环境的特殊配置是数据库地址 xxx” network-service 说：“它暴露了 80 端口，生产环境的域名是 payment.example.com” release-service 把这些信息打包成快照，触发构建和部署 runtime-service 实时观察集群，告诉 release-service：“新版本 Pod 已经全部 Ready 了” 🧱 为什么拆成 5 个服务# 你可能会问：为什么不能做成一个大服务？'><meta property="og:locale" content="zh_cn"><meta property="og:type" content="website"><meta itemprop=name content="服务详解"><meta itemprop=description content='🧩 服务详解# DevFlow 由 5 个微服务组成。你可以把它们理解成一个团队里的 5 个角色，各有分工，协同完成一次应用发布。
-⚙️ 服务 👤 角色比喻 📝 核心职责 meta-service 📚 档案管理员 管理所有应用的"户口本" config-service 🧪 配置专员 管理应用配置和环境差异 network-service 🌐 网络工程师 管理服务的网络拓扑和入口规则 release-service 🚀 发布经理 编排发布全流程 runtime-service 🛠️ 运维值班 实时观察集群状态，执行运维操作 🤝 它们怎么协作# graph LR subgraph "发布前准备" Meta["meta-service<br/>提供应用信息"] Config["config-service<br/>提供配置"] Network["network-service<br/>提供网络定义"] end subgraph "发布执行" Release["release-service<br/>编排发布"] end subgraph "发布后观察" Runtime["runtime-service<br/>观察状态"] end Release --> Meta Release --> Config Release --> Network Runtime --> Release一次典型的发布流程：
-release-service 说：“我要发布 payment-gateway 到生产环境” meta-service 说：“payment-gateway 的代码仓库是 xxx，生产环境在 cluster-beijing” config-service 说：“它的基础配置是 3 个副本、1Gi 内存，生产环境的特殊配置是数据库地址 xxx” network-service 说：“它暴露了 80 端口，生产环境的域名是 payment.example.com” release-service 把这些信息打包成快照，触发构建和部署 runtime-service 实时观察集群，告诉 release-service：“新版本 Pod 已经全部 Ready 了” 🧱 为什么拆成 5 个服务# 你可能会问：为什么不能做成一个大服务？'><meta itemprop=wordCount content="127"><title>服务详解 | DevFlow</title><link rel=icon href=/document/favicon.png><link rel=manifest href=/document/manifest.json><link rel=canonical href=https://devflow.bei.com/document/docs/services/><link rel=stylesheet href=/document/book.min.8cd0206dd84616a7d412f4d11b03bd0f5f8254beac611979660997cdbce2a6d1.css integrity="sha256-jNAgbdhGFqfUEvTRGwO9D1+CVL6sYRl5ZgmXzbziptE=" crossorigin=anonymous><script defer src=/document/fuse.min.js></script><script defer src=/document/en.search.min.57482576d48ccc082179b8b5a4498eb4f96e024079df15f99e067d42af187aba.js integrity="sha256-V0gldtSMzAghebi1pEmOtPluAkB53xX5ngZ9Qq8Yero=" crossorigin=anonymous></script><link rel=alternate type=application/rss+xml href=https://devflow.bei.com/document/docs/services/index.xml title=DevFlow></head><body dir=ltr class="book-kind-section book-type-docs"><input type=checkbox class="hidden toggle" id=menu-control>
-<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/document/><span>DevFlow</span></a></h2><div class="book-search hidden"><input id=book-search-input type=text placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><script>document.querySelector(".book-search").classList.remove("hidden")</script><ul><li><a href=/document/docs/getting-started/>快速开始</a><ul></ul></li><li><a href=/document/docs/overview/>平台概览</a><ul></ul></li><li><a href=/document/docs/architecture/>架构设计</a><ul><li><a href=/document/docs/architecture/services/>五大微服务</a></li><li><a href=/document/docs/architecture/domain-model/>领域模型</a></li><li><a href=/document/docs/architecture/lifecycle/>发布生命周期</a></li></ul></li><li><a href=/document/docs/services/ class=active>服务详解</a><ul><li><a href=/document/docs/services/meta-service/>meta-service</a></li><li><a href=/document/docs/services/config-service/>config-service</a></li><li><a href=/document/docs/services/network-service/>network-service</a></li><li><a href=/document/docs/services/release-service/>release-service</a></li><li><a href=/document/docs/services/runtime-service/>runtime-service</a></li></ul></li><li><a href=/document/docs/concepts/>核心概念</a><ul><li><a href=/document/docs/concepts/project-application/>Project 与 Application</a></li><li><a href=/document/docs/concepts/environment-cluster/>Environment 与 Cluster</a></li><li><a href=/document/docs/concepts/workload-config/>WorkloadConfig</a></li><li><a href=/document/docs/concepts/app-config/>AppConfig</a></li><li><a href=/document/docs/concepts/service-route/>Service 与 Route</a></li><li><a href=/document/docs/concepts/manifest-release/>Manifest 与 Release</a></li></ul></li><li><a href=/document/docs/ci/>持续集成</a><ul><li><a href=/document/docs/ci/architecture/>CI 架构</a></li><li><a href=/document/docs/ci/standard/>标准 CI 流程</a></li><li><a href=/document/docs/ci/component/>CI 组件矩阵</a></li><li><a href=/document/docs/ci/queue/>队列与并发控制</a></li></ul></li><li><a href=/document/docs/cd/>持续交付</a><ul><li><a href=/document/docs/cd/architecture/>CD 架构</a></li><li><a href=/document/docs/cd/standard/>发布策略选型</a></li><li><a href=/document/docs/cd/rolling/>Rolling 发布</a></li><li><a href=/document/docs/cd/canary/>Canary 发布</a></li><li><a href=/document/docs/cd/blue-green/>Blue-Green 发布</a></li><li><a href=/document/docs/cd/component/>CD 组件矩阵</a></li></ul></li><li><a href=/document/docs/observability/>可观测性</a><ul><li><a href=/document/docs/observability/component/>可观测性组件矩阵</a></li><li><a href=/document/docs/observability/attributes/>公共 Attributes</a></li><li><a href=/document/docs/observability/standard/>Labels / Attributes 规范</a></li><li><a href=/document/docs/observability/signal-label-matrix/>信号标签矩阵</a></li><li><a href=/document/docs/observability/collector/>OTel Collector 配置模板</a></li><li><a href=/document/docs/observability/go-example/>Go 服务最小 OTel 接入示例</a></li><li><a href=/document/docs/observability/onboarding-checklist/>OTel 接入检查清单</a></li><li><a href=/document/docs/observability/logging/>结构化日志规范</a></li><li><a href=/document/docs/observability/service-checklist/>五大服务观测字段清单</a></li><li><a href=/document/docs/observability/release-trace-example/>发布链路 Trace 示例</a></li><li><a href=/document/docs/observability/collector-runbook/>Collector 生产排障 Runbook</a></li><li><a href=/document/docs/observability/release-failure-playbook/>发布失败排障剧本</a></li></ul></li><li><a href=/document/docs/deployment/>部署指南</a><ul><li><a href=/document/docs/deployment/guide/>部署步骤</a></li></ul></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class="book-header hidden"><div class="flex align-center justify-between"><label for=menu-control><img src=/document/icons/menu.svg class=book-icon alt=Menu></label><h3>服务详解</h3><label for=toc-control><img src=/document/icons/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class=hidden><nav id=TableOfContents><ul><li><a href=#-它们怎么协作>🤝 它们怎么协作</a></li><li><a href=#-为什么拆成-5-个服务>🧱 为什么拆成 5 个服务</a></li></ul></nav></aside></header><article class="markdown book-article"><h1 id=-服务详解>🧩 服务详解<a class=anchor href=#-%e6%9c%8d%e5%8a%a1%e8%af%a6%e8%a7%a3>#</a></h1><p>DevFlow 由 5 个微服务组成。你可以把它们理解成一个团队里的 5 个角色，各有分工，协同完成一次应用发布。</p><table><thead><tr><th>⚙️ 服务</th><th>👤 角色比喻</th><th>📝 核心职责</th></tr></thead><tbody><tr><td><a href=meta-service/>meta-service</a></td><td>📚 档案管理员</td><td>管理所有应用的"户口本"</td></tr><tr><td><a href=config-service/>config-service</a></td><td>🧪 配置专员</td><td>管理应用配置和环境差异</td></tr><tr><td><a href=network-service/>network-service</a></td><td>🌐 网络工程师</td><td>管理服务的网络拓扑和入口规则</td></tr><tr><td><a href=release-service/>release-service</a></td><td>🚀 发布经理</td><td>编排发布全流程</td></tr><tr><td><a href=runtime-service/>runtime-service</a></td><td>🛠️ 运维值班</td><td>实时观察集群状态，执行运维操作</td></tr></tbody></table><hr><h2 id=-它们怎么协作>🤝 它们怎么协作<a class=anchor href=#-%e5%ae%83%e4%bb%ac%e6%80%8e%e4%b9%88%e5%8d%8f%e4%bd%9c>#</a></h2><pre class=mermaid>graph LR
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://127.0.0.1:1313/document/docs/services/">
+  <meta property="og:site_name" content="DevFlow">
+  <meta property="og:title" content="服务详解">
+  <meta property="og:description" content="🧩 服务详解# DevFlow 由 5 个微服务组成。你可以把它们理解成一个团队里的 5 个角色，各有分工，协同完成一次应用发布。
+⚙️ 服务 👤 角色比喻 📝 核心职责 meta-service 📚 档案管理员 管理所有应用的&#34;户口本&#34; config-service 🧪 配置专员 管理应用配置和环境差异 network-service 🌐 网络工程师 管理服务的网络拓扑和入口规则 release-service 🚀 发布经理 编排发布全流程 runtime-service 🛠️ 运维值班 实时观察集群状态，执行运维操作 🤝 它们怎么协作# graph LR subgraph &#34;发布前准备&#34; Meta[&#34;meta-service&lt;br/&gt;提供应用信息&#34;] Config[&#34;config-service&lt;br/&gt;提供配置&#34;] Network[&#34;network-service&lt;br/&gt;提供网络定义&#34;] end subgraph &#34;发布执行&#34; Release[&#34;release-service&lt;br/&gt;编排发布&#34;] end subgraph &#34;发布后观察&#34; Runtime[&#34;runtime-service&lt;br/&gt;观察状态&#34;] end Release --&gt; Meta Release --&gt; Config Release --&gt; Network Runtime --&gt; Release一次典型的发布流程：
+release-service 说：“我要发布 payment-gateway 到生产环境” meta-service 说：“payment-gateway 的代码仓库是 xxx，生产环境在 cluster-beijing” config-service 说：“它的基础配置是 3 个副本、1Gi 内存，生产环境的特殊配置是数据库地址 xxx” network-service 说：“它暴露了 80 端口，生产环境的域名是 payment.example.com” release-service 把这些信息打包成快照，触发构建和部署 runtime-service 实时观察集群，告诉 release-service：“新版本 Pod 已经全部 Ready 了” 🧱 为什么拆成 5 个服务# 你可能会问：为什么不能做成一个大服务？">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="website">
+
+
+  <meta itemprop="name" content="服务详解">
+  <meta itemprop="description" content="🧩 服务详解# DevFlow 由 5 个微服务组成。你可以把它们理解成一个团队里的 5 个角色，各有分工，协同完成一次应用发布。
+⚙️ 服务 👤 角色比喻 📝 核心职责 meta-service 📚 档案管理员 管理所有应用的&#34;户口本&#34; config-service 🧪 配置专员 管理应用配置和环境差异 network-service 🌐 网络工程师 管理服务的网络拓扑和入口规则 release-service 🚀 发布经理 编排发布全流程 runtime-service 🛠️ 运维值班 实时观察集群状态，执行运维操作 🤝 它们怎么协作# graph LR subgraph &#34;发布前准备&#34; Meta[&#34;meta-service&lt;br/&gt;提供应用信息&#34;] Config[&#34;config-service&lt;br/&gt;提供配置&#34;] Network[&#34;network-service&lt;br/&gt;提供网络定义&#34;] end subgraph &#34;发布执行&#34; Release[&#34;release-service&lt;br/&gt;编排发布&#34;] end subgraph &#34;发布后观察&#34; Runtime[&#34;runtime-service&lt;br/&gt;观察状态&#34;] end Release --&gt; Meta Release --&gt; Config Release --&gt; Network Runtime --&gt; Release一次典型的发布流程：
+release-service 说：“我要发布 payment-gateway 到生产环境” meta-service 说：“payment-gateway 的代码仓库是 xxx，生产环境在 cluster-beijing” config-service 说：“它的基础配置是 3 个副本、1Gi 内存，生产环境的特殊配置是数据库地址 xxx” network-service 说：“它暴露了 80 端口，生产环境的域名是 payment.example.com” release-service 把这些信息打包成快照，触发构建和部署 runtime-service 实时观察集群，告诉 release-service：“新版本 Pod 已经全部 Ready 了” 🧱 为什么拆成 5 个服务# 你可能会问：为什么不能做成一个大服务？">
+  <meta itemprop="wordCount" content="127">
+
+<title>服务详解 | DevFlow</title>
+<link rel="icon" href="/document/favicon.png" >
+<link rel="manifest" href="/document/manifest.json">
+<link rel="canonical" href="http://127.0.0.1:1313/document/docs/services/">
+<link rel="stylesheet" href="/document/book.min.8cd0206dd84616a7d412f4d11b03bd0f5f8254beac611979660997cdbce2a6d1.css" integrity="sha256-jNAgbdhGFqfUEvTRGwO9D1&#43;CVL6sYRl5ZgmXzbziptE=" crossorigin="anonymous">
+
+
+  <script defer src="/document/fuse.min.js"></script>
+  <script defer src="/document/en.search.min.57482576d48ccc082179b8b5a4498eb4f96e024079df15f99e067d42af187aba.js" integrity="sha256-V0gldtSMzAghebi1pEmOtPluAkB53xX5ngZ9Qq8Yero=" crossorigin="anonymous"></script>
+
+
+<link rel="alternate" type="application/rss+xml" href="http://127.0.0.1:1313/document/docs/services/index.xml" title="DevFlow" />
+
+  
+</head>
+<body dir="ltr" class="book-kind-section book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/document/"><span>DevFlow</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/getting-started/" class="">
+      快速开始</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/overview/" class="">
+      平台概览</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/architecture/" class="">
+      架构设计</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/architecture/services/" class="">
+      五大微服务</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/architecture/domain-model/" class="">
+      领域模型</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/architecture/lifecycle/" class="">
+      发布生命周期</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/services/" class="active">
+      服务详解</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/services/meta-service/" class="">
+      meta-service</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/services/config-service/" class="">
+      config-service</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/services/network-service/" class="">
+      network-service</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/services/release-service/" class="">
+      release-service</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/services/runtime-service/" class="">
+      runtime-service</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/" class="">
+      核心概念</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/project-application/" class="">
+      Project 与 Application</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/environment-cluster/" class="">
+      Environment 与 Cluster</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/workload-config/" class="">
+      WorkloadConfig</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/app-config/" class="">
+      AppConfig</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/service-route/" class="">
+      Service 与 Route</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/manifest-release/" class="">
+      Manifest 与 Release</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/ci/" class="">
+      持续集成</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/ci/architecture/" class="">
+      CI 架构</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/ci/standard/" class="">
+      标准 CI 流程</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/ci/component/" class="">
+      CI 组件矩阵</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/ci/queue/" class="">
+      队列与并发控制</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/" class="">
+      持续交付</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/architecture/" class="">
+      CD 架构</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/standard/" class="">
+      发布策略选型</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/rolling/" class="">
+      Rolling 发布</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/canary/" class="">
+      Canary 发布</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/blue-green/" class="">
+      Blue-Green 发布</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/component/" class="">
+      CD 组件矩阵</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/" class="">
+      可观测性</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/component/" class="">
+      可观测性组件矩阵</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/attributes/" class="">
+      公共 Attributes</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/standard/" class="">
+      Labels / Attributes 规范</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/signal-label-matrix/" class="">
+      信号标签矩阵</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/collector/" class="">
+      OTel Collector 配置模板</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/go-example/" class="">
+      Go 服务最小 OTel 接入示例</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/onboarding-checklist/" class="">
+      OTel 接入检查清单</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/logging/" class="">
+      结构化日志规范</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/service-checklist/" class="">
+      五大服务观测字段清单</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/release-trace-example/" class="">
+      发布链路 Trace 示例</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/collector-runbook/" class="">
+      Collector 生产排障 Runbook</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/release-failure-playbook/" class="">
+      发布失败排障剧本</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/deployment/" class="">
+      部署指南</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/deployment/guide/" class="">
+      部署步骤</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/document/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>服务详解</h3>
+
+  <label for="toc-control">
+    
+    <img src="/document/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#-它们怎么协作">🤝 它们怎么协作</a></li>
+    <li><a href="#-为什么拆成-5-个服务">🧱 为什么拆成 5 个服务</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="-服务详解">🧩 服务详解<a class="anchor" href="#-%e6%9c%8d%e5%8a%a1%e8%af%a6%e8%a7%a3">#</a></h1>
+<p>DevFlow 由 5 个微服务组成。你可以把它们理解成一个团队里的 5 个角色，各有分工，协同完成一次应用发布。</p>
+<table>
+  <thead>
+      <tr>
+          <th>⚙️ 服务</th>
+          <th>👤 角色比喻</th>
+          <th>📝 核心职责</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><a href="meta-service/">meta-service</a></td>
+          <td>📚 档案管理员</td>
+          <td>管理所有应用的&quot;户口本&quot;</td>
+      </tr>
+      <tr>
+          <td><a href="config-service/">config-service</a></td>
+          <td>🧪 配置专员</td>
+          <td>管理应用配置和环境差异</td>
+      </tr>
+      <tr>
+          <td><a href="network-service/">network-service</a></td>
+          <td>🌐 网络工程师</td>
+          <td>管理服务的网络拓扑和入口规则</td>
+      </tr>
+      <tr>
+          <td><a href="release-service/">release-service</a></td>
+          <td>🚀 发布经理</td>
+          <td>编排发布全流程</td>
+      </tr>
+      <tr>
+          <td><a href="runtime-service/">runtime-service</a></td>
+          <td>🛠️ 运维值班</td>
+          <td>实时观察集群状态，执行运维操作</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="-它们怎么协作">🤝 它们怎么协作<a class="anchor" href="#-%e5%ae%83%e4%bb%ac%e6%80%8e%e4%b9%88%e5%8d%8f%e4%bd%9c">#</a></h2>
+<pre class="mermaid">graph LR
     subgraph &#34;发布前准备&#34;
         Meta[&#34;meta-service&lt;br/&gt;提供应用信息&#34;]
         Config[&#34;config-service&lt;br/&gt;提供配置&#34;]
@@ -24,7 +897,167 @@ release-service 说：“我要发布 payment-gateway 到生产环境” meta-se
     Release --&gt; Meta
     Release --&gt; Config
     Release --&gt; Network
-    Runtime --&gt; Release</pre><script src=/document/mermaid.min.js></script><script>mermaid.initialize({flowchart:{useMaxWidth:!0},theme:"default"})</script><p>一次典型的发布流程：</p><ol><li><strong>release-service</strong> 说：&ldquo;我要发布 payment-gateway 到生产环境&rdquo;</li><li><strong>meta-service</strong> 说：&ldquo;payment-gateway 的代码仓库是 xxx，生产环境在 cluster-beijing&rdquo;</li><li><strong>config-service</strong> 说：&ldquo;它的基础配置是 3 个副本、1Gi 内存，生产环境的特殊配置是数据库地址 xxx&rdquo;</li><li><strong>network-service</strong> 说：&ldquo;它暴露了 80 端口，生产环境的域名是 payment.example.com&rdquo;</li><li><strong>release-service</strong> 把这些信息打包成快照，触发构建和部署</li><li><strong>runtime-service</strong> 实时观察集群，告诉 release-service：&ldquo;新版本 Pod 已经全部 Ready 了&rdquo;</li></ol><hr><h2 id=-为什么拆成-5-个服务>🧱 为什么拆成 5 个服务<a class=anchor href=#-%e4%b8%ba%e4%bb%80%e4%b9%88%e6%8b%86%e6%88%90-5-%e4%b8%aa%e6%9c%8d%e5%8a%a1>#</a></h2><p>你可能会问：为什么不能做成一个大服务？</p><p>原因很简单：<strong>不同部分的变更频率和扩展需求不一样</strong>。</p><table><thead><tr><th>⚙️ 服务</th><th>📈 变更频率</th><th>🧩 为什么需要独立</th></tr></thead><tbody><tr><td>meta-service</td><td>低</td><td>元数据相对稳定，独立出来不会频繁重启</td></tr><tr><td>config-service</td><td>中</td><td>配置变更多，需要独立扩展</td></tr><tr><td>network-service</td><td>中</td><td>网络策略复杂，独立管理更安全</td></tr><tr><td>release-service</td><td>高</td><td>发布逻辑最复杂，迭代最快</td></tr><tr><td>runtime-service</td><td>高</td><td>查询量最大，需要水平扩展</td></tr></tbody></table><p>拆成 5 个服务后，你可以：</p><ul><li>独立升级某个服务，不影响其他服务</li><li>按负载分别扩展（runtime-service 通常需要更多的实例）</li><li>某个服务出问题，不会拖垮整个平台</li></ul></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div></div><div></div></div><div class="flex flex-wrap justify-between"><span><a href=/document/docs/architecture/lifecycle/ class="flex align-center"><img src=/document/icons/backward.svg class=book-icon alt=Backward>
-<span>发布生命周期</span>
-</a></span><span><a href=/document/docs/services/meta-service/ class="flex align-center"><span>meta-service</span>
-<img src=/document/icons/forward.svg class=book-icon alt=Forward></a></span></div><script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script></footer><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#-它们怎么协作>🤝 它们怎么协作</a></li><li><a href=#-为什么拆成-5-个服务>🧱 为什么拆成 5 个服务</a></li></ul></nav></div></aside></main></body></html>
+    Runtime --&gt; Release</pre><script src="/document/mermaid.min.js"></script><script>mermaid.initialize({"flowchart":{"useMaxWidth":true},"theme":"default"})</script><p>一次典型的发布流程：</p>
+<ol>
+<li><strong>release-service</strong> 说：&ldquo;我要发布 payment-gateway 到生产环境&rdquo;</li>
+<li><strong>meta-service</strong> 说：&ldquo;payment-gateway 的代码仓库是 xxx，生产环境在 cluster-beijing&rdquo;</li>
+<li><strong>config-service</strong> 说：&ldquo;它的基础配置是 3 个副本、1Gi 内存，生产环境的特殊配置是数据库地址 xxx&rdquo;</li>
+<li><strong>network-service</strong> 说：&ldquo;它暴露了 80 端口，生产环境的域名是 payment.example.com&rdquo;</li>
+<li><strong>release-service</strong> 把这些信息打包成快照，触发构建和部署</li>
+<li><strong>runtime-service</strong> 实时观察集群，告诉 release-service：&ldquo;新版本 Pod 已经全部 Ready 了&rdquo;</li>
+</ol>
+<hr>
+<h2 id="-为什么拆成-5-个服务">🧱 为什么拆成 5 个服务<a class="anchor" href="#-%e4%b8%ba%e4%bb%80%e4%b9%88%e6%8b%86%e6%88%90-5-%e4%b8%aa%e6%9c%8d%e5%8a%a1">#</a></h2>
+<p>你可能会问：为什么不能做成一个大服务？</p>
+<p>原因很简单：<strong>不同部分的变更频率和扩展需求不一样</strong>。</p>
+<table>
+  <thead>
+      <tr>
+          <th>⚙️ 服务</th>
+          <th>📈 变更频率</th>
+          <th>🧩 为什么需要独立</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>meta-service</td>
+          <td>低</td>
+          <td>元数据相对稳定，独立出来不会频繁重启</td>
+      </tr>
+      <tr>
+          <td>config-service</td>
+          <td>中</td>
+          <td>配置变更多，需要独立扩展</td>
+      </tr>
+      <tr>
+          <td>network-service</td>
+          <td>中</td>
+          <td>网络策略复杂，独立管理更安全</td>
+      </tr>
+      <tr>
+          <td>release-service</td>
+          <td>高</td>
+          <td>发布逻辑最复杂，迭代最快</td>
+      </tr>
+      <tr>
+          <td>runtime-service</td>
+          <td>高</td>
+          <td>查询量最大，需要水平扩展</td>
+      </tr>
+  </tbody>
+</table>
+<p>拆成 5 个服务后，你可以：</p>
+<ul>
+<li>独立升级某个服务，不影响其他服务</li>
+<li>按负载分别扩展（runtime-service 通常需要更多的实例）</li>
+<li>某个服务出问题，不会拖垮整个平台</li>
+</ul>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/document/docs/architecture/lifecycle/" class="flex align-center">
+        <img src="/document/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>发布生命周期</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/document/docs/services/meta-service/" class="flex align-center">
+        <span>meta-service</span>
+        <img src="/document/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+ 
+        
+        
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#-它们怎么协作">🤝 它们怎么协作</a></li>
+    <li><a href="#-为什么拆成-5-个服务">🧱 为什么拆成 5 个服务</a></li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

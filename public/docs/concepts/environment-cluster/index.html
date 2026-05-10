@@ -1,32 +1,914 @@
-<!doctype html><html lang=zh-cn dir=ltr><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="🌍 Environment 与 Cluster# Cluster — Kubernetes 集群# Cluster 就是 Kubernetes 集群，是应用真正跑起来的地方。
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+<head><script src="/document/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=document/livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="🌍 Environment 与 Cluster# Cluster — Kubernetes 集群# Cluster 就是 Kubernetes 集群，是应用真正跑起来的地方。
 例子# Cluster: dev-cluster 位置: 北京机房 用途: 开发测试 Cluster: prod-cluster 位置: 上海机房 用途: 生产环境DevFlow 支持接入多个集群，你可以把不同环境映射到不同集群，甚至把一个环境的应用分发到多个集群。
 Environment — 环境# Environment 是一个逻辑运行环境，比如开发、测试、预发布、生产。
 例子# 名称: production 所在集群: prod-cluster名称: test 所在集群: dev-cluster环境隔离# Environment 通过三种机制实现隔离：
 集群绑定隔离 — 每个 Environment 绑定一个目标 Cluster 配置隔离 — AppConfig 和 Route 跟随应用-环境关系表达环境差异 网络隔离 — 不同环境可以绑定不同的访问入口 当前 devflow-service 实现里，Environment 本身不接受用户写入 namespace 字段。
 ApplicationEnvironment — 应用绑定到环境# 当应用要部署到某个环境时，需要先建立绑定关系。这个绑定关系叫 ApplicationEnvironment。
 为什么要先绑定# 想象你想把 order-service 部署到 test 环境：
-"><meta name=theme-color media="(prefers-color-scheme: light)" content="#ffffff"><meta name=theme-color media="(prefers-color-scheme: dark)" content="#343a40"><meta name=color-scheme content="light dark"><meta property="og:url" content="https://devflow.bei.com/document/docs/concepts/environment-cluster/"><meta property="og:site_name" content="DevFlow"><meta property="og:title" content="Environment 与 Cluster"><meta property="og:description" content="🌍 Environment 与 Cluster# Cluster — Kubernetes 集群# Cluster 就是 Kubernetes 集群，是应用真正跑起来的地方。
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://127.0.0.1:1313/document/docs/concepts/environment-cluster/">
+  <meta property="og:site_name" content="DevFlow">
+  <meta property="og:title" content="Environment 与 Cluster">
+  <meta property="og:description" content="🌍 Environment 与 Cluster# Cluster — Kubernetes 集群# Cluster 就是 Kubernetes 集群，是应用真正跑起来的地方。
 例子# Cluster: dev-cluster 位置: 北京机房 用途: 开发测试 Cluster: prod-cluster 位置: 上海机房 用途: 生产环境DevFlow 支持接入多个集群，你可以把不同环境映射到不同集群，甚至把一个环境的应用分发到多个集群。
 Environment — 环境# Environment 是一个逻辑运行环境，比如开发、测试、预发布、生产。
 例子# 名称: production 所在集群: prod-cluster名称: test 所在集群: dev-cluster环境隔离# Environment 通过三种机制实现隔离：
 集群绑定隔离 — 每个 Environment 绑定一个目标 Cluster 配置隔离 — AppConfig 和 Route 跟随应用-环境关系表达环境差异 网络隔离 — 不同环境可以绑定不同的访问入口 当前 devflow-service 实现里，Environment 本身不接受用户写入 namespace 字段。
 ApplicationEnvironment — 应用绑定到环境# 当应用要部署到某个环境时，需要先建立绑定关系。这个绑定关系叫 ApplicationEnvironment。
-为什么要先绑定# 想象你想把 order-service 部署到 test 环境："><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta itemprop=name content="Environment 与 Cluster"><meta itemprop=description content="🌍 Environment 与 Cluster# Cluster — Kubernetes 集群# Cluster 就是 Kubernetes 集群，是应用真正跑起来的地方。
+为什么要先绑定# 想象你想把 order-service 部署到 test 环境：">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+
+
+  <meta itemprop="name" content="Environment 与 Cluster">
+  <meta itemprop="description" content="🌍 Environment 与 Cluster# Cluster — Kubernetes 集群# Cluster 就是 Kubernetes 集群，是应用真正跑起来的地方。
 例子# Cluster: dev-cluster 位置: 北京机房 用途: 开发测试 Cluster: prod-cluster 位置: 上海机房 用途: 生产环境DevFlow 支持接入多个集群，你可以把不同环境映射到不同集群，甚至把一个环境的应用分发到多个集群。
 Environment — 环境# Environment 是一个逻辑运行环境，比如开发、测试、预发布、生产。
 例子# 名称: production 所在集群: prod-cluster名称: test 所在集群: dev-cluster环境隔离# Environment 通过三种机制实现隔离：
 集群绑定隔离 — 每个 Environment 绑定一个目标 Cluster 配置隔离 — AppConfig 和 Route 跟随应用-环境关系表达环境差异 网络隔离 — 不同环境可以绑定不同的访问入口 当前 devflow-service 实现里，Environment 本身不接受用户写入 namespace 字段。
 ApplicationEnvironment — 应用绑定到环境# 当应用要部署到某个环境时，需要先建立绑定关系。这个绑定关系叫 ApplicationEnvironment。
-为什么要先绑定# 想象你想把 order-service 部署到 test 环境："><meta itemprop=wordCount content="188"><title>Environment 与 Cluster | DevFlow</title><link rel=icon href=/document/favicon.png><link rel=manifest href=/document/manifest.json><link rel=canonical href=https://devflow.bei.com/document/docs/concepts/environment-cluster/><link rel=stylesheet href=/document/book.min.8cd0206dd84616a7d412f4d11b03bd0f5f8254beac611979660997cdbce2a6d1.css integrity="sha256-jNAgbdhGFqfUEvTRGwO9D1+CVL6sYRl5ZgmXzbziptE=" crossorigin=anonymous><script defer src=/document/fuse.min.js></script><script defer src=/document/en.search.min.57482576d48ccc082179b8b5a4498eb4f96e024079df15f99e067d42af187aba.js integrity="sha256-V0gldtSMzAghebi1pEmOtPluAkB53xX5ngZ9Qq8Yero=" crossorigin=anonymous></script></head><body dir=ltr class="book-kind-page book-type-docs"><input type=checkbox class="hidden toggle" id=menu-control>
-<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/document/><span>DevFlow</span></a></h2><div class="book-search hidden"><input id=book-search-input type=text placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><script>document.querySelector(".book-search").classList.remove("hidden")</script><ul><li><a href=/document/docs/getting-started/>快速开始</a><ul></ul></li><li><a href=/document/docs/overview/>平台概览</a><ul></ul></li><li><a href=/document/docs/architecture/>架构设计</a><ul><li><a href=/document/docs/architecture/services/>五大微服务</a></li><li><a href=/document/docs/architecture/domain-model/>领域模型</a></li><li><a href=/document/docs/architecture/lifecycle/>发布生命周期</a></li></ul></li><li><a href=/document/docs/services/>服务详解</a><ul><li><a href=/document/docs/services/meta-service/>meta-service</a></li><li><a href=/document/docs/services/config-service/>config-service</a></li><li><a href=/document/docs/services/network-service/>network-service</a></li><li><a href=/document/docs/services/release-service/>release-service</a></li><li><a href=/document/docs/services/runtime-service/>runtime-service</a></li></ul></li><li><a href=/document/docs/concepts/>核心概念</a><ul><li><a href=/document/docs/concepts/project-application/>Project 与 Application</a></li><li><a href=/document/docs/concepts/environment-cluster/ class=active>Environment 与 Cluster</a></li><li><a href=/document/docs/concepts/workload-config/>WorkloadConfig</a></li><li><a href=/document/docs/concepts/app-config/>AppConfig</a></li><li><a href=/document/docs/concepts/service-route/>Service 与 Route</a></li><li><a href=/document/docs/concepts/manifest-release/>Manifest 与 Release</a></li></ul></li><li><a href=/document/docs/ci/>持续集成</a><ul><li><a href=/document/docs/ci/architecture/>CI 架构</a></li><li><a href=/document/docs/ci/standard/>标准 CI 流程</a></li><li><a href=/document/docs/ci/component/>CI 组件矩阵</a></li><li><a href=/document/docs/ci/queue/>队列与并发控制</a></li></ul></li><li><a href=/document/docs/cd/>持续交付</a><ul><li><a href=/document/docs/cd/architecture/>CD 架构</a></li><li><a href=/document/docs/cd/standard/>发布策略选型</a></li><li><a href=/document/docs/cd/rolling/>Rolling 发布</a></li><li><a href=/document/docs/cd/canary/>Canary 发布</a></li><li><a href=/document/docs/cd/blue-green/>Blue-Green 发布</a></li><li><a href=/document/docs/cd/component/>CD 组件矩阵</a></li></ul></li><li><a href=/document/docs/observability/>可观测性</a><ul><li><a href=/document/docs/observability/component/>可观测性组件矩阵</a></li><li><a href=/document/docs/observability/attributes/>公共 Attributes</a></li><li><a href=/document/docs/observability/standard/>Labels / Attributes 规范</a></li><li><a href=/document/docs/observability/signal-label-matrix/>信号标签矩阵</a></li><li><a href=/document/docs/observability/collector/>OTel Collector 配置模板</a></li><li><a href=/document/docs/observability/go-example/>Go 服务最小 OTel 接入示例</a></li><li><a href=/document/docs/observability/onboarding-checklist/>OTel 接入检查清单</a></li><li><a href=/document/docs/observability/logging/>结构化日志规范</a></li><li><a href=/document/docs/observability/service-checklist/>五大服务观测字段清单</a></li><li><a href=/document/docs/observability/release-trace-example/>发布链路 Trace 示例</a></li><li><a href=/document/docs/observability/collector-runbook/>Collector 生产排障 Runbook</a></li><li><a href=/document/docs/observability/release-failure-playbook/>发布失败排障剧本</a></li></ul></li><li><a href=/document/docs/deployment/>部署指南</a><ul><li><a href=/document/docs/deployment/guide/>部署步骤</a></li></ul></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class="book-header hidden"><div class="flex align-center justify-between"><label for=menu-control><img src=/document/icons/menu.svg class=book-icon alt=Menu></label><h3>Environment 与 Cluster</h3><label for=toc-control><img src=/document/icons/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class=hidden><nav id=TableOfContents><ul><li><a href=#cluster--kubernetes-集群>Cluster — Kubernetes 集群</a><ul><li><a href=#例子>例子</a></li></ul></li><li><a href=#environment--环境>Environment — 环境</a><ul><li><a href=#例子-1>例子</a></li><li><a href=#环境隔离>环境隔离</a></li></ul></li><li><a href=#applicationenvironment--应用绑定到环境>ApplicationEnvironment — 应用绑定到环境</a><ul><li><a href=#为什么要先绑定>为什么要先绑定</a></li><li><a href=#绑定后有什么用>绑定后有什么用</a></li></ul></li><li><a href=#常见环境划分>常见环境划分</a></li><li><a href=#cluster-和-environment-的关系>Cluster 和 Environment 的关系</a></li></ul></nav></aside></header><article class="markdown book-article"><h1 id=-environment-与-cluster>🌍 Environment 与 Cluster<a class=anchor href=#-environment-%e4%b8%8e-cluster>#</a></h1><h2 id=cluster--kubernetes-集群>Cluster — Kubernetes 集群<a class=anchor href=#cluster--kubernetes-%e9%9b%86%e7%be%a4>#</a></h2><p>Cluster 就是 Kubernetes 集群，是应用真正跑起来的地方。</p><h3 id=例子>例子<a class=anchor href=#%e4%be%8b%e5%ad%90>#</a></h3><pre tabindex=0><code>Cluster: dev-cluster
+为什么要先绑定# 想象你想把 order-service 部署到 test 环境：">
+  <meta itemprop="wordCount" content="188">
+
+<title>Environment 与 Cluster | DevFlow</title>
+<link rel="icon" href="/document/favicon.png" >
+<link rel="manifest" href="/document/manifest.json">
+<link rel="canonical" href="http://127.0.0.1:1313/document/docs/concepts/environment-cluster/">
+<link rel="stylesheet" href="/document/book.min.8cd0206dd84616a7d412f4d11b03bd0f5f8254beac611979660997cdbce2a6d1.css" integrity="sha256-jNAgbdhGFqfUEvTRGwO9D1&#43;CVL6sYRl5ZgmXzbziptE=" crossorigin="anonymous">
+
+
+  <script defer src="/document/fuse.min.js"></script>
+  <script defer src="/document/en.search.min.57482576d48ccc082179b8b5a4498eb4f96e024079df15f99e067d42af187aba.js" integrity="sha256-V0gldtSMzAghebi1pEmOtPluAkB53xX5ngZ9Qq8Yero=" crossorigin="anonymous"></script>
+
+
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/document/"><span>DevFlow</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/getting-started/" class="">
+      快速开始</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/overview/" class="">
+      平台概览</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/architecture/" class="">
+      架构设计</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/architecture/services/" class="">
+      五大微服务</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/architecture/domain-model/" class="">
+      领域模型</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/architecture/lifecycle/" class="">
+      发布生命周期</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/services/" class="">
+      服务详解</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/services/meta-service/" class="">
+      meta-service</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/services/config-service/" class="">
+      config-service</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/services/network-service/" class="">
+      network-service</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/services/release-service/" class="">
+      release-service</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/services/runtime-service/" class="">
+      runtime-service</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/" class="">
+      核心概念</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/project-application/" class="">
+      Project 与 Application</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/environment-cluster/" class="active">
+      Environment 与 Cluster</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/workload-config/" class="">
+      WorkloadConfig</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/app-config/" class="">
+      AppConfig</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/service-route/" class="">
+      Service 与 Route</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/manifest-release/" class="">
+      Manifest 与 Release</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/ci/" class="">
+      持续集成</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/ci/architecture/" class="">
+      CI 架构</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/ci/standard/" class="">
+      标准 CI 流程</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/ci/component/" class="">
+      CI 组件矩阵</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/ci/queue/" class="">
+      队列与并发控制</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/" class="">
+      持续交付</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/architecture/" class="">
+      CD 架构</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/standard/" class="">
+      发布策略选型</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/rolling/" class="">
+      Rolling 发布</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/canary/" class="">
+      Canary 发布</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/blue-green/" class="">
+      Blue-Green 发布</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/component/" class="">
+      CD 组件矩阵</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/" class="">
+      可观测性</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/component/" class="">
+      可观测性组件矩阵</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/attributes/" class="">
+      公共 Attributes</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/standard/" class="">
+      Labels / Attributes 规范</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/signal-label-matrix/" class="">
+      信号标签矩阵</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/collector/" class="">
+      OTel Collector 配置模板</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/go-example/" class="">
+      Go 服务最小 OTel 接入示例</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/onboarding-checklist/" class="">
+      OTel 接入检查清单</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/logging/" class="">
+      结构化日志规范</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/service-checklist/" class="">
+      五大服务观测字段清单</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/release-trace-example/" class="">
+      发布链路 Trace 示例</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/collector-runbook/" class="">
+      Collector 生产排障 Runbook</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/release-failure-playbook/" class="">
+      发布失败排障剧本</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/deployment/" class="">
+      部署指南</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/deployment/guide/" class="">
+      部署步骤</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/document/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Environment 与 Cluster</h3>
+
+  <label for="toc-control">
+    
+    <img src="/document/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#cluster--kubernetes-集群">Cluster — Kubernetes 集群</a>
+      <ul>
+        <li><a href="#例子">例子</a></li>
+      </ul>
+    </li>
+    <li><a href="#environment--环境">Environment — 环境</a>
+      <ul>
+        <li><a href="#例子-1">例子</a></li>
+        <li><a href="#环境隔离">环境隔离</a></li>
+      </ul>
+    </li>
+    <li><a href="#applicationenvironment--应用绑定到环境">ApplicationEnvironment — 应用绑定到环境</a>
+      <ul>
+        <li><a href="#为什么要先绑定">为什么要先绑定</a></li>
+        <li><a href="#绑定后有什么用">绑定后有什么用</a></li>
+      </ul>
+    </li>
+    <li><a href="#常见环境划分">常见环境划分</a></li>
+    <li><a href="#cluster-和-environment-的关系">Cluster 和 Environment 的关系</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="-environment-与-cluster">🌍 Environment 与 Cluster<a class="anchor" href="#-environment-%e4%b8%8e-cluster">#</a></h1>
+<h2 id="cluster--kubernetes-集群">Cluster — Kubernetes 集群<a class="anchor" href="#cluster--kubernetes-%e9%9b%86%e7%be%a4">#</a></h2>
+<p>Cluster 就是 Kubernetes 集群，是应用真正跑起来的地方。</p>
+<h3 id="例子">例子<a class="anchor" href="#%e4%be%8b%e5%ad%90">#</a></h3>
+<pre tabindex="0"><code>Cluster: dev-cluster
   位置: 北京机房
   用途: 开发测试
 
 Cluster: prod-cluster
   位置: 上海机房
-  用途: 生产环境</code></pre><p>DevFlow 支持接入多个集群，你可以把不同环境映射到不同集群，甚至把一个环境的应用分发到多个集群。</p><hr><h2 id=environment--环境>Environment — 环境<a class=anchor href=#environment--%e7%8e%af%e5%a2%83>#</a></h2><p>Environment 是一个<strong>逻辑运行环境</strong>，比如开发、测试、预发布、生产。</p><h3 id=例子-1>例子<a class=anchor href=#%e4%be%8b%e5%ad%90-1>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>名称</span>: <span style=color:#ae81ff>production</span>
-</span></span><span style=display:flex><span><span style=color:#f92672>所在集群</span>: <span style=color:#ae81ff>prod-cluster</span></span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>名称</span>: <span style=color:#ae81ff>test</span>
-</span></span><span style=display:flex><span><span style=color:#f92672>所在集群</span>: <span style=color:#ae81ff>dev-cluster</span></span></span></code></pre></div><h3 id=环境隔离>环境隔离<a class=anchor href=#%e7%8e%af%e5%a2%83%e9%9a%94%e7%a6%bb>#</a></h3><p>Environment 通过三种机制实现隔离：</p><ol><li><strong>集群绑定隔离</strong> — 每个 Environment 绑定一个目标 Cluster</li><li><strong>配置隔离</strong> — AppConfig 和 Route 跟随应用-环境关系表达环境差异</li><li><strong>网络隔离</strong> — 不同环境可以绑定不同的访问入口</li></ol><blockquote class=book-hint><p>当前 <code>devflow-service</code> 实现里，<code>Environment</code> 本身<strong>不接受用户写入 <code>namespace</code> 字段</strong>。</p></blockquote><hr><h2 id=applicationenvironment--应用绑定到环境>ApplicationEnvironment — 应用绑定到环境<a class=anchor href=#applicationenvironment--%e5%ba%94%e7%94%a8%e7%bb%91%e5%ae%9a%e5%88%b0%e7%8e%af%e5%a2%83>#</a></h2><p>当应用要部署到某个环境时，需要先建立绑定关系。这个绑定关系叫 <strong>ApplicationEnvironment</strong>。</p><h3 id=为什么要先绑定>为什么要先绑定<a class=anchor href=#%e4%b8%ba%e4%bb%80%e4%b9%88%e8%a6%81%e5%85%88%e7%bb%91%e5%ae%9a>#</a></h3><p>想象你想把 <code>order-service</code> 部署到 <code>test</code> 环境：</p><ol><li>先创建绑定：<code>order-service</code> + <code>test</code> = <code>order-service-test</code></li><li>然后给这个绑定配置环境专属的东西：<ul><li>AppConfig（测试数据库地址、debug 日志）</li><li>Route（测试域名）</li></ul></li></ol><pre class=mermaid>graph TB
+  用途: 生产环境</code></pre><p>DevFlow 支持接入多个集群，你可以把不同环境映射到不同集群，甚至把一个环境的应用分发到多个集群。</p>
+<hr>
+<h2 id="environment--环境">Environment — 环境<a class="anchor" href="#environment--%e7%8e%af%e5%a2%83">#</a></h2>
+<p>Environment 是一个<strong>逻辑运行环境</strong>，比如开发、测试、预发布、生产。</p>
+<h3 id="例子-1">例子<a class="anchor" href="#%e4%be%8b%e5%ad%90-1">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">名称</span>: <span style="color:#ae81ff">production</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">所在集群</span>: <span style="color:#ae81ff">prod-cluster</span></span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">名称</span>: <span style="color:#ae81ff">test</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">所在集群</span>: <span style="color:#ae81ff">dev-cluster</span></span></span></code></pre></div><h3 id="环境隔离">环境隔离<a class="anchor" href="#%e7%8e%af%e5%a2%83%e9%9a%94%e7%a6%bb">#</a></h3>
+<p>Environment 通过三种机制实现隔离：</p>
+<ol>
+<li><strong>集群绑定隔离</strong> — 每个 Environment 绑定一个目标 Cluster</li>
+<li><strong>配置隔离</strong> — AppConfig 和 Route 跟随应用-环境关系表达环境差异</li>
+<li><strong>网络隔离</strong> — 不同环境可以绑定不同的访问入口</li>
+</ol>
+<blockquote class='book-hint '>
+<p>当前 <code>devflow-service</code> 实现里，<code>Environment</code> 本身<strong>不接受用户写入 <code>namespace</code> 字段</strong>。</p>
+</blockquote><hr>
+<h2 id="applicationenvironment--应用绑定到环境">ApplicationEnvironment — 应用绑定到环境<a class="anchor" href="#applicationenvironment--%e5%ba%94%e7%94%a8%e7%bb%91%e5%ae%9a%e5%88%b0%e7%8e%af%e5%a2%83">#</a></h2>
+<p>当应用要部署到某个环境时，需要先建立绑定关系。这个绑定关系叫 <strong>ApplicationEnvironment</strong>。</p>
+<h3 id="为什么要先绑定">为什么要先绑定<a class="anchor" href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e8%a6%81%e5%85%88%e7%bb%91%e5%ae%9a">#</a></h3>
+<p>想象你想把 <code>order-service</code> 部署到 <code>test</code> 环境：</p>
+<ol>
+<li>先创建绑定：<code>order-service</code> + <code>test</code> = <code>order-service-test</code></li>
+<li>然后给这个绑定配置环境专属的东西：
+<ul>
+<li>AppConfig（测试数据库地址、debug 日志）</li>
+<li>Route（测试域名）</li>
+</ul>
+</li>
+</ol>
+<pre class="mermaid">graph TB
     A[&#34;Application: order-service&#34;]
     E1[&#34;Environment: test&#34;]
     E2[&#34;Environment: prod&#34;]
@@ -47,13 +929,188 @@ Cluster: prod-cluster
     AE1 --&gt; AC1
     AE1 --&gt; R1
     AE2 --&gt; AC2
-    AE2 --&gt; R2</pre><script src=/document/mermaid.min.js></script><script>mermaid.initialize({flowchart:{useMaxWidth:!0},theme:"default"})</script><h3 id=绑定后有什么用>绑定后有什么用<a class=anchor href=#%e7%bb%91%e5%ae%9a%e5%90%8e%e6%9c%89%e4%bb%80%e4%b9%88%e7%94%a8>#</a></h3><p>绑定后，你就可以：</p><ul><li>为不同环境配置不同的数据库地址</li><li>为不同环境配置不同的域名</li><li>分别查看每个环境下的发布历史</li></ul><hr><h2 id=常见环境划分>常见环境划分<a class=anchor href=#%e5%b8%b8%e8%a7%81%e7%8e%af%e5%a2%83%e5%88%92%e5%88%86>#</a></h2><table><thead><tr><th>环境</th><th>用途</th><th>发布频率</th><th>策略建议</th></tr></thead><tbody><tr><td>dev</td><td>开发调试</td><td>随时</td><td>Rolling</td></tr><tr><td>test</td><td>功能测试</td><td>每天多次</td><td>Rolling</td></tr><tr><td>staging</td><td>集成测试</td><td>每天 1-2 次</td><td>Canary</td></tr><tr><td>prod</td><td>生产环境</td><td>按需</td><td>Canary 或 Blue-Green</td></tr></tbody></table><hr><h2 id=cluster-和-environment-的关系>Cluster 和 Environment 的关系<a class=anchor href=#cluster-%e5%92%8c-environment-%e7%9a%84%e5%85%b3%e7%b3%bb>#</a></h2><pre class=mermaid>graph TB
+    AE2 --&gt; R2</pre><script src="/document/mermaid.min.js"></script><script>mermaid.initialize({"flowchart":{"useMaxWidth":true},"theme":"default"})</script><h3 id="绑定后有什么用">绑定后有什么用<a class="anchor" href="#%e7%bb%91%e5%ae%9a%e5%90%8e%e6%9c%89%e4%bb%80%e4%b9%88%e7%94%a8">#</a></h3>
+<p>绑定后，你就可以：</p>
+<ul>
+<li>为不同环境配置不同的数据库地址</li>
+<li>为不同环境配置不同的域名</li>
+<li>分别查看每个环境下的发布历史</li>
+</ul>
+<hr>
+<h2 id="常见环境划分">常见环境划分<a class="anchor" href="#%e5%b8%b8%e8%a7%81%e7%8e%af%e5%a2%83%e5%88%92%e5%88%86">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>环境</th>
+          <th>用途</th>
+          <th>发布频率</th>
+          <th>策略建议</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>dev</td>
+          <td>开发调试</td>
+          <td>随时</td>
+          <td>Rolling</td>
+      </tr>
+      <tr>
+          <td>test</td>
+          <td>功能测试</td>
+          <td>每天多次</td>
+          <td>Rolling</td>
+      </tr>
+      <tr>
+          <td>staging</td>
+          <td>集成测试</td>
+          <td>每天 1-2 次</td>
+          <td>Canary</td>
+      </tr>
+      <tr>
+          <td>prod</td>
+          <td>生产环境</td>
+          <td>按需</td>
+          <td>Canary 或 Blue-Green</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="cluster-和-environment-的关系">Cluster 和 Environment 的关系<a class="anchor" href="#cluster-%e5%92%8c-environment-%e7%9a%84%e5%85%b3%e7%b3%bb">#</a></h2>
+<pre class="mermaid">graph TB
     C[&#34;Cluster: prod-cluster&#34;]
     E1[&#34;Environment: prod&#34;]
     E2[&#34;Environment: staging&#34;]
 
     C --&gt; E1
-    C --&gt; E2</pre><p><strong>规则</strong>：</p><ul><li>一个 Cluster 可以承载多个 Environment</li><li>一个 Environment 只能属于一个 Cluster</li><li>当前实现以环境元数据和集群绑定为主，不把 namespace 作为 Environment 的用户输入字段</li></ul></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div></div><div></div></div><div class="flex flex-wrap justify-between"><span><a href=/document/docs/concepts/project-application/ class="flex align-center"><img src=/document/icons/backward.svg class=book-icon alt=Backward>
-<span>Project 与 Application</span>
-</a></span><span><a href=/document/docs/concepts/workload-config/ class="flex align-center"><span>WorkloadConfig</span>
-<img src=/document/icons/forward.svg class=book-icon alt=Forward></a></span></div><script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script></footer><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#cluster--kubernetes-集群>Cluster — Kubernetes 集群</a><ul><li><a href=#例子>例子</a></li></ul></li><li><a href=#environment--环境>Environment — 环境</a><ul><li><a href=#例子-1>例子</a></li><li><a href=#环境隔离>环境隔离</a></li></ul></li><li><a href=#applicationenvironment--应用绑定到环境>ApplicationEnvironment — 应用绑定到环境</a><ul><li><a href=#为什么要先绑定>为什么要先绑定</a></li><li><a href=#绑定后有什么用>绑定后有什么用</a></li></ul></li><li><a href=#常见环境划分>常见环境划分</a></li><li><a href=#cluster-和-environment-的关系>Cluster 和 Environment 的关系</a></li></ul></nav></div></aside></main></body></html>
+    C --&gt; E2</pre><p><strong>规则</strong>：</p>
+<ul>
+<li>一个 Cluster 可以承载多个 Environment</li>
+<li>一个 Environment 只能属于一个 Cluster</li>
+<li>当前实现以环境元数据和集群绑定为主，不把 namespace 作为 Environment 的用户输入字段</li>
+</ul>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/document/docs/concepts/project-application/" class="flex align-center">
+        <img src="/document/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>Project 与 Application</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/document/docs/concepts/workload-config/" class="flex align-center">
+        <span>WorkloadConfig</span>
+        <img src="/document/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+ 
+        
+        
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#cluster--kubernetes-集群">Cluster — Kubernetes 集群</a>
+      <ul>
+        <li><a href="#例子">例子</a></li>
+      </ul>
+    </li>
+    <li><a href="#environment--环境">Environment — 环境</a>
+      <ul>
+        <li><a href="#例子-1">例子</a></li>
+        <li><a href="#环境隔离">环境隔离</a></li>
+      </ul>
+    </li>
+    <li><a href="#applicationenvironment--应用绑定到环境">ApplicationEnvironment — 应用绑定到环境</a>
+      <ul>
+        <li><a href="#为什么要先绑定">为什么要先绑定</a></li>
+        <li><a href="#绑定后有什么用">绑定后有什么用</a></li>
+      </ul>
+    </li>
+    <li><a href="#常见环境划分">常见环境划分</a></li>
+    <li><a href="#cluster-和-environment-的关系">Cluster 和 Environment 的关系</a></li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

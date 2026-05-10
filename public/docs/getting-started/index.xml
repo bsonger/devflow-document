@@ -1,1 +1,11 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>快速开始 on DevFlow</title><link>https://devflow.bei.com/document/docs/getting-started/</link><description>Recent content in 快速开始 on DevFlow</description><generator>Hugo</generator><language>zh-cn</language><atom:link href="https://devflow.bei.com/document/docs/getting-started/index.xml" rel="self" type="application/rss+xml"/></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>快速开始 on DevFlow</title>
+    <link>http://127.0.0.1:1313/document/docs/getting-started/</link>
+    <description>Recent content in 快速开始 on DevFlow</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <atom:link href="http://127.0.0.1:1313/document/docs/getting-started/index.xml" rel="self" type="application/rss+xml" />
+  </channel>
+</rss>

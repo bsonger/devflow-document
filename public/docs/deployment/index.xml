@@ -1,56 +1,18 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>部署指南 on DevFlow</title><link>https://devflow.bei.com/document/docs/deployment/</link><description>Recent content in 部署指南 on DevFlow</description><generator>Hugo</generator><language>zh-cn</language><atom:link href="https://devflow.bei.com/document/docs/deployment/index.xml" rel="self" type="application/rss+xml"/><item><title>部署步骤</title><link>https://devflow.bei.com/document/docs/deployment/guide/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/deployment/guide/</guid><description>&lt;h1 id="部署步骤"&gt;部署步骤&lt;a class="anchor" href="#%e9%83%a8%e7%bd%b2%e6%ad%a5%e9%aa%a4"&gt;#&lt;/a&gt;&lt;/h1&gt;
-&lt;p&gt;把 DevFlow 部署到自己的 Kubernetes 集群，总共需要 11 步。&lt;/p&gt;
-&lt;blockquote class='book-hint '&gt;
-&lt;p&gt;如果你只是想&lt;strong&gt;体验&lt;/strong&gt; DevFlow，建议先用 Docker Compose 或 Kind 搭一个最小环境，不用一上来就生产级部署。&lt;/p&gt;
-&lt;/blockquote&gt;&lt;hr&gt;
-&lt;h2 id="先看这页怎么用"&gt;先看这页怎么用&lt;a class="anchor" href="#%e5%85%88%e7%9c%8b%e8%bf%99%e9%a1%b5%e6%80%8e%e4%b9%88%e7%94%a8"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;这页有两种读法：&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;strong&gt;体验路径&lt;/strong&gt;：先看“部署前检查表”，再直接跳到每一步里的安装命令，最后执行“验证端到端流程”&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;生产路径&lt;/strong&gt;：按顺序完成全部 12 步，并保留可观测性、权限和仓库配置&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;如果你只想验证 &lt;strong&gt;Rolling&lt;/strong&gt; 发布，可以跳过 Argo Rollouts；如果你要验证 &lt;strong&gt;Canary&lt;/strong&gt;，还必须安装 Istio。&lt;/p&gt;
-&lt;hr&gt;
-&lt;h2 id="部署前检查表"&gt;部署前检查表&lt;a class="anchor" href="#%e9%83%a8%e7%bd%b2%e5%89%8d%e6%a3%80%e6%9f%a5%e8%a1%a8"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;在动手之前，至少确认下面这些输入已经准备好：&lt;/p&gt;
-&lt;table&gt;
- &lt;thead&gt;
- &lt;tr&gt;
- &lt;th&gt;检查项&lt;/th&gt;
- &lt;th&gt;为什么需要&lt;/th&gt;
- &lt;/tr&gt;
- &lt;/thead&gt;
- &lt;tbody&gt;
- &lt;tr&gt;
- &lt;td&gt;Kubernetes 集群（1.30+）&lt;/td&gt;
- &lt;td&gt;DevFlow 的运行底座&lt;/td&gt;
- &lt;/tr&gt;
- &lt;tr&gt;
- &lt;td&gt;至少 3 个 Worker 节点&lt;/td&gt;
- &lt;td&gt;给平台服务、数据库和周边组件留资源&lt;/td&gt;
- &lt;/tr&gt;
- &lt;tr&gt;
- &lt;td&gt;一个 OCI Registry&lt;/td&gt;
- &lt;td&gt;同时存镜像和部署包&lt;/td&gt;
- &lt;/tr&gt;
- &lt;tr&gt;
- &lt;td&gt;一个对外访问域名&lt;/td&gt;
- &lt;td&gt;暴露 DevFlow Console / API&lt;/td&gt;
- &lt;/tr&gt;
- &lt;tr&gt;
- &lt;td&gt;一个 PostgreSQL 实例或安装方案&lt;/td&gt;
- &lt;td&gt;meta/config/network/release 四个服务要落库&lt;/td&gt;
- &lt;/tr&gt;
- &lt;tr&gt;
- &lt;td&gt;一个可访问的 Git 仓库示例应用&lt;/td&gt;
- &lt;td&gt;用来验证端到端发布&lt;/td&gt;
- &lt;/tr&gt;
- &lt;/tbody&gt;
-&lt;/table&gt;
-&lt;p&gt;还要想清楚几个决策：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;我的集群有几个 Worker 节点？DevFlow itself 需要跑 5 个服务 + PostgreSQL + Tekton + Istio，资源不够会很痛苦。&lt;/li&gt;
-&lt;li&gt;我需要 Canary 和 Blue-Green 吗？如果只需要 Rolling，可以跳过 Argo Rollouts 和 Istio 的部分步骤。&lt;/li&gt;
-&lt;li&gt;我的镜像仓库准备好了吗？DevFlow 需要同时存镜像和部署包（OCI artifact）。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;想清楚这些问题，部署过程会顺畅很多。&lt;/p&gt;</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>部署指南 on DevFlow</title>
+    <link>http://127.0.0.1:1313/document/docs/deployment/</link>
+    <description>Recent content in 部署指南 on DevFlow</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <atom:link href="http://127.0.0.1:1313/document/docs/deployment/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>部署步骤</title>
+      <link>http://127.0.0.1:1313/document/docs/deployment/guide/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://127.0.0.1:1313/document/docs/deployment/guide/</guid>
+      <description>&lt;h1 id=&#34;部署步骤&#34;&gt;部署步骤&lt;a class=&#34;anchor&#34; href=&#34;#%e9%83%a8%e7%bd%b2%e6%ad%a5%e9%aa%a4&#34;&gt;#&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;把 DevFlow 部署到自己的 Kubernetes 集群，总共需要 11 步。&lt;/p&gt;&#xA;&lt;blockquote class=&#39;book-hint &#39;&gt;&#xA;&lt;p&gt;如果你只是想&lt;strong&gt;体验&lt;/strong&gt; DevFlow，建议先用 Docker Compose 或 Kind 搭一个最小环境，不用一上来就生产级部署。&lt;/p&gt;&#xA;&lt;/blockquote&gt;&lt;hr&gt;&#xA;&lt;h2 id=&#34;先看这页怎么用&#34;&gt;先看这页怎么用&lt;a class=&#34;anchor&#34; href=&#34;#%e5%85%88%e7%9c%8b%e8%bf%99%e9%a1%b5%e6%80%8e%e4%b9%88%e7%94%a8&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;p&gt;这页有两种读法：&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;&lt;strong&gt;体验路径&lt;/strong&gt;：先看“部署前检查表”，再直接跳到每一步里的安装命令，最后执行“验证端到端流程”&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;生产路径&lt;/strong&gt;：按顺序完成全部 12 步，并保留可观测性、权限和仓库配置&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;如果你只想验证 &lt;strong&gt;Rolling&lt;/strong&gt; 发布，可以跳过 Argo Rollouts；如果你要验证 &lt;strong&gt;Canary&lt;/strong&gt;，还必须安装 Istio。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;部署前检查表&#34;&gt;部署前检查表&lt;a class=&#34;anchor&#34; href=&#34;#%e9%83%a8%e7%bd%b2%e5%89%8d%e6%a3%80%e6%9f%a5%e8%a1%a8&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;p&gt;在动手之前，至少确认下面这些输入已经准备好：&lt;/p&gt;&#xA;&lt;table&gt;&#xA;  &lt;thead&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;th&gt;检查项&lt;/th&gt;&#xA;          &lt;th&gt;为什么需要&lt;/th&gt;&#xA;      &lt;/tr&gt;&#xA;  &lt;/thead&gt;&#xA;  &lt;tbody&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;Kubernetes 集群（1.30+）&lt;/td&gt;&#xA;          &lt;td&gt;DevFlow 的运行底座&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;至少 3 个 Worker 节点&lt;/td&gt;&#xA;          &lt;td&gt;给平台服务、数据库和周边组件留资源&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;一个 OCI Registry&lt;/td&gt;&#xA;          &lt;td&gt;同时存镜像和部署包&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;一个对外访问域名&lt;/td&gt;&#xA;          &lt;td&gt;暴露 DevFlow Console / API&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;一个 PostgreSQL 实例或安装方案&lt;/td&gt;&#xA;          &lt;td&gt;meta/config/network/release 四个服务要落库&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;一个可访问的 Git 仓库示例应用&lt;/td&gt;&#xA;          &lt;td&gt;用来验证端到端发布&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;  &lt;/tbody&gt;&#xA;&lt;/table&gt;&#xA;&lt;p&gt;还要想清楚几个决策：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;我的集群有几个 Worker 节点？DevFlow itself 需要跑 5 个服务 + PostgreSQL + Tekton + Istio，资源不够会很痛苦。&lt;/li&gt;&#xA;&lt;li&gt;我需要 Canary 和 Blue-Green 吗？如果只需要 Rolling，可以跳过 Argo Rollouts 和 Istio 的部分步骤。&lt;/li&gt;&#xA;&lt;li&gt;我的镜像仓库准备好了吗？DevFlow 需要同时存镜像和部署包（OCI artifact）。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;想清楚这些问题，部署过程会顺畅很多。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

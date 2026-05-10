@@ -1,15 +1,868 @@
-<!doctype html><html lang=zh-cn dir=ltr><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content='领域模型# 想象你要开一家连锁餐厅。你需要：
-公司总部（Project）— 管品牌、管战略 具体门店（Application）— 每一家店的菜单、装修、员工配置 城市分区（Environment）— 北京店、上海店，不同城市有不同的运营策略 物业大楼（Cluster）— 门店实际开在哪个商场 DevFlow 的领域模型就是这套"连锁餐厅管理体系"。
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+<head><script src="/document/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=document/livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="领域模型# 想象你要开一家连锁餐厅。你需要：
+公司总部（Project）— 管品牌、管战略 具体门店（Application）— 每一家店的菜单、装修、员工配置 城市分区（Environment）— 北京店、上海店，不同城市有不同的运营策略 物业大楼（Cluster）— 门店实际开在哪个商场 DevFlow 的领域模型就是这套&#34;连锁餐厅管理体系&#34;。
 DevFlow 中的资源模型分为四个层级，从组织到部署，层层递进。
-资源关系总览# graph TB subgraph "组织层" Project["Project 项目"] Application["Application 应用"] end subgraph "环境层" Environment["Environment 环境"] Cluster["Cluster 集群"] AppEnv["ApplicationEnvironment<br/>应用-环境绑定"] end subgraph "配置与网络" WorkloadConfig["WorkloadConfig<br/>应用级基线"] AppConfig["AppConfig<br/>环境级差异"] Service["Service<br/>网络拓扑"] Route["Route<br/>入口规则"] end subgraph "发布" Manifest["Manifest<br/>构建快照"] Release["Release<br/>部署快照"] end Project --> Application Application --> AppEnv Application --> WorkloadConfig Application --> Service AppEnv --> Environment Environment --> Cluster AppEnv --> AppConfig AppEnv --> Route WorkloadConfig --> Manifest Service --> Manifest Manifest --> Release 四个层级# 第一层：组织# Project 和 Application 负责"谁拥有什么"。
-'><meta name=theme-color media="(prefers-color-scheme: light)" content="#ffffff"><meta name=theme-color media="(prefers-color-scheme: dark)" content="#343a40"><meta name=color-scheme content="light dark"><meta property="og:url" content="https://devflow.bei.com/document/docs/architecture/domain-model/"><meta property="og:site_name" content="DevFlow"><meta property="og:title" content="领域模型"><meta property="og:description" content='领域模型# 想象你要开一家连锁餐厅。你需要：
-公司总部（Project）— 管品牌、管战略 具体门店（Application）— 每一家店的菜单、装修、员工配置 城市分区（Environment）— 北京店、上海店，不同城市有不同的运营策略 物业大楼（Cluster）— 门店实际开在哪个商场 DevFlow 的领域模型就是这套"连锁餐厅管理体系"。
+资源关系总览# graph TB subgraph &#34;组织层&#34; Project[&#34;Project 项目&#34;] Application[&#34;Application 应用&#34;] end subgraph &#34;环境层&#34; Environment[&#34;Environment 环境&#34;] Cluster[&#34;Cluster 集群&#34;] AppEnv[&#34;ApplicationEnvironment&lt;br/&gt;应用-环境绑定&#34;] end subgraph &#34;配置与网络&#34; WorkloadConfig[&#34;WorkloadConfig&lt;br/&gt;应用级基线&#34;] AppConfig[&#34;AppConfig&lt;br/&gt;环境级差异&#34;] Service[&#34;Service&lt;br/&gt;网络拓扑&#34;] Route[&#34;Route&lt;br/&gt;入口规则&#34;] end subgraph &#34;发布&#34; Manifest[&#34;Manifest&lt;br/&gt;构建快照&#34;] Release[&#34;Release&lt;br/&gt;部署快照&#34;] end Project --&gt; Application Application --&gt; AppEnv Application --&gt; WorkloadConfig Application --&gt; Service AppEnv --&gt; Environment Environment --&gt; Cluster AppEnv --&gt; AppConfig AppEnv --&gt; Route WorkloadConfig --&gt; Manifest Service --&gt; Manifest Manifest --&gt; Release 四个层级# 第一层：组织# Project 和 Application 负责&#34;谁拥有什么&#34;。
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://127.0.0.1:1313/document/docs/architecture/domain-model/">
+  <meta property="og:site_name" content="DevFlow">
+  <meta property="og:title" content="领域模型">
+  <meta property="og:description" content="领域模型# 想象你要开一家连锁餐厅。你需要：
+公司总部（Project）— 管品牌、管战略 具体门店（Application）— 每一家店的菜单、装修、员工配置 城市分区（Environment）— 北京店、上海店，不同城市有不同的运营策略 物业大楼（Cluster）— 门店实际开在哪个商场 DevFlow 的领域模型就是这套&#34;连锁餐厅管理体系&#34;。
 DevFlow 中的资源模型分为四个层级，从组织到部署，层层递进。
-资源关系总览# graph TB subgraph "组织层" Project["Project 项目"] Application["Application 应用"] end subgraph "环境层" Environment["Environment 环境"] Cluster["Cluster 集群"] AppEnv["ApplicationEnvironment<br/>应用-环境绑定"] end subgraph "配置与网络" WorkloadConfig["WorkloadConfig<br/>应用级基线"] AppConfig["AppConfig<br/>环境级差异"] Service["Service<br/>网络拓扑"] Route["Route<br/>入口规则"] end subgraph "发布" Manifest["Manifest<br/>构建快照"] Release["Release<br/>部署快照"] end Project --> Application Application --> AppEnv Application --> WorkloadConfig Application --> Service AppEnv --> Environment Environment --> Cluster AppEnv --> AppConfig AppEnv --> Route WorkloadConfig --> Manifest Service --> Manifest Manifest --> Release 四个层级# 第一层：组织# Project 和 Application 负责"谁拥有什么"。'><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta itemprop=name content="领域模型"><meta itemprop=description content='领域模型# 想象你要开一家连锁餐厅。你需要：
-公司总部（Project）— 管品牌、管战略 具体门店（Application）— 每一家店的菜单、装修、员工配置 城市分区（Environment）— 北京店、上海店，不同城市有不同的运营策略 物业大楼（Cluster）— 门店实际开在哪个商场 DevFlow 的领域模型就是这套"连锁餐厅管理体系"。
+资源关系总览# graph TB subgraph &#34;组织层&#34; Project[&#34;Project 项目&#34;] Application[&#34;Application 应用&#34;] end subgraph &#34;环境层&#34; Environment[&#34;Environment 环境&#34;] Cluster[&#34;Cluster 集群&#34;] AppEnv[&#34;ApplicationEnvironment&lt;br/&gt;应用-环境绑定&#34;] end subgraph &#34;配置与网络&#34; WorkloadConfig[&#34;WorkloadConfig&lt;br/&gt;应用级基线&#34;] AppConfig[&#34;AppConfig&lt;br/&gt;环境级差异&#34;] Service[&#34;Service&lt;br/&gt;网络拓扑&#34;] Route[&#34;Route&lt;br/&gt;入口规则&#34;] end subgraph &#34;发布&#34; Manifest[&#34;Manifest&lt;br/&gt;构建快照&#34;] Release[&#34;Release&lt;br/&gt;部署快照&#34;] end Project --&gt; Application Application --&gt; AppEnv Application --&gt; WorkloadConfig Application --&gt; Service AppEnv --&gt; Environment Environment --&gt; Cluster AppEnv --&gt; AppConfig AppEnv --&gt; Route WorkloadConfig --&gt; Manifest Service --&gt; Manifest Manifest --&gt; Release 四个层级# 第一层：组织# Project 和 Application 负责&#34;谁拥有什么&#34;。">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+
+
+  <meta itemprop="name" content="领域模型">
+  <meta itemprop="description" content="领域模型# 想象你要开一家连锁餐厅。你需要：
+公司总部（Project）— 管品牌、管战略 具体门店（Application）— 每一家店的菜单、装修、员工配置 城市分区（Environment）— 北京店、上海店，不同城市有不同的运营策略 物业大楼（Cluster）— 门店实际开在哪个商场 DevFlow 的领域模型就是这套&#34;连锁餐厅管理体系&#34;。
 DevFlow 中的资源模型分为四个层级，从组织到部署，层层递进。
-资源关系总览# graph TB subgraph "组织层" Project["Project 项目"] Application["Application 应用"] end subgraph "环境层" Environment["Environment 环境"] Cluster["Cluster 集群"] AppEnv["ApplicationEnvironment<br/>应用-环境绑定"] end subgraph "配置与网络" WorkloadConfig["WorkloadConfig<br/>应用级基线"] AppConfig["AppConfig<br/>环境级差异"] Service["Service<br/>网络拓扑"] Route["Route<br/>入口规则"] end subgraph "发布" Manifest["Manifest<br/>构建快照"] Release["Release<br/>部署快照"] end Project --> Application Application --> AppEnv Application --> WorkloadConfig Application --> Service AppEnv --> Environment Environment --> Cluster AppEnv --> AppConfig AppEnv --> Route WorkloadConfig --> Manifest Service --> Manifest Manifest --> Release 四个层级# 第一层：组织# Project 和 Application 负责"谁拥有什么"。'><meta itemprop=wordCount content="191"><title>领域模型 | DevFlow</title><link rel=icon href=/document/favicon.png><link rel=manifest href=/document/manifest.json><link rel=canonical href=https://devflow.bei.com/document/docs/architecture/domain-model/><link rel=stylesheet href=/document/book.min.8cd0206dd84616a7d412f4d11b03bd0f5f8254beac611979660997cdbce2a6d1.css integrity="sha256-jNAgbdhGFqfUEvTRGwO9D1+CVL6sYRl5ZgmXzbziptE=" crossorigin=anonymous><script defer src=/document/fuse.min.js></script><script defer src=/document/en.search.min.57482576d48ccc082179b8b5a4498eb4f96e024079df15f99e067d42af187aba.js integrity="sha256-V0gldtSMzAghebi1pEmOtPluAkB53xX5ngZ9Qq8Yero=" crossorigin=anonymous></script></head><body dir=ltr class="book-kind-page book-type-docs"><input type=checkbox class="hidden toggle" id=menu-control>
-<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/document/><span>DevFlow</span></a></h2><div class="book-search hidden"><input id=book-search-input type=text placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><script>document.querySelector(".book-search").classList.remove("hidden")</script><ul><li><a href=/document/docs/getting-started/>快速开始</a><ul></ul></li><li><a href=/document/docs/overview/>平台概览</a><ul></ul></li><li><a href=/document/docs/architecture/>架构设计</a><ul><li><a href=/document/docs/architecture/services/>五大微服务</a></li><li><a href=/document/docs/architecture/domain-model/ class=active>领域模型</a></li><li><a href=/document/docs/architecture/lifecycle/>发布生命周期</a></li></ul></li><li><a href=/document/docs/services/>服务详解</a><ul><li><a href=/document/docs/services/meta-service/>meta-service</a></li><li><a href=/document/docs/services/config-service/>config-service</a></li><li><a href=/document/docs/services/network-service/>network-service</a></li><li><a href=/document/docs/services/release-service/>release-service</a></li><li><a href=/document/docs/services/runtime-service/>runtime-service</a></li></ul></li><li><a href=/document/docs/concepts/>核心概念</a><ul><li><a href=/document/docs/concepts/project-application/>Project 与 Application</a></li><li><a href=/document/docs/concepts/environment-cluster/>Environment 与 Cluster</a></li><li><a href=/document/docs/concepts/workload-config/>WorkloadConfig</a></li><li><a href=/document/docs/concepts/app-config/>AppConfig</a></li><li><a href=/document/docs/concepts/service-route/>Service 与 Route</a></li><li><a href=/document/docs/concepts/manifest-release/>Manifest 与 Release</a></li></ul></li><li><a href=/document/docs/ci/>持续集成</a><ul><li><a href=/document/docs/ci/architecture/>CI 架构</a></li><li><a href=/document/docs/ci/standard/>标准 CI 流程</a></li><li><a href=/document/docs/ci/component/>CI 组件矩阵</a></li><li><a href=/document/docs/ci/queue/>队列与并发控制</a></li></ul></li><li><a href=/document/docs/cd/>持续交付</a><ul><li><a href=/document/docs/cd/architecture/>CD 架构</a></li><li><a href=/document/docs/cd/standard/>发布策略选型</a></li><li><a href=/document/docs/cd/rolling/>Rolling 发布</a></li><li><a href=/document/docs/cd/canary/>Canary 发布</a></li><li><a href=/document/docs/cd/blue-green/>Blue-Green 发布</a></li><li><a href=/document/docs/cd/component/>CD 组件矩阵</a></li></ul></li><li><a href=/document/docs/observability/>可观测性</a><ul><li><a href=/document/docs/observability/component/>可观测性组件矩阵</a></li><li><a href=/document/docs/observability/attributes/>公共 Attributes</a></li><li><a href=/document/docs/observability/standard/>Labels / Attributes 规范</a></li><li><a href=/document/docs/observability/signal-label-matrix/>信号标签矩阵</a></li><li><a href=/document/docs/observability/collector/>OTel Collector 配置模板</a></li><li><a href=/document/docs/observability/go-example/>Go 服务最小 OTel 接入示例</a></li><li><a href=/document/docs/observability/onboarding-checklist/>OTel 接入检查清单</a></li><li><a href=/document/docs/observability/logging/>结构化日志规范</a></li><li><a href=/document/docs/observability/service-checklist/>五大服务观测字段清单</a></li><li><a href=/document/docs/observability/release-trace-example/>发布链路 Trace 示例</a></li><li><a href=/document/docs/observability/collector-runbook/>Collector 生产排障 Runbook</a></li><li><a href=/document/docs/observability/release-failure-playbook/>发布失败排障剧本</a></li></ul></li><li><a href=/document/docs/deployment/>部署指南</a><ul><li><a href=/document/docs/deployment/guide/>部署步骤</a></li></ul></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class="book-header hidden"><div class="flex align-center justify-between"><label for=menu-control><img src=/document/icons/menu.svg class=book-icon alt=Menu></label><h3>领域模型</h3><label for=toc-control><img src=/document/icons/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class=hidden><nav id=TableOfContents><ul><li><a href=#资源关系总览>资源关系总览</a></li><li><a href=#四个层级>四个层级</a><ul><li><a href=#第一层组织>第一层：组织</a></li><li><a href=#第二层环境>第二层：环境</a></li><li><a href=#第三层配置与网络>第三层：配置与网络</a></li><li><a href=#第四层发布>第四层：发布</a></li></ul></li><li><a href=#冻结点设计>冻结点设计</a></li></ul></nav></aside></header><article class="markdown book-article"><h1 id=领域模型>领域模型<a class=anchor href=#%e9%a2%86%e5%9f%9f%e6%a8%a1%e5%9e%8b>#</a></h1><p>想象你要开一家连锁餐厅。你需要：</p><ul><li><strong>公司总部</strong>（Project）— 管品牌、管战略</li><li><strong>具体门店</strong>（Application）— 每一家店的菜单、装修、员工配置</li><li><strong>城市分区</strong>（Environment）— 北京店、上海店，不同城市有不同的运营策略</li><li><strong>物业大楼</strong>（Cluster）— 门店实际开在哪个商场</li></ul><p>DevFlow 的领域模型就是这套"连锁餐厅管理体系"。</p><p>DevFlow 中的资源模型分为四个层级，从组织到部署，层层递进。</p><hr><h2 id=资源关系总览>资源关系总览<a class=anchor href=#%e8%b5%84%e6%ba%90%e5%85%b3%e7%b3%bb%e6%80%bb%e8%a7%88>#</a></h2><pre class=mermaid>graph TB
+资源关系总览# graph TB subgraph &#34;组织层&#34; Project[&#34;Project 项目&#34;] Application[&#34;Application 应用&#34;] end subgraph &#34;环境层&#34; Environment[&#34;Environment 环境&#34;] Cluster[&#34;Cluster 集群&#34;] AppEnv[&#34;ApplicationEnvironment&lt;br/&gt;应用-环境绑定&#34;] end subgraph &#34;配置与网络&#34; WorkloadConfig[&#34;WorkloadConfig&lt;br/&gt;应用级基线&#34;] AppConfig[&#34;AppConfig&lt;br/&gt;环境级差异&#34;] Service[&#34;Service&lt;br/&gt;网络拓扑&#34;] Route[&#34;Route&lt;br/&gt;入口规则&#34;] end subgraph &#34;发布&#34; Manifest[&#34;Manifest&lt;br/&gt;构建快照&#34;] Release[&#34;Release&lt;br/&gt;部署快照&#34;] end Project --&gt; Application Application --&gt; AppEnv Application --&gt; WorkloadConfig Application --&gt; Service AppEnv --&gt; Environment Environment --&gt; Cluster AppEnv --&gt; AppConfig AppEnv --&gt; Route WorkloadConfig --&gt; Manifest Service --&gt; Manifest Manifest --&gt; Release 四个层级# 第一层：组织# Project 和 Application 负责&#34;谁拥有什么&#34;。">
+  <meta itemprop="wordCount" content="191">
+
+<title>领域模型 | DevFlow</title>
+<link rel="icon" href="/document/favicon.png" >
+<link rel="manifest" href="/document/manifest.json">
+<link rel="canonical" href="http://127.0.0.1:1313/document/docs/architecture/domain-model/">
+<link rel="stylesheet" href="/document/book.min.8cd0206dd84616a7d412f4d11b03bd0f5f8254beac611979660997cdbce2a6d1.css" integrity="sha256-jNAgbdhGFqfUEvTRGwO9D1&#43;CVL6sYRl5ZgmXzbziptE=" crossorigin="anonymous">
+
+
+  <script defer src="/document/fuse.min.js"></script>
+  <script defer src="/document/en.search.min.57482576d48ccc082179b8b5a4498eb4f96e024079df15f99e067d42af187aba.js" integrity="sha256-V0gldtSMzAghebi1pEmOtPluAkB53xX5ngZ9Qq8Yero=" crossorigin="anonymous"></script>
+
+
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/document/"><span>DevFlow</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/getting-started/" class="">
+      快速开始</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/overview/" class="">
+      平台概览</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/architecture/" class="">
+      架构设计</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/architecture/services/" class="">
+      五大微服务</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/architecture/domain-model/" class="active">
+      领域模型</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/architecture/lifecycle/" class="">
+      发布生命周期</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/services/" class="">
+      服务详解</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/services/meta-service/" class="">
+      meta-service</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/services/config-service/" class="">
+      config-service</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/services/network-service/" class="">
+      network-service</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/services/release-service/" class="">
+      release-service</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/services/runtime-service/" class="">
+      runtime-service</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/" class="">
+      核心概念</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/project-application/" class="">
+      Project 与 Application</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/environment-cluster/" class="">
+      Environment 与 Cluster</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/workload-config/" class="">
+      WorkloadConfig</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/app-config/" class="">
+      AppConfig</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/service-route/" class="">
+      Service 与 Route</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/manifest-release/" class="">
+      Manifest 与 Release</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/ci/" class="">
+      持续集成</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/ci/architecture/" class="">
+      CI 架构</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/ci/standard/" class="">
+      标准 CI 流程</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/ci/component/" class="">
+      CI 组件矩阵</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/ci/queue/" class="">
+      队列与并发控制</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/" class="">
+      持续交付</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/architecture/" class="">
+      CD 架构</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/standard/" class="">
+      发布策略选型</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/rolling/" class="">
+      Rolling 发布</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/canary/" class="">
+      Canary 发布</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/blue-green/" class="">
+      Blue-Green 发布</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/component/" class="">
+      CD 组件矩阵</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/" class="">
+      可观测性</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/component/" class="">
+      可观测性组件矩阵</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/attributes/" class="">
+      公共 Attributes</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/standard/" class="">
+      Labels / Attributes 规范</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/signal-label-matrix/" class="">
+      信号标签矩阵</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/collector/" class="">
+      OTel Collector 配置模板</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/go-example/" class="">
+      Go 服务最小 OTel 接入示例</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/onboarding-checklist/" class="">
+      OTel 接入检查清单</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/logging/" class="">
+      结构化日志规范</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/service-checklist/" class="">
+      五大服务观测字段清单</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/release-trace-example/" class="">
+      发布链路 Trace 示例</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/collector-runbook/" class="">
+      Collector 生产排障 Runbook</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/release-failure-playbook/" class="">
+      发布失败排障剧本</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/deployment/" class="">
+      部署指南</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/deployment/guide/" class="">
+      部署步骤</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/document/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>领域模型</h3>
+
+  <label for="toc-control">
+    
+    <img src="/document/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#资源关系总览">资源关系总览</a></li>
+    <li><a href="#四个层级">四个层级</a>
+      <ul>
+        <li><a href="#第一层组织">第一层：组织</a></li>
+        <li><a href="#第二层环境">第二层：环境</a></li>
+        <li><a href="#第三层配置与网络">第三层：配置与网络</a></li>
+        <li><a href="#第四层发布">第四层：发布</a></li>
+      </ul>
+    </li>
+    <li><a href="#冻结点设计">冻结点设计</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="领域模型">领域模型<a class="anchor" href="#%e9%a2%86%e5%9f%9f%e6%a8%a1%e5%9e%8b">#</a></h1>
+<p>想象你要开一家连锁餐厅。你需要：</p>
+<ul>
+<li><strong>公司总部</strong>（Project）— 管品牌、管战略</li>
+<li><strong>具体门店</strong>（Application）— 每一家店的菜单、装修、员工配置</li>
+<li><strong>城市分区</strong>（Environment）— 北京店、上海店，不同城市有不同的运营策略</li>
+<li><strong>物业大楼</strong>（Cluster）— 门店实际开在哪个商场</li>
+</ul>
+<p>DevFlow 的领域模型就是这套&quot;连锁餐厅管理体系&quot;。</p>
+<p>DevFlow 中的资源模型分为四个层级，从组织到部署，层层递进。</p>
+<hr>
+<h2 id="资源关系总览">资源关系总览<a class="anchor" href="#%e8%b5%84%e6%ba%90%e5%85%b3%e7%b3%bb%e6%80%bb%e8%a7%88">#</a></h2>
+<pre class="mermaid">graph TB
     subgraph &#34;组织层&#34;
         Project[&#34;Project 项目&#34;]
         Application[&#34;Application 应用&#34;]
@@ -43,13 +896,88 @@ DevFlow 中的资源模型分为四个层级，从组织到部署，层层递进
     AppEnv --&gt; Route
     WorkloadConfig --&gt; Manifest
     Service --&gt; Manifest
-    Manifest --&gt; Release</pre><script src=/document/mermaid.min.js></script><script>mermaid.initialize({flowchart:{useMaxWidth:!0},theme:"default"})</script><hr><h2 id=四个层级>四个层级<a class=anchor href=#%e5%9b%9b%e4%b8%aa%e5%b1%82%e7%ba%a7>#</a></h2><h3 id=第一层组织>第一层：组织<a class=anchor href=#%e7%ac%ac%e4%b8%80%e5%b1%82%e7%bb%84%e7%bb%87>#</a></h3><p><strong>Project</strong> 和 <strong>Application</strong> 负责"谁拥有什么"。</p><pre tabindex=0><code>Project: 电商中台
+    Manifest --&gt; Release</pre><script src="/document/mermaid.min.js"></script><script>mermaid.initialize({"flowchart":{"useMaxWidth":true},"theme":"default"})</script><hr>
+<h2 id="四个层级">四个层级<a class="anchor" href="#%e5%9b%9b%e4%b8%aa%e5%b1%82%e7%ba%a7">#</a></h2>
+<h3 id="第一层组织">第一层：组织<a class="anchor" href="#%e7%ac%ac%e4%b8%80%e5%b1%82%e7%bb%84%e7%bb%87">#</a></h3>
+<p><strong>Project</strong> 和 <strong>Application</strong> 负责&quot;谁拥有什么&quot;。</p>
+<pre tabindex="0"><code>Project: 电商中台
   └─ Application: order-service
-  └─ Application: payment-service</code></pre><h3 id=第二层环境>第二层：环境<a class=anchor href=#%e7%ac%ac%e4%ba%8c%e5%b1%82%e7%8e%af%e5%a2%83>#</a></h3><p><strong>Environment</strong> 和 <strong>Cluster</strong> 负责"在哪跑"。</p><pre tabindex=0><code>Cluster: prod-cluster
+  └─ Application: payment-service</code></pre><h3 id="第二层环境">第二层：环境<a class="anchor" href="#%e7%ac%ac%e4%ba%8c%e5%b1%82%e7%8e%af%e5%a2%83">#</a></h3>
+<p><strong>Environment</strong> 和 <strong>Cluster</strong> 负责&quot;在哪跑&quot;。</p>
+<pre tabindex="0"><code>Cluster: prod-cluster
   └─ Environment: production
-  └─ Environment: staging</code></pre><p><strong>ApplicationEnvironment</strong> 是应用和环境的"绑定关系"，它承载了环境专属的配置：</p><pre tabindex=0><code>order-service + production = order-service-prod
+  └─ Environment: staging</code></pre><p><strong>ApplicationEnvironment</strong> 是应用和环境的&quot;绑定关系&quot;，它承载了环境专属的配置：</p>
+<pre tabindex="0"><code>order-service + production = order-service-prod
   └─ AppConfig: DB_HOST=prod-db...
-  └─ Route: host=order.example.com...</code></pre><h3 id=第三层配置与网络>第三层：配置与网络<a class=anchor href=#%e7%ac%ac%e4%b8%89%e5%b1%82%e9%85%8d%e7%bd%ae%e4%b8%8e%e7%bd%91%e7%bb%9c>#</a></h3><p>这一层回答"怎么跑"和"怎么访问"。</p><table><thead><tr><th>资源</th><th>属于</th><th>用途</th><th>随环境变化</th></tr></thead><tbody><tr><td><strong>WorkloadConfig</strong></td><td>Application</td><td>副本数、资源、探针</td><td>否</td></tr><tr><td><strong>AppConfig</strong></td><td>ApplicationEnvironment</td><td>配置来源、挂载目录、同步结果</td><td>是</td></tr><tr><td><strong>Service</strong></td><td>Application</td><td>暴露哪些端口</td><td>否</td></tr><tr><td><strong>Route</strong></td><td>ApplicationEnvironment</td><td>域名、证书</td><td>是</td></tr></tbody></table><p><strong>设计意图</strong>：基线配置（WorkloadConfig、Service）和应用绑定，不随环境变化；环境差异（AppConfig、Route）和绑定关系绑定，随环境变化。</p><h3 id=第四层发布>第四层：发布<a class=anchor href=#%e7%ac%ac%e5%9b%9b%e5%b1%82%e5%8f%91%e5%b8%83>#</a></h3><p><strong>Manifest</strong> 和 <strong>Release</strong> 是发布过程中的两份不可变快照。</p><table><thead><tr><th>快照</th><th>什么时候创建</th><th>包含什么</th><th>能否复用</th></tr></thead><tbody><tr><td><strong>Manifest</strong></td><td>构建前</td><td>代码版本、镜像、基础配置、网络拓扑</td><td>能（跨环境）</td></tr><tr><td><strong>Release</strong></td><td>部署前</td><td>Manifest + 环境配置 + 发布策略</td><td>不能（绑定环境）</td></tr></tbody></table><hr><h2 id=冻结点设计>冻结点设计<a class=anchor href=#%e5%86%bb%e7%bb%93%e7%82%b9%e8%ae%be%e8%ae%a1>#</a></h2><p>DevFlow 最核心的设计是<strong>发布前冻结两份快照</strong>：</p><pre class=mermaid>graph LR
+  └─ Route: host=order.example.com...</code></pre><h3 id="第三层配置与网络">第三层：配置与网络<a class="anchor" href="#%e7%ac%ac%e4%b8%89%e5%b1%82%e9%85%8d%e7%bd%ae%e4%b8%8e%e7%bd%91%e7%bb%9c">#</a></h3>
+<p>这一层回答&quot;怎么跑&quot;和&quot;怎么访问&quot;。</p>
+<table>
+  <thead>
+      <tr>
+          <th>资源</th>
+          <th>属于</th>
+          <th>用途</th>
+          <th>随环境变化</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>WorkloadConfig</strong></td>
+          <td>Application</td>
+          <td>副本数、资源、探针</td>
+          <td>否</td>
+      </tr>
+      <tr>
+          <td><strong>AppConfig</strong></td>
+          <td>ApplicationEnvironment</td>
+          <td>配置来源、挂载目录、同步结果</td>
+          <td>是</td>
+      </tr>
+      <tr>
+          <td><strong>Service</strong></td>
+          <td>Application</td>
+          <td>暴露哪些端口</td>
+          <td>否</td>
+      </tr>
+      <tr>
+          <td><strong>Route</strong></td>
+          <td>ApplicationEnvironment</td>
+          <td>域名、证书</td>
+          <td>是</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>设计意图</strong>：基线配置（WorkloadConfig、Service）和应用绑定，不随环境变化；环境差异（AppConfig、Route）和绑定关系绑定，随环境变化。</p>
+<h3 id="第四层发布">第四层：发布<a class="anchor" href="#%e7%ac%ac%e5%9b%9b%e5%b1%82%e5%8f%91%e5%b8%83">#</a></h3>
+<p><strong>Manifest</strong> 和 <strong>Release</strong> 是发布过程中的两份不可变快照。</p>
+<table>
+  <thead>
+      <tr>
+          <th>快照</th>
+          <th>什么时候创建</th>
+          <th>包含什么</th>
+          <th>能否复用</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>Manifest</strong></td>
+          <td>构建前</td>
+          <td>代码版本、镜像、基础配置、网络拓扑</td>
+          <td>能（跨环境）</td>
+      </tr>
+      <tr>
+          <td><strong>Release</strong></td>
+          <td>部署前</td>
+          <td>Manifest + 环境配置 + 发布策略</td>
+          <td>不能（绑定环境）</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="冻结点设计">冻结点设计<a class="anchor" href="#%e5%86%bb%e7%bb%93%e7%82%b9%e8%ae%be%e8%ae%a1">#</a></h2>
+<p>DevFlow 最核心的设计是<strong>发布前冻结两份快照</strong>：</p>
+<pre class="mermaid">graph LR
     Build[&#34;构建阶段&#34;]
     Deploy[&#34;部署阶段&#34;]
     M[&#34;Manifest&lt;br/&gt;构建快照&#34;]
@@ -57,7 +985,128 @@ DevFlow 中的资源模型分为四个层级，从组织到部署，层层递进
 
     Build --&gt; M
     M --&gt; R
-    R --&gt; Deploy</pre><p><strong>Manifest 不承载</strong>：目标环境、环境配置、环境路由。这使得同一个 Manifest 可以发到测试、生产任何环境。</p><p><strong>Release 不承载</strong>：上游元数据（由 meta-service 管理）、WorkloadConfig 基线（由 Manifest 承载）。Release 只关注"这次部署的完整上下文"。</p><p><strong>好处</strong>：</p><ul><li>同一个版本可以发多个环境</li><li>回滚时精确恢复到当时的完整状态</li><li>发布历史可追溯、可审计</li></ul></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div></div><div></div></div><div class="flex flex-wrap justify-between"><span><a href=/document/docs/architecture/services/ class="flex align-center"><img src=/document/icons/backward.svg class=book-icon alt=Backward>
-<span>五大微服务</span>
-</a></span><span><a href=/document/docs/architecture/lifecycle/ class="flex align-center"><span>发布生命周期</span>
-<img src=/document/icons/forward.svg class=book-icon alt=Forward></a></span></div><script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script></footer><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#资源关系总览>资源关系总览</a></li><li><a href=#四个层级>四个层级</a><ul><li><a href=#第一层组织>第一层：组织</a></li><li><a href=#第二层环境>第二层：环境</a></li><li><a href=#第三层配置与网络>第三层：配置与网络</a></li><li><a href=#第四层发布>第四层：发布</a></li></ul></li><li><a href=#冻结点设计>冻结点设计</a></li></ul></nav></div></aside></main></body></html>
+    R --&gt; Deploy</pre><p><strong>Manifest 不承载</strong>：目标环境、环境配置、环境路由。这使得同一个 Manifest 可以发到测试、生产任何环境。</p>
+<p><strong>Release 不承载</strong>：上游元数据（由 meta-service 管理）、WorkloadConfig 基线（由 Manifest 承载）。Release 只关注&quot;这次部署的完整上下文&quot;。</p>
+<p><strong>好处</strong>：</p>
+<ul>
+<li>同一个版本可以发多个环境</li>
+<li>回滚时精确恢复到当时的完整状态</li>
+<li>发布历史可追溯、可审计</li>
+</ul>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/document/docs/architecture/services/" class="flex align-center">
+        <img src="/document/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>五大微服务</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/document/docs/architecture/lifecycle/" class="flex align-center">
+        <span>发布生命周期</span>
+        <img src="/document/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+ 
+        
+        
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#资源关系总览">资源关系总览</a></li>
+    <li><a href="#四个层级">四个层级</a>
+      <ul>
+        <li><a href="#第一层组织">第一层：组织</a></li>
+        <li><a href="#第二层环境">第二层：环境</a></li>
+        <li><a href="#第三层配置与网络">第三层：配置与网络</a></li>
+        <li><a href="#第四层发布">第四层：发布</a></li>
+      </ul>
+    </li>
+    <li><a href="#冻结点设计">冻结点设计</a></li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
