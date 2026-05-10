@@ -1,6 +1,6 @@
 ---
 title: "OTel 接入检查清单"
-weight: 78
+weight: 77
 ---
 
 # ✅ OTel 接入检查清单

@@ -1,6 +1,6 @@
 ---
 title: "OTel Collector 配置模板"
-weight: 74
+weight: 75
 ---
 
 # 🧰 OTel Collector 配置模板

@@ -1,6 +1,6 @@
 ---
 title: "Go 服务最小 OTel 接入示例"
-weight: 75
+weight: 76
 ---
 
 # 🧪 Go 服务最小 OTel 接入示例

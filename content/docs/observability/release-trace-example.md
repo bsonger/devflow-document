@@ -1,6 +1,6 @@
 ---
 title: "发布链路 Trace 示例"
-weight: 79
+weight: 80
 ---
 
 # 🧵 发布链路 Trace 示例
