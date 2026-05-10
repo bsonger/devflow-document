@@ -1,4 +1,14 @@
-<!doctype html><html lang=zh-cn dir=ltr><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="📡 可观测性# 发布过程中出了问题，你怎么知道？发布后性能有没有下降？DevFlow 通过 Metrics、Logs、Traces 三个维度，让你对系统状态了如指掌。
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+<head>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="📡 可观测性# 发布过程中出了问题，你怎么知道？发布后性能有没有下降？DevFlow 通过 Metrics、Logs、Traces 三个维度，让你对系统状态了如指掌。
 🧱 三大支柱# 📈 Metrics（指标）— 系统的体检报告# CPU 用了多少？请求延迟多少？错误率有没有飙升？
 DevFlow 所有服务都通过 Prometheus 暴露指标，在 Grafana 里能看到完整的仪表盘。
 📜 Logs（日志）— 系统的日记# 应用打印了哪些日志？有没有报错？
@@ -6,8 +16,14 @@ DevFlow 所有服务都通过 Prometheus 暴露指标，在 Grafana 里能看到
 🧵 Traces（链路）— 请求的足迹# 一个请求从进来到出去，经过了哪些服务？每个服务花了多少时间？
 通过 OpenTelemetry 自动采集，结合 Tempo / Grafana 查看完整链路。
 🏷️ 标签到底该配在哪# Observability 里最容易混乱的一点，不是“字段叫什么”，而是“该谁来配”。
-类型 举例 配置位置 负责人 服务启动标签 service.name service.version 服务 Deployment / SDK 初始化 平台模板 + 服务配置 服务业务标签 devflow.application.id devflow.release.id error.message 服务代码 服务开发者 平台公共标签 deployment.environment.name k8s.pod.name k8s.namespace.name k8s.cluster.name OTel Collector SRE / 平台组 建议先读 Attributes 规范，再看 Labels 规范。
-"><meta name=theme-color media="(prefers-color-scheme: light)" content="#ffffff"><meta name=theme-color media="(prefers-color-scheme: dark)" content="#343a40"><meta name=color-scheme content="light dark"><meta property="og:url" content="https://devflow.bei.com/document/docs/observability/"><meta property="og:site_name" content="DevFlow"><meta property="og:title" content="可观测性"><meta property="og:description" content="📡 可观测性# 发布过程中出了问题，你怎么知道？发布后性能有没有下降？DevFlow 通过 Metrics、Logs、Traces 三个维度，让你对系统状态了如指掌。
+类型 举例 配置位置 负责人 服务启动标签 service.name service.version 服务 Deployment / SDK 初始化 平台模板 &#43; 服务配置 服务业务标签 devflow.application.id devflow.release.id error.message 服务代码 服务开发者 平台公共标签 deployment.environment.name k8s.pod.name k8s.namespace.name k8s.cluster.name OTel Collector SRE / 平台组 建议先读 Attributes 规范，再看 Labels 规范。
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="https://devflow.bei.com/document/docs/observability/">
+  <meta property="og:site_name" content="DevFlow">
+  <meta property="og:title" content="可观测性">
+  <meta property="og:description" content="📡 可观测性# 发布过程中出了问题，你怎么知道？发布后性能有没有下降？DevFlow 通过 Metrics、Logs、Traces 三个维度，让你对系统状态了如指掌。
 🧱 三大支柱# 📈 Metrics（指标）— 系统的体检报告# CPU 用了多少？请求延迟多少？错误率有没有飙升？
 DevFlow 所有服务都通过 Prometheus 暴露指标，在 Grafana 里能看到完整的仪表盘。
 📜 Logs（日志）— 系统的日记# 应用打印了哪些日志？有没有报错？
@@ -15,7 +31,13 @@ DevFlow 所有服务都通过 Prometheus 暴露指标，在 Grafana 里能看到
 🧵 Traces（链路）— 请求的足迹# 一个请求从进来到出去，经过了哪些服务？每个服务花了多少时间？
 通过 OpenTelemetry 自动采集，结合 Tempo / Grafana 查看完整链路。
 🏷️ 标签到底该配在哪# Observability 里最容易混乱的一点，不是“字段叫什么”，而是“该谁来配”。
-类型 举例 配置位置 负责人 服务启动标签 service.name service.version 服务 Deployment / SDK 初始化 平台模板 + 服务配置 服务业务标签 devflow.application.id devflow.release.id error.message 服务代码 服务开发者 平台公共标签 deployment.environment.name k8s.pod.name k8s.namespace.name k8s.cluster.name OTel Collector SRE / 平台组 建议先读 Attributes 规范，再看 Labels 规范。"><meta property="og:locale" content="zh_cn"><meta property="og:type" content="website"><meta itemprop=name content="可观测性"><meta itemprop=description content="📡 可观测性# 发布过程中出了问题，你怎么知道？发布后性能有没有下降？DevFlow 通过 Metrics、Logs、Traces 三个维度，让你对系统状态了如指掌。
+类型 举例 配置位置 负责人 服务启动标签 service.name service.version 服务 Deployment / SDK 初始化 平台模板 &#43; 服务配置 服务业务标签 devflow.application.id devflow.release.id error.message 服务代码 服务开发者 平台公共标签 deployment.environment.name k8s.pod.name k8s.namespace.name k8s.cluster.name OTel Collector SRE / 平台组 建议先读 Attributes 规范，再看 Labels 规范。">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="website">
+
+
+  <meta itemprop="name" content="可观测性">
+  <meta itemprop="description" content="📡 可观测性# 发布过程中出了问题，你怎么知道？发布后性能有没有下降？DevFlow 通过 Metrics、Logs、Traces 三个维度，让你对系统状态了如指掌。
 🧱 三大支柱# 📈 Metrics（指标）— 系统的体检报告# CPU 用了多少？请求延迟多少？错误率有没有飙升？
 DevFlow 所有服务都通过 Prometheus 暴露指标，在 Grafana 里能看到完整的仪表盘。
 📜 Logs（日志）— 系统的日记# 应用打印了哪些日志？有没有报错？
@@ -23,21 +45,1256 @@ DevFlow 所有服务都通过 Prometheus 暴露指标，在 Grafana 里能看到
 🧵 Traces（链路）— 请求的足迹# 一个请求从进来到出去，经过了哪些服务？每个服务花了多少时间？
 通过 OpenTelemetry 自动采集，结合 Tempo / Grafana 查看完整链路。
 🏷️ 标签到底该配在哪# Observability 里最容易混乱的一点，不是“字段叫什么”，而是“该谁来配”。
-类型 举例 配置位置 负责人 服务启动标签 service.name service.version 服务 Deployment / SDK 初始化 平台模板 + 服务配置 服务业务标签 devflow.application.id devflow.release.id error.message 服务代码 服务开发者 平台公共标签 deployment.environment.name k8s.pod.name k8s.namespace.name k8s.cluster.name OTel Collector SRE / 平台组 建议先读 Attributes 规范，再看 Labels 规范。"><meta itemprop=wordCount content="301"><title>可观测性 | DevFlow</title><link rel=icon href=/document/favicon.png><link rel=manifest href=/document/manifest.json><link rel=canonical href=https://devflow.bei.com/document/docs/observability/><link rel=stylesheet href=/document/book.min.8cd0206dd84616a7d412f4d11b03bd0f5f8254beac611979660997cdbce2a6d1.css integrity="sha256-jNAgbdhGFqfUEvTRGwO9D1+CVL6sYRl5ZgmXzbziptE=" crossorigin=anonymous><script defer src=/document/fuse.min.js></script><script defer src=/document/en.search.min.c439acd1c89f0fb50e8b3bba3a04ede0cfb611f782830ce704aa3fa0e0c57e3f.js integrity="sha256-xDms0cifD7UOizu6OgTt4M+2EfeCgwznBKo/oODFfj8=" crossorigin=anonymous></script><link rel=alternate type=application/rss+xml href=https://devflow.bei.com/document/docs/observability/index.xml title=DevFlow></head><body dir=ltr class="book-kind-section book-type-docs"><input type=checkbox class="hidden toggle" id=menu-control>
-<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/document/><span>DevFlow</span></a></h2><div class="book-search hidden"><input id=book-search-input type=text placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><script>document.querySelector(".book-search").classList.remove("hidden")</script><ul><li><a href=/document/docs/getting-started/>快速开始</a><ul></ul></li><li><a href=/document/docs/overview/>平台概览</a><ul></ul></li><li><a href=/document/docs/architecture/>架构设计</a><ul><li><a href=/document/docs/architecture/services/>五大微服务</a></li><li><a href=/document/docs/architecture/domain-model/>领域模型</a></li><li><a href=/document/docs/architecture/lifecycle/>发布生命周期</a></li></ul></li><li><a href=/document/docs/services/>服务详解</a><ul><li><a href=/document/docs/services/meta-service/>meta-service</a></li><li><a href=/document/docs/services/config-service/>config-service</a></li><li><a href=/document/docs/services/network-service/>network-service</a></li><li><a href=/document/docs/services/release-service/>release-service</a></li><li><a href=/document/docs/services/runtime-service/>runtime-service</a></li></ul></li><li><a href=/document/docs/concepts/>核心概念</a><ul><li><a href=/document/docs/concepts/project-application/>Project 与 Application</a></li><li><a href=/document/docs/concepts/environment-cluster/>Environment 与 Cluster</a></li><li><a href=/document/docs/concepts/workload-config/>WorkloadConfig</a></li><li><a href=/document/docs/concepts/app-config/>AppConfig</a></li><li><a href=/document/docs/concepts/service-route/>Service 与 Route</a></li><li><a href=/document/docs/concepts/manifest-release/>Manifest 与 Release</a></li></ul></li><li><a href=/document/docs/ci/>持续集成</a><ul><li><a href=/document/docs/ci/architecture/>CI 架构</a></li><li><a href=/document/docs/ci/standard/>标准 CI 流程</a></li><li><a href=/document/docs/ci/component/>CI 组件矩阵</a></li><li><a href=/document/docs/ci/queue/>队列与并发控制</a></li></ul></li><li><a href=/document/docs/cd/>持续交付</a><ul><li><a href=/document/docs/cd/architecture/>CD 架构</a></li><li><a href=/document/docs/cd/standard/>发布策略选型</a></li><li><a href=/document/docs/cd/rolling/>Rolling 发布</a></li><li><a href=/document/docs/cd/canary/>Canary 发布</a></li><li><a href=/document/docs/cd/blue-green/>Blue-Green 发布</a></li><li><a href=/document/docs/cd/component/>CD 组件矩阵</a></li></ul></li><li><a href=/document/docs/observability/ class=active>可观测性</a><ul><li><a href=/document/docs/observability/component/>可观测性组件矩阵</a></li><li><a href=/document/docs/observability/attributes/>公共 Attributes</a></li><li><a href=/document/docs/observability/standard/>Labels / Attributes 规范</a></li><li><a href=/document/docs/observability/signal-label-matrix/>信号标签矩阵</a></li><li><a href=/document/docs/observability/collector/>OTel Collector 配置模板</a></li><li><a href=/document/docs/observability/go-example/>Go 服务最小 OTel 接入示例</a></li><li><a href=/document/docs/observability/onboarding-checklist/>OTel 接入检查清单</a></li><li><a href=/document/docs/observability/logging/>结构化日志规范</a></li><li><a href=/document/docs/observability/service-checklist/>五大服务观测字段清单</a></li><li><a href=/document/docs/observability/release-trace-example/>发布链路 Trace 示例</a></li><li><a href=/document/docs/observability/collector-runbook/>Collector 生产排障 Runbook</a></li><li><a href=/document/docs/observability/release-failure-playbook/>发布失败排障剧本</a></li></ul></li><li><a href=/document/docs/deployment/>部署指南</a><ul><li><a href=/document/docs/deployment/guide/>部署步骤</a></li></ul></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class="book-header hidden"><div class="flex align-center justify-between"><label for=menu-control><img src=/document/icons/menu.svg class=book-icon alt=Menu></label><h3>可观测性</h3><label for=toc-control><img src=/document/icons/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class=hidden><nav id=TableOfContents><ul><li><a href=#-三大支柱>🧱 三大支柱</a><ul><li><a href=#-metrics指标-系统的体检报告>📈 Metrics（指标）— 系统的体检报告</a></li><li><a href=#-logs日志-系统的日记>📜 Logs（日志）— 系统的日记</a></li><li><a href=#-traces链路-请求的足迹>🧵 Traces（链路）— 请求的足迹</a></li></ul></li><li><a href=#-标签到底该配在哪>🏷️ 标签到底该配在哪</a></li><li><a href=#-学习路径>🛤️ 学习路径</a><ul><li><a href=#我想先理解概念>我想先理解概念</a></li><li><a href=#我想接入一个新服务>我想接入一个新服务</a></li><li><a href=#我想排查线上问题>我想排查线上问题</a></li></ul></li><li><a href=#-devflow-中的可观测性>👀 DevFlow 中的可观测性</a><ul><li><a href=#-发布过程中看什么>🚀 发布过程中看什么</a></li><li><a href=#-发布后看什么>✅ 发布后看什么</a></li></ul></li><li><a href=#-全部文档索引>🧾 全部文档索引</a></li></ul></nav></aside></header><article class="markdown book-article"><h1 id=-可观测性>📡 可观测性<a class=anchor href=#-%e5%8f%af%e8%a7%82%e6%b5%8b%e6%80%a7>#</a></h1><p>发布过程中出了问题，你怎么知道？发布后性能有没有下降？DevFlow 通过 Metrics、Logs、Traces 三个维度，让你对系统状态了如指掌。</p><hr><h2 id=-三大支柱>🧱 三大支柱<a class=anchor href=#-%e4%b8%89%e5%a4%a7%e6%94%af%e6%9f%b1>#</a></h2><h3 id=-metrics指标-系统的体检报告>📈 Metrics（指标）— 系统的体检报告<a class=anchor href=#-metrics%e6%8c%87%e6%a0%87-%e7%b3%bb%e7%bb%9f%e7%9a%84%e4%bd%93%e6%a3%80%e6%8a%a5%e5%91%8a>#</a></h3><p>CPU 用了多少？请求延迟多少？错误率有没有飙升？</p><p>DevFlow 所有服务都通过 <img class=df-inline-icon src=/document/icons/brands/prometheus.svg alt=Prometheus loading=lazy>
-Prometheus 暴露指标，在 <img class=df-inline-icon src=/document/icons/brands/grafana.svg alt=Grafana loading=lazy>
-Grafana 里能看到完整的仪表盘。</p><h3 id=-logs日志-系统的日记>📜 Logs（日志）— 系统的日记<a class=anchor href=#-logs%e6%97%a5%e5%bf%97-%e7%b3%bb%e7%bb%9f%e7%9a%84%e6%97%a5%e8%ae%b0>#</a></h3><p>应用打印了哪些日志？有没有报错？</p><p>通过 Loki 统一收集，按服务、级别、关键词检索，再由 <img class=df-inline-icon src=/document/icons/brands/grafana.svg alt=Grafana loading=lazy>
-Grafana 展示。</p><h3 id=-traces链路-请求的足迹>🧵 Traces（链路）— 请求的足迹<a class=anchor href=#-traces%e9%93%be%e8%b7%af-%e8%af%b7%e6%b1%82%e7%9a%84%e8%b6%b3%e8%bf%b9>#</a></h3><p>一个请求从进来到出去，经过了哪些服务？每个服务花了多少时间？</p><p>通过 <img class=df-inline-icon src=/document/icons/brands/opentelemetry.svg alt=OpenTelemetry loading=lazy>
-OpenTelemetry 自动采集，结合 Tempo / Grafana 查看完整链路。</p><hr><h2 id=-标签到底该配在哪>🏷️ 标签到底该配在哪<a class=anchor href=#-%e6%a0%87%e7%ad%be%e5%88%b0%e5%ba%95%e8%af%a5%e9%85%8d%e5%9c%a8%e5%93%aa>#</a></h2><p>Observability 里最容易混乱的一点，不是“字段叫什么”，而是“<strong>该谁来配</strong>”。</p><table><thead><tr><th>类型</th><th>举例</th><th>配置位置</th><th>负责人</th></tr></thead><tbody><tr><td>服务启动标签</td><td><code>service.name</code> <code>service.version</code></td><td>服务 Deployment / SDK 初始化</td><td>平台模板 + 服务配置</td></tr><tr><td>服务业务标签</td><td><code>devflow.application.id</code> <code>devflow.release.id</code> <code>error.message</code></td><td>服务代码</td><td>服务开发者</td></tr><tr><td>平台公共标签</td><td><code>deployment.environment.name</code> <code>k8s.pod.name</code> <code>k8s.namespace.name</code> <code>k8s.cluster.name</code></td><td>OTel Collector</td><td>SRE / 平台组</td></tr></tbody></table><p>建议先读 <a href=attributes/>Attributes 规范</a>，再看 <a href=standard/>Labels 规范</a>。</p><hr><h2 id=-学习路径>🛤️ 学习路径<a class=anchor href=#-%e5%ad%a6%e4%b9%a0%e8%b7%af%e5%be%84>#</a></h2><h3 id=我想先理解概念>我想先理解概念<a class=anchor href=#%e6%88%91%e6%83%b3%e5%85%88%e7%90%86%e8%a7%a3%e6%a6%82%e5%bf%b5>#</a></h3><p>适合第一次梳理 observability 结构、标签归属和字段标准的读者。</p><table><thead><tr><th>推荐顺序</th><th>文档</th><th>你会得到什么</th></tr></thead><tbody><tr><td>1</td><td><a href=component/>组件矩阵</a></td><td>看清可观测性技术栈由哪些组件组成</td></tr><tr><td>2</td><td><a href=attributes/>Attributes 规范</a></td><td>先分清标签到底该配在哪一层</td></tr><tr><td>3</td><td><a href=standard/>Labels 规范</a></td><td>明确 Metric / Trace / Log 的字段标准</td></tr><tr><td>4</td><td><a href=signal-label-matrix/>信号标签矩阵</a></td><td>快速看到三种信号分别需要哪些标签</td></tr></tbody></table><h3 id=我想接入一个新服务>我想接入一个新服务<a class=anchor href=#%e6%88%91%e6%83%b3%e6%8e%a5%e5%85%a5%e4%b8%80%e4%b8%aa%e6%96%b0%e6%9c%8d%e5%8a%a1>#</a></h3><p>适合要把新服务接进 DevFlow observability 的开发者。</p><table><thead><tr><th>推荐顺序</th><th>文档</th><th>你会得到什么</th></tr></thead><tbody><tr><td>1</td><td><a href=collector/>Collector 模板</a></td><td>明确平台侧 OTel Collector 怎么配</td></tr><tr><td>2</td><td><a href=go-example/>Go 接入示例</a></td><td>看一个最小可运行的 Go 接入方式</td></tr><tr><td>3</td><td><a href=logging/>结构化日志规范</a></td><td>知道日志最少该打哪些字段</td></tr><tr><td>4</td><td><a href=service-checklist/>服务字段清单</a></td><td>对照每个服务应该补哪些观测字段</td></tr><tr><td>5</td><td><a href=onboarding-checklist/>OTel 接入检查清单</a></td><td>最后做一遍最小验收</td></tr></tbody></table><h3 id=我想排查线上问题>我想排查线上问题<a class=anchor href=#%e6%88%91%e6%83%b3%e6%8e%92%e6%9f%a5%e7%ba%bf%e4%b8%8a%e9%97%ae%e9%a2%98>#</a></h3><p>适合值班排障、发布失败分析、链路异常定位。</p><table><thead><tr><th>推荐顺序</th><th>文档</th><th>你会得到什么</th></tr></thead><tbody><tr><td>1</td><td><a href=release-trace-example/>发布链路 Trace 示例</a></td><td>看一条理想的发布链路应该长什么样</td></tr><tr><td>2</td><td><a href=collector-runbook/>Collector 生产排障 Runbook</a></td><td>排查断流、缺字段、延迟升高</td></tr><tr><td>3</td><td><a href=release-failure-playbook/>发布失败排障剧本</a></td><td>按 Tekton / Render / OCI / Argo CD / Runtime 五段拆解失败</td></tr></tbody></table><hr><h2 id=-devflow-中的可观测性>👀 DevFlow 中的可观测性<a class=anchor href=#-devflow-%e4%b8%ad%e7%9a%84%e5%8f%af%e8%a7%82%e6%b5%8b%e6%80%a7>#</a></h2><h3 id=-发布过程中看什么>🚀 发布过程中看什么<a class=anchor href=#-%e5%8f%91%e5%b8%83%e8%bf%87%e7%a8%8b%e4%b8%ad%e7%9c%8b%e4%bb%80%e4%b9%88>#</a></h3><table><thead><tr><th>👁️ 看什么</th><th>🛠️ 工具</th><th>🎯 目的</th></tr></thead><tbody><tr><td>构建耗时</td><td><img class=df-inline-icon src=/document/icons/brands/tekton.svg alt=Tekton loading=lazy>
-Tekton Dashboard</td><td>CI 流水线是否变慢</td></tr><tr><td>发布进度</td><td>DevFlow Console</td><td>当前在哪个阶段</td></tr><tr><td>Pod 状态</td><td>runtime-service</td><td>新版本是否正常运行</td></tr><tr><td>流量切换</td><td><img class=df-inline-icon src=/document/icons/brands/grafana.svg alt=Grafana loading=lazy>
-Grafana + <img class=df-inline-icon src=/document/icons/brands/istio.svg alt=Istio loading=lazy>
-Istio</td><td>Canary 灰度是否正常</td></tr><tr><td>错误率</td><td><img class=df-inline-icon src=/document/icons/brands/prometheus.svg alt=Prometheus loading=lazy>
-Prometheus + <img class=df-inline-icon src=/document/icons/brands/grafana.svg alt=Grafana loading=lazy>
-Grafana</td><td>新版本有没有引入 bug</td></tr></tbody></table><h3 id=-发布后看什么>✅ 发布后看什么<a class=anchor href=#-%e5%8f%91%e5%b8%83%e5%90%8e%e7%9c%8b%e4%bb%80%e4%b9%88>#</a></h3><table><thead><tr><th>👁️ 看什么</th><th>🛠️ 工具</th><th>🎯 目的</th></tr></thead><tbody><tr><td>请求延迟</td><td><img class=df-inline-icon src=/document/icons/brands/prometheus.svg alt=Prometheus loading=lazy>
-Prometheus</td><td>性能有没有退化</td></tr><tr><td>错误率</td><td><img class=df-inline-icon src=/document/icons/brands/prometheus.svg alt=Prometheus loading=lazy>
-Prometheus</td><td>稳定性如何</td></tr><tr><td>资源使用</td><td><img class=df-inline-icon src=/document/icons/brands/prometheus.svg alt=Prometheus loading=lazy>
-Prometheus</td><td>需不需要扩容</td></tr><tr><td>业务指标</td><td><img class=df-inline-icon src=/document/icons/brands/prometheus.svg alt=Prometheus loading=lazy>
-Prometheus</td><td>转化率、成交额等</td></tr></tbody></table><hr><h2 id=-全部文档索引>🧾 全部文档索引<a class=anchor href=#-%e5%85%a8%e9%83%a8%e6%96%87%e6%a1%a3%e7%b4%a2%e5%bc%95>#</a></h2><table><thead><tr><th>📄 文档</th><th>📝 内容</th></tr></thead><tbody><tr><td><a href=component/>组件矩阵</a></td><td>可观测性技术栈详细对比</td></tr><tr><td><a href=attributes/>Attributes 规范</a></td><td>统一的标签命名规范</td></tr><tr><td><a href=standard/>Labels 规范</a></td><td>Metric / Trace / Log 的标准字段完整定义</td></tr><tr><td><a href=signal-label-matrix/>信号标签矩阵</a></td><td>汇总 Metrics / Traces / Logs 需要哪些标签，以及这些标签该由谁维护</td></tr><tr><td><a href=collector/>Collector 模板</a></td><td>OTel Collector 的推荐配置模板</td></tr><tr><td><a href=go-example/>Go 接入示例</a></td><td>Go 服务最小 OTel 接入示例</td></tr><tr><td><a href=logging/>结构化日志规范</a></td><td>DevFlow 日志字段与级别建议</td></tr><tr><td><a href=service-checklist/>服务字段清单</a></td><td>五大服务该打哪些关键观测字段</td></tr><tr><td><a href=onboarding-checklist/>OTel 接入检查清单</a></td><td>新服务接入 observability 的最小验收清单</td></tr><tr><td><a href=release-trace-example/>发布链路 Trace 示例</a></td><td>用一条完整发布链路说明 Trace / Log / Metric 如何串联排障</td></tr><tr><td><a href=collector-runbook/>Collector 生产排障 Runbook</a></td><td>线上 observability 断流、缺字段、延迟升高时的值班排障顺序</td></tr><tr><td><a href=release-failure-playbook/>发布失败排障剧本</a></td><td>按 Tekton / Render / OCI / Argo CD / Runtime 五段拆解发布失败排查</td></tr></tbody></table></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div></div><div></div></div><div class="flex flex-wrap justify-between"><span><a href=/document/docs/cd/component/ class="flex align-center"><img src=/document/icons/backward.svg class=book-icon alt=Backward>
-<span>CD 组件矩阵</span>
-</a></span><span><a href=/document/docs/observability/component/ class="flex align-center"><span>可观测性组件矩阵</span>
-<img src=/document/icons/forward.svg class=book-icon alt=Forward></a></span></div><script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script></footer><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#-三大支柱>🧱 三大支柱</a><ul><li><a href=#-metrics指标-系统的体检报告>📈 Metrics（指标）— 系统的体检报告</a></li><li><a href=#-logs日志-系统的日记>📜 Logs（日志）— 系统的日记</a></li><li><a href=#-traces链路-请求的足迹>🧵 Traces（链路）— 请求的足迹</a></li></ul></li><li><a href=#-标签到底该配在哪>🏷️ 标签到底该配在哪</a></li><li><a href=#-学习路径>🛤️ 学习路径</a><ul><li><a href=#我想先理解概念>我想先理解概念</a></li><li><a href=#我想接入一个新服务>我想接入一个新服务</a></li><li><a href=#我想排查线上问题>我想排查线上问题</a></li></ul></li><li><a href=#-devflow-中的可观测性>👀 DevFlow 中的可观测性</a><ul><li><a href=#-发布过程中看什么>🚀 发布过程中看什么</a></li><li><a href=#-发布后看什么>✅ 发布后看什么</a></li></ul></li><li><a href=#-全部文档索引>🧾 全部文档索引</a></li></ul></nav></div></aside></main></body></html>
+类型 举例 配置位置 负责人 服务启动标签 service.name service.version 服务 Deployment / SDK 初始化 平台模板 &#43; 服务配置 服务业务标签 devflow.application.id devflow.release.id error.message 服务代码 服务开发者 平台公共标签 deployment.environment.name k8s.pod.name k8s.namespace.name k8s.cluster.name OTel Collector SRE / 平台组 建议先读 Attributes 规范，再看 Labels 规范。">
+  <meta itemprop="wordCount" content="301">
+
+<title>可观测性 | DevFlow</title>
+<link rel="icon" href="/document/favicon.png" >
+<link rel="manifest" href="/document/manifest.json">
+<link rel="canonical" href="https://devflow.bei.com/document/docs/observability/">
+<link rel="stylesheet" href="/document/book.min.8cd0206dd84616a7d412f4d11b03bd0f5f8254beac611979660997cdbce2a6d1.css" integrity="sha256-jNAgbdhGFqfUEvTRGwO9D1&#43;CVL6sYRl5ZgmXzbziptE=" crossorigin="anonymous">
+
+
+  <script defer src="/document/fuse.min.js"></script>
+  <script defer src="/document/en.search.min.c439acd1c89f0fb50e8b3bba3a04ede0cfb611f782830ce704aa3fa0e0c57e3f.js" integrity="sha256-xDms0cifD7UOizu6OgTt4M&#43;2EfeCgwznBKo/oODFfj8=" crossorigin="anonymous"></script>
+
+
+<link rel="alternate" type="application/rss+xml" href="https://devflow.bei.com/document/docs/observability/index.xml" title="DevFlow" />
+
+  
+</head>
+<body dir="ltr" class="book-kind-section book-type-docs">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/document/"><span>DevFlow</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/getting-started/" class="">
+      快速开始</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/overview/" class="">
+      平台概览</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/architecture/" class="">
+      架构设计</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/architecture/services/" class="">
+      五大微服务</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/architecture/domain-model/" class="">
+      领域模型</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/architecture/lifecycle/" class="">
+      发布生命周期</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/services/" class="">
+      服务详解</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/services/meta-service/" class="">
+      meta-service</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/services/config-service/" class="">
+      config-service</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/services/network-service/" class="">
+      network-service</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/services/release-service/" class="">
+      release-service</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/services/runtime-service/" class="">
+      runtime-service</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/" class="">
+      核心概念</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/project-application/" class="">
+      Project 与 Application</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/environment-cluster/" class="">
+      Environment 与 Cluster</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/workload-config/" class="">
+      WorkloadConfig</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/app-config/" class="">
+      AppConfig</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/service-route/" class="">
+      Service 与 Route</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/concepts/manifest-release/" class="">
+      Manifest 与 Release</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/ci/" class="">
+      持续集成</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/ci/architecture/" class="">
+      CI 架构</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/ci/standard/" class="">
+      标准 CI 流程</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/ci/component/" class="">
+      CI 组件矩阵</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/ci/queue/" class="">
+      队列与并发控制</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/" class="">
+      持续交付</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/architecture/" class="">
+      CD 架构</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/standard/" class="">
+      发布策略选型</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/rolling/" class="">
+      Rolling 发布</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/canary/" class="">
+      Canary 发布</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/blue-green/" class="">
+      Blue-Green 发布</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/cd/component/" class="">
+      CD 组件矩阵</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/" class="active">
+      可观测性</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/component/" class="">
+      可观测性组件矩阵</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/attributes/" class="">
+      公共 Attributes</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/standard/" class="">
+      Labels / Attributes 规范</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/signal-label-matrix/" class="">
+      信号标签矩阵</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/collector/" class="">
+      OTel Collector 配置模板</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/go-example/" class="">
+      Go 服务最小 OTel 接入示例</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/onboarding-checklist/" class="">
+      OTel 接入检查清单</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/logging/" class="">
+      结构化日志规范</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/service-checklist/" class="">
+      五大服务观测字段清单</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/release-trace-example/" class="">
+      发布链路 Trace 示例</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/collector-runbook/" class="">
+      Collector 生产排障 Runbook</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/observability/release-failure-playbook/" class="">
+      发布失败排障剧本</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/deployment/" class="">
+      部署指南</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/document/docs/deployment/guide/" class="">
+      部署步骤</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/document/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>可观测性</h3>
+
+  <label for="toc-control">
+    
+    <img src="/document/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#-三大支柱">🧱 三大支柱</a>
+      <ul>
+        <li><a href="#-metrics指标-系统的体检报告">📈 Metrics（指标）— 系统的体检报告</a></li>
+        <li><a href="#-logs日志-系统的日记">📜 Logs（日志）— 系统的日记</a></li>
+        <li><a href="#-traces链路-请求的足迹">🧵 Traces（链路）— 请求的足迹</a></li>
+      </ul>
+    </li>
+    <li><a href="#-标签到底该配在哪">🏷️ 标签到底该配在哪</a></li>
+    <li><a href="#-学习路径">🛤️ 学习路径</a>
+      <ul>
+        <li><a href="#我想先理解概念">我想先理解概念</a></li>
+        <li><a href="#我想接入一个新服务">我想接入一个新服务</a></li>
+        <li><a href="#我想排查线上问题">我想排查线上问题</a></li>
+      </ul>
+    </li>
+    <li><a href="#-devflow-中的可观测性">👀 DevFlow 中的可观测性</a>
+      <ul>
+        <li><a href="#-发布过程中看什么">🚀 发布过程中看什么</a></li>
+        <li><a href="#-发布后看什么">✅ 发布后看什么</a></li>
+      </ul>
+    </li>
+    <li><a href="#-全部文档索引">🧾 全部文档索引</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="-可观测性">📡 可观测性<a class="anchor" href="#-%e5%8f%af%e8%a7%82%e6%b5%8b%e6%80%a7">#</a></h1>
+<p>发布过程中出了问题，你怎么知道？发布后性能有没有下降？DevFlow 通过 Metrics、Logs、Traces 三个维度，让你对系统状态了如指掌。</p>
+<hr>
+<h2 id="-三大支柱">🧱 三大支柱<a class="anchor" href="#-%e4%b8%89%e5%a4%a7%e6%94%af%e6%9f%b1">#</a></h2>
+<h3 id="-metrics指标-系统的体检报告">📈 Metrics（指标）— 系统的体检报告<a class="anchor" href="#-metrics%e6%8c%87%e6%a0%87-%e7%b3%bb%e7%bb%9f%e7%9a%84%e4%bd%93%e6%a3%80%e6%8a%a5%e5%91%8a">#</a></h3>
+<p>CPU 用了多少？请求延迟多少？错误率有没有飙升？</p>
+<p>DevFlow 所有服务都通过 <img class="df-inline-icon" src="/document/icons/brands/prometheus.svg" alt="Prometheus" loading="lazy" />
+ Prometheus 暴露指标，在 <img class="df-inline-icon" src="/document/icons/brands/grafana.svg" alt="Grafana" loading="lazy" />
+ Grafana 里能看到完整的仪表盘。</p>
+<h3 id="-logs日志-系统的日记">📜 Logs（日志）— 系统的日记<a class="anchor" href="#-logs%e6%97%a5%e5%bf%97-%e7%b3%bb%e7%bb%9f%e7%9a%84%e6%97%a5%e8%ae%b0">#</a></h3>
+<p>应用打印了哪些日志？有没有报错？</p>
+<p>通过 Loki 统一收集，按服务、级别、关键词检索，再由 <img class="df-inline-icon" src="/document/icons/brands/grafana.svg" alt="Grafana" loading="lazy" />
+ Grafana 展示。</p>
+<h3 id="-traces链路-请求的足迹">🧵 Traces（链路）— 请求的足迹<a class="anchor" href="#-traces%e9%93%be%e8%b7%af-%e8%af%b7%e6%b1%82%e7%9a%84%e8%b6%b3%e8%bf%b9">#</a></h3>
+<p>一个请求从进来到出去，经过了哪些服务？每个服务花了多少时间？</p>
+<p>通过 <img class="df-inline-icon" src="/document/icons/brands/opentelemetry.svg" alt="OpenTelemetry" loading="lazy" />
+ OpenTelemetry 自动采集，结合 Tempo / Grafana 查看完整链路。</p>
+<hr>
+<h2 id="-标签到底该配在哪">🏷️ 标签到底该配在哪<a class="anchor" href="#-%e6%a0%87%e7%ad%be%e5%88%b0%e5%ba%95%e8%af%a5%e9%85%8d%e5%9c%a8%e5%93%aa">#</a></h2>
+<p>Observability 里最容易混乱的一点，不是“字段叫什么”，而是“<strong>该谁来配</strong>”。</p>
+<table>
+  <thead>
+      <tr>
+          <th>类型</th>
+          <th>举例</th>
+          <th>配置位置</th>
+          <th>负责人</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>服务启动标签</td>
+          <td><code>service.name</code> <code>service.version</code></td>
+          <td>服务 Deployment / SDK 初始化</td>
+          <td>平台模板 + 服务配置</td>
+      </tr>
+      <tr>
+          <td>服务业务标签</td>
+          <td><code>devflow.application.id</code> <code>devflow.release.id</code> <code>error.message</code></td>
+          <td>服务代码</td>
+          <td>服务开发者</td>
+      </tr>
+      <tr>
+          <td>平台公共标签</td>
+          <td><code>deployment.environment.name</code> <code>k8s.pod.name</code> <code>k8s.namespace.name</code> <code>k8s.cluster.name</code></td>
+          <td>OTel Collector</td>
+          <td>SRE / 平台组</td>
+      </tr>
+  </tbody>
+</table>
+<p>建议先读 <a href="attributes/">Attributes 规范</a>，再看 <a href="standard/">Labels 规范</a>。</p>
+<hr>
+<h2 id="-学习路径">🛤️ 学习路径<a class="anchor" href="#-%e5%ad%a6%e4%b9%a0%e8%b7%af%e5%be%84">#</a></h2>
+<h3 id="我想先理解概念">我想先理解概念<a class="anchor" href="#%e6%88%91%e6%83%b3%e5%85%88%e7%90%86%e8%a7%a3%e6%a6%82%e5%bf%b5">#</a></h3>
+<p>适合第一次梳理 observability 结构、标签归属和字段标准的读者。</p>
+<table>
+  <thead>
+      <tr>
+          <th>推荐顺序</th>
+          <th>文档</th>
+          <th>你会得到什么</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td><a href="component/">组件矩阵</a></td>
+          <td>看清可观测性技术栈由哪些组件组成</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td><a href="attributes/">Attributes 规范</a></td>
+          <td>先分清标签到底该配在哪一层</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td><a href="standard/">Labels 规范</a></td>
+          <td>明确 Metric / Trace / Log 的字段标准</td>
+      </tr>
+      <tr>
+          <td>4</td>
+          <td><a href="signal-label-matrix/">信号标签矩阵</a></td>
+          <td>快速看到三种信号分别需要哪些标签</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="我想接入一个新服务">我想接入一个新服务<a class="anchor" href="#%e6%88%91%e6%83%b3%e6%8e%a5%e5%85%a5%e4%b8%80%e4%b8%aa%e6%96%b0%e6%9c%8d%e5%8a%a1">#</a></h3>
+<p>适合要把新服务接进 DevFlow observability 的开发者。</p>
+<table>
+  <thead>
+      <tr>
+          <th>推荐顺序</th>
+          <th>文档</th>
+          <th>你会得到什么</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td><a href="collector/">Collector 模板</a></td>
+          <td>明确平台侧 OTel Collector 怎么配</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td><a href="go-example/">Go 接入示例</a></td>
+          <td>看一个最小可运行的 Go 接入方式</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td><a href="logging/">结构化日志规范</a></td>
+          <td>知道日志最少该打哪些字段</td>
+      </tr>
+      <tr>
+          <td>4</td>
+          <td><a href="service-checklist/">服务字段清单</a></td>
+          <td>对照每个服务应该补哪些观测字段</td>
+      </tr>
+      <tr>
+          <td>5</td>
+          <td><a href="onboarding-checklist/">OTel 接入检查清单</a></td>
+          <td>最后做一遍最小验收</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="我想排查线上问题">我想排查线上问题<a class="anchor" href="#%e6%88%91%e6%83%b3%e6%8e%92%e6%9f%a5%e7%ba%bf%e4%b8%8a%e9%97%ae%e9%a2%98">#</a></h3>
+<p>适合值班排障、发布失败分析、链路异常定位。</p>
+<table>
+  <thead>
+      <tr>
+          <th>推荐顺序</th>
+          <th>文档</th>
+          <th>你会得到什么</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td><a href="release-trace-example/">发布链路 Trace 示例</a></td>
+          <td>看一条理想的发布链路应该长什么样</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td><a href="collector-runbook/">Collector 生产排障 Runbook</a></td>
+          <td>排查断流、缺字段、延迟升高</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td><a href="release-failure-playbook/">发布失败排障剧本</a></td>
+          <td>按 Tekton / Render / OCI / Argo CD / Runtime 五段拆解失败</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="-devflow-中的可观测性">👀 DevFlow 中的可观测性<a class="anchor" href="#-devflow-%e4%b8%ad%e7%9a%84%e5%8f%af%e8%a7%82%e6%b5%8b%e6%80%a7">#</a></h2>
+<h3 id="-发布过程中看什么">🚀 发布过程中看什么<a class="anchor" href="#-%e5%8f%91%e5%b8%83%e8%bf%87%e7%a8%8b%e4%b8%ad%e7%9c%8b%e4%bb%80%e4%b9%88">#</a></h3>
+<table>
+  <thead>
+      <tr>
+          <th>👁️ 看什么</th>
+          <th>🛠️ 工具</th>
+          <th>🎯 目的</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>构建耗时</td>
+          <td><img class="df-inline-icon" src="/document/icons/brands/tekton.svg" alt="Tekton" loading="lazy" />
+ Tekton Dashboard</td>
+          <td>CI 流水线是否变慢</td>
+      </tr>
+      <tr>
+          <td>发布进度</td>
+          <td>DevFlow Console</td>
+          <td>当前在哪个阶段</td>
+      </tr>
+      <tr>
+          <td>Pod 状态</td>
+          <td>runtime-service</td>
+          <td>新版本是否正常运行</td>
+      </tr>
+      <tr>
+          <td>流量切换</td>
+          <td><img class="df-inline-icon" src="/document/icons/brands/grafana.svg" alt="Grafana" loading="lazy" />
+ Grafana + <img class="df-inline-icon" src="/document/icons/brands/istio.svg" alt="Istio" loading="lazy" />
+ Istio</td>
+          <td>Canary 灰度是否正常</td>
+      </tr>
+      <tr>
+          <td>错误率</td>
+          <td><img class="df-inline-icon" src="/document/icons/brands/prometheus.svg" alt="Prometheus" loading="lazy" />
+ Prometheus + <img class="df-inline-icon" src="/document/icons/brands/grafana.svg" alt="Grafana" loading="lazy" />
+ Grafana</td>
+          <td>新版本有没有引入 bug</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="-发布后看什么">✅ 发布后看什么<a class="anchor" href="#-%e5%8f%91%e5%b8%83%e5%90%8e%e7%9c%8b%e4%bb%80%e4%b9%88">#</a></h3>
+<table>
+  <thead>
+      <tr>
+          <th>👁️ 看什么</th>
+          <th>🛠️ 工具</th>
+          <th>🎯 目的</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>请求延迟</td>
+          <td><img class="df-inline-icon" src="/document/icons/brands/prometheus.svg" alt="Prometheus" loading="lazy" />
+ Prometheus</td>
+          <td>性能有没有退化</td>
+      </tr>
+      <tr>
+          <td>错误率</td>
+          <td><img class="df-inline-icon" src="/document/icons/brands/prometheus.svg" alt="Prometheus" loading="lazy" />
+ Prometheus</td>
+          <td>稳定性如何</td>
+      </tr>
+      <tr>
+          <td>资源使用</td>
+          <td><img class="df-inline-icon" src="/document/icons/brands/prometheus.svg" alt="Prometheus" loading="lazy" />
+ Prometheus</td>
+          <td>需不需要扩容</td>
+      </tr>
+      <tr>
+          <td>业务指标</td>
+          <td><img class="df-inline-icon" src="/document/icons/brands/prometheus.svg" alt="Prometheus" loading="lazy" />
+ Prometheus</td>
+          <td>转化率、成交额等</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="-全部文档索引">🧾 全部文档索引<a class="anchor" href="#-%e5%85%a8%e9%83%a8%e6%96%87%e6%a1%a3%e7%b4%a2%e5%bc%95">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>📄 文档</th>
+          <th>📝 内容</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><a href="component/">组件矩阵</a></td>
+          <td>可观测性技术栈详细对比</td>
+      </tr>
+      <tr>
+          <td><a href="attributes/">Attributes 规范</a></td>
+          <td>统一的标签命名规范</td>
+      </tr>
+      <tr>
+          <td><a href="standard/">Labels 规范</a></td>
+          <td>Metric / Trace / Log 的标准字段完整定义</td>
+      </tr>
+      <tr>
+          <td><a href="signal-label-matrix/">信号标签矩阵</a></td>
+          <td>汇总 Metrics / Traces / Logs 需要哪些标签，以及这些标签该由谁维护</td>
+      </tr>
+      <tr>
+          <td><a href="collector/">Collector 模板</a></td>
+          <td>OTel Collector 的推荐配置模板</td>
+      </tr>
+      <tr>
+          <td><a href="go-example/">Go 接入示例</a></td>
+          <td>Go 服务最小 OTel 接入示例</td>
+      </tr>
+      <tr>
+          <td><a href="logging/">结构化日志规范</a></td>
+          <td>DevFlow 日志字段与级别建议</td>
+      </tr>
+      <tr>
+          <td><a href="service-checklist/">服务字段清单</a></td>
+          <td>五大服务该打哪些关键观测字段</td>
+      </tr>
+      <tr>
+          <td><a href="onboarding-checklist/">OTel 接入检查清单</a></td>
+          <td>新服务接入 observability 的最小验收清单</td>
+      </tr>
+      <tr>
+          <td><a href="release-trace-example/">发布链路 Trace 示例</a></td>
+          <td>用一条完整发布链路说明 Trace / Log / Metric 如何串联排障</td>
+      </tr>
+      <tr>
+          <td><a href="collector-runbook/">Collector 生产排障 Runbook</a></td>
+          <td>线上 observability 断流、缺字段、延迟升高时的值班排障顺序</td>
+      </tr>
+      <tr>
+          <td><a href="release-failure-playbook/">发布失败排障剧本</a></td>
+          <td>按 Tekton / Render / OCI / Argo CD / Runtime 五段拆解发布失败排查</td>
+      </tr>
+  </tbody>
+</table>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/document/docs/cd/component/" class="flex align-center">
+        <img src="/document/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>CD 组件矩阵</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/document/docs/observability/component/" class="flex align-center">
+        <span>可观测性组件矩阵</span>
+        <img src="/document/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+ 
+        
+        
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#-三大支柱">🧱 三大支柱</a>
+      <ul>
+        <li><a href="#-metrics指标-系统的体检报告">📈 Metrics（指标）— 系统的体检报告</a></li>
+        <li><a href="#-logs日志-系统的日记">📜 Logs（日志）— 系统的日记</a></li>
+        <li><a href="#-traces链路-请求的足迹">🧵 Traces（链路）— 请求的足迹</a></li>
+      </ul>
+    </li>
+    <li><a href="#-标签到底该配在哪">🏷️ 标签到底该配在哪</a></li>
+    <li><a href="#-学习路径">🛤️ 学习路径</a>
+      <ul>
+        <li><a href="#我想先理解概念">我想先理解概念</a></li>
+        <li><a href="#我想接入一个新服务">我想接入一个新服务</a></li>
+        <li><a href="#我想排查线上问题">我想排查线上问题</a></li>
+      </ul>
+    </li>
+    <li><a href="#-devflow-中的可观测性">👀 DevFlow 中的可观测性</a>
+      <ul>
+        <li><a href="#-发布过程中看什么">🚀 发布过程中看什么</a></li>
+        <li><a href="#-发布后看什么">✅ 发布后看什么</a></li>
+      </ul>
+    </li>
+    <li><a href="#-全部文档索引">🧾 全部文档索引</a></li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
