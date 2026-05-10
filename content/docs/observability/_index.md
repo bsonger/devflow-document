@@ -74,3 +74,4 @@ Observability 里最容易混乱的一点，不是“字段叫什么”，而是
 | [Attributes 规范](attributes/) | 统一的标签命名规范 |
 | [Labels 规范](standard/) | Metric / Trace / Log 的标准字段完整定义 |
 | [Collector 模板](collector/) | OTel Collector 的推荐配置模板 |
+| [Go 接入示例](go-example/) | Go 服务最小 OTel 接入示例 |
