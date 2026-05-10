@@ -98,13 +98,13 @@ kubectl create namespace argocd
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v3.2.2/manifests/install.yaml
 ```
 
-配置 {{< brand-icon name="zot" alt="Zot" >}} OCI Registry 访问权限，让 Argo CD 能拉取部署包：
+配置 OCI Registry 访问权限，让 Argo CD 能拉取部署包：
 
 ```yaml
 apiVersion: v1
 kind: Secret
 metadata:
-  name: zot-repo
+  name: oci-registry-repo
   namespace: argocd
   labels:
     argocd.argoproj.io/secret-type: repository

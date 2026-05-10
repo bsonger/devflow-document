@@ -5,7 +5,7 @@ weight: 66
 
 # 🧰 CD 用到哪些工具
 
-<span class="df-badge">GitOps</span> <span class="df-badge">{{< brand-icon name="zot" alt="Zot" >}} Zot</span> <span class="df-badge">{{< brand-icon name="istio" alt="Istio" >}} Istio</span>
+<span class="df-badge">GitOps</span> <span class="df-badge">📦 OCI Registry</span> <span class="df-badge">{{< brand-icon name="istio" alt="Istio" >}} Istio</span>
 
 DevFlow 的 CD 依赖以下几个核心工具，各司其职。
 
@@ -37,7 +37,7 @@ Istio 负责控制流量怎么分配：
 
 没有 Istio，Canary 和 Blue-Green 就做不了流量控制。
 
-### OCI Registry（Zot）— 部署包仓库
+### OCI Registry — 部署包仓库
 
 DevFlow 把渲染好的 Kubernetes 配置打包成 OCI artifact，和镜像存在同一个仓库里。
 
@@ -66,7 +66,7 @@ Argo CD ←─────────────────────┘
 | 组件 | Rolling | Canary | Blue-Green |
 |------|---------|--------|------------|
 | {{< brand-icon name="argocd" alt="Argo CD" >}} Argo CD | ✅ 必须 | ✅ 必须 | ✅ 必须 |
-| {{< brand-icon name="zot" alt="Zot" >}} OCI Registry | ✅ 必须 | ✅ 必须 | ✅ 必须 |
+| 📦 OCI Registry | ✅ 必须 | ✅ 必须 | ✅ 必须 |
 | 🚦 Argo Rollouts | ❌ 不需要 | ✅ 必须 | ✅ 必须 |
 | {{< brand-icon name="istio" alt="Istio" >}} Istio | ❌ 不需要 | ✅ 必须 | ⚪ 可选 |
 

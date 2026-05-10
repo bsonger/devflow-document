@@ -5,7 +5,7 @@ weight: 53
 
 # 🧰 CI 用到哪些工具
 
-<span class="df-badge">Pipeline</span> <span class="df-badge">Security</span> <span class="df-badge">{{< brand-icon name="zot" alt="Zot" >}} OCI Registry</span>
+<span class="df-badge">Pipeline</span> <span class="df-badge">Security</span> <span class="df-badge">📦 OCI Registry</span>
 
 DevFlow 的 CI 流水线依赖以下工具，每个负责一个具体环节。
 
@@ -69,7 +69,7 @@ CI 的"骨架"。定义流水线的结构：有哪些步骤、按什么顺序执
 │  拉代码 → 扫描 → 测试 → 构建 → SBOM → 签名 → 再扫  │
 └─────────────────────────────────────────────┘
         ↓
-推送镜像到 {{< brand-icon name="zot" alt="Zot" >}} OCI Registry（Zot）
+推送镜像到 OCI Registry
         ↓
 回调 release-service
 ```

@@ -89,7 +89,7 @@ release-service 把收集到的所有信息打包成两份快照：
 
 ### 第四步：🚀 构建 + 部署（release-service → Tekton → Argo CD）
 
-release-service 触发 Tekton 构建镜像，然后把渲染好的 Kubernetes 配置推送到 {{< brand-icon name="zot" alt="Zot" >}} OCI Registry，最后通知 Argo CD 部署到集群。
+release-service 触发 Tekton 构建镜像，然后把渲染好的 Kubernetes 配置推送到 OCI Registry，最后通知 Argo CD 部署到集群。
 
 ### 第五步：👀 观察状态（runtime-service）
 

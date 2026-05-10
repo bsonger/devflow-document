@@ -5,7 +5,7 @@ weight: 23
 
 # 🧭 发布生命周期
 
-<span class="df-badge">🧩 release-service</span> <span class="df-badge">{{< brand-icon name="tekton" alt="Tekton" >}} Tekton</span> <span class="df-badge">{{< brand-icon name="zot" alt="Zot" >}} Zot</span> <span class="df-badge">{{< brand-icon name="argocd" alt="Argo CD" >}} Argo CD</span> <span class="df-badge">👀 runtime-service</span>
+<span class="df-badge">🧩 release-service</span> <span class="df-badge">{{< brand-icon name="tekton" alt="Tekton" >}} Tekton</span> <span class="df-badge">📦 OCI Registry</span> <span class="df-badge">{{< brand-icon name="argocd" alt="Argo CD" >}} Argo CD</span> <span class="df-badge">👀 runtime-service</span>
 
 在 DevFlow 中发布一个应用，会经历 8 个阶段。理解这个流程，就能理解 DevFlow 是怎么保证发布安全可控的。
 
@@ -128,7 +128,7 @@ WorkloadConfig（基础运行规格）
 
 **谁在干活**：release-service → OCI Registry
 
-release-service 把渲染好的部署包打包成 OCI artifact，推送到镜像仓库（Zot）。
+release-service 把渲染好的部署包打包成 OCI artifact，推送到 OCI Registry。
 
 这样做的好处是：部署包和镜像放在一起，Argo CD 从一个地方就能拉齐所有东西。
 

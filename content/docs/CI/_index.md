@@ -5,7 +5,7 @@ weight: 50
 
 # 🧪 持续集成（CI）
 
-<span class="df-badge">🏗️ Build</span> <span class="df-badge">🔐 Supply Chain</span> <span class="df-badge">{{< brand-icon name="zot" alt="Zot" >}} Registry</span>
+<span class="df-badge">🏗️ Build</span> <span class="df-badge">🔐 Supply Chain</span> <span class="df-badge">📦 OCI Registry</span>
 
 DevFlow 的 CI 基于 **Tekton Pipeline**。当你发起一次发布时，release-service 会自动触发构建流水线，把代码变成可信的容器镜像。
 

@@ -122,9 +122,9 @@ DevFlow 的 Metrics、Traces、Logs 使用统一的标签体系，确保三者�
 
 | Key | 类型 | 说明 | 示例 |
 |-----|-----|-----|-----|
-| `application_id` | string | 涉及哪个应用 | `33c58c47-...` |
-| `manifest_id` | string | 涉及哪个构建 | `f93ba63d-...` |
-| `release_id` | string | 涉及哪个发布 | `ea48bef3-...` |
+| `devflow.application.id` | string | 涉及哪个应用 | `app-123` |
+| `devflow.manifest.id` | string | 涉及哪个构建 | `mf-001` |
+| `devflow.release.id` | string | 涉及哪个发布 | `rel-001` |
 
 这样从链路里可以直接看到：这个请求在处理哪个应用的发布。
 
@@ -205,7 +205,7 @@ DevFlow 的 Metrics、Traces、Logs 使用统一的标签体系，确保三者�
 2. 点击指标上的 exemplar，跳转到对应 Trace
 3. 从 Trace 找到具体服务，再跳转到该服务的 Log
 
-三个系统通过统一的 `trace_id` 和 `service_name` 串在一起。
+三个系统通过统一的 `trace_id` 和 `service.name` 串在一起。
 
 ```mermaid
 graph LR

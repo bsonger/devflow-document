@@ -75,3 +75,5 @@ Observability 里最容易混乱的一点，不是“字段叫什么”，而是
 | [Labels 规范](standard/) | Metric / Trace / Log 的标准字段完整定义 |
 | [Collector 模板](collector/) | OTel Collector 的推荐配置模板 |
 | [Go 接入示例](go-example/) | Go 服务最小 OTel 接入示例 |
+| [结构化日志规范](logging/) | DevFlow 日志字段与级别建议 |
+| [服务字段清单](service-checklist/) | 五大服务该打哪些关键观测字段 |

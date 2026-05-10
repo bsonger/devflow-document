@@ -107,6 +107,6 @@ DevFlow 本身跑在 Kubernetes 上，跟云原生生态紧密集成：
 | CI 引擎 | Tekton Pipeline |
 | CD 引擎 | Argo CD + Argo Rollouts |
 | 流量治理 | Istio |
-| 制品存储 | {{< brand-icon name="zot" alt="Zot" >}} OCI Registry（Zot） |
+| 制品存储 | 📦 OCI Registry |
 | 可观测性 | OpenTelemetry + Prometheus + Grafana |
 | 运行平台 | {{< brand-icon name="kubernetes" alt="Kubernetes" >}} Kubernetes |

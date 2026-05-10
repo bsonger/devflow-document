@@ -5,7 +5,7 @@ weight: 60
 
 # 🚀 持续交付（CD）
 
-<span class="df-badge">GitOps</span> <span class="df-badge">{{< brand-icon name="zot" alt="Zot" >}} OCI Bundle</span> <span class="df-badge">{{< brand-icon name="istio" alt="Istio" >}} Traffic Control</span>
+<span class="df-badge">GitOps</span> <span class="df-badge">📦 OCI Bundle</span> <span class="df-badge">{{< brand-icon name="istio" alt="Istio" >}} Traffic Control</span>
 
 代码构建成镜像后，怎么安全地部署到生产环境？DevFlow 提供了三种发布策略，让你根据业务重要程度选择合适的方式。
 
