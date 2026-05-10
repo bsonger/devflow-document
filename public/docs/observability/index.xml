@@ -156,4 +156,59 @@
  &lt;/tr&gt;
  &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;如果你先关心“字段应该放哪”，优先看 &lt;a href="../attributes/"&gt;公共 Attributes&lt;/a&gt;。&lt;/p&gt;</description></item></channel></rss>
+&lt;p&gt;如果你先关心“字段应该放哪”，优先看 &lt;a href="../attributes/"&gt;公共 Attributes&lt;/a&gt;。&lt;/p&gt;</description></item><item><title>OTel Collector 配置模板</title><link>https://devflow.bei.com/document/docs/observability/collector/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/observability/collector/</guid><description>&lt;h1 id="-otel-collector-配置模板"&gt;🧰 OTel Collector 配置模板&lt;a class="anchor" href="#-otel-collector-%e9%85%8d%e7%bd%ae%e6%a8%a1%e6%9d%bf"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;span class="df-badge"&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/opentelemetry.svg" alt="OpenTelemetry" loading="lazy" /&gt;
+ Collector&lt;/span&gt; &lt;span class="df-badge"&gt;k8sattributes&lt;/span&gt; &lt;span class="df-badge"&gt;resource processor&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;这一页解决一个落地问题：&lt;/p&gt;
+&lt;blockquote class='book-hint '&gt;
+&lt;p&gt;&lt;strong&gt;既然已经明确了“哪些标签该由 Collector 注入”，那 Collector 应该怎么配？&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;&lt;p&gt;下面给一份适合 DevFlow 的最小推荐模板。目标不是覆盖所有高级玩法，而是先把下面 3 件事做对：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;统一接收应用侧上报的 Metrics / Logs / Traces&lt;/li&gt;
+&lt;li&gt;自动补齐 Kubernetes 公共元数据&lt;/li&gt;
+&lt;li&gt;给所有 telemetry 统一补充集群级 Resource Attributes&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h2 id="-这个模板负责什么"&gt;🎯 这个模板负责什么&lt;a class="anchor" href="#-%e8%bf%99%e4%b8%aa%e6%a8%a1%e6%9d%bf%e8%b4%9f%e8%b4%a3%e4%bb%80%e4%b9%88"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Collector 这一层，建议只做&lt;strong&gt;运行环境增强&lt;/strong&gt;和&lt;strong&gt;统一转发&lt;/strong&gt;：&lt;/p&gt;
+&lt;table&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th&gt;负责内容&lt;/th&gt;
+ &lt;th&gt;示例&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td&gt;K8s 元数据补齐&lt;/td&gt;
+ &lt;td&gt;&lt;code&gt;k8s.pod.name&lt;/code&gt; &lt;code&gt;k8s.namespace.name&lt;/code&gt; &lt;code&gt;k8s.node.name&lt;/code&gt;&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;集群级公共字段&lt;/td&gt;
+ &lt;td&gt;&lt;code&gt;k8s.cluster.name&lt;/code&gt; &lt;code&gt;cloud.region&lt;/code&gt;&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;统一导出&lt;/td&gt;
+ &lt;td&gt;Prometheus / Loki / Tempo / OTLP backend&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;基础清洗&lt;/td&gt;
+ &lt;td&gt;删除无用属性、限制标签爆炸&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;不建议放在 Collector 做的事：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;生成 &lt;code&gt;devflow.release.id&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;推断 &lt;code&gt;devflow.application.id&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;拼接复杂业务语义&lt;/li&gt;
+&lt;li&gt;从日志正文里猜业务字段&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这些还是应该由服务代码自己设置。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="-最小推荐架构"&gt;🧱 最小推荐架构&lt;a class="anchor" href="#-%e6%9c%80%e5%b0%8f%e6%8e%a8%e8%8d%90%e6%9e%b6%e6%9e%84"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;pre class="mermaid"&gt;graph LR
+ App[DevFlow Services] --&amp;gt;|OTLP gRPC/HTTP| Collector
+ Collector --&amp;gt; Metrics[Prometheus / Remote Write]
+ Collector --&amp;gt; Logs[Loki / OTLP Logs Backend]
+ Collector --&amp;gt; Traces[Tempo / OTLP Traces Backend]&lt;/pre&gt;&lt;p&gt;Collector 作为统一入口：&lt;/p&gt;</description></item></channel></rss>

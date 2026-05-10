@@ -334,11 +334,30 @@ body {
     font-family: var(--font-mono);
     font-size: 0.875rem;
     line-height: 1.7;
-    background: var(--color-gray-900) !important;
+    background: #111827 !important;
+    color: #f8fafc !important;
+    text-shadow: none;
   }
-  
+
   code {
     font-family: var(--font-mono);
+    color: inherit !important;
+  }
+
+  .chroma,
+  .chroma code,
+  .chroma .line,
+  .chroma .cl,
+  .chroma .w {
+    color: #f8fafc !important;
+    background: transparent !important;
+  }
+
+  .language-bash,
+  .language-shell,
+  .language-sh,
+  .language-zsh {
+    color: #f8fafc !important;
   }
 }
 
@@ -673,7 +692,8 @@ body {
     }
     
     pre {
-      background: var(--color-gray-100) !important;
+      background: #0b1220 !important;
+      color: #f8fafc !important;
     }
   }
   

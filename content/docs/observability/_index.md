@@ -73,3 +73,4 @@ Observability 里最容易混乱的一点，不是“字段叫什么”，而是
 | [组件矩阵](component/) | 可观测性技术栈详细对比 |
 | [Attributes 规范](attributes/) | 统一的标签命名规范 |
 | [Labels 规范](standard/) | Metric / Trace / Log 的标准字段完整定义 |
+| [Collector 模板](collector/) | OTel Collector 的推荐配置模板 |
