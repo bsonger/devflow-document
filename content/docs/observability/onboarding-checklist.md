@@ -51,7 +51,7 @@ weight: 77
 
 - 这个 telemetry 属于哪个服务？
 - 当前运行的是哪个版本？
-- 它跑在哪个环境？
+- 它跑在哪个环境？这个环境字段优先来自 Resource / Collector，而不是请求日志手工重复。
 
 ### 常见错误
 
@@ -124,16 +124,17 @@ weight: 77
 
 - [ ] 日志是结构化的
 - [ ] 每条关键日志有 `severity_text`
-- [ ] 每条关键日志有 `body`
+- [ ] 每条关键日志有 `message`
+- [ ] 每条关键日志有 `logger.name`
+- [ ] 每条关键日志有 `caller`
 - [ ] 关键日志能带 `trace_id`
-- [ ] 错误日志能带 `error.message`
+- [ ] 关键日志能带 `span_id`
 
 ### 推荐补充
 
-- [ ] `span_id`
-- [ ] `service.name`
 - [ ] `devflow.application.id`
 - [ ] `devflow.release.id`
+- [ ] `operation` / `resource` / `result`（适用于业务 / lifecycle 日志）
 
 ### 通过标准
 
@@ -154,6 +155,9 @@ weight: 77
 
 - [ ] `user_id`
 - [ ] `request_id`
+- [ ] `trace_id`
+- [ ] `span_id`
+- [ ] `release_id`
 - [ ] 自由文本错误
 - [ ] 原始 query string
 
@@ -216,13 +220,12 @@ Prometheus / Grafana 中应该能按：
 2. 在 Trace 后端确认能看到入口 Span
 3. 在 Span 中确认：
    - `service.name`
-   - `deployment.environment.name`（如果平台侧已补齐）
    - `devflow.application.id`
-4. 在 Span 或日志中确认存在 `deployment.environment.name`，或者确认该字段由 Collector/resource enrichment 负责
+4. 确认 `deployment.environment.name`、`k8s.*` 由 Resource / Collector 负责，而不是请求日志手工重复
 5. 在日志系统确认同一次请求能按 `trace_id` 查到日志
 6. 在指标系统确认该路由有延迟 / 请求数 / 错误率指标
 
-如果这 5 步都通过，说明基础链路已经打通。
+如果这 6 步都通过，说明基础链路已经打通。
 
 ---
 

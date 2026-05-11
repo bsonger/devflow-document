@@ -1,53 +1,329 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>持续交付 on DevFlow</title>
-    <link>https://devflow.bei.com/document/docs/cd/</link>
-    <description>Recent content in 持续交付 on DevFlow</description>
-    <generator>Hugo</generator>
-    <language>zh-cn</language>
-    <atom:link href="https://devflow.bei.com/document/docs/cd/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>CD 架构</title>
-      <link>https://devflow.bei.com/document/docs/cd/architecture/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://devflow.bei.com/document/docs/cd/architecture/</guid>
-      <description>&lt;h1 id=&#34;-cd-架构&#34;&gt;🚀 CD 架构&lt;a class=&#34;anchor&#34; href=&#34;#-cd-%e6%9e%b6%e6%9e%84&#34;&gt;#&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;DevFlow 的 CD 不直接操作 Kubernetes，而是通过 &lt;strong&gt;GitOps&lt;/strong&gt; 模式工作：release-service 生成部署包，推送到仓库，Argo CD 负责实际部署。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;-为什么用-gitops&#34;&gt;🧠 为什么用 GitOps&lt;a class=&#34;anchor&#34; href=&#34;#-%e4%b8%ba%e4%bb%80%e4%b9%88%e7%94%a8-gitops&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;p&gt;传统的部署方式是&amp;quot;告诉 K8s 该怎么做&amp;quot;，DevFlow 的方式是&amp;quot;告诉 Argo CD 期望状态是什么，让它自己同步&amp;quot;。&lt;/p&gt;&#xA;&lt;p&gt;好处：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;可追溯&lt;/strong&gt; — 每次部署的配置都在版本控制里&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;可回滚&lt;/strong&gt; — Argo CD 保留了历史同步记录&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;安全&lt;/strong&gt; — DevFlow 不直接操作 K8s，降低了风险&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;-数据流&#34;&gt;🔄 数据流&lt;a class=&#34;anchor&#34; href=&#34;#-%e6%95%b0%e6%8d%ae%e6%b5%81&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;pre class=&#34;mermaid&#34;&gt;sequenceDiagram&#xA;    participant Release as release-service&#xA;    participant Registry as OCI Registry&#xA;    participant Argo as Argo CD&#xA;    participant K8s as Kubernetes&#xA;    participant Runtime as runtime-service&#xA;&#xA;    Release-&amp;gt;&amp;gt;Release: 渲染部署包&#xA;    Note over Release: 把配置叠加成 K8s manifest&#xA;    Release-&amp;gt;&amp;gt;Registry: 推送 Bundle&#xA;    Note over Registry: 镜像 + 部署包放在一起&#xA;    Release-&amp;gt;&amp;gt;Argo: 创建 Application&#xA;    Argo-&amp;gt;&amp;gt;Registry: 拉取 Bundle&#xA;    Argo-&amp;gt;&amp;gt;K8s: 同步到集群&#xA;    K8s-&amp;gt;&amp;gt;Runtime: Pod 状态变化&#xA;    Runtime-&amp;gt;&amp;gt;Runtime: 更新内存索引&#xA;    Runtime-&amp;gt;&amp;gt;Release: 回写进度&#xA;    Release-&amp;gt;&amp;gt;Release: 更新 Release 状态&lt;/pre&gt;&lt;hr&gt;&#xA;&lt;h2 id=&#34;关键组件的分工&#34;&gt;关键组件的分工&lt;a class=&#34;anchor&#34; href=&#34;#%e5%85%b3%e9%94%ae%e7%bb%84%e4%bb%b6%e7%9a%84%e5%88%86%e5%b7%a5&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;table&gt;&#xA;  &lt;thead&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;th&gt;组件&lt;/th&gt;&#xA;          &lt;th&gt;做什么&lt;/th&gt;&#xA;          &lt;th&gt;不做什么&lt;/th&gt;&#xA;      &lt;/tr&gt;&#xA;  &lt;/thead&gt;&#xA;  &lt;tbody&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;&lt;strong&gt;release-service&lt;/strong&gt;&lt;/td&gt;&#xA;          &lt;td&gt;渲染配置、推送包、创建 Argo CD Application&lt;/td&gt;&#xA;          &lt;td&gt;不直接操作 K8s&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;&lt;strong&gt;Argo CD&lt;/strong&gt;&lt;/td&gt;&#xA;          &lt;td&gt;从仓库拉包、同步到 K8s、监控健康状态&lt;/td&gt;&#xA;          &lt;td&gt;不参与配置渲染&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;&lt;strong&gt;Argo Rollouts&lt;/strong&gt;&lt;/td&gt;&#xA;          &lt;td&gt;管理 Canary / Blue-Green 的渐进式发布&lt;/td&gt;&#xA;          &lt;td&gt;不参与 GitOps 同步&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;&lt;strong&gt;Istio&lt;/strong&gt;&lt;/td&gt;&#xA;          &lt;td&gt;控制流量分配（权重、切换）&lt;/td&gt;&#xA;          &lt;td&gt;不管理 Pod 生命周期&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;&lt;strong&gt;runtime-service&lt;/strong&gt;&lt;/td&gt;&#xA;          &lt;td&gt;观察状态、回写进度&lt;/td&gt;&#xA;          &lt;td&gt;不参与部署决策&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;  &lt;/tbody&gt;&#xA;&lt;/table&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;-与旧架构的区别&#34;&gt;🆚 与旧架构的区别&lt;a class=&#34;anchor&#34; href=&#34;#-%e4%b8%8e%e6%97%a7%e6%9e%b6%e6%9e%84%e7%9a%84%e5%8c%ba%e5%88%ab&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;p&gt;DevFlow 早期版本是直接操作 K8s 的，现在改成了 GitOps：&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>发布策略选型</title>
-      <link>https://devflow.bei.com/document/docs/cd/standard/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://devflow.bei.com/document/docs/cd/standard/</guid>
-      <description>&lt;h1 id=&#34;-发布策略选型&#34;&gt;🧭 发布策略选型&lt;a class=&#34;anchor&#34; href=&#34;#-%e5%8f%91%e5%b8%83%e7%ad%96%e7%95%a5%e9%80%89%e5%9e%8b&#34;&gt;#&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;&lt;span class=&#34;df-badge&#34;&gt;Rolling&lt;/span&gt; &lt;span class=&#34;df-badge&#34;&gt;Canary&lt;/span&gt; &lt;span class=&#34;df-badge&#34;&gt;Blue-Green&lt;/span&gt;&lt;/p&gt;&#xA;&lt;p&gt;选对发布策略，既能保证安全，又不浪费资源。这一页帮你做决定。&lt;/p&gt;&#xA;&lt;blockquote class=&#39;book-hint &#39;&gt;&#xA;&lt;p&gt;选策略就像选交通工具：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Rolling 是公交车——便宜、稳定，但慢&lt;/li&gt;&#xA;&lt;li&gt;Canary 是网约车——灵活、可控，根据路况调整&lt;/li&gt;&#xA;&lt;li&gt;Blue-Green 是双轨地铁——新旧并行，瞬时切换&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/blockquote&gt;&lt;hr&gt;&#xA;&lt;h2 id=&#34;-三种策略对比&#34;&gt;📊 三种策略对比&lt;a class=&#34;anchor&#34; href=&#34;#-%e4%b8%89%e7%a7%8d%e7%ad%96%e7%95%a5%e5%af%b9%e6%af%94&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;table&gt;&#xA;  &lt;thead&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;th&gt;维度&lt;/th&gt;&#xA;          &lt;th&gt;Rolling&lt;/th&gt;&#xA;          &lt;th&gt;Canary&lt;/th&gt;&#xA;          &lt;th&gt;Blue-Green&lt;/th&gt;&#xA;      &lt;/tr&gt;&#xA;  &lt;/thead&gt;&#xA;  &lt;tbody&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;核心思想&lt;/td&gt;&#xA;          &lt;td&gt;逐步替换 Pod&lt;/td&gt;&#xA;          &lt;td&gt;渐进式切流量&lt;/td&gt;&#xA;          &lt;td&gt;两套实例并行切换&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;资源占用&lt;/td&gt;&#xA;          &lt;td&gt;低（最多 125%）&lt;/td&gt;&#xA;          &lt;td&gt;中（最多 200%）&lt;/td&gt;&#xA;          &lt;td&gt;高（200%）&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;回滚速度&lt;/td&gt;&#xA;          &lt;td&gt;慢（1-5 分钟）&lt;/td&gt;&#xA;          &lt;td&gt;快（秒级）&lt;/td&gt;&#xA;          &lt;td&gt;最快（瞬时）&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;故障影响&lt;/td&gt;&#xA;          &lt;td&gt;全量用户&lt;/td&gt;&#xA;          &lt;td&gt;灰度用户&lt;/td&gt;&#xA;          &lt;td&gt;可控制在 Preview&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;需要组件&lt;/td&gt;&#xA;          &lt;td&gt;K8s 原生&lt;/td&gt;&#xA;          &lt;td&gt;Istio + Argo Rollouts&lt;/td&gt;&#xA;          &lt;td&gt;Argo Rollouts&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;运维复杂度&lt;/td&gt;&#xA;          &lt;td&gt;低&lt;/td&gt;&#xA;          &lt;td&gt;中&lt;/td&gt;&#xA;          &lt;td&gt;中&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;  &lt;/tbody&gt;&#xA;&lt;/table&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;-选型决策树&#34;&gt;🌲 选型决策树&lt;a class=&#34;anchor&#34; href=&#34;#-%e9%80%89%e5%9e%8b%e5%86%b3%e7%ad%96%e6%a0%91&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;pre class=&#34;mermaid&#34;&gt;graph TD&#xA;    A[&amp;#34;选择发布策略&amp;#34;] --&amp;gt; B{&amp;#34;需要零停机？&amp;#34;}&#xA;    B --&amp;gt;|否| C{&amp;#34;资源敏感？&amp;#34;}&#xA;    C --&amp;gt;|是| D[&amp;#34;Rolling&amp;#34;]&#xA;    C --&amp;gt;|否| E[&amp;#34;Canary&amp;#34;]&#xA;    B --&amp;gt;|是| F{&amp;#34;需要渐进验证？&amp;#34;}&#xA;    F --&amp;gt;|是| G[&amp;#34;Canary&amp;#34;]&#xA;    F --&amp;gt;|否| H{&amp;#34;资源充足？&amp;#34;}&#xA;    H --&amp;gt;|是| I[&amp;#34;Blue-Green&amp;#34;]&#xA;    H --&amp;gt;|否| J[&amp;#34;Canary&amp;#34;]&lt;/pre&gt;&lt;hr&gt;&#xA;&lt;h2 id=&#34;-场景化建议&#34;&gt;🎯 场景化建议&lt;a class=&#34;anchor&#34; href=&#34;#-%e5%9c%ba%e6%99%af%e5%8c%96%e5%bb%ba%e8%ae%ae&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;table&gt;&#xA;  &lt;thead&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;th&gt;场景&lt;/th&gt;&#xA;          &lt;th&gt;推荐&lt;/th&gt;&#xA;          &lt;th&gt;理由&lt;/th&gt;&#xA;      &lt;/tr&gt;&#xA;  &lt;/thead&gt;&#xA;  &lt;tbody&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;内部工具、后台管理&lt;/td&gt;&#xA;          &lt;td&gt;Rolling&lt;/td&gt;&#xA;          &lt;td&gt;资源敏感，对停机容忍度高&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;普通 API 服务&lt;/td&gt;&#xA;          &lt;td&gt;Rolling / Canary&lt;/td&gt;&#xA;          &lt;td&gt;根据风险敏感度选&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;核心支付 API&lt;/td&gt;&#xA;          &lt;td&gt;Canary&lt;/td&gt;&#xA;          &lt;td&gt;需要渐进验证，控制风险&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;用户量大的前端&lt;/td&gt;&#xA;          &lt;td&gt;Canary&lt;/td&gt;&#xA;          &lt;td&gt;需要真实流量验证&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;金融核心交易&lt;/td&gt;&#xA;          &lt;td&gt;Blue-Green&lt;/td&gt;&#xA;          &lt;td&gt;必须零停机&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;数据库 Schema 变更&lt;/td&gt;&#xA;          &lt;td&gt;Blue-Green&lt;/td&gt;&#xA;          &lt;td&gt;新旧版本共存验证&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;大版本升级&lt;/td&gt;&#xA;          &lt;td&gt;Canary（长周期）&lt;/td&gt;&#xA;          &lt;td&gt;长周期观察稳定性&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;热修复 / 紧急补丁&lt;/td&gt;&#xA;          &lt;td&gt;Blue-Green&lt;/td&gt;&#xA;          &lt;td&gt;最快回滚，最低风险&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;  &lt;/tbody&gt;&#xA;&lt;/table&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;-真实场景故事&#34;&gt;🧪 真实场景故事&lt;a class=&#34;anchor&#34; href=&#34;#-%e7%9c%9f%e5%ae%9e%e5%9c%ba%e6%99%af%e6%95%85%e4%ba%8b&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;h3 id=&#34;场景一小明的内部工具&#34;&gt;场景一：小明的内部工具&lt;a class=&#34;anchor&#34; href=&#34;#%e5%9c%ba%e6%99%af%e4%b8%80%e5%b0%8f%e6%98%8e%e7%9a%84%e5%86%85%e9%83%a8%e5%b7%a5%e5%85%b7&#34;&gt;#&lt;/a&gt;&lt;/h3&gt;&#xA;&lt;p&gt;小明负责一个内部数据分析工具，只有 20 个同事在用。他选 Rolling 发布：&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Rolling 发布</title>
-      <link>https://devflow.bei.com/document/docs/cd/rolling/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://devflow.bei.com/document/docs/cd/rolling/</guid>
-      <description>&lt;h1 id=&#34;-rolling-发布&#34;&gt;🛞 Rolling 发布&lt;a class=&#34;anchor&#34; href=&#34;#-rolling-%e5%8f%91%e5%b8%83&#34;&gt;#&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;&lt;strong&gt;Rolling（滚动更新）&lt;/strong&gt; 是最简单的发布方式。Kubernetes 逐步创建新版本 Pod，同时销毁旧版本 Pod，就像换轮胎时一个一个换，车一直在跑。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;-适合什么场景&#34;&gt;🎯 适合什么场景&lt;a class=&#34;anchor&#34; href=&#34;#-%e9%80%82%e5%90%88%e4%bb%80%e4%b9%88%e5%9c%ba%e6%99%af&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;内部工具、后台管理系统&lt;/li&gt;&#xA;&lt;li&gt;资源敏感、成本优先的服务&lt;/li&gt;&#xA;&lt;li&gt;对短暂波动容忍度较高的应用&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;-原理&#34;&gt;🧠 原理&lt;a class=&#34;anchor&#34; href=&#34;#-%e5%8e%9f%e7%90%86&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;pre class=&#34;mermaid&#34;&gt;graph LR&#xA;    subgraph &amp;#34;Kubernetes&amp;#34;&#xA;        RS1[&amp;#34;旧版本 ReplicaSet&amp;#34;]&#xA;        RS2[&amp;#34;新版本 ReplicaSet&amp;#34;]&#xA;        Svc[&amp;#34;Service&amp;#34;]&#xA;    end&#xA;    subgraph &amp;#34;Pod&amp;#34;&#xA;        P1[&amp;#34;旧 Pod&amp;#34;]&#xA;        P2[&amp;#34;旧 Pod&amp;#34;]&#xA;        P3[&amp;#34;新 Pod&amp;#34;]&#xA;        P4[&amp;#34;新 Pod&amp;#34;]&#xA;    end&#xA;&#xA;    Svc --&amp;gt; P1&#xA;    Svc --&amp;gt; P2&#xA;    Svc --&amp;gt; P3&#xA;    Svc --&amp;gt; P4&#xA;    RS1 --&amp;gt; P1&#xA;    RS1 --&amp;gt; P2&#xA;    RS2 --&amp;gt; P3&#xA;    RS2 --&amp;gt; P4&lt;/pre&gt;&lt;p&gt;Service 同时指向新旧 Pod，流量自然平滑过渡。K8s 控制每次最多多创建 25% 的新 Pod，最多只允许 25% 的 Pod 不可用。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;-发布过程&#34;&gt;🚦 发布过程&lt;a class=&#34;anchor&#34; href=&#34;#-%e5%8f%91%e5%b8%83%e8%bf%87%e7%a8%8b&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;开始: [旧][旧][旧]           (3 Pod)&#xA;      ↓&#xA;步骤 1: [旧][旧][旧][新]       (创建 1 个新 Pod)&#xA;      ↓&#xA;步骤 2: [旧][旧][新][新]       (销毁 1 个旧 Pod)&#xA;      ↓&#xA;步骤 3: [旧][新][新][新]       (继续替换)&#xA;      ↓&#xA;完成: [新][新][新]           (全部替换完毕)&lt;/code&gt;&lt;/pre&gt;&lt;hr&gt;&#xA;&lt;h2 id=&#34;回滚&#34;&gt;回滚&lt;a class=&#34;anchor&#34; href=&#34;#%e5%9b%9e%e6%bb%9a&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;p&gt;Rolling 的回滚是反向的滚动更新：&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Canary 发布</title>
-      <link>https://devflow.bei.com/document/docs/cd/canary/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://devflow.bei.com/document/docs/cd/canary/</guid>
-      <description>&lt;h1 id=&#34;-canary-发布&#34;&gt;🐤 Canary 发布&lt;a class=&#34;anchor&#34; href=&#34;#-canary-%e5%8f%91%e5%b8%83&#34;&gt;#&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;&lt;span class=&#34;df-badge&#34;&gt;&lt;img class=&#34;df-inline-icon&#34; src=&#34;https://devflow.bei.com/document/icons/brands/istio.svg&#34; alt=&#34;Istio&#34; loading=&#34;lazy&#34; /&gt;&#xA; Weighted Traffic&lt;/span&gt; &lt;span class=&#34;df-badge&#34;&gt;📈 Metrics Gate&lt;/span&gt; &lt;span class=&#34;df-badge&#34;&gt;⚡ Fast Rollback&lt;/span&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;Canary（灰度发布）&lt;/strong&gt; 是 DevFlow 最推荐的发布方式。它的核心思想是：&lt;strong&gt;先让一小部分用户试用新版本，验证没问题后再扩大范围&lt;/strong&gt;。&lt;/p&gt;&#xA;&lt;p&gt;就像餐厅推出新菜品，先给 VIP 客人试吃，反馈好再全员推广。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;-适合什么场景&#34;&gt;🎯 适合什么场景&lt;a class=&#34;anchor&#34; href=&#34;#-%e9%80%82%e5%90%88%e4%bb%80%e4%b9%88%e5%9c%ba%e6%99%af&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;核心 API、支付系统&lt;/li&gt;&#xA;&lt;li&gt;用户量大的前端服务&lt;/li&gt;&#xA;&lt;li&gt;任何需要风险控制的服务&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;-原理&#34;&gt;🧠 原理&lt;a class=&#34;anchor&#34; href=&#34;#-%e5%8e%9f%e7%90%86&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;pre class=&#34;mermaid&#34;&gt;graph TB&#xA;    User[&amp;#34;用户流量&amp;#34;]&#xA;    GW[&amp;#34;Gateway&amp;#34;]&#xA;    VS[&amp;#34;VirtualService&amp;#34;]&#xA;&#xA;    subgraph &amp;#34;旧版本&amp;#34;&#xA;        Stable[&amp;#34;Stable Subset&amp;#34;]&#xA;        OldPod[&amp;#34;旧 Pod × 9&amp;#34;]&#xA;    end&#xA;&#xA;    subgraph &amp;#34;新版本&amp;#34;&#xA;        Canary[&amp;#34;Canary Subset&amp;#34;]&#xA;        NewPod[&amp;#34;新 Pod × 1&amp;#34;]&#xA;    end&#xA;&#xA;    User --&amp;gt; GW --&amp;gt; VS&#xA;    VS --&amp;gt;|90%| Stable --&amp;gt; OldPod&#xA;    VS --&amp;gt;|10%| Canary --&amp;gt; NewPod&lt;/pre&gt;&lt;p&gt;Istio 通过 VirtualService 的权重控制流量分配。Argo Rollouts 管理新版本的 ReplicaSet，逐步调整权重。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;-灰度节奏&#34;&gt;⏱️ 灰度节奏&lt;a class=&#34;anchor&#34; href=&#34;#-%e7%81%b0%e5%ba%a6%e8%8a%82%e5%a5%8f&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;p&gt;默认的灰度节奏是四阶段：&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Blue-Green 发布</title>
-      <link>https://devflow.bei.com/document/docs/cd/blue-green/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://devflow.bei.com/document/docs/cd/blue-green/</guid>
-      <description>&lt;h1 id=&#34;-blue-green-发布&#34;&gt;🔵🟢 Blue-Green 发布&lt;a class=&#34;anchor&#34; href=&#34;#-blue-green-%e5%8f%91%e5%b8%83&#34;&gt;#&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;&lt;span class=&#34;df-badge&#34;&gt;Zero Downtime&lt;/span&gt; &lt;span class=&#34;df-badge&#34;&gt;Preview&lt;/span&gt; &lt;span class=&#34;df-badge&#34;&gt;Fast Rollback&lt;/span&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;Blue-Green（蓝绿部署）&lt;/strong&gt; 是最稳妥的发布方式。它同时维护两套完整实例，验证通过后瞬时切换流量。就像走天桥，旧路和新路同时在，随时可以退回来。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;-适合什么场景&#34;&gt;🎯 适合什么场景&lt;a class=&#34;anchor&#34; href=&#34;#-%e9%80%82%e5%90%88%e4%bb%80%e4%b9%88%e5%9c%ba%e6%99%af&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;金融核心、关键交易&lt;/li&gt;&#xA;&lt;li&gt;必须零停机的业务&lt;/li&gt;&#xA;&lt;li&gt;数据库 schema 变更&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;-原理&#34;&gt;🧠 原理&lt;a class=&#34;anchor&#34; href=&#34;#-%e5%8e%9f%e7%90%86&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;pre class=&#34;mermaid&#34;&gt;graph TB&#xA;    User[&amp;#34;用户流量&amp;#34;]&#xA;    VS[&amp;#34;VirtualService&amp;#34;]&#xA;&#xA;    subgraph &amp;#34;Active（生产流量）&amp;#34;&#xA;        ActiveSvc[&amp;#34;Active Service&amp;#34;]&#xA;    end&#xA;&#xA;    subgraph &amp;#34;Preview（验证流量）&amp;#34;&#xA;        PreviewSvc[&amp;#34;Preview Service&amp;#34;]&#xA;    end&#xA;&#xA;    subgraph &amp;#34;Pod&amp;#34;&#xA;        Blue[&amp;#34;Blue&amp;lt;br/&amp;gt;旧版本 × 3&amp;#34;]&#xA;        Green[&amp;#34;Green&amp;lt;br/&amp;gt;新版本 × 3&amp;#34;]&#xA;    end&#xA;&#xA;    User --&amp;gt; VS&#xA;    VS --&amp;gt; ActiveSvc --&amp;gt; Blue&#xA;    VS --&amp;gt; PreviewSvc --&amp;gt; Green&lt;/pre&gt;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;Active Service&lt;/strong&gt; 接收生产流量，始终指向当前稳定版本&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Preview Service&lt;/strong&gt; 接收验证流量，用于测试新版本&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;-发布过程&#34;&gt;🚦 发布过程&lt;a class=&#34;anchor&#34; href=&#34;#-%e5%8f%91%e5%b8%83%e8%bf%87%e7%a8%8b&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;h3 id=&#34;阶段-1部署新版本&#34;&gt;阶段 1：部署新版本&lt;a class=&#34;anchor&#34; href=&#34;#%e9%98%b6%e6%ae%b5-1%e9%83%a8%e7%bd%b2%e6%96%b0%e7%89%88%e6%9c%ac&#34;&gt;#&lt;/a&gt;&lt;/h3&gt;&#xA;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;Active → Blue(旧, 3 Pod)   ← 生产流量&#xA;Preview → Green(新, 3 Pod) ← 验证流量&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Green 部署完成，可以通过 Preview Service 访问验证。&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>CD 组件矩阵</title>
-      <link>https://devflow.bei.com/document/docs/cd/component/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://devflow.bei.com/document/docs/cd/component/</guid>
-      <description>&lt;h1 id=&#34;-cd-用到哪些工具&#34;&gt;🧰 CD 用到哪些工具&lt;a class=&#34;anchor&#34; href=&#34;#-cd-%e7%94%a8%e5%88%b0%e5%93%aa%e4%ba%9b%e5%b7%a5%e5%85%b7&#34;&gt;#&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;&lt;span class=&#34;df-badge&#34;&gt;GitOps&lt;/span&gt; &lt;span class=&#34;df-badge&#34;&gt;📦 OCI Registry&lt;/span&gt; &lt;span class=&#34;df-badge&#34;&gt;&lt;img class=&#34;df-inline-icon&#34; src=&#34;https://devflow.bei.com/document/icons/brands/istio.svg&#34; alt=&#34;Istio&#34; loading=&#34;lazy&#34; /&gt;&#xA; Istio&lt;/span&gt;&lt;/p&gt;&#xA;&lt;p&gt;DevFlow 的 CD 依赖以下几个核心工具，各司其职。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;-核心组件&#34;&gt;🧱 核心组件&lt;a class=&#34;anchor&#34; href=&#34;#-%e6%a0%b8%e5%bf%83%e7%bb%84%e4%bb%b6&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;h3 id=&#34;argo-cd--gitops-引擎&#34;&gt;Argo CD — GitOps 引擎&lt;a class=&#34;anchor&#34; href=&#34;#argo-cd--gitops-%e5%bc%95%e6%93%8e&#34;&gt;#&lt;/a&gt;&lt;/h3&gt;&#xA;&lt;p&gt;Argo CD 是 CD 的核心。它盯着 OCI Registry 里的部署包，一旦发现新版本，就自动同步到 Kubernetes 集群。&lt;/p&gt;&#xA;&lt;p&gt;你可以把它理解成一个&lt;strong&gt;自动同步器&lt;/strong&gt;：你更新了仓库里的配置，它自动帮你 apply 到集群。&lt;/p&gt;&#xA;&lt;h3 id=&#34;-argo-rollouts--高级发布控制器&#34;&gt;🚦 Argo Rollouts — 高级发布控制器&lt;a class=&#34;anchor&#34; href=&#34;#-argo-rollouts--%e9%ab%98%e7%ba%a7%e5%8f%91%e5%b8%83%e6%8e%a7%e5%88%b6%e5%99%a8&#34;&gt;#&lt;/a&gt;&lt;/h3&gt;&#xA;&lt;p&gt;原生 Kubernetes 只支持简单的 Rolling Update。Argo Rollouts 扩展了这个能力，支持：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;Canary&lt;/strong&gt; — 按权重逐步切流量&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Blue-Green&lt;/strong&gt; — 两套实例并行，瞬时切换&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Analysis&lt;/strong&gt; — 自动基于指标判断要不要继续&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h3 id=&#34;istio--流量指挥官&#34;&gt;Istio — 流量指挥官&lt;a class=&#34;anchor&#34; href=&#34;#istio--%e6%b5%81%e9%87%8f%e6%8c%87%e6%8c%a5%e5%ae%98&#34;&gt;#&lt;/a&gt;&lt;/h3&gt;&#xA;&lt;p&gt;Istio 负责控制流量怎么分配：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;VirtualService&lt;/strong&gt; — 定义流量路由规则（权重、匹配条件）&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;DestinationRule&lt;/strong&gt; — 定义 Pod 分组（stable / canary）&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Gateway&lt;/strong&gt; — 外部流量入口&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;没有 Istio，Canary 和 Blue-Green 就做不了流量控制。&lt;/p&gt;</description>
-    </item>
-  </channel>
-</rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>持续交付 on DevFlow</title><link>https://devflow.bei.com/document/docs/cd/</link><description>Recent content in 持续交付 on DevFlow</description><generator>Hugo</generator><language>zh-cn</language><atom:link href="https://devflow.bei.com/document/docs/cd/index.xml" rel="self" type="application/rss+xml"/><item><title>CD 架构</title><link>https://devflow.bei.com/document/docs/cd/architecture/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/cd/architecture/</guid><description>&lt;h1 id="-cd-架构"&gt;🚀 CD 架构&lt;/h1&gt;
+&lt;p&gt;DevFlow 的 CD 不直接操作 Kubernetes，而是通过 &lt;strong&gt;GitOps&lt;/strong&gt; 模式工作：release-service 生成部署包，推送到仓库，Argo CD 负责实际部署。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="-为什么用-gitops"&gt;🧠 为什么用 GitOps&lt;/h2&gt;
+&lt;p&gt;传统的部署方式是&amp;quot;告诉 K8s 该怎么做&amp;quot;，DevFlow 的方式是&amp;quot;告诉 Argo CD 期望状态是什么，让它自己同步&amp;quot;。&lt;/p&gt;
+&lt;p&gt;好处：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;可追溯&lt;/strong&gt; — 每次部署的配置都在版本控制里&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;可回滚&lt;/strong&gt; — Argo CD 保留了历史同步记录&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;安全&lt;/strong&gt; — DevFlow 不直接操作 K8s，降低了风险&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="-数据流"&gt;🔄 数据流&lt;/h2&gt;
+&lt;pre tabindex="0"&gt;&lt;code class="language-mermaid" data-lang="mermaid"&gt;sequenceDiagram
+ participant Release as release-service
+ participant Registry as OCI Registry
+ participant Argo as Argo CD
+ participant K8s as Kubernetes
+ participant Runtime as runtime-service
+
+ Release-&amp;gt;&amp;gt;Release: 渲染部署包
+ Note over Release: 把配置叠加成 K8s manifest
+ Release-&amp;gt;&amp;gt;Registry: 推送 Bundle
+ Note over Registry: 镜像 + 部署包放在一起
+ Release-&amp;gt;&amp;gt;Argo: 创建 Application
+ Argo-&amp;gt;&amp;gt;Registry: 拉取 Bundle
+ Argo-&amp;gt;&amp;gt;K8s: 同步到集群
+ K8s-&amp;gt;&amp;gt;Runtime: Pod 状态变化
+ Runtime-&amp;gt;&amp;gt;Runtime: 更新内存索引
+ Runtime-&amp;gt;&amp;gt;Release: 回写进度
+ Release-&amp;gt;&amp;gt;Release: 更新 Release 状态
+&lt;/code&gt;&lt;/pre&gt;&lt;hr&gt;
+&lt;h2 id="关键组件的分工"&gt;关键组件的分工&lt;/h2&gt;
+&lt;table&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th&gt;组件&lt;/th&gt;
+ &lt;th&gt;做什么&lt;/th&gt;
+ &lt;th&gt;不做什么&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;strong&gt;release-service&lt;/strong&gt;&lt;/td&gt;
+ &lt;td&gt;渲染配置、推送包、创建 Argo CD Application&lt;/td&gt;
+ &lt;td&gt;不直接操作 K8s&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;strong&gt;Argo CD&lt;/strong&gt;&lt;/td&gt;
+ &lt;td&gt;从仓库拉包、同步到 K8s、监控健康状态&lt;/td&gt;
+ &lt;td&gt;不参与配置渲染&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;strong&gt;Argo Rollouts&lt;/strong&gt;&lt;/td&gt;
+ &lt;td&gt;管理 Canary / Blue-Green 的渐进式发布&lt;/td&gt;
+ &lt;td&gt;不参与 GitOps 同步&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;strong&gt;Istio&lt;/strong&gt;&lt;/td&gt;
+ &lt;td&gt;控制流量分配（权重、切换）&lt;/td&gt;
+ &lt;td&gt;不管理 Pod 生命周期&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;strong&gt;runtime-service&lt;/strong&gt;&lt;/td&gt;
+ &lt;td&gt;观察状态、回写进度&lt;/td&gt;
+ &lt;td&gt;不参与部署决策&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h2 id="-与旧架构的区别"&gt;🆚 与旧架构的区别&lt;/h2&gt;
+&lt;p&gt;DevFlow 早期版本是直接操作 K8s 的，现在改成了 GitOps：&lt;/p&gt;</description></item><item><title>发布策略选型</title><link>https://devflow.bei.com/document/docs/cd/standard/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/cd/standard/</guid><description>&lt;h1 id="-发布策略选型"&gt;🧭 发布策略选型&lt;/h1&gt;
+&lt;p&gt;&lt;span class="df-badge"&gt;Rolling&lt;/span&gt; &lt;span class="df-badge"&gt;Canary&lt;/span&gt; &lt;span class="df-badge"&gt;Blue-Green&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;选对发布策略，既能保证安全，又不浪费资源。这一页帮你做决定。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;选策略就像选交通工具：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Rolling 是公交车——便宜、稳定，但慢&lt;/li&gt;
+&lt;li&gt;Canary 是网约车——灵活、可控，根据路况调整&lt;/li&gt;
+&lt;li&gt;Blue-Green 是双轨地铁——新旧并行，瞬时切换&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;h2 id="-三种策略对比"&gt;📊 三种策略对比&lt;/h2&gt;
+&lt;table&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th&gt;维度&lt;/th&gt;
+ &lt;th&gt;Rolling&lt;/th&gt;
+ &lt;th&gt;Canary&lt;/th&gt;
+ &lt;th&gt;Blue-Green&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td&gt;核心思想&lt;/td&gt;
+ &lt;td&gt;逐步替换 Pod&lt;/td&gt;
+ &lt;td&gt;渐进式切流量&lt;/td&gt;
+ &lt;td&gt;两套实例并行切换&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;资源占用&lt;/td&gt;
+ &lt;td&gt;低（最多 125%）&lt;/td&gt;
+ &lt;td&gt;中（最多 200%）&lt;/td&gt;
+ &lt;td&gt;高（200%）&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;回滚速度&lt;/td&gt;
+ &lt;td&gt;慢（1-5 分钟）&lt;/td&gt;
+ &lt;td&gt;快（秒级）&lt;/td&gt;
+ &lt;td&gt;最快（瞬时）&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;故障影响&lt;/td&gt;
+ &lt;td&gt;全量用户&lt;/td&gt;
+ &lt;td&gt;灰度用户&lt;/td&gt;
+ &lt;td&gt;可控制在 Preview&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;需要组件&lt;/td&gt;
+ &lt;td&gt;K8s 原生&lt;/td&gt;
+ &lt;td&gt;Istio + Argo Rollouts&lt;/td&gt;
+ &lt;td&gt;Argo Rollouts&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;运维复杂度&lt;/td&gt;
+ &lt;td&gt;低&lt;/td&gt;
+ &lt;td&gt;中&lt;/td&gt;
+ &lt;td&gt;中&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h2 id="-选型决策树"&gt;🌲 选型决策树&lt;/h2&gt;
+&lt;pre tabindex="0"&gt;&lt;code class="language-mermaid" data-lang="mermaid"&gt;graph TD
+ A[&amp;#34;选择发布策略&amp;#34;] --&amp;gt; B{&amp;#34;需要零停机？&amp;#34;}
+ B --&amp;gt;|否| C{&amp;#34;资源敏感？&amp;#34;}
+ C --&amp;gt;|是| D[&amp;#34;Rolling&amp;#34;]
+ C --&amp;gt;|否| E[&amp;#34;Canary&amp;#34;]
+ B --&amp;gt;|是| F{&amp;#34;需要渐进验证？&amp;#34;}
+ F --&amp;gt;|是| G[&amp;#34;Canary&amp;#34;]
+ F --&amp;gt;|否| H{&amp;#34;资源充足？&amp;#34;}
+ H --&amp;gt;|是| I[&amp;#34;Blue-Green&amp;#34;]
+ H --&amp;gt;|否| J[&amp;#34;Canary&amp;#34;]
+&lt;/code&gt;&lt;/pre&gt;&lt;hr&gt;
+&lt;h2 id="-场景化建议"&gt;🎯 场景化建议&lt;/h2&gt;
+&lt;table&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th&gt;场景&lt;/th&gt;
+ &lt;th&gt;推荐&lt;/th&gt;
+ &lt;th&gt;理由&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td&gt;内部工具、后台管理&lt;/td&gt;
+ &lt;td&gt;Rolling&lt;/td&gt;
+ &lt;td&gt;资源敏感，对停机容忍度高&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;普通 API 服务&lt;/td&gt;
+ &lt;td&gt;Rolling / Canary&lt;/td&gt;
+ &lt;td&gt;根据风险敏感度选&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;核心支付 API&lt;/td&gt;
+ &lt;td&gt;Canary&lt;/td&gt;
+ &lt;td&gt;需要渐进验证，控制风险&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;用户量大的前端&lt;/td&gt;
+ &lt;td&gt;Canary&lt;/td&gt;
+ &lt;td&gt;需要真实流量验证&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;金融核心交易&lt;/td&gt;
+ &lt;td&gt;Blue-Green&lt;/td&gt;
+ &lt;td&gt;必须零停机&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;数据库 Schema 变更&lt;/td&gt;
+ &lt;td&gt;Blue-Green&lt;/td&gt;
+ &lt;td&gt;新旧版本共存验证&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;大版本升级&lt;/td&gt;
+ &lt;td&gt;Canary（长周期）&lt;/td&gt;
+ &lt;td&gt;长周期观察稳定性&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;热修复 / 紧急补丁&lt;/td&gt;
+ &lt;td&gt;Blue-Green&lt;/td&gt;
+ &lt;td&gt;最快回滚，最低风险&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h2 id="-真实场景故事"&gt;🧪 真实场景故事&lt;/h2&gt;
+&lt;h3 id="场景一小明的内部工具"&gt;场景一：小明的内部工具&lt;/h3&gt;
+&lt;p&gt;小明负责一个内部数据分析工具，只有 20 个同事在用。他选 Rolling 发布：&lt;/p&gt;</description></item><item><title>Rolling 发布</title><link>https://devflow.bei.com/document/docs/cd/rolling/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/cd/rolling/</guid><description>&lt;h1 id="-rolling-发布"&gt;🛞 Rolling 发布&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;Rolling（滚动更新）&lt;/strong&gt; 是最简单的发布方式。Kubernetes 逐步创建新版本 Pod，同时销毁旧版本 Pod，就像换轮胎时一个一个换，车一直在跑。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="-适合什么场景"&gt;🎯 适合什么场景&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;内部工具、后台管理系统&lt;/li&gt;
+&lt;li&gt;资源敏感、成本优先的服务&lt;/li&gt;
+&lt;li&gt;对短暂波动容忍度较高的应用&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="-原理"&gt;🧠 原理&lt;/h2&gt;
+&lt;pre tabindex="0"&gt;&lt;code class="language-mermaid" data-lang="mermaid"&gt;graph LR
+ subgraph &amp;#34;Kubernetes&amp;#34;
+ RS1[&amp;#34;旧版本 ReplicaSet&amp;#34;]
+ RS2[&amp;#34;新版本 ReplicaSet&amp;#34;]
+ Svc[&amp;#34;Service&amp;#34;]
+ end
+ subgraph &amp;#34;Pod&amp;#34;
+ P1[&amp;#34;旧 Pod&amp;#34;]
+ P2[&amp;#34;旧 Pod&amp;#34;]
+ P3[&amp;#34;新 Pod&amp;#34;]
+ P4[&amp;#34;新 Pod&amp;#34;]
+ end
+
+ Svc --&amp;gt; P1
+ Svc --&amp;gt; P2
+ Svc --&amp;gt; P3
+ Svc --&amp;gt; P4
+ RS1 --&amp;gt; P1
+ RS1 --&amp;gt; P2
+ RS2 --&amp;gt; P3
+ RS2 --&amp;gt; P4
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Service 同时指向新旧 Pod，流量自然平滑过渡。K8s 控制每次最多多创建 25% 的新 Pod，最多只允许 25% 的 Pod 不可用。&lt;/p&gt;</description></item><item><title>Canary 发布</title><link>https://devflow.bei.com/document/docs/cd/canary/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/cd/canary/</guid><description>&lt;h1 id="-canary-发布"&gt;🐤 Canary 发布&lt;/h1&gt;
+&lt;p&gt;&lt;span class="df-badge"&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/istio.svg" alt="Istio" loading="lazy" /&gt;
+ Weighted Traffic&lt;/span&gt; &lt;span class="df-badge"&gt;📈 Metrics Gate&lt;/span&gt; &lt;span class="df-badge"&gt;⚡ Fast Rollback&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Canary（灰度发布）&lt;/strong&gt; 是 DevFlow 最推荐的发布方式。它的核心思想是：&lt;strong&gt;先让一小部分用户试用新版本，验证没问题后再扩大范围&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;就像餐厅推出新菜品，先给 VIP 客人试吃，反馈好再全员推广。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="-适合什么场景"&gt;🎯 适合什么场景&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;核心 API、支付系统&lt;/li&gt;
+&lt;li&gt;用户量大的前端服务&lt;/li&gt;
+&lt;li&gt;任何需要风险控制的服务&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="-原理"&gt;🧠 原理&lt;/h2&gt;
+&lt;pre tabindex="0"&gt;&lt;code class="language-mermaid" data-lang="mermaid"&gt;graph TB
+ User[&amp;#34;用户流量&amp;#34;]
+ GW[&amp;#34;Gateway&amp;#34;]
+ VS[&amp;#34;VirtualService&amp;#34;]
+
+ subgraph &amp;#34;旧版本&amp;#34;
+ Stable[&amp;#34;Stable Subset&amp;#34;]
+ OldPod[&amp;#34;旧 Pod × 9&amp;#34;]
+ end
+
+ subgraph &amp;#34;新版本&amp;#34;
+ Canary[&amp;#34;Canary Subset&amp;#34;]
+ NewPod[&amp;#34;新 Pod × 1&amp;#34;]
+ end
+
+ User --&amp;gt; GW --&amp;gt; VS
+ VS --&amp;gt;|90%| Stable --&amp;gt; OldPod
+ VS --&amp;gt;|10%| Canary --&amp;gt; NewPod
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Istio 通过 VirtualService 的权重控制流量分配。Argo Rollouts 管理新版本的 ReplicaSet，逐步调整权重。&lt;/p&gt;</description></item><item><title>Blue-Green 发布</title><link>https://devflow.bei.com/document/docs/cd/blue-green/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/cd/blue-green/</guid><description>&lt;h1 id="-blue-green-发布"&gt;🔵🟢 Blue-Green 发布&lt;/h1&gt;
+&lt;p&gt;&lt;span class="df-badge"&gt;Zero Downtime&lt;/span&gt; &lt;span class="df-badge"&gt;Preview&lt;/span&gt; &lt;span class="df-badge"&gt;Fast Rollback&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Blue-Green（蓝绿部署）&lt;/strong&gt; 是最稳妥的发布方式。它同时维护两套完整实例，验证通过后瞬时切换流量。就像走天桥，旧路和新路同时在，随时可以退回来。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="-适合什么场景"&gt;🎯 适合什么场景&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;金融核心、关键交易&lt;/li&gt;
+&lt;li&gt;必须零停机的业务&lt;/li&gt;
+&lt;li&gt;数据库 schema 变更&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="-原理"&gt;🧠 原理&lt;/h2&gt;
+&lt;pre tabindex="0"&gt;&lt;code class="language-mermaid" data-lang="mermaid"&gt;graph TB
+ User[&amp;#34;用户流量&amp;#34;]
+ VS[&amp;#34;VirtualService&amp;#34;]
+
+ subgraph &amp;#34;Active（生产流量）&amp;#34;
+ ActiveSvc[&amp;#34;Active Service&amp;#34;]
+ end
+
+ subgraph &amp;#34;Preview（验证流量）&amp;#34;
+ PreviewSvc[&amp;#34;Preview Service&amp;#34;]
+ end
+
+ subgraph &amp;#34;Pod&amp;#34;
+ Blue[&amp;#34;Blue&amp;lt;br/&amp;gt;旧版本 × 3&amp;#34;]
+ Green[&amp;#34;Green&amp;lt;br/&amp;gt;新版本 × 3&amp;#34;]
+ end
+
+ User --&amp;gt; VS
+ VS --&amp;gt; ActiveSvc --&amp;gt; Blue
+ VS --&amp;gt; PreviewSvc --&amp;gt; Green
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Active Service&lt;/strong&gt; 接收生产流量，始终指向当前稳定版本&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Preview Service&lt;/strong&gt; 接收验证流量，用于测试新版本&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="-发布过程"&gt;🚦 发布过程&lt;/h2&gt;
+&lt;h3 id="阶段-1部署新版本"&gt;阶段 1：部署新版本&lt;/h3&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;Active → Blue(旧, 3 Pod) ← 生产流量
+Preview → Green(新, 3 Pod) ← 验证流量
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Green 部署完成，可以通过 Preview Service 访问验证。&lt;/p&gt;</description></item><item><title>CD 组件矩阵</title><link>https://devflow.bei.com/document/docs/cd/component/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/cd/component/</guid><description>&lt;h1 id="-cd-用到哪些工具"&gt;🧰 CD 用到哪些工具&lt;/h1&gt;
+&lt;p&gt;&lt;span class="df-badge"&gt;GitOps&lt;/span&gt; &lt;span class="df-badge"&gt;📦 OCI Registry&lt;/span&gt; &lt;span class="df-badge"&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/istio.svg" alt="Istio" loading="lazy" /&gt;
+ Istio&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;DevFlow 的 CD 依赖以下几个核心工具，各司其职。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="-核心组件"&gt;🧱 核心组件&lt;/h2&gt;
+&lt;h3 id="argo-cd--gitops-引擎"&gt;Argo CD — GitOps 引擎&lt;/h3&gt;
+&lt;p&gt;Argo CD 是 CD 的核心。它盯着 OCI Registry 里的部署包，一旦发现新版本，就自动同步到 Kubernetes 集群。&lt;/p&gt;
+&lt;p&gt;你可以把它理解成一个&lt;strong&gt;自动同步器&lt;/strong&gt;：你更新了仓库里的配置，它自动帮你 apply 到集群。&lt;/p&gt;
+&lt;h3 id="-argo-rollouts--高级发布控制器"&gt;🚦 Argo Rollouts — 高级发布控制器&lt;/h3&gt;
+&lt;p&gt;原生 Kubernetes 只支持简单的 Rolling Update。Argo Rollouts 扩展了这个能力，支持：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Canary&lt;/strong&gt; — 按权重逐步切流量&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Blue-Green&lt;/strong&gt; — 两套实例并行，瞬时切换&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Analysis&lt;/strong&gt; — 自动基于指标判断要不要继续&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="istio--流量指挥官"&gt;Istio — 流量指挥官&lt;/h3&gt;
+&lt;p&gt;Istio 负责控制流量怎么分配：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;VirtualService&lt;/strong&gt; — 定义流量路由规则（权重、匹配条件）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;DestinationRule&lt;/strong&gt; — 定义 Pod 分组（stable / canary）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Gateway&lt;/strong&gt; — 外部流量入口&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;没有 Istio，Canary 和 Blue-Green 就做不了流量控制。&lt;/p&gt;</description></item></channel></rss>

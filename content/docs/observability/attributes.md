@@ -3,325 +3,136 @@ title: "公共 Attributes"
 weight: 72
 ---
 
-# 🏷️ 公共 Attributes
+# 公共 Attributes
 
-<span class="df-badge">⚙️ 服务启动配置</span> <span class="df-badge">✍️ 服务代码设置</span> <span class="df-badge">🧰 Collector 公共注入</span>
+DevFlow 的 Metrics、Logs、Traces 需要能关联，但三者不应该机械地重复同一份字段。
+这页定义的是“公共命名和来源边界”，不是要求每种信号都带完全一样的属性。
 
-DevFlow 的 observability 文档需要先回答一个最实际的问题：**一个标签到底该配在哪里？**
+---
 
-Metrics、Logs、Traces 需要能互相关联，但三者不是同一种东西：
+## 为什么要统一
+
+假设 meta-service 的一个请求出错了：
+
+- Metrics 里记录了这个接口的延迟
+- Logs 里记录了错误详情
+- Traces 里记录了整个调用链路
+
+如果三个系统用的标签名字不一样，就没法稳定串联。统一命名后，可以从
+Metrics 发现问题，通过 exemplar 跳到 Trace，再按 `trace_id` 跳到 Log。
+
+职责边界：
 
 - Metrics：看 rate / error / latency / SLO
 - Traces：看调用链、慢点、下游瓶颈
 - Logs：看错误文本、业务事件、panic 细节
 
-这页把 Attributes 拆成 3 类：
+---
 
-1. **服务启动时配置的标签**：服务自己不在业务代码里写死，而是通过环境变量/SDK 初始化统一带上
-2. **服务在代码里主动设置的标签**：和业务对象、发布流程、错误上下文强相关，只有服务自己知道
-3. **OTel Collector 统一补充的公共标签**：和运行环境、Kubernetes 元数据相关，适合由平台侧集中注入
+## 服务相关 Attributes
+
+| Key | 类型 | 说明 | 示例 | 适用类型 |
+|-----|-----|-----|-----|---------|
+| `service.name` | string | 服务名称 | `release-service` | Trace / Resource |
+| `service.version` | string | 服务版本 | `2026.05.11` | Trace / Resource |
+| `service.instance.id` | string | 服务实例 ID 或 Pod 名称 | `devflow-abc123` | Trace |
+| `service.namespace` | string | 服务命名空间 | `devflow` | Trace / Resource |
+| `deployment.environment.name` | string | 部署环境 | `production` / `pre-production` | Trace / Resource |
+
+说明：
+
+- 这些字段优先作为 OpenTelemetry Resource Attributes 存在。
+- 普通 HTTP access log 不要求在每条记录中重复带 `service.name`、`service.namespace`、`service.version`、`deployment.environment.name`。
+- Prometheus metrics 使用 Prometheus-safe label 名称，例如 `service_name`。
 
 ---
 
-## 🧭 先记结论
+## Kubernetes / Host / Cloud Attributes
 
-| 类别 | 典型字段 | 配置位置 | 谁负责 |
-|------|----------|----------|--------|
-| **服务启动配置** | `service.name` `service.version` | Deployment 环境变量 / SDK Resource 初始化 | 服务模板 / 平台基础设施 |
-| **服务代码设置** | `devflow.application.id` `devflow.release.id` `error.message` | 业务代码里的 Span / Log / Metric | 各服务开发者 |
-| **Collector 公共注入** | `deployment.environment.name` `k8s.pod.name` `k8s.namespace.name` `k8s.node.name` `k8s.cluster.name` | OTel Collector Processor | SRE / 平台组 |
+| Key | 类型 | 说明 | 示例 | 适用类型 |
+|-----|-----|-----|-----|---------|
+| `k8s.cluster.name` | string | 集群名称 | `cluster-prod` | Collector-enriched Log / Trace |
+| `k8s.namespace.name` | string | Pod 所在命名空间 | `devflow` | Collector-enriched Log / Trace |
+| `k8s.pod.name` | string | Pod 名称 | `devflow-12345` | Collector-enriched Log / Trace |
+| `k8s.container.name` | string | 容器名称 | `devflow` | Collector-enriched Log / Trace |
+| `k8s.node.name` | string | 节点名称 | `node-01` | Collector-enriched Log / Trace |
+| `host.name` | string | 主机名 | `worker-01` | Collector-enriched Log / Trace |
+| `cloud.provider` | string | 云厂商 | `alicloud` | Collector-enriched Log / Trace |
+| `cloud.region` | string | 地域 | `cn-hangzhou` | Collector-enriched Log / Trace |
 
-一句话判断：
+这些字段应由 OpenTelemetry Collector 补充，不应在业务代码中硬编码。
 
-- **和“这个服务是谁”有关** → 服务启动配置
-- **和“这次请求/发布在处理什么业务对象”有关** → 服务代码设置
-- **和“这个 Pod 跑在哪个集群节点上”有关** → Collector 注入
-
-## 🗂️ 一张总表先看明白
-
-| 字段 | 应该放哪 | 为什么 | 谁来做 |
-|------|----------|--------|--------|
-| `service.name` | 服务启动配置 | 进程级身份，进程启动后基本不变 | 平台模板 / 服务 Deployment |
-| `service.version` | 服务启动配置 | 标识当前版本，不应每条日志手填 | 平台模板 / 发布系统 |
-| `deployment.environment.name` | Collector 公共注入优先 | 多服务共用且值通常一致，平台统一注入更不容易错配 | OTel Collector / 平台规则 |
-| `service.instance.id` | 服务启动配置 | 实例级身份，适合启动时注入 | Deployment / Downward API |
-| `devflow.project.id` | 服务代码设置 | 只有业务处理逻辑知道当前项目 | 服务代码 |
-| `devflow.application.id` | 服务代码设置 | Collector 无法可靠推断业务应用对象 | 服务代码 |
-| `devflow.environment.id` | 服务代码设置 | 业务上下文，不是基础设施元数据 | 服务代码 |
-| `devflow.manifest.id` | 服务代码设置 | 发布链路业务对象 | 服务代码 |
-| `devflow.release.id` | 服务代码设置 | 发布链路业务对象 | 服务代码 |
-| `devflow.intent.kind` | 服务代码设置 | Worker / 异步任务语义只在代码里知道 | 服务代码 |
-| `error.message` | 服务代码设置 | 错误上下文来自业务执行结果 | 服务代码 |
-| `k8s.namespace.name` | Collector 公共注入 | 标准 K8s 元数据，平台统一最稳定 | OTel Collector |
-| `k8s.pod.name` | Collector 公共注入 | 标准 K8s 元数据，避免每个服务重复写 | OTel Collector |
-| `k8s.node.name` | Collector 公共注入 | 属于运行环境元数据 | OTel Collector |
-| `k8s.cluster.name` | Collector 公共注入 | 集群级公共维度 | OTel Collector |
-| `cloud.region` | Collector 公共注入 | 云环境公共维度 | OTel Collector |
-
-### 最短决策规则
-
-- **进程启动后基本不变** → 放启动配置
-- **需要读业务对象 / 请求上下文才知道** → 放服务代码
-- **多个服务共用、value 也一致、平台能稳定确定** → 优先放 Collector
-- **如果 Collector 需要“猜业务语义”** → 说明这个字段不该放 Collector
+原因很简单：这些字段描述的是运行时落点，不是业务事实。服务镜像滚动、Pod 重建、节点漂移后，这些值都可能变化。
 
 ---
 
-## ① 服务启动配置的标签
+## 请求相关 Attributes
 
-这类标签通常属于 **Resource Attributes**。
+| 标签 | 例子 | 说明 |
+|------|------|------|
+| `http.request.method` | `GET` | HTTP 方法 |
+| `http.route` | `/api/v1/projects/:id` | 路由模板 |
+| `http.response.status_code` | `200` | 响应状态码 |
+| `url.path` | `/api/v1/projects/123` | 实际请求路径 |
 
-特点：
+说明：
 
-- 每个进程启动后基本不变
-- 不应该在每个请求里重复手动 `SetAttributes`
-- 最适合通过环境变量或 SDK 初始化统一设置
+- `http.route` 必须是模板路由，不要把原始动态路径拿去做 metrics label。
+- `url.path` 可以出现在 log 和 trace 中，但不应进入高频 metrics label。
 
-### 推荐字段
+---
 
-| Key | 说明 | 推荐来源 | 示例 |
-|-----|------|----------|------|
-| `service.name` | 服务名 | `SERVICE_NAME`（兼容 `OTEL_SERVICE_NAME`） | `meta-service` |
-| `service.version` | 当前发布版本 | `SERVICE_VERSION`（兼容 `OTEL_RESOURCE_ATTRIBUTES`） | `1.4.2` |
-| `service.namespace` | 逻辑服务域/业务域 | `OTEL_SERVICE_NAMESPACE`（兼容 `OTEL_RESOURCE_ATTRIBUTES`） | `devflow` |
-| `service.instance.id` | 实例唯一标识 | Downward API / Pod 名 | `meta-service-7f8c9d` |
-| `deployment.environment.name` | 部署环境 | Collector / resource enrichment 优先；仅兼容老的服务侧输入 | `prod` |
+## 统一规范
 
-### 这类字段应该怎么配
+1. **同一请求生命周期**内的三种信号应共享最小关联语义，而不是共享全部字段：
+   - `service.name` / `service_name`
+   - `http.route` / `http_route`
+   - `http.response.status_code` / `http_response_status_code`
+   - `trace_id`（仅 Trace / Log / exemplar，不是 metrics label）
+
+2. **命名规范**：
+   - Attribute 使用 **小写 + 点号分隔** (`service.name`)
+   - Kubernetes 相关字段加前缀 `k8s.`
+   - HTTP 相关字段加前缀 `http.`
+   - 日志相关字段加前缀 `log.`
+   - Span 相关字段加前缀 `span.`
+
+3. **来源要求**：
+   - 服务资源字段优先来自环境变量和 OTel Resource Attributes
+   - `trace_id` / `span_id` 优先来自当前 span context
+   - Kubernetes / Host / Cloud 字段优先由 Collector 补充
+   - 不要在业务代码里硬编码 Pod、Node、Cluster、Cloud 信息
+
+4. **高基数字段限制**：
+   - `trace_id`、`span_id`、`request_id`、`user_id`、`release_id`、原始 `url.path` 都不应进入高频 metrics label
+   - Metrics 到 Trace 的跳转应使用 exemplar
+   - `release_id` 更适合放在 Trace、Log、DevFlow DB 或低频 info/status metric
+
+---
+
+## 命名规则速查
+
+- 全部 **小写**
+- 层级用 **点号** 分隔：`service.name`、`k8s.pod.name`
+- 不要用驼峰：`serviceName` ❌
+
+---
+
+## 当前推荐来源
+
+这些标签通常通过环境变量和 OTel 配置注入到服务中：
 
 ```yaml
 env:
   - name: SERVICE_NAME
-    value: "meta-service"
+    value: "release-service"
   - name: OTEL_SERVICE_NAMESPACE
     value: "devflow"
   - name: SERVICE_VERSION
-    value: "sha256:03b4a60ec604"
+    value: "2026.05.11"
 ```
 
-### 规则
+补充说明：
 
-- 这类字段**不要在业务代码里每次请求重复设置**
-- 平台最好提供统一 Helm / Kustomize 模板，避免每个服务各写一套
-
----
-
-## ② 服务代码里主动设置的标签
-
-这类标签只有业务代码自己知道，OTel SDK 和 Collector 都推不出来。
-
-特点：
-
-- 和当前请求、当前发布、当前资源对象强相关
-- 值通常随请求变化
-- 最适合挂在关键 Span、结构化日志、业务指标上
-
-### 推荐字段
-
-#### DevFlow 业务上下文
-
-| Key | 说明 | 应该由谁设置 | 典型位置 |
-|-----|------|--------------|----------|
-| `devflow.project.id` | 当前项目 | 服务代码 | 入口 Span / 关键日志 |
-| `devflow.application.id` | 当前应用 | 服务代码 | 入口 Span / 关键日志 |
-| `devflow.environment.id` | 当前环境 | 服务代码 | 发布相关 Span |
-| `devflow.manifest.id` | 当前构建快照 | 服务代码 | release-service 构建链路 |
-| `devflow.release.id` | 当前发布快照 | 服务代码 | release-service / runtime-service |
-| `devflow.cluster.id` | 当前目标集群 | 服务代码 | 发布 / runtime 相关 Span |
-| `devflow.user.id` | 操作者 | 服务代码 | API 入口日志 / 审计 Span |
-
-#### 错误与业务事件
-
-| Key | 说明 | 典型位置 |
-|-----|------|----------|
-| `error.message` | 错误描述 | error log / failed span |
-| `error.type` | 错误类型 | error log / failed span |
-| `devflow.intent.kind` | 异步任务类型 | worker span |
-| `devflow.intent.status` | 异步任务状态 | worker span |
-
-#### 下游依赖上下文
-
-| Key | 说明 | 典型位置 |
-|-----|------|----------|
-| `db.operation` | SQL 操作类型 | DB span |
-| `messaging.system` | 消息系统 | MQ span |
-| `messaging.destination` | 队列/Topic | MQ span |
-
-### Go 示例
-
-```go
-span.SetAttributes(
-    attribute.String("devflow.project.id", projectID),
-    attribute.String("devflow.application.id", appID),
-    attribute.String("devflow.release.id", releaseID),
-)
-
-logger.Info("release started",
-    "devflow.project.id", projectID,
-    "devflow.application.id", appID,
-    "devflow.release.id", releaseID,
-)
-```
-
-### 规则
-
-- 业务标签优先使用 `devflow.*` 前缀
-- 只在**关键 Span / 关键日志 / 关键指标**上打，不要无脑全量铺
-- 高基数字段不要进 Metrics labels，例如 `user_id`、`request_id`、`trace_id`、`release_id`、自由文本错误
-
----
-
-## ③ OTel Collector 统一补充的公共标签
-
-这类字段来自运行环境，最适合由平台统一注入。
-
-特点：
-
-- 服务代码拿得到，但不应该每个服务自己写一遍
-- 不同语言、不同框架都该拿到同一份结果
-- 最典型的是 Kubernetes 元数据 enrichment
-
-### 推荐由 Collector 注入的字段
-
-| Key | 说明 | 典型 Processor |
-|-----|------|-----------------|
-| `k8s.cluster.name` | 集群名 | `resource` / `attributes` |
-| `k8s.namespace.name` | Namespace | `k8sattributes` |
-| `k8s.pod.name` | Pod 名 | `k8sattributes` |
-| `k8s.container.name` | 容器名 | `k8sattributes` |
-| `k8s.node.name` | 节点名 | `k8sattributes` |
-| `k8s.deployment.name` | Deployment 名 | `k8sattributes` |
-| `cloud.region` / `cloud.availability_zone` | 地域 / 可用区 | `resource` |
-
-### Collector 配置示意
-
-```yaml
-processors:
-  k8sattributes:
-    auth_type: serviceAccount
-    extract:
-      metadata:
-        - k8s.namespace.name
-        - k8s.pod.name
-        - k8s.container.name
-        - k8s.node.name
-        - k8s.deployment.name
-
-  resource:
-    attributes:
-      - key: k8s.cluster.name
-        value: prod-cluster
-        action: upsert
-      - key: cloud.region
-        value: cn-hangzhou
-        action: upsert
-```
-
-### 规则
-
-- **Kubernetes 元数据尽量不要服务自己写**
-- 集群名、地域、可用区这类平台公共标签，统一由 Collector 或网关注入
-- Collector 负责的是“运行环境补充”，**不要把业务 ID 逻辑搬到 Collector 里做**
-
-## 📌 按信号类型怎么落地
-
-| 信号类型 | 启动配置字段 | 服务代码字段 | Collector 字段 |
-|----------|--------------|--------------|----------------|
-| Metrics | `service_*` `deployment_environment_name` | `devflow.*`（仅低基数）`http_route` | `k8s.*` `cloud.*` |
-| Traces | `service.*` | `devflow.*` `error.*` `db.operation` | `k8s.*` `cloud.*` |
-| Logs | `service.*` | `devflow.*` `error.*` `trace_id` `span_id` | `k8s.*` `cloud.*` |
-
-### 具体执行建议
-
-#### 服务模板至少统一好
-
-- `SERVICE_NAME`
-- `OTEL_SERVICE_NAMESPACE`
-- `SERVICE_VERSION`
-- `OTEL_EXPORTER_OTLP_ENDPOINT`
-- Trace context propagators
-
-#### 每个服务开发至少补齐
-
-- API 入口日志里的 `trace_id`
-- 关键发布链路里的 `devflow.application.id`
-- 发布相关事件里的 `devflow.release.id`
-- 错误日志里的 `error.type` / `error.message`
-
-#### 平台侧至少统一好
-
-- `k8sattributes` processor
-- `k8s.cluster.name`
-- `cloud.region` / `cloud.availability_zone`
-- logs / metrics / traces 的公共 pipeline
-
-## 补充约束
-
-- Metrics 到 Trace 的跳转应使用 exemplar，而不是把 `trace_id` 当成 metrics label
-- Trace 可以通过 `spanmetrics` 派生补充 RED 指标，但不能替代原生 metrics
-- Kubernetes / Host / Cloud 字段优先由 Collector 补充，不要在业务代码里硬编码
-
----
-
-## 🚫 哪些不要放进 Collector
-
-下面这些字段虽然很重要，但**不适合**让 Collector 猜或统一生成：
-
-| 字段 | 为什么不适合 |
-|------|--------------|
-| `devflow.application.id` | Collector 不知道当前请求绑定的是哪个应用对象 |
-| `devflow.release.id` | 只有业务逻辑知道当前处理的是哪个 Release |
-| `devflow.manifest.id` | 不是运行时基础设施元数据 |
-| `error.message` | 属于业务错误上下文 |
-| `db.statement` | 属于具体依赖调用内容 |
-
-Collector 不应该承担业务语义推断。
-
----
-
-## 🧩 推荐职责分层
-
-### 服务模板 / 基础设施统一做
-
-- `SERVICE_NAME`
-- `OTEL_SERVICE_NAMESPACE`
-- `SERVICE_VERSION`
-- exporter endpoint
-- propagators
-- sampling 基础策略
-
-### 各服务开发者在代码里做
-
-- `devflow.*` 业务上下文
-- 错误上下文
-- 异步 worker / 发布流程上下文
-- 关键业务指标 label 选择
-
-### SRE / 平台组在 Collector 里做
-
-- `k8sattributes`
-- 集群 / 地域公共标签补齐
-- 多租户环境下统一脱敏、过滤、路由
-- logs / traces / metrics 的统一 pipeline
-
----
-
-## ✅ 最终判断清单
-
-遇到一个新标签时，可以这样判断：
-
-1. **它是否在整个进程生命周期里基本不变？**
-   - 是 → 放服务启动配置
-2. **它是否只和当前请求/业务对象有关？**
-   - 是 → 放服务代码里
-3. **它是否属于 Kubernetes / 云环境公共元数据？**
-   - 是 → 放 Collector 里
-4. **Collector 能不能仅靠运行环境可靠拿到它？**
-   - 不能 → 不要放 Collector
-
----
-
-## 关联阅读
-
-- [Labels / Attributes 规范](../standard/)
-- [可观测性组件矩阵](../component/)
+- `SERVICE_VERSION` 不建议直接使用完整镜像 digest 作为服务版本展示值。
+- 完整镜像 digest 更适合放在镜像元数据或部署系统里，而不是作为业务侧主版本标识。

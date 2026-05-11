@@ -240,15 +240,20 @@ func getRelease(c *gin.Context) {
 如果你的日志系统支持结构化字段，推荐至少打上：
 
 - `trace_id`
+- `span_id`
+- `logger.name`
+- `message`
 - `devflow.application.id`
 - `devflow.release.id`
-- `service.name`
 
 示例：
 
 ```go
 logger.Info("release fetched",
     "trace_id", trace.SpanContextFromContext(ctx).TraceID().String(),
+    "span_id", trace.SpanContextFromContext(ctx).SpanID().String(),
+    "logger.name", "business.event",
+    "message", "release fetched",
     "devflow.application.id", applicationID,
     "devflow.release.id", releaseID,
 )
@@ -265,7 +270,7 @@ logger.Info("release fetched",
 ### 推荐
 
 - `service_name`
-- `deployment_environment_name`
+- `service_namespace`
 - `http_route`
 - `http_response_status_code`
 
@@ -273,7 +278,8 @@ logger.Info("release fetched",
 
 - `user_id`
 - `request_id`
-- `release_id`（除非你非常明确知道存储成本）
+- `release_id`
+- `trace_id`
 - 原始 URL / query string
 
 简单理解：

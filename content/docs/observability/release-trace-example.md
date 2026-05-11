@@ -138,16 +138,17 @@ Trace 只是骨架，日志负责补细节。
 {
   "timestamp": "2026-05-10T15:21:08Z",
   "severity_text": "ERROR",
-  "logger.name": "http.error",
-  "body": "failed to create argo application",
-  "service.name": "release-service",
+  "logger.name": "release.lifecycle",
+  "message": "failed to create argo application: permission denied",
+  "caller": "release/service/release_executor.go:188",
   "trace_id": "2e71abb92e031efc2a7a1c4280959f4b",
   "span_id": "9fa312ab0044cd11",
+  "operation": "create_argo_application",
+  "resource": "release",
+  "result": "error",
   "devflow.application.id": "app-123",
   "devflow.environment.id": "env-prod",
-  "devflow.release.id": "rel-001",
-  "error.type": "argocd_api_error",
-  "error.message": "permission denied"
+  "devflow.release.id": "rel-001"
 }
 ```
 
@@ -170,10 +171,10 @@ Trace 只是骨架，日志负责补细节。
 
 所以相关指标至少应该能按这些维度聚合：
 
-- `service.name`
-- `http.route`
-- `http.response.status_code`
-- `deployment.environment.name`
+- `service_name`
+- `service_namespace`
+- `http_route`
+- `http_response_status_code`
 
 不建议把 `devflow.release.id` 直接打成高频 metrics label；它更适合留在 Trace 和 Logs 中。
 

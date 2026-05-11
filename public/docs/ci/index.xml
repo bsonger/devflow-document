@@ -1,39 +1,238 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>持续集成 on DevFlow</title>
-    <link>https://devflow.bei.com/document/docs/ci/</link>
-    <description>Recent content in 持续集成 on DevFlow</description>
-    <generator>Hugo</generator>
-    <language>zh-cn</language>
-    <atom:link href="https://devflow.bei.com/document/docs/ci/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>CI 架构</title>
-      <link>https://devflow.bei.com/document/docs/ci/architecture/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://devflow.bei.com/document/docs/ci/architecture/</guid>
-      <description>&lt;h1 id=&#34;-ci-架构&#34;&gt;🧪 CI 架构&lt;a class=&#34;anchor&#34; href=&#34;#-ci-%e6%9e%b6%e6%9e%84&#34;&gt;#&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;DevFlow 的 CI 基于 &lt;strong&gt;Tekton&lt;/strong&gt;，一个云原生的 CI/CD 框架。当你发起发布时，release-service 触发 Tekton Pipeline，自动完成从代码到镜像的转换。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;-流水线怎么跑&#34;&gt;🧭 流水线怎么跑&lt;a class=&#34;anchor&#34; href=&#34;#-%e6%b5%81%e6%b0%b4%e7%ba%bf%e6%80%8e%e4%b9%88%e8%b7%91&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;pre class=&#34;mermaid&#34;&gt;graph LR&#xA;    Release[&amp;#34;release-service&amp;lt;br/&amp;gt;发起构建&amp;#34;]&#xA;    Trigger[&amp;#34;Tekton Triggers&amp;lt;br/&amp;gt;接收请求&amp;#34;]&#xA;    Pipeline[&amp;#34;Tekton Pipeline&amp;lt;br/&amp;gt;执行流水线&amp;#34;]&#xA;    Registry[&amp;#34;OCI Registry&amp;lt;br/&amp;gt;存储镜像&amp;#34;]&#xA;&#xA;    Release --&amp;gt;|HTTP 请求| Trigger&#xA;    Trigger --&amp;gt;|创建| Pipeline&#xA;    Pipeline --&amp;gt;|推送镜像| Registry&#xA;    Pipeline --&amp;gt;|回调结果| Release&lt;/pre&gt;&lt;ol&gt;&#xA;&lt;li&gt;release-service 发一个 HTTP 请求给 Tekton Triggers&lt;/li&gt;&#xA;&lt;li&gt;Tekton 创建一个 PipelineRun，开始跑流水线&lt;/li&gt;&#xA;&lt;li&gt;流水线跑完后，把镜像推送到仓库，再回调通知 release-service&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;流水线里的-7-个任务&#34;&gt;流水线里的 7 个任务&lt;a class=&#34;anchor&#34; href=&#34;#%e6%b5%81%e6%b0%b4%e7%ba%bf%e9%87%8c%e7%9a%84-7-%e4%b8%aa%e4%bb%bb%e5%8a%a1&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;p&gt;一次标准构建要跑 7 个任务，串行执行：&lt;/p&gt;&#xA;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;拉代码 → 扫漏洞 → 跑测试 → 构建镜像 → 生成清单 → 签名 → 再扫一遍&lt;/code&gt;&lt;/pre&gt;&lt;table&gt;&#xA;  &lt;thead&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;th&gt;任务&lt;/th&gt;&#xA;          &lt;th&gt;做什么&lt;/th&gt;&#xA;          &lt;th&gt;失败了会怎样&lt;/th&gt;&#xA;      &lt;/tr&gt;&#xA;  &lt;/thead&gt;&#xA;  &lt;tbody&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;源码获取&lt;/td&gt;&#xA;          &lt;td&gt;从 Git 拉代码&lt;/td&gt;&#xA;          &lt;td&gt;构建终止&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;静态扫描&lt;/td&gt;&#xA;          &lt;td&gt;检查敏感信息和依赖漏洞&lt;/td&gt;&#xA;          &lt;td&gt;构建终止&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;测试&lt;/td&gt;&#xA;          &lt;td&gt;跑单元测试和集成测试&lt;/td&gt;&#xA;          &lt;td&gt;构建终止&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;镜像构建&lt;/td&gt;&#xA;          &lt;td&gt;用 Buildah 构建容器镜像&lt;/td&gt;&#xA;          &lt;td&gt;构建终止&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;SBOM 生成&lt;/td&gt;&#xA;          &lt;td&gt;记录镜像里有什么组件&lt;/td&gt;&#xA;          &lt;td&gt;继续（警告）&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;镜像签名&lt;/td&gt;&#xA;          &lt;td&gt;用 Cosign 给镜像签名&lt;/td&gt;&#xA;          &lt;td&gt;继续（警告）&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;漏洞扫描&lt;/td&gt;&#xA;          &lt;td&gt;用 Trivy 扫最终镜像&lt;/td&gt;&#xA;          &lt;td&gt;发现严重漏洞则终止&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;  &lt;/tbody&gt;&#xA;&lt;/table&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;-关键工具&#34;&gt;🧰 关键工具&lt;a class=&#34;anchor&#34; href=&#34;#-%e5%85%b3%e9%94%ae%e5%b7%a5%e5%85%b7&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;h3 id=&#34;tekton-pipelines--流水线引擎&#34;&gt;Tekton Pipelines — 流水线引擎&lt;a class=&#34;anchor&#34; href=&#34;#tekton-pipelines--%e6%b5%81%e6%b0%b4%e7%ba%bf%e5%bc%95%e6%93%8e&#34;&gt;#&lt;/a&gt;&lt;/h3&gt;&#xA;&lt;p&gt;定义和执行 CI 流水线的框架。Pipeline 由多个 Task 组成，Task 之间通过共享目录传递数据（比如源码、构建产物）。&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>标准 CI 流程</title>
-      <link>https://devflow.bei.com/document/docs/ci/standard/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://devflow.bei.com/document/docs/ci/standard/</guid>
-      <description>&lt;h1 id=&#34;-标准-ci-流程&#34;&gt;🏭 标准 CI 流程&lt;a class=&#34;anchor&#34; href=&#34;#-%e6%a0%87%e5%87%86-ci-%e6%b5%81%e7%a8%8b&#34;&gt;#&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;&lt;span class=&#34;df-badge&#34;&gt;&lt;img class=&#34;df-inline-icon&#34; src=&#34;https://devflow.bei.com/document/icons/brands/tekton.svg&#34; alt=&#34;Tekton&#34; loading=&#34;lazy&#34; /&gt;&#xA; Tekton&lt;/span&gt; &lt;span class=&#34;df-badge&#34;&gt;📜 SBOM&lt;/span&gt; &lt;span class=&#34;df-badge&#34;&gt;✍️ Cosign&lt;/span&gt; &lt;span class=&#34;df-badge&#34;&gt;📦 OCI Registry&lt;/span&gt;&lt;/p&gt;&#xA;&lt;p&gt;DevFlow 的标准 CI 流水线确保每个镜像在发布前都经过完整的安全和质量检查。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;-流程概览&#34;&gt;🗺️ 流程概览&lt;a class=&#34;anchor&#34; href=&#34;#-%e6%b5%81%e7%a8%8b%e6%a6%82%e8%a7%88&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;pre class=&#34;mermaid&#34;&gt;graph LR&#xA;    A[&amp;#34;拉代码&amp;#34;] --&amp;gt; B[&amp;#34;静态扫描&amp;#34;]&#xA;    B --&amp;gt; C[&amp;#34;单元测试&amp;#34;]&#xA;    C --&amp;gt; D[&amp;#34;集成测试&amp;#34;]&#xA;    D --&amp;gt; E[&amp;#34;构建镜像&amp;#34;]&#xA;    E --&amp;gt; F[&amp;#34;生成 SBOM&amp;#34;]&#xA;    F --&amp;gt; G[&amp;#34;签名镜像&amp;#34;]&#xA;    G --&amp;gt; H[&amp;#34;漏洞扫描&amp;#34;]&#xA;    H --&amp;gt; I[&amp;#34;推送仓库&amp;#34;]&#xA;    I --&amp;gt; J[&amp;#34;通知 DevFlow&amp;#34;]&lt;/pre&gt;&lt;hr&gt;&#xA;&lt;h2 id=&#34;-各阶段说明&#34;&gt;🔍 各阶段说明&lt;a class=&#34;anchor&#34; href=&#34;#-%e5%90%84%e9%98%b6%e6%ae%b5%e8%af%b4%e6%98%8e&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;h3 id=&#34;1-拉代码&#34;&gt;1. 拉代码&lt;a class=&#34;anchor&#34; href=&#34;#1-%e6%8b%89%e4%bb%a3%e7%a0%81&#34;&gt;#&lt;/a&gt;&lt;/h3&gt;&#xA;&lt;p&gt;从 Git 仓库拉取指定版本的代码，验证 commit hash 与 Manifest 中记录的是否一致。&lt;/p&gt;&#xA;&lt;p&gt;如果不一致，说明代码在发起发布后被人修改过，构建终止。&lt;/p&gt;&#xA;&lt;h3 id=&#34;2-静态扫描&#34;&gt;2. 静态扫描&lt;a class=&#34;anchor&#34; href=&#34;#2-%e9%9d%99%e6%80%81%e6%89%ab%e6%8f%8f&#34;&gt;#&lt;/a&gt;&lt;/h3&gt;&#xA;&lt;p&gt;扫描代码中的安全问题：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;敏感信息泄露&lt;/strong&gt; — 有没有硬编码的密码、Token、密钥&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;依赖漏洞&lt;/strong&gt; — 引用的第三方库有没有已知漏洞&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;代码规范&lt;/strong&gt; — 是否符合团队编码规范&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h3 id=&#34;3-单元测试&#34;&gt;3. 单元测试&lt;a class=&#34;anchor&#34; href=&#34;#3-%e5%8d%95%e5%85%83%e6%b5%8b%e8%af%95&#34;&gt;#&lt;/a&gt;&lt;/h3&gt;&#xA;&lt;p&gt;执行项目的单元测试。&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>CI 组件矩阵</title>
-      <link>https://devflow.bei.com/document/docs/ci/component/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://devflow.bei.com/document/docs/ci/component/</guid>
-      <description>&lt;h1 id=&#34;-ci-用到哪些工具&#34;&gt;🧰 CI 用到哪些工具&lt;a class=&#34;anchor&#34; href=&#34;#-ci-%e7%94%a8%e5%88%b0%e5%93%aa%e4%ba%9b%e5%b7%a5%e5%85%b7&#34;&gt;#&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;&lt;span class=&#34;df-badge&#34;&gt;Pipeline&lt;/span&gt; &lt;span class=&#34;df-badge&#34;&gt;Security&lt;/span&gt; &lt;span class=&#34;df-badge&#34;&gt;📦 OCI Registry&lt;/span&gt;&lt;/p&gt;&#xA;&lt;p&gt;DevFlow 的 CI 流水线依赖以下工具，每个负责一个具体环节。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;-核心工具&#34;&gt;🧱 核心工具&lt;a class=&#34;anchor&#34; href=&#34;#-%e6%a0%b8%e5%bf%83%e5%b7%a5%e5%85%b7&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;h3 id=&#34;tekton-pipelines--流水线引擎&#34;&gt;Tekton Pipelines — 流水线引擎&lt;a class=&#34;anchor&#34; href=&#34;#tekton-pipelines--%e6%b5%81%e6%b0%b4%e7%ba%bf%e5%bc%95%e6%93%8e&#34;&gt;#&lt;/a&gt;&lt;/h3&gt;&#xA;&lt;p&gt;CI 的&amp;quot;骨架&amp;quot;。定义流水线的结构：有哪些步骤、按什么顺序执行、步骤之间怎么共享数据。&lt;/p&gt;&#xA;&lt;h3 id=&#34;tekton-triggers--触发器&#34;&gt;Tekton Triggers — 触发器&lt;a class=&#34;anchor&#34; href=&#34;#tekton-triggers--%e8%a7%a6%e5%8f%91%e5%99%a8&#34;&gt;#&lt;/a&gt;&lt;/h3&gt;&#xA;&lt;p&gt;接收 release-service 的 HTTP 请求，自动创建流水线执行实例。相当于 CI 的&amp;quot;入口门卫&amp;quot;。&lt;/p&gt;&#xA;&lt;h3 id=&#34;-buildah--镜像构建&#34;&gt;🏗️ Buildah — 镜像构建&lt;a class=&#34;anchor&#34; href=&#34;#-buildah--%e9%95%9c%e5%83%8f%e6%9e%84%e5%bb%ba&#34;&gt;#&lt;/a&gt;&lt;/h3&gt;&#xA;&lt;p&gt;在容器里构建容器镜像，不需要 Docker Daemon。支持多阶段构建，可以做出很小的最终镜像。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;-安全工具&#34;&gt;🔐 安全工具&lt;a class=&#34;anchor&#34; href=&#34;#-%e5%ae%89%e5%85%a8%e5%b7%a5%e5%85%b7&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;h3 id=&#34;-syft--sbom-生成&#34;&gt;📜 Syft — SBOM 生成&lt;a class=&#34;anchor&#34; href=&#34;#-syft--sbom-%e7%94%9f%e6%88%90&#34;&gt;#&lt;/a&gt;&lt;/h3&gt;&#xA;&lt;p&gt;分析镜像里装了什么软件、什么版本，生成&amp;quot;软件物料清单&amp;quot;。出了问题可以追溯：「这个漏洞影响我们吗？影响哪些服务？」&lt;/p&gt;&#xA;&lt;h3 id=&#34;-cosign--镜像签名&#34;&gt;✍️ Cosign — 镜像签名&lt;a class=&#34;anchor&#34; href=&#34;#-cosign--%e9%95%9c%e5%83%8f%e7%ad%be%e5%90%8d&#34;&gt;#&lt;/a&gt;&lt;/h3&gt;&#xA;&lt;p&gt;给镜像做数字签名，防止镜像被替换或篡改。就像给快递包裹贴防伪标签。&lt;/p&gt;&#xA;&lt;h3 id=&#34;-trivy--漏洞扫描&#34;&gt;🛡️ Trivy — 漏洞扫描&lt;a class=&#34;anchor&#34; href=&#34;#-trivy--%e6%bc%8f%e6%b4%9e%e6%89%ab%e6%8f%8f&#34;&gt;#&lt;/a&gt;&lt;/h3&gt;&#xA;&lt;p&gt;扫描镜像里的已知安全漏洞。发现高危漏洞会直接阻断构建，不让有问题的镜像进入部署环节。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;-工具清单&#34;&gt;🧰 工具清单&lt;a class=&#34;anchor&#34; href=&#34;#-%e5%b7%a5%e5%85%b7%e6%b8%85%e5%8d%95&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;table&gt;&#xA;  &lt;thead&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;th&gt;工具&lt;/th&gt;&#xA;          &lt;th&gt;用途&lt;/th&gt;&#xA;          &lt;th&gt;是否必须&lt;/th&gt;&#xA;      &lt;/tr&gt;&#xA;  &lt;/thead&gt;&#xA;  &lt;tbody&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;&lt;img class=&#34;df-inline-icon&#34; src=&#34;https://devflow.bei.com/document/icons/brands/tekton.svg&#34; alt=&#34;Tekton&#34; loading=&#34;lazy&#34; /&gt;&#xA; Tekton Pipelines&lt;/td&gt;&#xA;          &lt;td&gt;流水线编排&lt;/td&gt;&#xA;          &lt;td&gt;✅&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;&lt;img class=&#34;df-inline-icon&#34; src=&#34;https://devflow.bei.com/document/icons/brands/tekton.svg&#34; alt=&#34;Tekton&#34; loading=&#34;lazy&#34; /&gt;&#xA; Tekton Triggers&lt;/td&gt;&#xA;          &lt;td&gt;事件触发&lt;/td&gt;&#xA;          &lt;td&gt;✅&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;Buildah&lt;/td&gt;&#xA;          &lt;td&gt;镜像构建&lt;/td&gt;&#xA;          &lt;td&gt;✅&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;Syft&lt;/td&gt;&#xA;          &lt;td&gt;SBOM 生成&lt;/td&gt;&#xA;          &lt;td&gt;✅&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;Cosign&lt;/td&gt;&#xA;          &lt;td&gt;镜像签名&lt;/td&gt;&#xA;          &lt;td&gt;✅&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;Trivy&lt;/td&gt;&#xA;          &lt;td&gt;漏洞扫描&lt;/td&gt;&#xA;          &lt;td&gt;✅&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;&lt;img class=&#34;df-inline-icon&#34; src=&#34;https://devflow.bei.com/document/icons/brands/opentelemetry.svg&#34; alt=&#34;OpenTelemetry&#34; loading=&#34;lazy&#34; /&gt;&#xA; OpenTelemetry&lt;/td&gt;&#xA;          &lt;td&gt;链路追踪&lt;/td&gt;&#xA;          &lt;td&gt;✅&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;&lt;img class=&#34;df-inline-icon&#34; src=&#34;https://devflow.bei.com/document/icons/brands/tekton.svg&#34; alt=&#34;Tekton Dashboard&#34; loading=&#34;lazy&#34; /&gt;&#xA; Tekton Dashboard&lt;/td&gt;&#xA;          &lt;td&gt;流水线可视化&lt;/td&gt;&#xA;          &lt;td&gt;❌（可选）&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;  &lt;/tbody&gt;&#xA;&lt;/table&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;-流水线示意图&#34;&gt;🏭 流水线示意图&lt;a class=&#34;anchor&#34; href=&#34;#-%e6%b5%81%e6%b0%b4%e7%ba%bf%e7%a4%ba%e6%84%8f%e5%9b%be&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;&lt;img class=&#34;df-inline-icon&#34; src=&#34;https://devflow.bei.com/document/icons/brands/tekton.svg&#34; alt=&#34;Tekton&#34; loading=&#34;lazy&#34; /&gt;&#xA; Tekton Trigger 接收请求&#xA;        ↓&#xA;创建 PipelineRun&#xA;        ↓&#xA;┌─────────────────────────────────────────────┐&#xA;│  拉代码 → 扫描 → 测试 → 构建 → SBOM → 签名 → 再扫  │&#xA;└─────────────────────────────────────────────┘&#xA;        ↓&#xA;推送镜像到 OCI Registry&#xA;        ↓&#xA;回调 release-service&lt;/code&gt;&lt;/pre&gt;</description>
-    </item>
-    <item>
-      <title>队列与并发控制</title>
-      <link>https://devflow.bei.com/document/docs/ci/queue/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://devflow.bei.com/document/docs/ci/queue/</guid>
-      <description>&lt;h1 id=&#34;-队列与并发控制&#34;&gt;🧵 队列与并发控制&lt;a class=&#34;anchor&#34; href=&#34;#-%e9%98%9f%e5%88%97%e4%b8%8e%e5%b9%b6%e5%8f%91%e6%8e%a7%e5%88%b6&#34;&gt;#&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;&lt;span class=&#34;df-badge&#34;&gt;&lt;img class=&#34;df-inline-icon&#34; src=&#34;https://devflow.bei.com/document/icons/brands/tekton.svg&#34; alt=&#34;Tekton&#34; loading=&#34;lazy&#34; /&gt;&#xA; Tekton&lt;/span&gt; &lt;span class=&#34;df-badge&#34;&gt;⚖️ Priority&lt;/span&gt; &lt;span class=&#34;df-badge&#34;&gt;📏 Quota&lt;/span&gt;&lt;/p&gt;&#xA;&lt;p&gt;当很多人同时发版时，CI 集群可能会被压垮。DevFlow 提供了几种策略来控制构建的排队和并发。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;-四种排队策略&#34;&gt;🛣️ 四种排队策略&lt;a class=&#34;anchor&#34; href=&#34;#-%e5%9b%9b%e7%a7%8d%e6%8e%92%e9%98%9f%e7%ad%96%e7%95%a5&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;h3 id=&#34;fifo--先来后到&#34;&gt;FIFO — 先来后到&lt;a class=&#34;anchor&#34; href=&#34;#fifo--%e5%85%88%e6%9d%a5%e5%90%8e%e5%88%b0&#34;&gt;#&lt;/a&gt;&lt;/h3&gt;&#xA;&lt;p&gt;按提交顺序排队，先到先构建。最简单、最公平。&lt;/p&gt;&#xA;&lt;p&gt;适合：资源充足，不需要区分优先级的场景。&lt;/p&gt;&#xA;&lt;h3 id=&#34;priority--优先级&#34;&gt;Priority — 优先级&lt;a class=&#34;anchor&#34; href=&#34;#priority--%e4%bc%98%e5%85%88%e7%ba%a7&#34;&gt;#&lt;/a&gt;&lt;/h3&gt;&#xA;&lt;p&gt;给不同的构建设置优先级：&lt;/p&gt;&#xA;&lt;table&gt;&#xA;  &lt;thead&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;th&gt;优先级&lt;/th&gt;&#xA;          &lt;th&gt;场景&lt;/th&gt;&#xA;      &lt;/tr&gt;&#xA;  &lt;/thead&gt;&#xA;  &lt;tbody&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;高&lt;/td&gt;&#xA;          &lt;td&gt;生产环境热修复&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;中&lt;/td&gt;&#xA;          &lt;td&gt;日常开发构建&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;低&lt;/td&gt;&#xA;          &lt;td&gt;文档更新、依赖升级&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;  &lt;/tbody&gt;&#xA;&lt;/table&gt;&#xA;&lt;p&gt;生产环境的紧急补丁应该优先构建，内部工具的更新可以等等。&lt;/p&gt;&#xA;&lt;h3 id=&#34;per-repo--按仓库限流&#34;&gt;Per-Repo — 按仓库限流&lt;a class=&#34;anchor&#34; href=&#34;#per-repo--%e6%8c%89%e4%bb%93%e5%ba%93%e9%99%90%e6%b5%81&#34;&gt;#&lt;/a&gt;&lt;/h3&gt;&#xA;&lt;p&gt;每个仓库最多同时跑 N 个构建。防止某个仓库的频繁提交独占 CI 资源。&lt;/p&gt;&#xA;&lt;p&gt;适合：多团队共享 CI 集群，需要资源隔离。&lt;/p&gt;&#xA;&lt;h3 id=&#34;per-cluster--多集群分流&#34;&gt;Per-Cluster — 多集群分流&lt;a class=&#34;anchor&#34; href=&#34;#per-cluster--%e5%a4%9a%e9%9b%86%e7%be%a4%e5%88%86%e6%b5%81&#34;&gt;#&lt;/a&gt;&lt;/h3&gt;&#xA;&lt;p&gt;构建任务分发到多个 CI 集群执行，水平扩展。&lt;/p&gt;&#xA;&lt;p&gt;适合：超大规模构建，单集群撑不住。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;-kubernetes-里的实现&#34;&gt;☸️ Kubernetes 里的实现&lt;a class=&#34;anchor&#34; href=&#34;#-kubernetes-%e9%87%8c%e7%9a%84%e5%ae%9e%e7%8e%b0&#34;&gt;#&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;p&gt;Tekton 跑在 Kubernetes 上，排队和并发控制通过 K8s 原生机制实现：&lt;/p&gt;&#xA;&lt;h3 id=&#34;priorityclass--设置优先级&#34;&gt;PriorityClass — 设置优先级&lt;a class=&#34;anchor&#34; href=&#34;#priorityclass--%e8%ae%be%e7%bd%ae%e4%bc%98%e5%85%88%e7%ba%a7&#34;&gt;#&lt;/a&gt;&lt;/h3&gt;&#xA;&lt;p&gt;给 PipelineRun 打上优先级标签，高优先级的任务可以先调度。&lt;/p&gt;&#xA;&lt;h3 id=&#34;resourcequota--限制总资源&#34;&gt;ResourceQuota — 限制总资源&lt;a class=&#34;anchor&#34; href=&#34;#resourcequota--%e9%99%90%e5%88%b6%e6%80%bb%e8%b5%84%e6%ba%90&#34;&gt;#&lt;/a&gt;&lt;/h3&gt;&#xA;&lt;p&gt;限制 CI 命名空间最多能用多少 CPU 和内存，防止构建把集群资源吃光。&lt;/p&gt;</description>
-    </item>
-  </channel>
-</rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>持续集成 on DevFlow</title><link>https://devflow.bei.com/document/docs/ci/</link><description>Recent content in 持续集成 on DevFlow</description><generator>Hugo</generator><language>zh-cn</language><atom:link href="https://devflow.bei.com/document/docs/ci/index.xml" rel="self" type="application/rss+xml"/><item><title>CI 架构</title><link>https://devflow.bei.com/document/docs/ci/architecture/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/ci/architecture/</guid><description>&lt;h1 id="-ci-架构"&gt;🧪 CI 架构&lt;/h1&gt;
+&lt;p&gt;DevFlow 的 CI 基于 &lt;strong&gt;Tekton&lt;/strong&gt;，一个云原生的 CI/CD 框架。当你发起发布时，release-service 触发 Tekton Pipeline，自动完成从代码到镜像的转换。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="-流水线怎么跑"&gt;🧭 流水线怎么跑&lt;/h2&gt;
+&lt;pre tabindex="0"&gt;&lt;code class="language-mermaid" data-lang="mermaid"&gt;graph LR
+ Release[&amp;#34;release-service&amp;lt;br/&amp;gt;发起构建&amp;#34;]
+ Trigger[&amp;#34;Tekton Triggers&amp;lt;br/&amp;gt;接收请求&amp;#34;]
+ Pipeline[&amp;#34;Tekton Pipeline&amp;lt;br/&amp;gt;执行流水线&amp;#34;]
+ Registry[&amp;#34;OCI Registry&amp;lt;br/&amp;gt;存储镜像&amp;#34;]
+
+ Release --&amp;gt;|HTTP 请求| Trigger
+ Trigger --&amp;gt;|创建| Pipeline
+ Pipeline --&amp;gt;|推送镜像| Registry
+ Pipeline --&amp;gt;|回调结果| Release
+&lt;/code&gt;&lt;/pre&gt;&lt;ol&gt;
+&lt;li&gt;release-service 发一个 HTTP 请求给 Tekton Triggers&lt;/li&gt;
+&lt;li&gt;Tekton 创建一个 PipelineRun，开始跑流水线&lt;/li&gt;
+&lt;li&gt;流水线跑完后，把镜像推送到仓库，再回调通知 release-service&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h2 id="流水线里的-7-个任务"&gt;流水线里的 7 个任务&lt;/h2&gt;
+&lt;p&gt;一次标准构建要跑 7 个任务，串行执行：&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;拉代码 → 扫漏洞 → 跑测试 → 构建镜像 → 生成清单 → 签名 → 再扫一遍
+&lt;/code&gt;&lt;/pre&gt;&lt;table&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th&gt;任务&lt;/th&gt;
+ &lt;th&gt;做什么&lt;/th&gt;
+ &lt;th&gt;失败了会怎样&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td&gt;源码获取&lt;/td&gt;
+ &lt;td&gt;从 Git 拉代码&lt;/td&gt;
+ &lt;td&gt;构建终止&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;静态扫描&lt;/td&gt;
+ &lt;td&gt;检查敏感信息和依赖漏洞&lt;/td&gt;
+ &lt;td&gt;构建终止&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;测试&lt;/td&gt;
+ &lt;td&gt;跑单元测试和集成测试&lt;/td&gt;
+ &lt;td&gt;构建终止&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;镜像构建&lt;/td&gt;
+ &lt;td&gt;用 Buildah 构建容器镜像&lt;/td&gt;
+ &lt;td&gt;构建终止&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;SBOM 生成&lt;/td&gt;
+ &lt;td&gt;记录镜像里有什么组件&lt;/td&gt;
+ &lt;td&gt;继续（警告）&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;镜像签名&lt;/td&gt;
+ &lt;td&gt;用 Cosign 给镜像签名&lt;/td&gt;
+ &lt;td&gt;继续（警告）&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;漏洞扫描&lt;/td&gt;
+ &lt;td&gt;用 Trivy 扫最终镜像&lt;/td&gt;
+ &lt;td&gt;发现严重漏洞则终止&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h2 id="-关键工具"&gt;🧰 关键工具&lt;/h2&gt;
+&lt;h3 id="tekton-pipelines--流水线引擎"&gt;Tekton Pipelines — 流水线引擎&lt;/h3&gt;
+&lt;p&gt;定义和执行 CI 流水线的框架。Pipeline 由多个 Task 组成，Task 之间通过共享目录传递数据（比如源码、构建产物）。&lt;/p&gt;</description></item><item><title>标准 CI 流程</title><link>https://devflow.bei.com/document/docs/ci/standard/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/ci/standard/</guid><description>&lt;h1 id="-标准-ci-流程"&gt;🏭 标准 CI 流程&lt;/h1&gt;
+&lt;p&gt;&lt;span class="df-badge"&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/tekton.svg" alt="Tekton" loading="lazy" /&gt;
+ Tekton&lt;/span&gt; &lt;span class="df-badge"&gt;📜 SBOM&lt;/span&gt; &lt;span class="df-badge"&gt;✍️ Cosign&lt;/span&gt; &lt;span class="df-badge"&gt;📦 OCI Registry&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;DevFlow 的标准 CI 流水线确保每个镜像在发布前都经过完整的安全和质量检查。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="-流程概览"&gt;🗺️ 流程概览&lt;/h2&gt;
+&lt;pre tabindex="0"&gt;&lt;code class="language-mermaid" data-lang="mermaid"&gt;graph LR
+ A[&amp;#34;拉代码&amp;#34;] --&amp;gt; B[&amp;#34;静态扫描&amp;#34;]
+ B --&amp;gt; C[&amp;#34;单元测试&amp;#34;]
+ C --&amp;gt; D[&amp;#34;集成测试&amp;#34;]
+ D --&amp;gt; E[&amp;#34;构建镜像&amp;#34;]
+ E --&amp;gt; F[&amp;#34;生成 SBOM&amp;#34;]
+ F --&amp;gt; G[&amp;#34;签名镜像&amp;#34;]
+ G --&amp;gt; H[&amp;#34;漏洞扫描&amp;#34;]
+ H --&amp;gt; I[&amp;#34;推送仓库&amp;#34;]
+ I --&amp;gt; J[&amp;#34;通知 DevFlow&amp;#34;]
+&lt;/code&gt;&lt;/pre&gt;&lt;hr&gt;
+&lt;h2 id="-各阶段说明"&gt;🔍 各阶段说明&lt;/h2&gt;
+&lt;h3 id="1-拉代码"&gt;1. 拉代码&lt;/h3&gt;
+&lt;p&gt;从 Git 仓库拉取指定版本的代码，验证 commit hash 与 Manifest 中记录的是否一致。&lt;/p&gt;
+&lt;p&gt;如果不一致，说明代码在发起发布后被人修改过，构建终止。&lt;/p&gt;
+&lt;h3 id="2-静态扫描"&gt;2. 静态扫描&lt;/h3&gt;
+&lt;p&gt;扫描代码中的安全问题：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;敏感信息泄露&lt;/strong&gt; — 有没有硬编码的密码、Token、密钥&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;依赖漏洞&lt;/strong&gt; — 引用的第三方库有没有已知漏洞&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;代码规范&lt;/strong&gt; — 是否符合团队编码规范&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="3-单元测试"&gt;3. 单元测试&lt;/h3&gt;
+&lt;p&gt;执行项目的单元测试。&lt;/p&gt;</description></item><item><title>CI 组件矩阵</title><link>https://devflow.bei.com/document/docs/ci/component/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/ci/component/</guid><description>&lt;h1 id="-ci-用到哪些工具"&gt;🧰 CI 用到哪些工具&lt;/h1&gt;
+&lt;p&gt;&lt;span class="df-badge"&gt;Pipeline&lt;/span&gt; &lt;span class="df-badge"&gt;Security&lt;/span&gt; &lt;span class="df-badge"&gt;📦 OCI Registry&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;DevFlow 的 CI 流水线依赖以下工具，每个负责一个具体环节。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="-核心工具"&gt;🧱 核心工具&lt;/h2&gt;
+&lt;h3 id="tekton-pipelines--流水线引擎"&gt;Tekton Pipelines — 流水线引擎&lt;/h3&gt;
+&lt;p&gt;CI 的&amp;quot;骨架&amp;quot;。定义流水线的结构：有哪些步骤、按什么顺序执行、步骤之间怎么共享数据。&lt;/p&gt;
+&lt;h3 id="tekton-triggers--触发器"&gt;Tekton Triggers — 触发器&lt;/h3&gt;
+&lt;p&gt;接收 release-service 的 HTTP 请求，自动创建流水线执行实例。相当于 CI 的&amp;quot;入口门卫&amp;quot;。&lt;/p&gt;
+&lt;h3 id="-buildah--镜像构建"&gt;🏗️ Buildah — 镜像构建&lt;/h3&gt;
+&lt;p&gt;在容器里构建容器镜像，不需要 Docker Daemon。支持多阶段构建，可以做出很小的最终镜像。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="-安全工具"&gt;🔐 安全工具&lt;/h2&gt;
+&lt;h3 id="-syft--sbom-生成"&gt;📜 Syft — SBOM 生成&lt;/h3&gt;
+&lt;p&gt;分析镜像里装了什么软件、什么版本，生成&amp;quot;软件物料清单&amp;quot;。出了问题可以追溯：「这个漏洞影响我们吗？影响哪些服务？」&lt;/p&gt;
+&lt;h3 id="-cosign--镜像签名"&gt;✍️ Cosign — 镜像签名&lt;/h3&gt;
+&lt;p&gt;给镜像做数字签名，防止镜像被替换或篡改。就像给快递包裹贴防伪标签。&lt;/p&gt;
+&lt;h3 id="-trivy--漏洞扫描"&gt;🛡️ Trivy — 漏洞扫描&lt;/h3&gt;
+&lt;p&gt;扫描镜像里的已知安全漏洞。发现高危漏洞会直接阻断构建，不让有问题的镜像进入部署环节。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="-工具清单"&gt;🧰 工具清单&lt;/h2&gt;
+&lt;table&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th&gt;工具&lt;/th&gt;
+ &lt;th&gt;用途&lt;/th&gt;
+ &lt;th&gt;是否必须&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/tekton.svg" alt="Tekton" loading="lazy" /&gt;
+ Tekton Pipelines&lt;/td&gt;
+ &lt;td&gt;流水线编排&lt;/td&gt;
+ &lt;td&gt;✅&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/tekton.svg" alt="Tekton" loading="lazy" /&gt;
+ Tekton Triggers&lt;/td&gt;
+ &lt;td&gt;事件触发&lt;/td&gt;
+ &lt;td&gt;✅&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;Buildah&lt;/td&gt;
+ &lt;td&gt;镜像构建&lt;/td&gt;
+ &lt;td&gt;✅&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;Syft&lt;/td&gt;
+ &lt;td&gt;SBOM 生成&lt;/td&gt;
+ &lt;td&gt;✅&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;Cosign&lt;/td&gt;
+ &lt;td&gt;镜像签名&lt;/td&gt;
+ &lt;td&gt;✅&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;Trivy&lt;/td&gt;
+ &lt;td&gt;漏洞扫描&lt;/td&gt;
+ &lt;td&gt;✅&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/opentelemetry.svg" alt="OpenTelemetry" loading="lazy" /&gt;
+ OpenTelemetry&lt;/td&gt;
+ &lt;td&gt;链路追踪&lt;/td&gt;
+ &lt;td&gt;✅&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/tekton.svg" alt="Tekton Dashboard" loading="lazy" /&gt;
+ Tekton Dashboard&lt;/td&gt;
+ &lt;td&gt;流水线可视化&lt;/td&gt;
+ &lt;td&gt;❌（可选）&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h2 id="-流水线示意图"&gt;🏭 流水线示意图&lt;/h2&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/tekton.svg" alt="Tekton" loading="lazy" /&gt;
+ Tekton Trigger 接收请求
+ ↓
+创建 PipelineRun
+ ↓
+┌─────────────────────────────────────────────┐
+│ 拉代码 → 扫描 → 测试 → 构建 → SBOM → 签名 → 再扫 │
+└─────────────────────────────────────────────┘
+ ↓
+推送镜像到 OCI Registry
+ ↓
+回调 release-service
+&lt;/code&gt;&lt;/pre&gt;</description></item><item><title>队列与并发控制</title><link>https://devflow.bei.com/document/docs/ci/queue/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/ci/queue/</guid><description>&lt;h1 id="-队列与并发控制"&gt;🧵 队列与并发控制&lt;/h1&gt;
+&lt;p&gt;&lt;span class="df-badge"&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/tekton.svg" alt="Tekton" loading="lazy" /&gt;
+ Tekton&lt;/span&gt; &lt;span class="df-badge"&gt;⚖️ Priority&lt;/span&gt; &lt;span class="df-badge"&gt;📏 Quota&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;当很多人同时发版时，CI 集群可能会被压垮。DevFlow 提供了几种策略来控制构建的排队和并发。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="-四种排队策略"&gt;🛣️ 四种排队策略&lt;/h2&gt;
+&lt;h3 id="fifo--先来后到"&gt;FIFO — 先来后到&lt;/h3&gt;
+&lt;p&gt;按提交顺序排队，先到先构建。最简单、最公平。&lt;/p&gt;
+&lt;p&gt;适合：资源充足，不需要区分优先级的场景。&lt;/p&gt;
+&lt;h3 id="priority--优先级"&gt;Priority — 优先级&lt;/h3&gt;
+&lt;p&gt;给不同的构建设置优先级：&lt;/p&gt;
+&lt;table&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th&gt;优先级&lt;/th&gt;
+ &lt;th&gt;场景&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td&gt;高&lt;/td&gt;
+ &lt;td&gt;生产环境热修复&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;中&lt;/td&gt;
+ &lt;td&gt;日常开发构建&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;低&lt;/td&gt;
+ &lt;td&gt;文档更新、依赖升级&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;生产环境的紧急补丁应该优先构建，内部工具的更新可以等等。&lt;/p&gt;
+&lt;h3 id="per-repo--按仓库限流"&gt;Per-Repo — 按仓库限流&lt;/h3&gt;
+&lt;p&gt;每个仓库最多同时跑 N 个构建。防止某个仓库的频繁提交独占 CI 资源。&lt;/p&gt;
+&lt;p&gt;适合：多团队共享 CI 集群，需要资源隔离。&lt;/p&gt;
+&lt;h3 id="per-cluster--多集群分流"&gt;Per-Cluster — 多集群分流&lt;/h3&gt;
+&lt;p&gt;构建任务分发到多个 CI 集群执行，水平扩展。&lt;/p&gt;
+&lt;p&gt;适合：超大规模构建，单集群撑不住。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="-kubernetes-里的实现"&gt;☸️ Kubernetes 里的实现&lt;/h2&gt;
+&lt;p&gt;Tekton 跑在 Kubernetes 上，排队和并发控制通过 K8s 原生机制实现：&lt;/p&gt;
+&lt;h3 id="priorityclass--设置优先级"&gt;PriorityClass — 设置优先级&lt;/h3&gt;
+&lt;p&gt;给 PipelineRun 打上优先级标签，高优先级的任务可以先调度。&lt;/p&gt;
+&lt;h3 id="resourcequota--限制总资源"&gt;ResourceQuota — 限制总资源&lt;/h3&gt;
+&lt;p&gt;限制 CI 命名空间最多能用多少 CPU 和内存，防止构建把集群资源吃光。&lt;/p&gt;</description></item></channel></rss>
