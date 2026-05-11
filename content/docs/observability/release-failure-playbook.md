@@ -290,4 +290,4 @@ graph LR
 - [发布生命周期](../../architecture/lifecycle/)
 - [发布链路 Trace 示例](../release-trace-example/)
 - [Collector 生产排障 Runbook](../collector-runbook/)
-- [五大服务观测字段清单](../service-checklist/)
+- [现有服务字段清单](../service-checklist/)

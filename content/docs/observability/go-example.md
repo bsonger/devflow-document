@@ -354,6 +354,6 @@ logger.Info("release fetched",
 
 ## 关联阅读
 
-- [公共 Attributes](../attributes/)
-- [Labels / Attributes 规范](../standard/)
+- [字段命名与来源边界](../attributes/)
+- [信号字段契约](../standard/)
 - [OTel Collector 配置模板](../collector/)

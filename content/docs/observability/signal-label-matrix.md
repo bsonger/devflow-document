@@ -3,7 +3,7 @@ title: "信号标签矩阵"
 weight: 74
 ---
 
-# Metrics / Traces / Logs 标签矩阵
+# 信号标签矩阵
 
 <span class="df-badge">Metrics</span> <span class="df-badge">Traces</span> <span class="df-badge">Logs</span> <span class="df-badge">Label Matrix</span>
 
@@ -15,6 +15,12 @@ weight: 74
 读完后，你应该能完成一件事：
 
 > 判断一个标签应该进哪种信号，以及它应该放在哪一层维护。
+
+如果你需要完整字段契约或详细示例，不要停在这页：
+
+- 完整字段定义看 [信号字段契约](../standard/)
+- 字段命名和来源边界看 [字段命名与来源边界](../attributes/)
+- 日志分类和 `logger.name` / `caller` 细节看 [结构化日志规范](../logging/)
 
 ---
 
@@ -196,7 +202,7 @@ Log 应该优先回答：
 
 ---
 
-## 一个实用决策规则
+## 5. 一个实用决策规则
 
 看到一个新标签时，依次问：
 
@@ -218,7 +224,7 @@ Log 应该优先回答：
 
 ---
 
-## 当前最值得统一的标签边界
+## 6. 当前最值得统一的标签边界
 
 建议平台优先统一注入：
 
@@ -248,7 +254,7 @@ Log 应该优先回答：
 
 ## 关联阅读
 
-- [公共 Attributes](../attributes/)
-- [Labels / Attributes 规范](../standard/)
+- [字段命名与来源边界](../attributes/)
+- [信号字段契约](../standard/)
 - [结构化日志规范](../logging/)
 - [OTel 接入检查清单](../onboarding-checklist/)

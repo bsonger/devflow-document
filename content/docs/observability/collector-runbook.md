@@ -353,6 +353,6 @@ Collector 在 DevFlow 中最常见的问题之一，就是 `k8s.*` 字段没补�
 ## 关联阅读
 
 - [OTel Collector 配置模板](../collector/)
-- [公共 Attributes](../attributes/)
+- [字段命名与来源边界](../attributes/)
 - [OTel 接入检查清单](../onboarding-checklist/)
 - [发布链路 Trace 示例](../release-trace-example/)

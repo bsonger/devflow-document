@@ -19,6 +19,13 @@ weight: 77
 
 > **判断一个服务是否已经具备“最小可排障”的 Metrics / Logs / Traces 能力。**
 
+这页是验收清单，不重复定义完整规范：
+
+- 字段命名和来源边界看 [字段命名与来源边界](../attributes/)
+- 完整字段契约看 [信号字段契约](../standard/)
+- 最小必需字段速查看 [信号标签矩阵](../signal-label-matrix/)
+- 日志字段和 `logger.name` / `caller` 规则看 [结构化日志规范](../logging/)
+
 ---
 
 ## 🧭 先看完成标准
@@ -148,7 +155,7 @@ weight: 77
 
 - [ ] 有 HTTP 请求数 / 延迟 / 错误率类指标
 - [ ] Metrics labels 至少包含 `service_name`
-- [ ] HTTP 指标至少包含 `http_request_method` `http_route` `http_response_status_code`
+- [ ] HTTP 指标至少包含 `http_request_method` `http_route` `http_response_status_code` `http_response_status_class`
 - [ ] 没有明显高基数 labels
 
 ### 不该放进 Metrics labels 的字段
@@ -243,8 +250,8 @@ Prometheus / Grafana 中应该能按：
 
 ## 关联阅读
 
-- [公共 Attributes](../attributes/)
-- [Labels / Attributes 规范](../standard/)
+- [字段命名与来源边界](../attributes/)
+- [信号字段契约](../standard/)
 - [OTel Collector 配置模板](../collector/)
 - [Go 服务最小 OTel 接入示例](../go-example/)
-- [五大服务观测字段清单](../service-checklist/)
+- [现有服务字段清单](../service-checklist/)

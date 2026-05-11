@@ -1,18 +1,23 @@
 ---
-title: "Labels / Attributes 规范"
+title: "信号字段契约"
 weight: 73
 ---
 
-# 标签使用规范
+# 信号字段契约
+
+<span class="df-badge">Metrics</span> <span class="df-badge">Traces</span> <span class="df-badge">Logs</span> <span class="df-badge">Contract</span>
 
 DevFlow 的 Metrics、Traces、Logs 需要能关联，但它们不是同一种信号，也不应该承载同一份字段集合。
 
-- Metrics 负责错误率、流量、延迟、SLO 和告警
-- Traces 负责请求链路、慢点定位、下游瓶颈
-- Logs 负责错误文本、业务事件、panic 细节
-
 本文档定义三种信号的标准 labels / attributes，并明确哪些字段适合做
 metrics label，哪些字段只能留在 trace 或 log 中。
+
+这页主要解决一个问题：
+
+> **每一种信号的完整字段契约到底是什么。**
+
+如果你只想快速查“每种信号最少必须带什么字段”，优先看
+[信号标签矩阵](../signal-label-matrix/)；这页保留的是完整字段契约。
 
 ---
 
@@ -38,7 +43,7 @@ Metrics 用于统计、聚合、告警、SLO，是主事实源。
 
 ### 低频或场景化 labels
 
-这些字段只有在基数受控、业务有明确聚合价值时才考虑使用：
+这些字段只有在基数受控、业务确实需要聚合时才考虑使用：
 
 - `service_version`
 - `result`
@@ -49,7 +54,7 @@ Metrics 用于统计、聚合、告警、SLO，是主事实源。
 - `callback_type`
 - `task_name`
 
-### 不能作为高频 metrics label 的字段
+### 禁止放进高频 metrics label 的字段
 
 有些字段不适合做标签，因为值太多会导致存储爆炸：
 
@@ -65,25 +70,15 @@ Metrics 用于统计、聚合、告警、SLO，是主事实源。
 | `manifest_id` | 高频变化，适合放 Trace / Log / DB |
 | `error.message` | 文本无界，无法聚合 |
 
-这些字段应该放在 Logs 或 Traces 里，而不是 Metrics 标签里。
-
-Metrics 到 Trace 的关联应通过 exemplar，而不是把 `trace_id` 放成 label。
+这些字段应该放在 Logs 或 Traces 里，而不是 Metrics 标签里。Metrics 到 Trace 的关联应通过 exemplar，而不是把 `trace_id` 放成 label。
 
 ### Trace-derived metrics
 
-Trace 可以派生出一部分 RED 指标，比如 request rate、5xx error rate、
-latency histogram，典型做法是使用 OTel Collector 的 `spanmetrics`
-connector。
+Trace 可以派生出一部分 RED 指标，比如 request rate、5xx error rate、latency histogram，典型做法是使用 OTel Collector 的 `spanmetrics` connector。
 
-但这类 trace-derived metrics 只能作为补充面，不能替代原生 metrics：
+但这类 trace-derived metrics 只能作为补充面，不能替代原生 metrics。不要因为 Trace 里已经有 method / route / status / duration，就删除原生 HTTP metrics。
 
-- 原生 metrics：主事实源，用于告警、SLO、长趋势
-- trace-derived metrics：补充分析面，用于 trace-first 视角和关联排障
-
-不要因为 Trace 里已经有 method / route / status / duration，就删除原生
-HTTP metrics。Trace-derived metrics 是补充面，不是主告警面。
-
-### 指标值
+### 典型指标值
 
 | Key | 类型 | 说明 | 示例 |
 |-----|-----|-----|-----|
@@ -99,8 +94,6 @@ HTTP metrics。Trace-derived metrics 是补充面，不是主告警面。
 Traces 用于单次请求链路、慢点定位、下游瓶颈分析。
 
 ### Span Attributes
-
-**Span 关注单次操作的上下文和状态，用于 Trace 追踪**
 
 #### 核心 span attributes
 
@@ -140,11 +133,7 @@ Traces 用于单次请求链路、慢点定位、下游瓶颈分析。
 | `devflow.manifest.id` | string | 涉及哪个构建 | `f93ba63d-...` |
 | `devflow.release.id` | string | 涉及哪个发布 | `ea48bef3-...` |
 
-这样从链路里可以直接看到：这个请求在处理哪个应用的发布。
-
 ### Resource Attributes
-
-**表示 Span 或 Metric 所运行的物理/虚拟资源上下文，包括服务和 Kubernetes 信息**
 
 #### 常见资源字段
 
@@ -214,6 +203,17 @@ Logs 用于记录错误文本、业务事件、状态变化，不替代 Trace。
 
 如果错误日志需要更具体的失败文本，优先直接写进 `message`，而不是再引入新的自由文本日志字段。
 
+---
+
+## 这页不解决什么
+
+这页不负责两类问题：
+
+- 不负责解释字段该由服务代码、OTel SDK 还是 Collector 注入
+  - 这部分看 [字段命名与来源边界](../attributes/)
+- 不负责给出最小必需字段速查表
+  - 这部分看 [信号标签矩阵](../signal-label-matrix/)
+
 ### 日志专属测量字段
 
 | Key | 类型 | 说明 | 示例 |
@@ -224,13 +224,7 @@ Logs 用于记录错误文本、业务事件、状态变化，不替代 Trace。
 
 ## 三者怎么关联
 
-排查问题的典型路径：
-
-1. Grafana 仪表盘看到错误率飙升（Metrics）
-2. 点击指标上的 exemplar，跳转到对应 Trace
-3. 从 Trace 找到具体服务，再跳转到该服务的 Log
-
-三个系统通过统一的 `trace_id`、服务身份和路由语义串在一起。
+排查路径通常是：先看 Metrics，再通过 exemplar 进入 Trace，最后按 `trace_id` 进入 Log。
 
 ```mermaid
 graph LR

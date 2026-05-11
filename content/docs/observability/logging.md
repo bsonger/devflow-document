@@ -5,7 +5,13 @@ weight: 78
 
 # 结构化日志规范
 
+<span class="df-badge">Logs</span> <span class="df-badge">logger.name</span> <span class="df-badge">caller</span> <span class="df-badge">Contract</span>
+
 这页给文档读者一个当前可执行的日志契约，而不是理想化的大而全字段表。
+
+这页主要解决一个问题：
+
+> **一条可排障的结构化日志最少该长什么样。**
 
 核心原则只有三条：
 
@@ -439,6 +445,6 @@ Logs 的职责不是重复一遍完整 trace，而是补充 trace 上没有的�
 
 ## 关联阅读
 
-- [公共 Attributes](../attributes/)
-- [Labels / Attributes 规范](../standard/)
+- [字段命名与来源边界](../attributes/)
+- [信号字段契约](../standard/)
 - [信号标签矩阵](../signal-label-matrix/)

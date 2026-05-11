@@ -245,7 +245,7 @@ Trace 只是骨架，日志负责补细节。
 ## 关联阅读
 
 - [发布生命周期](../../architecture/lifecycle/)
-- [公共 Attributes](../attributes/)
+- [字段命名与来源边界](../attributes/)
 - [结构化日志规范](../logging/)
-- [五大服务观测字段清单](../service-checklist/)
+- [现有服务字段清单](../service-checklist/)
 - [OTel 接入检查清单](../onboarding-checklist/)

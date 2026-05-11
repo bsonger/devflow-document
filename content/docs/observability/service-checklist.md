@@ -1,15 +1,22 @@
 ---
-title: "五大服务观测字段清单"
+title: "现有服务字段清单"
 weight: 79
 ---
 
-# 🧾 五大服务观测字段清单
+# 🧾 现有服务字段清单
 
 <span class="df-badge">meta-service</span> <span class="df-badge">config-service</span> <span class="df-badge">network-service</span> <span class="df-badge">release-service</span> <span class="df-badge">runtime-service</span>
 
 这页把“原则”进一步落到每个服务应该重点打哪些字段。
 
 目标不是要求每条日志/每个 Span 都完全一样，而是给每个服务一份**最小但够用**的观测清单。
+
+这页不重复定义通用规范：
+
+- 命名和来源边界看 [字段命名与来源边界](../attributes/)
+- 完整字段契约看 [信号字段契约](../standard/)
+- 最小必需字段看 [信号标签矩阵](../signal-label-matrix/)
+- 日志专属规则看 [结构化日志规范](../logging/)
 
 ---
 
@@ -205,6 +212,6 @@ weight: 79
 
 ## 关联阅读
 
-- [公共 Attributes](../attributes/)
+- [字段命名与来源边界](../attributes/)
 - [结构化日志规范](../logging/)
 - [Go 服务最小 OTel 接入示例](../go-example/)

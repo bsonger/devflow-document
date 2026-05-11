@@ -1,12 +1,18 @@
 ---
-title: "公共 Attributes"
+title: "字段命名与来源边界"
 weight: 72
 ---
 
-# 公共 Attributes
+# 字段命名与来源边界
+
+<span class="df-badge">Attributes</span> <span class="df-badge">Naming</span> <span class="df-badge">Ownership</span>
 
 DevFlow 的 Metrics、Logs、Traces 需要能关联，但三者不应该机械地重复同一份字段。
 这页定义的是“公共命名和来源边界”，不是要求每种信号都带完全一样的属性。
+
+这页主要解决一个问题：
+
+> **同一个字段到底该叫什么，以及它该由哪一层负责提供。**
 
 ---
 
@@ -82,17 +88,15 @@ Metrics 发现问题，通过 exemplar 跳到 Trace，再按 `trace_id` 跳到 L
 
 - `http.route` 必须是模板路由，不要把原始动态路径拿去做 metrics label。
 - `url.path` 可以出现在 log 和 trace 中，但不应进入高频 metrics label。
-- 如果是 HTTP metrics，当前 DevFlow 还要求 `http_response_status_class` 作为必需维度存在。
 
 ---
 
-## 统一规范
+## 命名与来源边界
 
 1. **同一请求生命周期**内的三种信号应共享最小关联语义，而不是共享全部字段：
    - `service.name` / `service_name`
    - `http.route` / `http_route`
    - `http.response.status_code` / `http_response_status_code`
-   - `http_response_status_class`（仅 Metrics）
    - `trace_id`（仅 Trace / Log / exemplar，不是 metrics label）
 
 2. **命名规范**：
@@ -105,7 +109,6 @@ Metrics 发现问题，通过 exemplar 跳到 Trace，再按 `trace_id` 跳到 L
 3. **来源要求**：
    - 服务资源字段优先来自环境变量和 OTel Resource Attributes
    - `trace_id` / `span_id` 优先来自当前 span context
-   - `trace_id` / `span_id` 在新日志契约里应视为必需字段
    - Kubernetes / Host / Cloud 字段优先由 Collector 补充
    - 不要在业务代码里硬编码 Pod、Node、Cluster、Cloud 信息
 

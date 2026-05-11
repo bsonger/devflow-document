@@ -1,9 +1,9 @@
 ---
-title: "可观测性组件矩阵"
+title: "可观测性技术栈与组件矩阵"
 weight: 71
 ---
 
-# 📡 可观测性技术栈
+# 📡 可观测性技术栈与组件矩阵
 
 <span class="df-badge">{{< brand-icon name="prometheus" alt="Prometheus" >}} Metrics</span> <span class="df-badge">📜 Logs</span> <span class="df-badge">{{< brand-icon name="opentelemetry" alt="OpenTelemetry" >}} Traces</span> <span class="df-badge">{{< brand-icon name="grafana" alt="Grafana" >}} Grafana</span>
 

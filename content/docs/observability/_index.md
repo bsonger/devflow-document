@@ -5,125 +5,104 @@ weight: 70
 
 # 📡 可观测性
 
-发布过程中出了问题，你怎么知道？发布后性能有没有下降？DevFlow 通过 Metrics、Logs、Traces 三个维度，让你对系统状态了如指掌。
+DevFlow 的 observability 文档主要回答四类问题：
+
+1. 基础规范是什么
+2. 新服务怎么接入
+3. 现有服务最少要补哪些字段
+4. 线上出问题时先去哪排查
 
 ---
 
-## 🧱 三大支柱
+## 先选入口
 
-### 📈 Metrics（指标）— 系统的体检报告
-
-CPU 用了多少？请求延迟多少？错误率有没有飙升？
-
-DevFlow 所有服务都通过 {{< brand-icon name="prometheus" alt="Prometheus" >}} Prometheus 暴露指标，在 {{< brand-icon name="grafana" alt="Grafana" >}} Grafana 里能看到完整的仪表盘。
-
-### 📜 Logs（日志）— 系统的日记
-
-应用打印了哪些日志？有没有报错？
-
-通过 Loki 统一收集，按服务、级别、关键词检索，再由 {{< brand-icon name="grafana" alt="Grafana" >}} Grafana 展示。
-
-### 🧵 Traces（链路）— 请求的足迹
-
-一个请求从进来到出去，经过了哪些服务？每个服务花了多少时间？
-
-通过 {{< brand-icon name="opentelemetry" alt="OpenTelemetry" >}} OpenTelemetry 自动采集，结合 Tempo / Grafana 查看完整链路。
-
----
-
-## 🏷️ 标签到底该配在哪
-
-Observability 里最容易混乱的一点，不是“字段叫什么”，而是“**该谁来配**”。
-
-| 类型 | 举例 | 配置位置 | 负责人 |
-|------|------|----------|--------|
-| 服务启动标签 | `service.name` `service.version` | 服务 Deployment / SDK 初始化 | 平台模板 + 服务配置 |
-| 服务业务标签 | `devflow.application.id` `devflow.release.id` `error.message` | 服务代码 | 服务开发者 |
-| 平台公共标签 | `deployment.environment.name` `k8s.pod.name` `k8s.namespace.name` `k8s.cluster.name` | OTel Collector | SRE / 平台组 |
-
-建议先读 [Attributes 规范](attributes/)，再看 [Labels 规范](standard/)。
-
-如果你现在要做字段验收，直接先看 [信号标签矩阵](signal-label-matrix/)：
-
-- 那一页集中列了 Metrics / Traces / Logs 各自的必需标签
-- 当前口径里，`http_response_status_class` 是 HTTP metrics 必需维度
-- 当前口径里，日志里的 `trace_id` / `span_id` 是必需字段
-
----
-
-## 🛤️ 学习路径
-
-### 我想先理解概念
-
-适合第一次梳理 observability 结构、标签归属和字段标准的读者。
-
-| 推荐顺序 | 文档 | 你会得到什么 |
-|---------|------|--------------|
-| 1 | [组件矩阵](component/) | 看清可观测性技术栈由哪些组件组成 |
-| 2 | [Attributes 规范](attributes/) | 先分清标签到底该配在哪一层 |
-| 3 | [Labels 规范](standard/) | 明确 Metric / Trace / Log 的字段标准 |
-| 4 | [信号标签矩阵](signal-label-matrix/) | 直接查看三种信号各自的必需标签和维护边界 |
-
-### 我想接入一个新服务
-
-适合要把新服务接进 DevFlow observability 的开发者。
-
-| 推荐顺序 | 文档 | 你会得到什么 |
-|---------|------|--------------|
-| 1 | [Collector 模板](collector/) | 明确平台侧 OTel Collector 怎么配 |
-| 2 | [Go 接入示例](go-example/) | 看一个最小可运行的 Go 接入方式 |
-| 3 | [结构化日志规范](logging/) | 知道日志最少该打哪些字段，尤其是 `trace_id` / `span_id` |
-| 4 | [服务字段清单](service-checklist/) | 对照每个服务应该补哪些观测字段 |
-| 5 | [OTel 接入检查清单](onboarding-checklist/) | 最后做一遍最小验收 |
-
-### 我想排查线上问题
-
-适合值班排障、发布失败分析、链路异常定位。
-
-| 推荐顺序 | 文档 | 你会得到什么 |
-|---------|------|--------------|
-| 1 | [发布链路 Trace 示例](release-trace-example/) | 看一条理想的发布链路应该长什么样 |
-| 2 | [Collector 生产排障 Runbook](collector-runbook/) | 排查断流、缺字段、延迟升高 |
-| 3 | [发布失败排障剧本](release-failure-playbook/) | 按 Tekton / Render / OCI / Argo CD / Runtime 五段拆解失败 |
-
----
-
-## 👀 DevFlow 中的可观测性
-
-### 🚀 发布过程中看什么
-
-| 👁️ 看什么 | 🛠️ 工具 | 🎯 目的 |
-|--------|------|------|
-| 构建耗时 | {{< brand-icon name="tekton" alt="Tekton" >}} Tekton Dashboard | CI 流水线是否变慢 |
-| 发布进度 | DevFlow Console | 当前在哪个阶段 |
-| Pod 状态 | runtime-service | 新版本是否正常运行 |
-| 流量切换 | {{< brand-icon name="grafana" alt="Grafana" >}} Grafana + {{< brand-icon name="istio" alt="Istio" >}} Istio | Canary 灰度是否正常 |
-| 错误率 | {{< brand-icon name="prometheus" alt="Prometheus" >}} Prometheus + {{< brand-icon name="grafana" alt="Grafana" >}} Grafana | 新版本有没有引入 bug |
-
-### ✅ 发布后看什么
-
-| 👁️ 看什么 | 🛠️ 工具 | 🎯 目的 |
-|--------|------|------|
-| 请求延迟 | {{< brand-icon name="prometheus" alt="Prometheus" >}} Prometheus | 性能有没有退化 |
-| 错误率 | {{< brand-icon name="prometheus" alt="Prometheus" >}} Prometheus | 稳定性如何 |
-| 资源使用 | {{< brand-icon name="prometheus" alt="Prometheus" >}} Prometheus | 需不需要扩容 |
-| 业务指标 | {{< brand-icon name="prometheus" alt="Prometheus" >}} Prometheus | 转化率、成交额等 |
-
----
-
-## 🧾 全部文档索引
-
-| 📄 文档 | 📝 内容 |
+| 你现在要做什么 | 先看哪组 |
 |------|------|
-| [组件矩阵](component/) | 可观测性技术栈详细对比 |
-| [Attributes 规范](attributes/) | 统一的标签命名规范 |
-| [Labels 规范](standard/) | Metric / Trace / Log 的标准字段完整定义 |
-| [信号标签矩阵](signal-label-matrix/) | 汇总 Metrics / Traces / Logs 的必需标签，以及这些标签该由谁维护 |
-| [Collector 模板](collector/) | OTel Collector 的推荐配置模板 |
-| [Go 接入示例](go-example/) | Go 服务最小 OTel 接入示例 |
-| [结构化日志规范](logging/) | DevFlow 日志字段与级别建议 |
-| [服务字段清单](service-checklist/) | 五大服务该打哪些关键观测字段 |
-| [OTel 接入检查清单](onboarding-checklist/) | 新服务接入 observability 的最小验收清单 |
-| [发布链路 Trace 示例](release-trace-example/) | 用一条完整发布链路说明 Trace / Log / Metric 如何串联排障 |
-| [Collector 生产排障 Runbook](collector-runbook/) | 线上 observability 断流、缺字段、延迟升高时的值班排障顺序 |
-| [发布失败排障剧本](release-failure-playbook/) | 按 Tekton / Render / OCI / Argo CD / Runtime 五段拆解发布失败排查 |
+| 理解规范边界 | [基础规范](#基础规范) |
+| 接一个新服务 | [接入实现](#接入实现) |
+| 收口现有服务字段 | [服务约定](#服务约定) |
+| 排查线上问题 | [排障运行](#排障运行) |
+
+---
+
+## 基础规范
+
+这组文档回答的是：字段叫什么、该由谁注入、三种信号各自最少要带什么。
+
+| 文档 | 单一职责 |
+|------|----------|
+| [技术栈与组件矩阵](component/) | 先看清 observability 技术栈和组件边界 |
+| [字段命名与来源边界](attributes/) | 只看公共命名和来源归属 |
+| [信号字段契约](standard/) | 看 Metrics / Traces / Logs 的完整字段契约 |
+| [信号标签矩阵](signal-label-matrix/) | 直接查三种信号的必需字段和禁止项 |
+
+推荐阅读顺序：
+
+- 先读 [字段命名与来源边界](attributes/)
+- 再读 [信号字段契约](standard/)
+- 最后把 [信号标签矩阵](signal-label-matrix/) 当速查表
+
+---
+
+## 接入实现
+
+这组文档回答的是：规范已经定了，代码和 Collector 应该怎么落地。
+
+| 文档 | 单一职责 |
+|------|----------|
+| [Collector 模板](collector/) | 平台侧该如何注入公共资源字段 |
+| [Go 接入示例](go-example/) | 一个 Go 服务的最小接入骨架 |
+| [结构化日志规范](logging/) | 日志字段、`logger.name`、`caller`、日志分类契约 |
+| [OTel 接入检查清单](onboarding-checklist/) | 新服务接入时的最小验收清单 |
+
+推荐阅读顺序：
+
+- 先看 [Collector 模板](collector/)
+- 再看 [Go 接入示例](go-example/)
+- 然后对照 [结构化日志规范](logging/)
+- 最后按 [OTel 接入检查清单](onboarding-checklist/) 验收
+
+---
+
+## 服务约定
+
+这组文档回答的是：不是新服务模板，而是当前 DevFlow 既有服务到底还缺什么字段。
+
+| 文档 | 单一职责 |
+|------|----------|
+| [现有服务字段清单](service-checklist/) | 把规范落到现有服务的字段补齐任务上 |
+
+---
+
+## 排障运行
+
+这组文档回答的是：系统已经上线了，断流、慢链路、发布失败时先看哪里。
+
+| 文档 | 单一职责 |
+|------|----------|
+| [发布链路 Trace 示例](release-trace-example/) | 定义一条“可排障”的发布链路应该长什么样 |
+| [Collector 生产排障 Runbook](collector-runbook/) | 排查 Metrics / Logs / Traces 断流、缺字段、延迟升高 |
+| [发布失败排障剧本](release-failure-playbook/) | 按发布阶段缩小失败范围并判断根因 |
+
+---
+
+## 全部文档
+
+按阅读目的分组后的完整索引：
+
+- 基础规范
+  - [技术栈与组件矩阵](component/)
+  - [字段命名与来源边界](attributes/)
+  - [信号字段契约](standard/)
+  - [信号标签矩阵](signal-label-matrix/)
+- 接入实现
+  - [Collector 模板](collector/)
+  - [Go 接入示例](go-example/)
+  - [结构化日志规范](logging/)
+  - [OTel 接入检查清单](onboarding-checklist/)
+- 服务约定
+  - [现有服务字段清单](service-checklist/)
+- 排障运行
+  - [发布链路 Trace 示例](release-trace-example/)
+  - [Collector 生产排障 Runbook](collector-runbook/)
+  - [发布失败排障剧本](release-failure-playbook/)
