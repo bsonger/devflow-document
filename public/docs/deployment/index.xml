@@ -1,10 +1,16 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>部署指南 on DevFlow</title><link>https://devflow.bei.com/document/docs/deployment/</link><description>Recent content in 部署指南 on DevFlow</description><generator>Hugo</generator><language>zh-cn</language><atom:link href="https://devflow.bei.com/document/docs/deployment/index.xml" rel="self" type="application/rss+xml"/><item><title>部署步骤</title><link>https://devflow.bei.com/document/docs/deployment/guide/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/deployment/guide/</guid><description>&lt;h1 id="部署步骤"&gt;部署步骤&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>部署指南 on DevFlow</title><link>https://devflow.bei.com/document/docs/deployment/</link><description>Recent content in 部署指南 on DevFlow</description><generator>Hugo</generator><language>zh-cn</language><atom:link href="https://devflow.bei.com/document/docs/deployment/index.xml" rel="self" type="application/rss+xml"/><item><title>部署步骤</title><link>https://devflow.bei.com/document/docs/deployment/guide/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/deployment/guide/</guid><description>&lt;h1 id="部署步骤"&gt;
+ 部署步骤
+ &lt;a class="anchor" href="#%e9%83%a8%e7%bd%b2%e6%ad%a5%e9%aa%a4"&gt;#&lt;/a&gt;
+&lt;/h1&gt;
 &lt;p&gt;把 DevFlow 部署到自己的 Kubernetes 集群，总共需要 11 步。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;如果你只是想&lt;strong&gt;体验&lt;/strong&gt; DevFlow，建议先用 Docker Compose 或 Kind 搭一个最小环境，不用一上来就生产级部署。&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;hr&gt;
-&lt;h2 id="先看这页怎么用"&gt;先看这页怎么用&lt;/h2&gt;
+&lt;h2 id="先看这页怎么用"&gt;
+ 先看这页怎么用
+ &lt;a class="anchor" href="#%e5%85%88%e7%9c%8b%e8%bf%99%e9%a1%b5%e6%80%8e%e4%b9%88%e7%94%a8"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
 &lt;p&gt;这页有两种读法：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;&lt;strong&gt;体验路径&lt;/strong&gt;：先看“部署前检查表”，再直接跳到每一步里的安装命令，最后执行“验证端到端流程”&lt;/li&gt;
@@ -12,7 +18,10 @@
 &lt;/ol&gt;
 &lt;p&gt;如果你只想验证 &lt;strong&gt;Rolling&lt;/strong&gt; 发布，可以跳过 Argo Rollouts；如果你要验证 &lt;strong&gt;Canary&lt;/strong&gt;，还必须安装 Istio。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="部署前检查表"&gt;部署前检查表&lt;/h2&gt;
+&lt;h2 id="部署前检查表"&gt;
+ 部署前检查表
+ &lt;a class="anchor" href="#%e9%83%a8%e7%bd%b2%e5%89%8d%e6%a3%80%e6%9f%a5%e8%a1%a8"&gt;#&lt;/a&gt;
+&lt;/h2&gt;
 &lt;p&gt;在动手之前，至少确认下面这些输入已经准备好：&lt;/p&gt;
 &lt;table&gt;
  &lt;thead&gt;

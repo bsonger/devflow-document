@@ -1,888 +1,28 @@
-<!DOCTYPE html>
-<html lang="zh-cn" dir="ltr">
-<head>
-  <!--
-Made with Book Theme
-https://github.com/alex-shpak/hugo-book
--->
+<!doctype html><html lang=zh-cn dir=ltr><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content='
+  📁 Project 与 Application
+  #
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="📁 Project 与 Application# Project — 项目# Project 是 DevFlow 中最顶层的组织单元。你可以把它理解成一个文件夹，把相关的应用放在一起。
-为什么需要分层# 没有 Project/Application 分层时，你的应用列表可能是这样的：
-payment-gateway order-service inventory-service user-service analytics-collector analytics-processor analytics-api8 个服务混在一起，新来的同事完全不知道谁和谁有关系。
-有了分层之后：
-电商中台 ├─ payment-gateway ├─ order-service ├─ inventory-service └─ user-service 数据中台 ├─ analytics-collector ├─ analytics-processor └─ analytics-api一目了然。每个团队只看自己负责的项目，不会被别人家的服务干扰。
-分层不仅是组织问题，更是权限隔离的基础。你可以给&#34;数据中台&#34;团队只开放数据中台的权限，他们看不到电商中台的任何东西。
-例子# Project: 电商中台 ├─ order-service（订单服务） ├─ payment-service（支付服务） ├─ inventory-service（库存服务） └─ user-service（用户服务）Project: 数据中台 ├─ data-collector ├─ data-processor └─ data-api什么时候用# 按业务域划分（电商、支付、数据中台） 按团队划分（前端团队、后端团队） 按合规要求划分（需要独立权限隔离的业务） Application — 应用# Application 是 DevFlow 中最核心的实体。它代表一个可独立构建和部署的服务。
-一个应用包含什么# 名称: order-service 所属项目: 电商中台 代码仓库: github.com/company/order-service当前实现里 Application 主要保存什么# 当前 devflow-service 里的 Application 主要保存：
-">
-<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
-<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
-<meta name="color-scheme" content="light dark"><meta property="og:url" content="https://devflow.bei.com/document/docs/concepts/project-application/">
-  <meta property="og:site_name" content="DevFlow">
-  <meta property="og:title" content="Project 与 Application">
-  <meta property="og:description" content="📁 Project 与 Application# Project — 项目# Project 是 DevFlow 中最顶层的组织单元。你可以把它理解成一个文件夹，把相关的应用放在一起。
-为什么需要分层# 没有 Project/Application 分层时，你的应用列表可能是这样的：
-payment-gateway order-service inventory-service user-service analytics-collector analytics-processor analytics-api8 个服务混在一起，新来的同事完全不知道谁和谁有关系。
-有了分层之后：
-电商中台 ├─ payment-gateway ├─ order-service ├─ inventory-service └─ user-service 数据中台 ├─ analytics-collector ├─ analytics-processor └─ analytics-api一目了然。每个团队只看自己负责的项目，不会被别人家的服务干扰。
-分层不仅是组织问题，更是权限隔离的基础。你可以给&#34;数据中台&#34;团队只开放数据中台的权限，他们看不到电商中台的任何东西。
-例子# Project: 电商中台 ├─ order-service（订单服务） ├─ payment-service（支付服务） ├─ inventory-service（库存服务） └─ user-service（用户服务）Project: 数据中台 ├─ data-collector ├─ data-processor └─ data-api什么时候用# 按业务域划分（电商、支付、数据中台） 按团队划分（前端团队、后端团队） 按合规要求划分（需要独立权限隔离的业务） Application — 应用# Application 是 DevFlow 中最核心的实体。它代表一个可独立构建和部署的服务。
-一个应用包含什么# 名称: order-service 所属项目: 电商中台 代码仓库: github.com/company/order-service当前实现里 Application 主要保存什么# 当前 devflow-service 里的 Application 主要保存：">
-  <meta property="og:locale" content="zh_cn">
-  <meta property="og:type" content="article">
-    <meta property="article:section" content="docs">
 
+  Project — 项目
+  #
 
-  <meta itemprop="name" content="Project 与 Application">
-  <meta itemprop="description" content="📁 Project 与 Application# Project — 项目# Project 是 DevFlow 中最顶层的组织单元。你可以把它理解成一个文件夹，把相关的应用放在一起。
-为什么需要分层# 没有 Project/Application 分层时，你的应用列表可能是这样的：
-payment-gateway order-service inventory-service user-service analytics-collector analytics-processor analytics-api8 个服务混在一起，新来的同事完全不知道谁和谁有关系。
-有了分层之后：
-电商中台 ├─ payment-gateway ├─ order-service ├─ inventory-service └─ user-service 数据中台 ├─ analytics-collector ├─ analytics-processor └─ analytics-api一目了然。每个团队只看自己负责的项目，不会被别人家的服务干扰。
-分层不仅是组织问题，更是权限隔离的基础。你可以给&#34;数据中台&#34;团队只开放数据中台的权限，他们看不到电商中台的任何东西。
-例子# Project: 电商中台 ├─ order-service（订单服务） ├─ payment-service（支付服务） ├─ inventory-service（库存服务） └─ user-service（用户服务）Project: 数据中台 ├─ data-collector ├─ data-processor └─ data-api什么时候用# 按业务域划分（电商、支付、数据中台） 按团队划分（前端团队、后端团队） 按合规要求划分（需要独立权限隔离的业务） Application — 应用# Application 是 DevFlow 中最核心的实体。它代表一个可独立构建和部署的服务。
-一个应用包含什么# 名称: order-service 所属项目: 电商中台 代码仓库: github.com/company/order-service当前实现里 Application 主要保存什么# 当前 devflow-service 里的 Application 主要保存：">
-  <meta itemprop="wordCount" content="142">
+Project 是 DevFlow 中最顶层的组织单元。你可以把它理解成一个文件夹，把相关的应用放在一起。
 
-<title>Project 与 Application | DevFlow</title>
-<link rel="icon" href="/document/favicon.png" >
-<link rel="manifest" href="/document/manifest.json">
-<link rel="canonical" href="https://devflow.bei.com/document/docs/concepts/project-application/">
-<link rel="stylesheet" href="/document/book.min.8cd0206dd84616a7d412f4d11b03bd0f5f8254beac611979660997cdbce2a6d1.css" integrity="sha256-jNAgbdhGFqfUEvTRGwO9D1&#43;CVL6sYRl5ZgmXzbziptE=" crossorigin="anonymous">
 
+  为什么需要分层
+  #
 
-  <script defer src="/document/fuse.min.js"></script>
-  <script defer src="/document/en.search.min.c439acd1c89f0fb50e8b3bba3a04ede0cfb611f782830ce704aa3fa0e0c57e3f.js" integrity="sha256-xDms0cifD7UOizu6OgTt4M&#43;2EfeCgwznBKo/oODFfj8=" crossorigin="anonymous"></script>
-
-
-
-  
-</head>
-<body dir="ltr" class="book-kind-page book-type-docs">
-  <input type="checkbox" class="hidden toggle" id="menu-control" />
-  <input type="checkbox" class="hidden toggle" id="toc-control" />
-  <main class="container flex">
-    
-<aside class="book-menu">
-  <div class="book-menu-content">
-    
-  <nav>
-<h2 class="book-brand">
-  <a class="flex align-center" href="/document/"><span>DevFlow</span>
-  </a>
-</h2>
-
-
-<div class="book-search hidden">
-  <input id="book-search-input" type="text" 
-    placeholder="Search"
-    aria-label="Search"
-    maxlength="64" data-hotkeys="s/" />
-  <div class="book-search-spinner hidden"></div>
-  <ul id="book-search-results"></ul>
-</div>
-<script>document.querySelector(".book-search").classList.remove("hidden")</script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/document/docs/getting-started/" class="">
-      快速开始</a>
-  
-
-          
-  <ul>
-    
-  </ul>
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/document/docs/overview/" class="">
-      平台概览</a>
-  
-
-          
-  <ul>
-    
-  </ul>
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/document/docs/architecture/" class="">
-      架构设计</a>
-  
-
-          
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/document/docs/architecture/services/" class="">
-      五大微服务</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/document/docs/architecture/domain-model/" class="">
-      领域模型</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/document/docs/architecture/lifecycle/" class="">
-      发布生命周期</a>
-  
-
-        </li>
-      
-    
-  </ul>
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/document/docs/services/" class="">
-      服务详解</a>
-  
-
-          
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/document/docs/services/meta-service/" class="">
-      meta-service</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/document/docs/services/config-service/" class="">
-      config-service</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/document/docs/services/network-service/" class="">
-      network-service</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/document/docs/services/release-service/" class="">
-      release-service</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/document/docs/services/runtime-service/" class="">
-      runtime-service</a>
-  
-
-        </li>
-      
-    
-  </ul>
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/document/docs/concepts/" class="">
-      核心概念</a>
-  
-
-          
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/document/docs/concepts/project-application/" class="active">
-      Project 与 Application</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/document/docs/concepts/environment-cluster/" class="">
-      Environment 与 Cluster</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/document/docs/concepts/workload-config/" class="">
-      WorkloadConfig</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/document/docs/concepts/app-config/" class="">
-      AppConfig</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/document/docs/concepts/service-route/" class="">
-      Service 与 Route</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/document/docs/concepts/manifest-release/" class="">
-      Manifest 与 Release</a>
-  
-
-        </li>
-      
-    
-  </ul>
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/document/docs/ci/" class="">
-      持续集成</a>
-  
-
-          
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/document/docs/ci/architecture/" class="">
-      CI 架构</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/document/docs/ci/standard/" class="">
-      标准 CI 流程</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/document/docs/ci/component/" class="">
-      CI 组件矩阵</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/document/docs/ci/queue/" class="">
-      队列与并发控制</a>
-  
-
-        </li>
-      
-    
-  </ul>
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/document/docs/cd/" class="">
-      持续交付</a>
-  
-
-          
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/document/docs/cd/architecture/" class="">
-      CD 架构</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/document/docs/cd/standard/" class="">
-      发布策略选型</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/document/docs/cd/rolling/" class="">
-      Rolling 发布</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/document/docs/cd/canary/" class="">
-      Canary 发布</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/document/docs/cd/blue-green/" class="">
-      Blue-Green 发布</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/document/docs/cd/component/" class="">
-      CD 组件矩阵</a>
-  
-
-        </li>
-      
-    
-  </ul>
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/document/docs/observability/" class="">
-      可观测性</a>
-  
-
-          
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/document/docs/observability/component/" class="">
-      可观测性组件矩阵</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/document/docs/observability/attributes/" class="">
-      公共 Attributes</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/document/docs/observability/standard/" class="">
-      Labels / Attributes 规范</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/document/docs/observability/signal-label-matrix/" class="">
-      信号标签矩阵</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/document/docs/observability/collector/" class="">
-      OTel Collector 配置模板</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/document/docs/observability/go-example/" class="">
-      Go 服务最小 OTel 接入示例</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/document/docs/observability/onboarding-checklist/" class="">
-      OTel 接入检查清单</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/document/docs/observability/logging/" class="">
-      结构化日志规范</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/document/docs/observability/service-checklist/" class="">
-      五大服务观测字段清单</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/document/docs/observability/release-trace-example/" class="">
-      发布链路 Trace 示例</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/document/docs/observability/collector-runbook/" class="">
-      Collector 生产排障 Runbook</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/document/docs/observability/release-failure-playbook/" class="">
-      发布失败排障剧本</a>
-  
-
-        </li>
-      
-    
-  </ul>
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/document/docs/deployment/" class="">
-      部署指南</a>
-  
-
-          
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/document/docs/deployment/guide/" class="">
-      部署步骤</a>
-  
-
-        </li>
-      
-    
-  </ul>
-
-        </li>
-      
-    
-  </ul>
-
-
-
-
-
-
-
-
-
-
-
-
-
-</nav>
-
-
-
-
-  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
-
-
-
-  </div>
-</aside>
- 
-
-    <div class="book-page">
-      <header class="book-header hidden">
-        
-  <div class="flex align-center justify-between">
-  <label for="menu-control">
-    <img src="/document/icons/menu.svg" class="book-icon" alt="Menu" />
-  </label>
-
-  <h3>Project 与 Application</h3>
-
-  <label for="toc-control">
-    
-    <img src="/document/icons/toc.svg" class="book-icon" alt="Table of Contents" />
-    
-  </label>
-</div>
-
-
-  
-  <aside class="hidden">
-    
-  
-<nav id="TableOfContents">
-  <ul>
-    <li><a href="#project--项目">Project — 项目</a></li>
-    <li><a href="#为什么需要分层">为什么需要分层</a>
-      <ul>
-        <li><a href="#例子">例子</a></li>
-        <li><a href="#什么时候用">什么时候用</a></li>
-      </ul>
-    </li>
-    <li><a href="#application--应用">Application — 应用</a>
-      <ul>
-        <li><a href="#一个应用包含什么">一个应用包含什么</a></li>
-        <li><a href="#当前实现里-application-主要保存什么">当前实现里 Application 主要保存什么</a></li>
-        <li><a href="#应用和-workloadconfig">应用和 WorkloadConfig</a></li>
-        <li><a href="#应用和-service">应用和 Service</a></li>
-      </ul>
-    </li>
-    <li><a href="#它们的关系">它们的关系</a></li>
-  </ul>
-</nav>
-
-
-
-  </aside>
-  
- 
-      </header>
-
-      
-      
-  <article class="markdown book-article"><h1 id="-project-与-application">📁 Project 与 Application<a class="anchor" href="#-project-%e4%b8%8e-application">#</a></h1>
-<h2 id="project--项目">Project — 项目<a class="anchor" href="#project--%e9%a1%b9%e7%9b%ae">#</a></h2>
-<p>Project 是 DevFlow 中最顶层的组织单元。你可以把它理解成一个<strong>文件夹</strong>，把相关的应用放在一起。</p>
-<hr>
-<h2 id="为什么需要分层">为什么需要分层<a class="anchor" href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e9%9c%80%e8%a6%81%e5%88%86%e5%b1%82">#</a></h2>
-<p>没有 Project/Application 分层时，你的应用列表可能是这样的：</p>
-<pre tabindex="0"><code>payment-gateway
+没有 Project/Application 分层时，你的应用列表可能是这样的：
+payment-gateway
 order-service
 inventory-service
 user-service
 analytics-collector
 analytics-processor
-analytics-api</code></pre><p>8 个服务混在一起，新来的同事完全不知道谁和谁有关系。</p>
-<p>有了分层之后：</p>
-<pre tabindex="0"><code>电商中台
+analytics-api
+8 个服务混在一起，新来的同事完全不知道谁和谁有关系。
+有了分层之后：
+电商中台
   ├─ payment-gateway
   ├─ order-service
   ├─ inventory-service
@@ -891,45 +31,86 @@ analytics-api</code></pre><p>8 个服务混在一起，新来的同事完全不�
 数据中台
   ├─ analytics-collector
   ├─ analytics-processor
-  └─ analytics-api</code></pre><p>一目了然。每个团队只看自己负责的项目，不会被别人家的服务干扰。</p>
-<blockquote class='book-hint '>
-<p>分层不仅是组织问题，更是<strong>权限隔离</strong>的基础。你可以给&quot;数据中台&quot;团队只开放数据中台的权限，他们看不到电商中台的任何东西。</p>
-</blockquote><h3 id="例子">例子<a class="anchor" href="#%e4%be%8b%e5%ad%90">#</a></h3>
-<pre tabindex="0"><code>Project: 电商中台
+  └─ analytics-api
+一目了然。每个团队只看自己负责的项目，不会被别人家的服务干扰。
+
+分层不仅是组织问题，更是权限隔离的基础。你可以给"数据中台"团队只开放数据中台的权限，他们看不到电商中台的任何东西。
+
+
+  例子
+  #
+
+Project: 电商中台
   ├─ order-service（订单服务）
   ├─ payment-service（支付服务）
   ├─ inventory-service（库存服务）
-  └─ user-service（用户服务）</code></pre><pre tabindex="0"><code>Project: 数据中台
+  └─ user-service（用户服务）
+Project: 数据中台
   ├─ data-collector
   ├─ data-processor
-  └─ data-api</code></pre><h3 id="什么时候用">什么时候用<a class="anchor" href="#%e4%bb%80%e4%b9%88%e6%97%b6%e5%80%99%e7%94%a8">#</a></h3>
-<ul>
-<li>按业务域划分（电商、支付、数据中台）</li>
-<li>按团队划分（前端团队、后端团队）</li>
-<li>按合规要求划分（需要独立权限隔离的业务）</li>
-</ul>
-<hr>
-<h2 id="application--应用">Application — 应用<a class="anchor" href="#application--%e5%ba%94%e7%94%a8">#</a></h2>
-<p>Application 是 DevFlow 中<strong>最核心的实体</strong>。它代表一个可独立构建和部署的服务。</p>
-<h3 id="一个应用包含什么">一个应用包含什么<a class="anchor" href="#%e4%b8%80%e4%b8%aa%e5%ba%94%e7%94%a8%e5%8c%85%e5%90%ab%e4%bb%80%e4%b9%88">#</a></h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">名称</span>: <span style="color:#ae81ff">order-service</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">所属项目</span>: <span style="color:#ae81ff">电商中台</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">代码仓库</span>: <span style="color:#ae81ff">github.com/company/order-service</span></span></span></code></pre></div><h3 id="当前实现里-application-主要保存什么">当前实现里 Application 主要保存什么<a class="anchor" href="#%e5%bd%93%e5%89%8d%e5%ae%9e%e7%8e%b0%e9%87%8c-application-%e4%b8%bb%e8%a6%81%e4%bf%9d%e5%ad%98%e4%bb%80%e4%b9%88">#</a></h3>
-<p>当前 <code>devflow-service</code> 里的 <code>Application</code> 主要保存：</p>
-<ul>
-<li>所属 <code>Project</code></li>
-<li>应用名称</li>
-<li>代码仓库地址（<code>repo_address</code>）</li>
-<li>描述和扩展标签</li>
-</ul>
-<p>发布策略不是 <code>Application</code> 的创建字段，而是在创建 <code>Release</code> 时指定。</p>
-<h3 id="应用和-workloadconfig">应用和 WorkloadConfig<a class="anchor" href="#%e5%ba%94%e7%94%a8%e5%92%8c-workloadconfig">#</a></h3>
-<p>每个应用有一个对应的 <strong>WorkloadConfig</strong>，定义它的运行时基线（副本数、资源、探针等）。WorkloadConfig 不随环境变化，是应用的固有属性。</p>
-<h3 id="应用和-service">应用和 Service<a class="anchor" href="#%e5%ba%94%e7%94%a8%e5%92%8c-service">#</a></h3>
-<p>每个应用可以有一个或多个 <strong>Service</strong>，定义它暴露的网络端口。Service 也不随环境变化。</p>
-<hr>
-<h2 id="它们的关系">它们的关系<a class="anchor" href="#%e5%ae%83%e4%bb%ac%e7%9a%84%e5%85%b3%e7%b3%bb">#</a></h2>
-<pre class="mermaid">graph TB
+  └─ data-api
+
+  什么时候用
+  #
+
+
+按业务域划分（电商、支付、数据中台）
+按团队划分（前端团队、后端团队）
+按合规要求划分（需要独立权限隔离的业务）
+
+
+
+  Application — 应用
+  #
+
+Application 是 DevFlow 中最核心的实体。它代表一个可独立构建和部署的服务。'><meta name=theme-color media="(prefers-color-scheme: light)" content="#ffffff"><meta name=theme-color media="(prefers-color-scheme: dark)" content="#343a40"><meta name=color-scheme content="light dark"><meta property="og:url" content="https://devflow.bei.com/document/docs/concepts/project-application/"><meta property="og:site_name" content="DevFlow"><meta property="og:title" content="Project 与 Application"><meta property="og:description" content='📁 Project 与 Application # Project — 项目 # Project 是 DevFlow 中最顶层的组织单元。你可以把它理解成一个文件夹，把相关的应用放在一起。
+为什么需要分层 # 没有 Project/Application 分层时，你的应用列表可能是这样的：
+payment-gateway order-service inventory-service user-service analytics-collector analytics-processor analytics-api 8 个服务混在一起，新来的同事完全不知道谁和谁有关系。
+有了分层之后：
+电商中台 ├─ payment-gateway ├─ order-service ├─ inventory-service └─ user-service 数据中台 ├─ analytics-collector ├─ analytics-processor └─ analytics-api 一目了然。每个团队只看自己负责的项目，不会被别人家的服务干扰。
+分层不仅是组织问题，更是权限隔离的基础。你可以给"数据中台"团队只开放数据中台的权限，他们看不到电商中台的任何东西。
+例子 # Project: 电商中台 ├─ order-service（订单服务） ├─ payment-service（支付服务） ├─ inventory-service（库存服务） └─ user-service（用户服务） Project: 数据中台 ├─ data-collector ├─ data-processor └─ data-api 什么时候用 # 按业务域划分（电商、支付、数据中台） 按团队划分（前端团队、后端团队） 按合规要求划分（需要独立权限隔离的业务） Application — 应用 # Application 是 DevFlow 中最核心的实体。它代表一个可独立构建和部署的服务。'><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="docs"><title>Project 与 Application | DevFlow</title><link rel=icon href=/document/favicon.png><link rel=manifest href=/document/manifest.json><link rel=canonical href=https://devflow.bei.com/document/docs/concepts/project-application/><link rel=stylesheet href=/document/book.min.0af0563c177135a7b9e128dc2de7626c93ccfff0be18df8724d5d9fa051e7513.css integrity="sha256-CvBWPBdxNae54SjcLedibJPM//C+GN+HJNXZ+gUedRM=" crossorigin=anonymous><script defer src=/document/fuse.min.js></script><script defer src=/document/en.search.min.96b3ab4d8b2755d966ae0afb5084c3293e573c911da36097a183334990039d48.js integrity="sha256-lrOrTYsnVdlmrgr7UITDKT5XPJEdo2CXoYMzSZADnUg=" crossorigin=anonymous></script></head><body dir=ltr><input type=checkbox class="hidden toggle" id=menu-control>
+<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/document/><span>DevFlow</span></a></h2><div class="book-search hidden"><input type=text id=book-search-input placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><script>document.querySelector(".book-search").classList.remove("hidden")</script><ul><li><a href=/document/docs/getting-started/>快速开始</a><ul></ul></li><li><a href=/document/docs/overview/>平台概览</a><ul></ul></li><li><a href=/document/docs/architecture/>架构设计</a><ul><li><a href=/document/docs/architecture/services/>五大微服务</a></li><li><a href=/document/docs/architecture/domain-model/>领域模型</a></li><li><a href=/document/docs/architecture/lifecycle/>发布生命周期</a></li></ul></li><li><a href=/document/docs/services/>服务详解</a><ul><li><a href=/document/docs/services/meta-service/>meta-service</a></li><li><a href=/document/docs/services/config-service/>config-service</a></li><li><a href=/document/docs/services/network-service/>network-service</a></li><li><a href=/document/docs/services/release-service/>release-service</a></li><li><a href=/document/docs/services/runtime-service/>runtime-service</a></li></ul></li><li><a href=/document/docs/concepts/>核心概念</a><ul><li><a href=/document/docs/concepts/project-application/ class=active>Project 与 Application</a></li><li><a href=/document/docs/concepts/environment-cluster/>Environment 与 Cluster</a></li><li><a href=/document/docs/concepts/workload-config/>WorkloadConfig</a></li><li><a href=/document/docs/concepts/app-config/>AppConfig</a></li><li><a href=/document/docs/concepts/service-route/>Service 与 Route</a></li><li><a href=/document/docs/concepts/manifest-release/>Manifest 与 Release</a></li></ul></li><li><a href=/document/docs/ci/>持续集成</a><ul><li><a href=/document/docs/ci/architecture/>CI 架构</a></li><li><a href=/document/docs/ci/standard/>标准 CI 流程</a></li><li><a href=/document/docs/ci/component/>CI 组件矩阵</a></li><li><a href=/document/docs/ci/queue/>队列与并发控制</a></li></ul></li><li><a href=/document/docs/cd/>持续交付</a><ul><li><a href=/document/docs/cd/architecture/>CD 架构</a></li><li><a href=/document/docs/cd/standard/>发布策略选型</a></li><li><a href=/document/docs/cd/rolling/>Rolling 发布</a></li><li><a href=/document/docs/cd/canary/>Canary 发布</a></li><li><a href=/document/docs/cd/blue-green/>Blue-Green 发布</a></li><li><a href=/document/docs/cd/component/>CD 组件矩阵</a></li></ul></li><li><a href=/document/docs/observability/>可观测性</a><ul><li><a href=/document/docs/observability/component/>可观测性技术栈与组件矩阵</a></li><li><a href=/document/docs/observability/attributes/>字段命名与来源边界</a></li><li><a href=/document/docs/observability/standard/>信号字段契约</a></li><li><a href=/document/docs/observability/signal-label-matrix/>信号标签矩阵</a></li><li><a href=/document/docs/observability/collector/>OTel Collector 配置模板</a></li><li><a href=/document/docs/observability/go-example/>Go 服务最小 OTel 接入示例</a></li><li><a href=/document/docs/observability/onboarding-checklist/>OTel 接入检查清单</a></li><li><a href=/document/docs/observability/logging/>结构化日志规范</a></li><li><a href=/document/docs/observability/service-checklist/>现有服务字段清单</a></li><li><a href=/document/docs/observability/release-trace-example/>发布链路 Trace 示例</a></li><li><a href=/document/docs/observability/collector-runbook/>Collector 生产排障 Runbook</a></li><li><a href=/document/docs/observability/release-failure-playbook/>发布失败排障剧本</a></li></ul></li><li><a href=/document/docs/deployment/>部署指南</a><ul><li><a href=/document/docs/deployment/guide/>部署步骤</a></li></ul></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class=book-header><div class="flex align-center justify-between"><label for=menu-control><img src=/document/svg/menu.svg class=book-icon alt=Menu></label><h3>Project 与 Application</h3><label for=toc-control><img src=/document/svg/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class="hidden clearfix"><nav id=TableOfContents><ul><li><a href=#project--项目>Project — 项目</a></li><li><a href=#为什么需要分层>为什么需要分层</a><ul><li><a href=#例子>例子</a></li><li><a href=#什么时候用>什么时候用</a></li></ul></li><li><a href=#application--应用>Application — 应用</a><ul><li><a href=#一个应用包含什么>一个应用包含什么</a></li><li><a href=#当前实现里-application-主要保存什么>当前实现里 Application 主要保存什么</a></li><li><a href=#应用和-workloadconfig>应用和 WorkloadConfig</a></li><li><a href=#应用和-service>应用和 Service</a></li></ul></li><li><a href=#它们的关系>它们的关系</a></li></ul></nav></aside></header><article class="markdown book-article"><h1 id=-project-与-application>📁 Project 与 Application
+<a class=anchor href=#-project-%e4%b8%8e-application>#</a></h1><h2 id=project--项目>Project — 项目
+<a class=anchor href=#project--%e9%a1%b9%e7%9b%ae>#</a></h2><p>Project 是 DevFlow 中最顶层的组织单元。你可以把它理解成一个<strong>文件夹</strong>，把相关的应用放在一起。</p><hr><h2 id=为什么需要分层>为什么需要分层
+<a class=anchor href=#%e4%b8%ba%e4%bb%80%e4%b9%88%e9%9c%80%e8%a6%81%e5%88%86%e5%b1%82>#</a></h2><p>没有 Project/Application 分层时，你的应用列表可能是这样的：</p><pre tabindex=0><code>payment-gateway
+order-service
+inventory-service
+user-service
+analytics-collector
+analytics-processor
+analytics-api
+</code></pre><p>8 个服务混在一起，新来的同事完全不知道谁和谁有关系。</p><p>有了分层之后：</p><pre tabindex=0><code>电商中台
+  ├─ payment-gateway
+  ├─ order-service
+  ├─ inventory-service
+  └─ user-service
+
+数据中台
+  ├─ analytics-collector
+  ├─ analytics-processor
+  └─ analytics-api
+</code></pre><p>一目了然。每个团队只看自己负责的项目，不会被别人家的服务干扰。</p><blockquote><p>分层不仅是组织问题，更是<strong>权限隔离</strong>的基础。你可以给"数据中台"团队只开放数据中台的权限，他们看不到电商中台的任何东西。</p></blockquote><h3 id=例子>例子
+<a class=anchor href=#%e4%be%8b%e5%ad%90>#</a></h3><pre tabindex=0><code>Project: 电商中台
+  ├─ order-service（订单服务）
+  ├─ payment-service（支付服务）
+  ├─ inventory-service（库存服务）
+  └─ user-service（用户服务）
+</code></pre><pre tabindex=0><code>Project: 数据中台
+  ├─ data-collector
+  ├─ data-processor
+  └─ data-api
+</code></pre><h3 id=什么时候用>什么时候用
+<a class=anchor href=#%e4%bb%80%e4%b9%88%e6%97%b6%e5%80%99%e7%94%a8>#</a></h3><ul><li>按业务域划分（电商、支付、数据中台）</li><li>按团队划分（前端团队、后端团队）</li><li>按合规要求划分（需要独立权限隔离的业务）</li></ul><hr><h2 id=application--应用>Application — 应用
+<a class=anchor href=#application--%e5%ba%94%e7%94%a8>#</a></h2><p>Application 是 DevFlow 中<strong>最核心的实体</strong>。它代表一个可独立构建和部署的服务。</p><h3 id=一个应用包含什么>一个应用包含什么
+<a class=anchor href=#%e4%b8%80%e4%b8%aa%e5%ba%94%e7%94%a8%e5%8c%85%e5%90%ab%e4%bb%80%e4%b9%88>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>名称</span>: <span style=color:#ae81ff>order-service</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>所属项目</span>: <span style=color:#ae81ff>电商中台</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>代码仓库</span>: <span style=color:#ae81ff>github.com/company/order-service</span>
+</span></span></code></pre></div><h3 id=当前实现里-application-主要保存什么>当前实现里 Application 主要保存什么
+<a class=anchor href=#%e5%bd%93%e5%89%8d%e5%ae%9e%e7%8e%b0%e9%87%8c-application-%e4%b8%bb%e8%a6%81%e4%bf%9d%e5%ad%98%e4%bb%80%e4%b9%88>#</a></h3><p>当前 <code>devflow-service</code> 里的 <code>Application</code> 主要保存：</p><ul><li>所属 <code>Project</code></li><li>应用名称</li><li>代码仓库地址（<code>repo_address</code>）</li><li>描述和扩展标签</li></ul><p>发布策略不是 <code>Application</code> 的创建字段，而是在创建 <code>Release</code> 时指定。</p><h3 id=应用和-workloadconfig>应用和 WorkloadConfig
+<a class=anchor href=#%e5%ba%94%e7%94%a8%e5%92%8c-workloadconfig>#</a></h3><p>每个应用有一个对应的 <strong>WorkloadConfig</strong>，定义它的运行时基线（副本数、资源、探针等）。WorkloadConfig 不随环境变化，是应用的固有属性。</p><h3 id=应用和-service>应用和 Service
+<a class=anchor href=#%e5%ba%94%e7%94%a8%e5%92%8c-service>#</a></h3><p>每个应用可以有一个或多个 <strong>Service</strong>，定义它暴露的网络端口。Service 也不随环境变化。</p><hr><h2 id=它们的关系>它们的关系
+<a class=anchor href=#%e5%ae%83%e4%bb%ac%e7%9a%84%e5%85%b3%e7%b3%bb>#</a></h2><pre tabindex=0><code class=language-mermaid data-lang=mermaid>graph TB
     P[&#34;Project: 电商中台&#34;]
     A1[&#34;Application: order-service&#34;]
     A2[&#34;Application: payment-service&#34;]
@@ -939,133 +120,5 @@ analytics-api</code></pre><p>8 个服务混在一起，新来的同事完全不�
     P --&gt; A1
     P --&gt; A2
     A1 --&gt; WL1
-    A1 --&gt; S1</pre><script src="/document/mermaid.min.js"></script><script>mermaid.initialize({"flowchart":{"useMaxWidth":true},"theme":"default"})</script><p><strong>规则</strong>：</p>
-<ul>
-<li>一个 Project 可以有多个 Application</li>
-<li>一个 Application 只能属于一个 Project</li>
-<li>一个 Application 有且只有一个 WorkloadConfig</li>
-<li>一个 Application 可以有一个或多个 Service</li>
-</ul>
-</article>
- 
-      
-
-      <footer class="book-footer">
-        
-  <div class="flex flex-wrap justify-between">
-
-<div>
-
-</div>
-
-<div>
-
-</div>
-
-</div>
-
-
-
-
-
-  
-  
-  
-  <div class="flex flex-wrap justify-between">
-    <span>
-    
-      <a href="/document/docs/concepts/" class="flex align-center">
-        <img src="/document/icons/backward.svg" class="book-icon" alt="Backward" />
-        <span>核心概念</span>
-      </a>
-    
-    </span>
-    <span>
-    
-      <a href="/document/docs/concepts/environment-cluster/" class="flex align-center">
-        <span>Environment 与 Cluster</span>
-        <img src="/document/icons/forward.svg" class="book-icon" alt="Forward" />
-      </a>
-    
-    </span>
-  </div>
-  
-
-
- 
-        
-  
- 
-        
-        
-  
- 
-        
-  
-  
-    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
-  
-
-      </footer>
-
-      <label for="menu-control" class="hidden book-menu-overlay"></label>
-    </div>
-
-    
-  
-  <aside class="book-toc">
-    <div class="book-toc-content">
-      
-  
-<nav id="TableOfContents">
-  <ul>
-    <li><a href="#project--项目">Project — 项目</a></li>
-    <li><a href="#为什么需要分层">为什么需要分层</a>
-      <ul>
-        <li><a href="#例子">例子</a></li>
-        <li><a href="#什么时候用">什么时候用</a></li>
-      </ul>
-    </li>
-    <li><a href="#application--应用">Application — 应用</a>
-      <ul>
-        <li><a href="#一个应用包含什么">一个应用包含什么</a></li>
-        <li><a href="#当前实现里-application-主要保存什么">当前实现里 Application 主要保存什么</a></li>
-        <li><a href="#应用和-workloadconfig">应用和 WorkloadConfig</a></li>
-        <li><a href="#应用和-service">应用和 Service</a></li>
-      </ul>
-    </li>
-    <li><a href="#它们的关系">它们的关系</a></li>
-  </ul>
-</nav>
-
-
-
-    </div>
-  </aside>
-  
- 
-  </main>
-
-  
-</body>
-</html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    A1 --&gt; S1
+</code></pre><p><strong>规则</strong>：</p><ul><li>一个 Project 可以有多个 Application</li><li>一个 Application 只能属于一个 Project</li><li>一个 Application 有且只有一个 WorkloadConfig</li><li>一个 Application 可以有一个或多个 Service</li></ul></article><footer class=book-footer><div class="flex flex-wrap justify-between"></div><script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script></footer><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#project--项目>Project — 项目</a></li><li><a href=#为什么需要分层>为什么需要分层</a><ul><li><a href=#例子>例子</a></li><li><a href=#什么时候用>什么时候用</a></li></ul></li><li><a href=#application--应用>Application — 应用</a><ul><li><a href=#一个应用包含什么>一个应用包含什么</a></li><li><a href=#当前实现里-application-主要保存什么>当前实现里 Application 主要保存什么</a></li><li><a href=#应用和-workloadconfig>应用和 WorkloadConfig</a></li><li><a href=#应用和-service>应用和 Service</a></li></ul></li><li><a href=#它们的关系>它们的关系</a></li></ul></nav></div></aside></main></body></html>
