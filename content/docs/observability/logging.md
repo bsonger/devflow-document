@@ -13,6 +13,8 @@ weight: 78
 2. `trace_id` / `span_id` 是 Trace 到 Log 的主关联键。
 3. 服务、环境、Kubernetes 资源信息优先作为 Resource Attributes 或 Collector enrichment，不要在每条请求日志里手工重复。
 
+这里的约束再说一次：`trace_id` / `span_id` 不是“有最好”，而是新日志契约里的必需字段。
+
 ---
 
 ## 最小日志基线
@@ -34,10 +36,33 @@ weight: 78
 - `message` 是当前推荐字段，不再使用 `body` 作为新日志字段。
 - `caller` 可以保留，但它不是核心 observability 维度。
 - `request_id` 属于 legacy 兼容字段，新日志不推荐继续扩展它。
+- `trace_id` 和 `span_id` 必须来自当前 span context；缺少它们的日志不满足当前 DevFlow 结构化日志基线。
 
 ---
 
-## logger.name 分类
+## 字段等级
+
+先把最容易混淆的两类字段拆开：
+
+| 字段 | 等级 | 作用 |
+|---|---|---|
+| `timestamp` | 必需 | 时间定位 |
+| `severity_text` | 必需 | 严重级别 |
+| `logger.name` | 必需 | 日志分类主键 |
+| `message` | 必需 | 人可读事件文本 |
+| `caller` | 必需 | 调试定位字段 |
+| `trace_id` | 必需 | Trace -> Log 关联主键 |
+| `span_id` | 必需 | Span -> Log 关联主键 |
+
+补充说明：
+
+- `logger.name` 决定“这是什么类型的日志”，它是分类字段。
+- `caller` 决定“这条日志是从哪里打出来的”，它只是调试字段。
+- 两者不能互相替代。日志归类看 `logger.name`，不要看 `caller`。
+
+---
+
+## `logger.name` 规则
 
 当前 DevFlow 统一使用以下日志分类：
 
@@ -57,23 +82,54 @@ weight: 78
 
 ---
 
+## `caller` 规则
+
+`caller` 和 `logger.name` 不是一回事：
+
+- `logger.name` 是稳定分类
+- `caller` 是源码位置
+
+`caller` 的使用规则：
+
+- 每条结构化日志都应保留 `caller`
+- `caller` 只用于调试定位
+- `caller` 不能作为日志分类依据
+- `caller` 不能作为 metrics label
+- `caller` 不能作为 Loki stream label
+- `caller` 不能作为 Grafana dashboard variable
+
+如果你要区分 `http.access` 和 `http.error`，看 `logger.name`；
+如果你要知道日志来自哪段代码，再看 `caller`。
+
+---
+
 ## HTTP 日志
 
 ### `http.access`
 
 用于正常请求完成。
 
-最小字段：
+必需字段：
 
+- `timestamp`
+- `severity_text`
+- `logger.name="http.access"`
+- `message`
+- `caller`
+- `trace_id`
+- `span_id`
 - `http.request.method`
 - `http.route`
 - `url.path`
 - `http.response.status_code`
 
+建议字段：
+
+- `http.response.body.size`
+
 可选字段：
 
 - `http.request.body.size`
-- `http.response.body.size`
 
 当前普通 2xx access log 有意保持极简，不默认重复这些字段：
 
@@ -112,12 +168,24 @@ weight: 78
 
 用于 HTTP 4xx、5xx 和 panic recovery。
 
-最小字段仍然是：
+必需字段：
 
+- `timestamp`
+- `severity_text`
+- `logger.name="http.error"`
+- `message`
+- `caller`
+- `trace_id`
+- `span_id`
 - `http.request.method`
 - `http.route`
 - `url.path`
 - `http.response.status_code`
+
+建议字段：
+
+- `http.request.body.size`
+- `http.response.body.size`
 
 约束：
 
@@ -134,11 +202,21 @@ weight: 78
 
 用于 create / update / delete、sync、控制面操作。
 
-推荐字段：
+必需字段：
 
+- `timestamp`
+- `severity_text`
+- `logger.name="business.event"`
+- `message`
+- `caller`
+- `trace_id`
+- `span_id`
 - `operation`
 - `resource`
 - `result`
+
+建议字段：
+
 - `resource_id`
 - 稳定的 `devflow.*.id`
 
@@ -152,11 +230,21 @@ weight: 78
 
 用于 manifest / release / intent 生命周期事件。
 
-推荐字段：
+必需字段：
 
+- `timestamp`
+- `severity_text`
+- `logger.name="release.lifecycle"`
+- `message`
+- `caller`
+- `trace_id`
+- `span_id`
 - `operation`
 - `resource`
 - `result`
+
+建议字段：
+
 - `resource_id`
 - `devflow.release.id`
 - `devflow.manifest.id`
@@ -166,11 +254,21 @@ weight: 78
 
 用于 runtime read model、observer、operator action。
 
-推荐字段：
+必需字段：
 
+- `timestamp`
+- `severity_text`
+- `logger.name="runtime.state"`
+- `message`
+- `caller`
+- `trace_id`
+- `span_id`
 - `operation`
 - `resource`
 - `result`
+
+建议字段：
+
 - `resource_id`
 - `devflow.application.id`
 - `devflow.environment.id`
@@ -180,14 +278,24 @@ weight: 78
 
 用于下游边界。
 
-推荐字段：
+必需字段：
 
+- `timestamp`
+- `severity_text`
+- `logger.name="external.call"`
+- `message`
+- `caller`
+- `trace_id`
+- `span_id`
 - `operation`
 - `resource`
 - `dependency`
-- `dependency_kind`
 - `dependency_operation`
 - `result`
+
+建议字段：
+
+- `dependency_kind`
 
 可选字段：
 
@@ -201,14 +309,24 @@ weight: 78
 
 用于 repository 查询和持久化。
 
-推荐字段：
+必需字段：
 
+- `timestamp`
+- `severity_text`
+- `logger.name="db.query"`
+- `message`
+- `caller`
+- `trace_id`
+- `span_id`
 - `operation`
 - `resource="database"`
 - `db.system`
-- `db.collection`
 - `db.operation`
 - `result`
+
+建议字段：
+
+- `db.collection`
 
 可选字段：
 
@@ -221,11 +339,23 @@ weight: 78
 
 分别用于后台 worker 生命周期和服务启动关闭。
 
-共享字段：
+共享必需字段：
 
+- `timestamp`
+- `severity_text`
+- `logger.name`
+- `message`
+- `caller`
+- `trace_id`
+- `span_id`
 - `operation`
 - `resource`
 - `result`
+
+额外约束：
+
+- `worker.lifecycle` 只能用于后台 worker 的启动、停止、重试、退出
+- `service.lifecycle` 只能用于进程启动、关闭、客户端初始化、配置装载
 
 ---
 

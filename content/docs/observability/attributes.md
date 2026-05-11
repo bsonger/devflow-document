@@ -21,6 +21,9 @@ DevFlow 的 Metrics、Logs、Traces 需要能关联，但三者不应该机械�
 如果三个系统用的标签名字不一样，就没法稳定串联。统一命名后，可以从
 Metrics 发现问题，通过 exemplar 跳到 Trace，再按 `trace_id` 跳到 Log。
 
+如果你当前要回答“每种信号最低限度必须带哪些字段”，不要只看这页，
+直接去 [信号标签矩阵](../signal-label-matrix/)；这页主要定义命名和来源边界。
+
 职责边界：
 
 - Metrics：看 rate / error / latency / SLO
@@ -79,6 +82,7 @@ Metrics 发现问题，通过 exemplar 跳到 Trace，再按 `trace_id` 跳到 L
 
 - `http.route` 必须是模板路由，不要把原始动态路径拿去做 metrics label。
 - `url.path` 可以出现在 log 和 trace 中，但不应进入高频 metrics label。
+- 如果是 HTTP metrics，当前 DevFlow 还要求 `http_response_status_class` 作为必需维度存在。
 
 ---
 
@@ -88,6 +92,7 @@ Metrics 发现问题，通过 exemplar 跳到 Trace，再按 `trace_id` 跳到 L
    - `service.name` / `service_name`
    - `http.route` / `http_route`
    - `http.response.status_code` / `http_response_status_code`
+   - `http_response_status_class`（仅 Metrics）
    - `trace_id`（仅 Trace / Log / exemplar，不是 metrics label）
 
 2. **命名规范**：
@@ -100,6 +105,7 @@ Metrics 发现问题，通过 exemplar 跳到 Trace，再按 `trace_id` 跳到 L
 3. **来源要求**：
    - 服务资源字段优先来自环境变量和 OTel Resource Attributes
    - `trace_id` / `span_id` 优先来自当前 span context
+   - `trace_id` / `span_id` 在新日志契约里应视为必需字段
    - Kubernetes / Host / Cloud 字段优先由 Collector 补充
    - 不要在业务代码里硬编码 Pod、Node、Cluster、Cloud 信息
 

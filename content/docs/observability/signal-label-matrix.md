@@ -30,7 +30,25 @@ weight: 74
 
 ---
 
-## 1. Metrics 最少需要什么标签
+## 1. 先看统一基线
+
+如果只想回答“**三种信号各自必须带什么标签**”，先看这张表：
+
+| 信号 | 必需标签 |
+|------|----------|
+| Metrics | `service_name`、`http_request_method`、`http_route`、`http_response_status_code`、`http_response_status_class` |
+| Traces | `service.name`、`service.namespace`、`trace_id`、`span_id`、`span.name`、`span.kind`、`http.request.method`、`http.route`、`http.response.status_code` |
+| Logs | `timestamp`、`severity_text`、`logger.name`、`message`、`caller`、`trace_id`、`span_id` |
+
+补充约束：
+
+- Metrics 里的 `trace_id` / `span_id` 仍然**禁止**作为 label，只能通过 exemplar 关联
+- Logs 里的 `trace_id` / `span_id` 是 Trace -> Log 关联主键，不再只是“推荐有”
+- `http_response_status_class` 是 DevFlow HTTP metrics 查询和仪表盘的必需维度，不应再视为可有可无
+
+---
+
+## 2. Metrics 最少需要什么标签
 
 ### 必备
 
@@ -38,6 +56,7 @@ weight: 74
 - `http_request_method`
 - `http_route`
 - `http_response_status_code`
+- `http_response_status_class`
 
 ### 强烈建议
 
@@ -72,7 +91,7 @@ Metrics 应该优先回答：
 
 ---
 
-## 2. Traces 最少需要什么标签
+## 3. Traces 最少需要什么标签
 
 ### 必备
 
@@ -114,7 +133,7 @@ Trace 应该优先回答：
 
 ---
 
-## 3. Logs 最少需要什么标签
+## 4. Logs 最少需要什么标签
 
 ### 必备
 
@@ -123,11 +142,11 @@ Trace 应该优先回答：
 - `message`
 - `logger.name`
 - `caller`
+- `trace_id`
+- `span_id`
 
 ### 强烈建议
 
-- `trace_id`
-- `span_id`
 - 业务变更日志上的 `operation`
 - 业务变更日志上的 `resource`
 - 业务变更日志上的 `result`
@@ -151,6 +170,7 @@ Log 应该优先回答：
 | `service_name` / `service.name` | ✅ 必备 | ✅ 必备 | ◑ 推荐来自 Resource | 服务配置 / Resource |
 | `service_version` / `service.version` | ◑ 建议 | ✅ 建议 | ◑ 可有 | 服务配置 / Resource |
 | `deployment_environment_name` / `deployment.environment.name` | ◑ 可选 | ✅ 建议 | ◑ 可有 | Resource / Collector |
+| `http_response_status_class` | ✅ 必备 | ❌ | ❌ | 服务代码 / HTTP instrumentation |
 | `k8s_cluster_name` / `k8s.cluster.name` | ❌ | ✅ 建议 | ◑ 可有 | OTel Collector |
 | `k8s_namespace_name` / `k8s.namespace.name` | ❌ | ✅ 建议 | ◑ 可有 | OTel Collector |
 | `k8s_pod_name` / `k8s.pod.name` | ❌ | ✅ 建议 | ◑ 可有 | OTel Collector |
@@ -161,8 +181,8 @@ Log 应该优先回答：
 | `devflow.release.id` | ❌ | ✅ 强烈建议 | ✅ 强烈建议 | 服务代码 |
 | `devflow.intent.kind` | ◑ 低基数时可用 | ✅ 建议 | ✅ 建议 | 服务代码 |
 | `devflow.intent.status` | ❌ | ✅ 建议 | ✅ 建议 | 服务代码 |
-| `trace_id` | ◑ exemplar 场景 | ✅ 必备 | ✅ 强烈建议 | 自动生成 / SDK |
-| `span_id` | ❌ | ✅ 必备 | ✅ 建议 | 自动生成 / SDK |
+| `trace_id` | ◑ exemplar 场景 | ✅ 必备 | ✅ 必备 | 自动生成 / SDK |
+| `span_id` | ❌ | ✅ 必备 | ✅ 必备 | 自动生成 / SDK |
 | `error.type` | ❌ | ✅ 建议 | ◑ 按需 | 服务代码 |
 | `error.message` | ❌ | ✅ 建议 | 建议收敛进 `message` | 服务代码 |
 | `caller` | ❌ | ❌ | ✅ 可有 | logger encoder |

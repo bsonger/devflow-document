@@ -29,10 +29,11 @@ Metrics 用于统计、聚合、告警、SLO，是主事实源。
 | `http_request_method` | string | HTTP 方法 | `GET` |
 | `http_route` | string | 路由模板 | `/api/v1/releases/:id` |
 | `http_response_status_code` | string | HTTP 状态码 | `200` |
+| `http_response_status_class` | string | HTTP 状态码段 | `2xx` / `4xx` / `5xx` |
 
 说明：
 
-- `http_response_status_class` 不是当前推荐的 HTTP 高频 label，按需可由查询侧从状态码聚合。
+- `http_response_status_class` 是当前 DevFlow HTTP 高频 metrics 的必需 label，SLO、错误率和平台仪表盘都依赖它。
 - `deployment_environment_name` 不是所有高频 HTTP metrics 的必选 label，是否暴露取决于当前采集实现和成本控制。
 
 ### 低频或场景化 labels
@@ -109,6 +110,8 @@ Traces 用于单次请求链路、慢点定位、下游瓶颈分析。
 | `span_id` | string | 当前 Span ID | `abc123def456` |
 | `span.name` | string | Span 名称 | `Tekton.CreatePipelineRun` |
 | `span.kind` | string | Span 类型 | `server` / `client` / `producer` / `consumer` |
+| `service.name` | string | 服务名称 | `release-service` |
+| `service.namespace` | string | 服务命名空间 | `devflow` |
 | `http.request.method` | string | HTTP 方法 | `GET` |
 | `http.route` | string | 路由模板 | `/users/:id` |
 | `http.response.status_code` | int | HTTP 状态码 | `200` |
@@ -176,17 +179,18 @@ Logs 用于记录错误文本、业务事件、状态变化，不替代 Trace。
 
 | Key | 类型 | 说明 | 示例 |
 |-----|-----|-----|-----|
+| `timestamp` | string | 日志时间 | `2026-05-11T08:00:00Z` |
 | `severity_text` | string | 日志级别 | `INFO` / `WARN` / `ERROR` |
 | `message` | string | 日志内容 | `http request completed` |
 | `logger.name` | string | 日志分类名 | `http.access` / `http.error` |
-| `trace_id` | string | Trace ID（强烈建议） | `2e71abb92e031efc2a7a1c4280959f4b` |
+| `caller` | string | 调试辅助字段 | `routercore/gin.go:180` |
+| `trace_id` | string | Trace ID（必需） | `2e71abb92e031efc2a7a1c4280959f4b` |
+| `span_id` | string | Span ID（必需） | `abc123def456` |
 
 ### 常见字段
 
 | Key | 类型 | 说明 | 示例 |
 |-----|-----|-----|-----|
-| `caller` | string | 调试辅助字段 | `routercore/gin.go:180` |
-| `span_id` | string | Span ID（可选） | `abc123def456` |
 | `service.name` | string | 服务名称 | `release-service` |
 | `service.namespace` | string | 服务命名空间 | `devflow` |
 | `service.version` | string | 服务版本 | `2026.05.11` |
@@ -203,8 +207,10 @@ Logs 用于记录错误文本、业务事件、状态变化，不替代 Trace。
 说明：
 
 - `service.*` 和 `deployment.environment.name` 优先作为资源属性存在，不要求每条普通请求日志重复。
+- `logger.name` 是日志分类主键；`caller` 只是源码定位字段，二者不能互相替代。
 - `caller` 仅用于调试，不允许作为 metrics label、Loki stream label、Grafana variable。
 - `http.access` / `http.error` 当前有意保持极简。
+- `trace_id` 和 `span_id` 是 Trace -> Log 关联主键，新日志契约里应视为必需字段。
 
 如果错误日志需要更具体的失败文本，优先直接写进 `message`，而不是再引入新的自由文本日志字段。
 

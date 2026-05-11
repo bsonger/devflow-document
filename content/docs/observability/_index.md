@@ -43,6 +43,12 @@ Observability 里最容易混乱的一点，不是“字段叫什么”，而是
 
 建议先读 [Attributes 规范](attributes/)，再看 [Labels 规范](standard/)。
 
+如果你现在要做字段验收，直接先看 [信号标签矩阵](signal-label-matrix/)：
+
+- 那一页集中列了 Metrics / Traces / Logs 各自的必需标签
+- 当前口径里，`http_response_status_class` 是 HTTP metrics 必需维度
+- 当前口径里，日志里的 `trace_id` / `span_id` 是必需字段
+
 ---
 
 ## 🛤️ 学习路径
@@ -56,7 +62,7 @@ Observability 里最容易混乱的一点，不是“字段叫什么”，而是
 | 1 | [组件矩阵](component/) | 看清可观测性技术栈由哪些组件组成 |
 | 2 | [Attributes 规范](attributes/) | 先分清标签到底该配在哪一层 |
 | 3 | [Labels 规范](standard/) | 明确 Metric / Trace / Log 的字段标准 |
-| 4 | [信号标签矩阵](signal-label-matrix/) | 快速看到三种信号分别需要哪些标签 |
+| 4 | [信号标签矩阵](signal-label-matrix/) | 直接查看三种信号各自的必需标签和维护边界 |
 
 ### 我想接入一个新服务
 
@@ -66,7 +72,7 @@ Observability 里最容易混乱的一点，不是“字段叫什么”，而是
 |---------|------|--------------|
 | 1 | [Collector 模板](collector/) | 明确平台侧 OTel Collector 怎么配 |
 | 2 | [Go 接入示例](go-example/) | 看一个最小可运行的 Go 接入方式 |
-| 3 | [结构化日志规范](logging/) | 知道日志最少该打哪些字段 |
+| 3 | [结构化日志规范](logging/) | 知道日志最少该打哪些字段，尤其是 `trace_id` / `span_id` |
 | 4 | [服务字段清单](service-checklist/) | 对照每个服务应该补哪些观测字段 |
 | 5 | [OTel 接入检查清单](onboarding-checklist/) | 最后做一遍最小验收 |
 
@@ -112,7 +118,7 @@ Observability 里最容易混乱的一点，不是“字段叫什么”，而是
 | [组件矩阵](component/) | 可观测性技术栈详细对比 |
 | [Attributes 规范](attributes/) | 统一的标签命名规范 |
 | [Labels 规范](standard/) | Metric / Trace / Log 的标准字段完整定义 |
-| [信号标签矩阵](signal-label-matrix/) | 汇总 Metrics / Traces / Logs 需要哪些标签，以及这些标签该由谁维护 |
+| [信号标签矩阵](signal-label-matrix/) | 汇总 Metrics / Traces / Logs 的必需标签，以及这些标签该由谁维护 |
 | [Collector 模板](collector/) | OTel Collector 的推荐配置模板 |
 | [Go 接入示例](go-example/) | Go 服务最小 OTel 接入示例 |
 | [结构化日志规范](logging/) | DevFlow 日志字段与级别建议 |
