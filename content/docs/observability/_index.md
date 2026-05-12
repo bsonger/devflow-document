@@ -18,29 +18,31 @@ DevFlow 的 observability 文档主要回答四类问题：
 
 | 你现在要做什么 | 先看哪组 |
 |------|------|
-| 理解规范边界 | [基础规范](#基础规范) |
+| 理解规范边界 | [字段契约](#字段契约) |
 | 接一个新服务 | [接入实现](#接入实现) |
 | 收口现有服务字段 | [服务约定](#服务约定) |
 | 排查线上问题 | [排障运行](#排障运行) |
 
 ---
 
-## 基础规范
+## 字段契约
 
 这组文档回答的是：字段叫什么、该由谁注入、三种信号各自最少要带什么。
 
 | 文档 | 单一职责 |
 |------|----------|
 | [技术栈与组件矩阵](component/) | 先看清 observability 技术栈和组件边界 |
-| [字段命名与来源边界](attributes/) | 只看公共命名和来源归属 |
-| [信号字段契约](standard/) | 看 Metrics / Traces / Logs 的完整字段契约 |
-| [信号标签矩阵](signal-label-matrix/) | 直接查三种信号的必需字段和禁止项 |
+| [字段命名与来源边界](contracts/attributes/) | 只看公共命名和来源归属 |
+| [信号字段契约](contracts/standard/) | 看 Metrics / Traces / Logs 的完整字段契约 |
+| [信号标签矩阵](contracts/signal-label-matrix/) | 直接查三种信号的必需字段和禁止项 |
+| [结构化日志规范](contracts/logging/) | 日志字段、`logger.name`、`caller`、日志分类契约 |
 
 推荐阅读顺序：
 
-- 先读 [字段命名与来源边界](attributes/)
-- 再读 [信号字段契约](standard/)
-- 最后把 [信号标签矩阵](signal-label-matrix/) 当速查表
+- 先读 [字段命名与来源边界](contracts/attributes/)
+- 再读 [信号字段契约](contracts/standard/)
+- 然后看 [结构化日志规范](contracts/logging/)
+- 最后把 [信号标签矩阵](contracts/signal-label-matrix/) 当速查表
 
 ---
 
@@ -52,14 +54,13 @@ DevFlow 的 observability 文档主要回答四类问题：
 |------|----------|
 | [Collector 模板](collector/) | 平台侧该如何注入公共资源字段 |
 | [Go 接入示例](go-example/) | 一个 Go 服务的最小接入骨架 |
-| [结构化日志规范](logging/) | 日志字段、`logger.name`、`caller`、日志分类契约 |
 | [OTel 接入检查清单](onboarding-checklist/) | 新服务接入时的最小验收清单 |
 
 推荐阅读顺序：
 
 - 先看 [Collector 模板](collector/)
 - 再看 [Go 接入示例](go-example/)
-- 然后对照 [结构化日志规范](logging/)
+- 然后对照 [结构化日志规范](contracts/logging/)
 - 最后按 [OTel 接入检查清单](onboarding-checklist/) 验收
 
 ---
@@ -90,15 +91,15 @@ DevFlow 的 observability 文档主要回答四类问题：
 
 按阅读目的分组后的完整索引：
 
-- 基础规范
+- 字段契约
   - [技术栈与组件矩阵](component/)
-  - [字段命名与来源边界](attributes/)
-  - [信号字段契约](standard/)
-  - [信号标签矩阵](signal-label-matrix/)
+  - [字段命名与来源边界](contracts/attributes/)
+  - [信号字段契约](contracts/standard/)
+  - [信号标签矩阵](contracts/signal-label-matrix/)
+  - [结构化日志规范](contracts/logging/)
 - 接入实现
   - [Collector 模板](collector/)
   - [Go 接入示例](go-example/)
-  - [结构化日志规范](logging/)
   - [OTel 接入检查清单](onboarding-checklist/)
 - 服务约定
   - [现有服务字段清单](service-checklist/)

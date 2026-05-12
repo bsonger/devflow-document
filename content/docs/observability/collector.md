@@ -340,13 +340,13 @@ env:
 如果你正在落地 DevFlow observability，建议顺序是：
 
 1. 先按本页把 Collector 跑起来
-2. 再按 [字段命名与来源边界](../attributes/) 划清字段归属
-3. 最后按 [信号字段契约](../standard/) 统一命名
+2. 再按 [字段命名与来源边界](../contracts/attributes/) 划清字段归属
+3. 最后按 [信号字段契约](../contracts/standard/) 统一命名
 
 ---
 
 ## 关联阅读
 
 - [可观测性首页](../)
-- [字段命名与来源边界](../attributes/)
-- [信号字段契约](../standard/)
+- [字段命名与来源边界](../contracts/attributes/)
+- [信号字段契约](../contracts/standard/)

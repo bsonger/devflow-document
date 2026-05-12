@@ -269,10 +269,11 @@ logger.Info("release fetched",
 
 ### 推荐
 
-- `service_name`
-- `service_namespace`
+- `http_request_method`
 - `http_route`
 - `http_response_status_code`
+
+服务身份、环境、命名空间这类字段更适合来自 scrape target metadata 或 OTel Resource，而不是默认复制进每条 HTTP 应用指标。
 
 ### 不推荐
 
@@ -354,6 +355,6 @@ logger.Info("release fetched",
 
 ## 关联阅读
 
-- [字段命名与来源边界](../attributes/)
-- [信号字段契约](../standard/)
+- [字段命名与来源边界](../contracts/attributes/)
+- [信号字段契约](../contracts/standard/)
 - [OTel Collector 配置模板](../collector/)

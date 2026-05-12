@@ -13,10 +13,10 @@ weight: 79
 
 这页不重复定义通用规范：
 
-- 命名和来源边界看 [字段命名与来源边界](../attributes/)
-- 完整字段契约看 [信号字段契约](../standard/)
-- 最小必需字段看 [信号标签矩阵](../signal-label-matrix/)
-- 日志专属规则看 [结构化日志规范](../logging/)
+- 命名和来源边界看 [字段命名与来源边界](../contracts/attributes/)
+- 完整字段契约看 [信号字段契约](../contracts/standard/)
+- 最小必需字段看 [信号标签矩阵](../contracts/signal-label-matrix/)
+- 日志专属规则看 [结构化日志规范](../contracts/logging/)
 
 ---
 
@@ -212,6 +212,6 @@ weight: 79
 
 ## 关联阅读
 
-- [字段命名与来源边界](../attributes/)
-- [结构化日志规范](../logging/)
+- [字段命名与来源边界](../contracts/attributes/)
+- [结构化日志规范](../contracts/logging/)
 - [Go 服务最小 OTel 接入示例](../go-example/)

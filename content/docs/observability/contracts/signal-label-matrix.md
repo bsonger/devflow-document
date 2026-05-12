@@ -42,7 +42,7 @@ weight: 74
 
 | 信号 | 必需标签 |
 |------|----------|
-| Metrics | `service_name`、`http_request_method`、`http_route`、`http_response_status_code`、`http_response_status_class` |
+| Metrics | `http_request_method`、`http_route`、`http_response_status_code` |
 | Traces | `service.name`、`service.namespace`、`trace_id`、`span_id`、`span.name`、`span.kind`、`http.request.method`、`http.route`、`http.response.status_code` |
 | Logs | `timestamp`、`severity_text`、`logger.name`、`message`、`caller`、`trace_id`、`span_id` |
 
@@ -50,7 +50,7 @@ weight: 74
 
 - Metrics 里的 `trace_id` / `span_id` 仍然**禁止**作为 label，只能通过 exemplar 关联
 - Logs 里的 `trace_id` / `span_id` 是 Trace -> Log 关联主键，不再只是“推荐有”
-- `http_response_status_class` 是 DevFlow HTTP metrics 查询和仪表盘的必需维度，不应再视为可有可无
+- 服务身份、环境、集群等字段应优先来自 Resource、scrape target metadata 或 Collector enrichment，而不是默认复制进每条 HTTP 应用指标
 
 ---
 
@@ -58,16 +58,16 @@ weight: 74
 
 ### 必备
 
-- `service_name`
 - `http_request_method`
 - `http_route`
 - `http_response_status_code`
-- `http_response_status_class`
 
 ### 强烈建议
 
+- `service_name`（仅当该类指标确实需要由应用侧直接区分）
+- `service_namespace`（仅当该类指标确实需要）
+- `deployment_environment_name`（仅当该类指标确实需要）
 - `service_version`
-- `service_namespace`
 - `result`（仅低基数工作流/依赖类指标）
 - `action`（仅低基数场景）
 
@@ -173,10 +173,10 @@ Log 应该优先回答：
 
 | 标签 | Metrics | Traces | Logs | 推荐归属 |
 |------|---------|--------|------|----------|
-| `service_name` / `service.name` | ✅ 必备 | ✅ 必备 | ◑ 推荐来自 Resource | 服务配置 / Resource |
+| `service_name` / `service.name` | ◑ 推荐来自 Resource / 按需 label | ✅ 必备 | ◑ 推荐来自 Resource | 服务配置 / Resource |
 | `service_version` / `service.version` | ◑ 建议 | ✅ 建议 | ◑ 可有 | 服务配置 / Resource |
 | `deployment_environment_name` / `deployment.environment.name` | ◑ 可选 | ✅ 建议 | ◑ 可有 | Resource / Collector |
-| `http_response_status_class` | ✅ 必备 | ❌ | ❌ | 服务代码 / HTTP instrumentation |
+| `http_response_status_class` | ◑ 查询层派生更优 | ❌ | ❌ | 查询层 / 平台侧派生 |
 | `k8s_cluster_name` / `k8s.cluster.name` | ❌ | ✅ 建议 | ◑ 可有 | OTel Collector |
 | `k8s_namespace_name` / `k8s.namespace.name` | ❌ | ✅ 建议 | ◑ 可有 | OTel Collector |
 | `k8s_pod_name` / `k8s.pod.name` | ❌ | ✅ 建议 | ◑ 可有 | OTel Collector |
@@ -249,6 +249,12 @@ Log 应该优先回答：
 
 - `trace_id`
 - `span_id`
+
+建议 HTTP request 应用指标默认只保留：
+
+- `http_request_method`
+- `http_route`
+- `http_response_status_code`
 
 ---
 

@@ -52,7 +52,8 @@ Metrics 发现问题，通过 exemplar 跳到 Trace，再按 `trace_id` 跳到 L
 
 - 这些字段优先作为 OpenTelemetry Resource Attributes 存在。
 - 普通 HTTP access log 不要求在每条记录中重复带 `service.name`、`service.namespace`、`service.version`、`deployment.environment.name`。
-- Prometheus metrics 使用 Prometheus-safe label 名称，例如 `service_name`。
+- `devflow-service` 当前 HTTP 应用指标也不要求把 `service_name`、`service_namespace`、`deployment_environment_name` 复制成每条 metrics label；这些身份字段应来自 Prometheus scrape target、OTel Resource 或 Collector enrichment。
+- Prometheus metrics 只有在某类业务指标确实需要时，才使用 Prometheus-safe label 名称，例如 `service_name`。
 
 ---
 
@@ -89,6 +90,22 @@ Metrics 发现问题，通过 exemplar 跳到 Trace，再按 `trace_id` 跳到 L
 - `http.route` 必须是模板路由，不要把原始动态路径拿去做 metrics label。
 - `url.path` 可以出现在 log 和 trace 中，但不应进入高频 metrics label。
 
+### HTTP request 在三种信号里的推荐归属
+
+针对服务内 HTTP request，当前推荐这样拆分：
+
+| 信号 | 应该带哪些字段 | 不该带哪些字段 |
+|-----|-----|-----|
+| Metrics | `http_request_method`、`http_route`、`http_response_status_code` | `trace_id`、`span_id`、原始 `url.path`、业务对象 ID |
+| Logs | `http.request.method`、`http.route`、`url.path`、`http.response.status_code`、`trace_id`、`span_id` | Kubernetes / Pod / Node 运行时字段 |
+| Traces | `http.request.method`、`http.route`、`http.response.status_code`、`url.path`、`service.name`、`service.namespace` | 无需重复 Collector 应补的业务无关落点字段 |
+
+补充约束：
+
+- Metrics 侧只保留低基数、可聚合的 request 事实。
+- Logs 侧保留可读性和排障所需的原始路径、消息文本。
+- Traces 侧保留完整 request 执行上下文，用于从请求跳到下游 span。
+
 ---
 
 ## 命名与来源边界
@@ -116,6 +133,7 @@ Metrics 发现问题，通过 exemplar 跳到 Trace，再按 `trace_id` 跳到 L
    - `trace_id`、`span_id`、`request_id`、`user_id`、`release_id`、原始 `url.path` 都不应进入高频 metrics label
    - Metrics 到 Trace 的跳转应使用 exemplar
    - `release_id` 更适合放在 Trace、Log、DevFlow DB 或低频 info/status metric
+   - `service_name`、`service_namespace`、`deployment_environment_name` 对 HTTP 高频应用指标不是必需 label，应优先来自平台侧元数据
 
 ---
 

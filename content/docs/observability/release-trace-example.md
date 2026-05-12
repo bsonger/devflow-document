@@ -171,10 +171,10 @@ Trace 只是骨架，日志负责补细节。
 
 所以相关指标至少应该能按这些维度聚合：
 
-- `service_name`
-- `service_namespace`
 - `http_route`
 - `http_response_status_code`
+
+`service_name`、`service_namespace` 这类身份维度如果需要，也应优先来自 scrape target metadata、OTel Resource 或 Collector enrichment，而不是默认做成每条 HTTP 应用指标 label。
 
 不建议把 `devflow.release.id` 直接打成高频 metrics label；它更适合留在 Trace 和 Logs 中。
 
@@ -245,7 +245,7 @@ Trace 只是骨架，日志负责补细节。
 ## 关联阅读
 
 - [发布生命周期](../../architecture/lifecycle/)
-- [字段命名与来源边界](../attributes/)
-- [结构化日志规范](../logging/)
+- [字段命名与来源边界](../contracts/attributes/)
+- [结构化日志规范](../contracts/logging/)
 - [现有服务字段清单](../service-checklist/)
 - [OTel 接入检查清单](../onboarding-checklist/)

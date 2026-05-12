@@ -25,34 +25,38 @@ metrics label，哪些字段只能留在 trace 或 log 中。
 
 Metrics 用于统计、聚合、告警、SLO，是主事实源。
 
-### 高频 HTTP metrics 推荐 labels
+### 高频 HTTP metrics 必带 labels
 
 | Key | 类型 | 说明 | 示例 |
 |-----|-----|-----|-----|
-| `service_name` | string | 服务名称 | `release-service` |
-| `service_namespace` | string | 服务命名空间 | `devflow` |
 | `http_request_method` | string | HTTP 方法 | `GET` |
 | `http_route` | string | 路由模板 | `/api/v1/releases/:id` |
 | `http_response_status_code` | string | HTTP 状态码 | `200` |
-| `http_response_status_class` | string | HTTP 状态码段 | `2xx` / `4xx` / `5xx` |
 
 说明：
 
-- `http_response_status_class` 是当前 DevFlow HTTP 高频 metrics 的必需 label，SLO、错误率和平台仪表盘都依赖它。
-- `deployment_environment_name` 不是所有高频 HTTP metrics 的必选 label，是否暴露取决于当前采集实现和成本控制。
+- 这是 `devflow-service` 当前 HTTP server metrics 的真实低基数标签集合。
+- `http_route` 必须是路由模板，不是包含资源 ID 的原始路径。
+- `service_name`、`service_namespace`、`deployment_environment_name` 这类身份字段应来自 scrape target metadata、OTel Resource 或 Collector enrichment，而不是复制进每条 HTTP 应用指标。
+- 如果仪表盘要按 `2xx` / `4xx` / `5xx` 聚合，应在查询层通过 `http_response_status_code` 归并，或者由平台侧派生，不要默认要求服务代码额外打一层状态码段 label。
 
-### 低频或场景化 labels
+### 低频或场景化可选 labels
 
 这些字段只有在基数受控、业务确实需要聚合时才考虑使用：
 
-- `service_version`
-- `result`
-- `action`
-- `strategy`
-- `pipeline_type`
-- `observer_type`
-- `callback_type`
-- `task_name`
+| Key | 类型 | 说明 | 示例 |
+|-----|-----|-----|-----|
+| `service_name` | string | 服务名。优先来自平台元数据，仅在应用侧指标确实需要时显式带出。 | `release-service` |
+| `service_namespace` | string | 服务命名空间。优先来自平台元数据。 | `devflow` |
+| `deployment_environment_name` | string | 部署环境。优先来自平台元数据。 | `pre-production` |
+| `service_version` | string | 服务版本。仅在版本维度聚合有明确价值时使用。 | `2026.05.11` |
+| `result` | string | 低基数结果维度。 | `success` |
+| `action` | string | 低基数动作维度。 | `sync` |
+| `strategy` | string | 发布策略。 | `canary` |
+| `pipeline_type` | string | 流水线类型。 | `manifest_delivery` |
+| `observer_type` | string | observer 分类。 | `runtime` |
+| `callback_type` | string | callback 分类。 | `writeback` |
+| `task_name` | string | 有限任务名集合。 | `render_manifest` |
 
 ### 禁止放进高频 metrics label 的字段
 
@@ -84,8 +88,8 @@ Trace 可以派生出一部分 RED 指标，比如 request rate、5xx error rate
 |-----|-----|-----|-----|
 | `http_server_requests_total` | counter | 请求计数 | `10234` |
 | `http_server_request_duration_seconds` | histogram | 请求耗时 | `0.1204` |
-| `http_request_size_bytes` | histogram / summary | 请求大小 | `2048` |
-| `http_response_size_bytes` | histogram / summary | 响应大小 | `10240` |
+| `http_server_request_size_bytes` | histogram | 请求大小 | `2048` |
+| `http_server_response_size_bytes` | histogram | 响应大小 | `10240` |
 
 ---
 
@@ -180,9 +184,6 @@ Logs 用于记录错误文本、业务事件、状态变化，不替代 Trace。
 
 | Key | 类型 | 说明 | 示例 |
 |-----|-----|-----|-----|
-| `service.name` | string | 服务名称 | `release-service` |
-| `service.namespace` | string | 服务命名空间 | `devflow` |
-| `service.version` | string | 服务版本 | `2026.05.11` |
 | `k8s.cluster.name` | string | 集群名称 | `cluster-prod` |
 | `k8s.namespace.name` | string | Pod 所在命名空间 | `devflow` |
 | `k8s.pod.name` | string | Pod 名称 | `devflow-12345` |
@@ -200,6 +201,22 @@ Logs 用于记录错误文本、业务事件、状态变化，不替代 Trace。
 - `caller` 仅用于调试，不允许作为 metrics label、Loki stream label、Grafana variable。
 - `http.access` / `http.error` 当前有意保持极简。
 - `trace_id` 和 `span_id` 是 Trace -> Log 关联主键，新日志契约里应视为必需字段。
+
+### HTTP request 推荐字段
+
+服务内 HTTP request 当前推荐按下面方式出现在日志里：
+
+| 场景 | `logger.name` | 必需字段 |
+|-----|-----|-----|
+| 正常请求完成 | `http.access` | `http.request.method`、`http.route`、`url.path`、`http.response.status_code`、`trace_id`、`span_id` |
+| 4xx / 5xx 请求 | `http.error` | `http.request.method`、`http.route`、`url.path`、`http.response.status_code`、`trace_id`、`span_id` |
+| panic recovery | `http.error` | `http.request.method`、`http.route`、`url.path`、`http.response.status_code`、`trace_id`、`span_id` |
+
+补充说明：
+
+- `http.request.body.size` 在请求体大小可知且有意义时可选。
+- `http.response.body.size` 在普通 access log 中推荐保留。
+- 具体错误文本直接放在 `message`，不要再拆一个自由格式的 `error.message` 日志字段。
 
 如果错误日志需要更具体的失败文本，优先直接写进 `message`，而不是再引入新的自由文本日志字段。
 

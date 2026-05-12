@@ -21,10 +21,10 @@ weight: 77
 
 这页是验收清单，不重复定义完整规范：
 
-- 字段命名和来源边界看 [字段命名与来源边界](../attributes/)
-- 完整字段契约看 [信号字段契约](../standard/)
-- 最小必需字段速查看 [信号标签矩阵](../signal-label-matrix/)
-- 日志字段和 `logger.name` / `caller` 规则看 [结构化日志规范](../logging/)
+- 字段命名和来源边界看 [字段命名与来源边界](../contracts/attributes/)
+- 完整字段契约看 [信号字段契约](../contracts/standard/)
+- 最小必需字段速查看 [信号标签矩阵](../contracts/signal-label-matrix/)
+- 日志字段和 `logger.name` / `caller` 规则看 [结构化日志规范](../contracts/logging/)
 
 ---
 
@@ -154,8 +154,8 @@ weight: 77
 ### 必查项
 
 - [ ] 有 HTTP 请求数 / 延迟 / 错误率类指标
-- [ ] Metrics labels 至少包含 `service_name`
-- [ ] HTTP 指标至少包含 `http_request_method` `http_route` `http_response_status_code` `http_response_status_class`
+- [ ] HTTP 指标至少包含 `http_request_method` `http_route` `http_response_status_code`
+- [ ] 服务、环境、命名空间等身份字段来自 scrape target metadata、OTel Resource 或 Collector enrichment
 - [ ] 没有明显高基数 labels
 
 ### 不该放进 Metrics labels 的字段
@@ -250,8 +250,8 @@ Prometheus / Grafana 中应该能按：
 
 ## 关联阅读
 
-- [字段命名与来源边界](../attributes/)
-- [信号字段契约](../standard/)
+- [字段命名与来源边界](../contracts/attributes/)
+- [信号字段契约](../contracts/standard/)
 - [OTel Collector 配置模板](../collector/)
 - [Go 服务最小 OTel 接入示例](../go-example/)
 - [现有服务字段清单](../service-checklist/)
