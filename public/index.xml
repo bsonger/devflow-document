@@ -1,13 +1,7 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>DevFlow</title><link>https://devflow.bei.com/document/</link><description>Recent content on DevFlow</description><generator>Hugo</generator><language>zh-cn</language><atom:link href="https://devflow.bei.com/document/index.xml" rel="self" type="application/rss+xml"/><item><title>五大微服务</title><link>https://devflow.bei.com/document/docs/architecture/services/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/architecture/services/</guid><description>&lt;h1 id="-五大微服务"&gt;
- 🧩 五大微服务
- &lt;a class="anchor" href="#-%e4%ba%94%e5%a4%a7%e5%be%ae%e6%9c%8d%e5%8a%a1"&gt;#&lt;/a&gt;
-&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>DevFlow</title><link>https://devflow.bei.com/document/</link><description>Recent content on DevFlow</description><generator>Hugo</generator><language>zh-cn</language><atom:link href="https://devflow.bei.com/document/index.xml" rel="self" type="application/rss+xml"/><item><title>五大微服务</title><link>https://devflow.bei.com/document/docs/architecture/services/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/architecture/services/</guid><description>&lt;h1 id="-五大微服务"&gt;🧩 五大微服务&lt;/h1&gt;
 &lt;p&gt;DevFlow 由 5 个独立服务组成。你可以把它们理解成一个发布团队里的 5 个角色。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="-服务总览"&gt;
- 📋 服务总览
- &lt;a class="anchor" href="#-%e6%9c%8d%e5%8a%a1%e6%80%bb%e8%a7%88"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="-服务总览"&gt;📋 服务总览&lt;/h2&gt;
 &lt;table class="df-table"&gt;
  &lt;thead&gt;
  &lt;tr&gt;
@@ -52,10 +46,7 @@
 &lt;/table&gt;
 &lt;hr&gt;
 &lt;div class="df-service-block"&gt;
-&lt;h2 id="-meta-service--档案管理员"&gt;
- 📚 meta-service — 档案管理员
- &lt;a class="anchor" href="#-meta-service--%e6%a1%a3%e6%a1%88%e7%ae%a1%e7%90%86%e5%91%98"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="-meta-service--档案管理员"&gt;📚 meta-service — 档案管理员&lt;/h2&gt;
 &lt;p&gt;&lt;span class="df-badge"&gt;🏷️ 稳定性高&lt;/span&gt; &lt;span class="df-badge"&gt;🗂️ 元数据中心&lt;/span&gt; &lt;span class="df-badge"&gt;🔍 查询为主&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;📦 管什么&lt;/strong&gt;：Project、Application、Environment、Cluster、ApplicationEnvironment&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;💬 一句话&lt;/strong&gt;：所有应用的&amp;quot;户口本&amp;quot;都存在这里。其他服务想知道&amp;quot;这个应用叫什么名字&amp;quot;、&amp;ldquo;生产环境在哪个集群&amp;rdquo;，都来问它。&lt;/p&gt;
@@ -63,14 +54,11 @@
 &lt;/div&gt;
 &lt;hr&gt;
 &lt;div class="df-service-block"&gt;
-&lt;h2 id="-config-service--配置专员"&gt;
- 🧪 config-service — 配置专员
- &lt;a class="anchor" href="#-config-service--%e9%85%8d%e7%bd%ae%e4%b8%93%e5%91%98"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
-&lt;p&gt;&lt;span class="df-badge"&gt;🧱 配置分层&lt;/span&gt; &lt;span class="df-badge"&gt;🌱 环境差异&lt;/span&gt; &lt;span class="df-badge"&gt;📥 渲染输入&lt;/span&gt;&lt;/p&gt;</description></item><item><title>领域模型</title><link>https://devflow.bei.com/document/docs/architecture/domain-model/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/architecture/domain-model/</guid><description>&lt;h1 id="领域模型"&gt;
- 领域模型
- &lt;a class="anchor" href="#%e9%a2%86%e5%9f%9f%e6%a8%a1%e5%9e%8b"&gt;#&lt;/a&gt;
-&lt;/h1&gt;
+&lt;h2 id="-config-service--配置专员"&gt;🧪 config-service — 配置专员&lt;/h2&gt;
+&lt;p&gt;&lt;span class="df-badge"&gt;🧱 配置分层&lt;/span&gt; &lt;span class="df-badge"&gt;🌱 环境差异&lt;/span&gt; &lt;span class="df-badge"&gt;📥 渲染输入&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;📦 管什么&lt;/strong&gt;：WorkloadConfig、AppConfig&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;💬 一句话&lt;/strong&gt;：管理&amp;quot;应用默认怎么跑&amp;quot;（WorkloadConfig）和&amp;quot;这个环境有什么特殊要求&amp;quot;（AppConfig）。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;🧠 核心设计&lt;/strong&gt;：配置分层。&lt;/p&gt;</description></item><item><title>领域模型</title><link>https://devflow.bei.com/document/docs/architecture/domain-model/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/architecture/domain-model/</guid><description>&lt;h1 id="领域模型"&gt;领域模型&lt;/h1&gt;
 &lt;p&gt;想象你要开一家连锁餐厅。你需要：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;公司总部&lt;/strong&gt;（Project）— 管品牌、管战略&lt;/li&gt;
@@ -81,10 +69,7 @@
 &lt;p&gt;DevFlow 的领域模型就是这套&amp;quot;连锁餐厅管理体系&amp;quot;。&lt;/p&gt;
 &lt;p&gt;DevFlow 中的资源模型分为四个层级，从组织到部署，层层递进。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="资源关系总览"&gt;
- 资源关系总览
- &lt;a class="anchor" href="#%e8%b5%84%e6%ba%90%e5%85%b3%e7%b3%bb%e6%80%bb%e8%a7%88"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="资源关系总览"&gt;资源关系总览&lt;/h2&gt;
 &lt;pre tabindex="0"&gt;&lt;code class="language-mermaid" data-lang="mermaid"&gt;graph TB
  subgraph &amp;#34;组织层&amp;#34;
  Project[&amp;#34;Project 项目&amp;#34;]
@@ -121,27 +106,16 @@
  Service --&amp;gt; Manifest
  Manifest --&amp;gt; Release
 &lt;/code&gt;&lt;/pre&gt;&lt;hr&gt;
-&lt;h2 id="四个层级"&gt;
- 四个层级
- &lt;a class="anchor" href="#%e5%9b%9b%e4%b8%aa%e5%b1%82%e7%ba%a7"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
-&lt;h3 id="第一层组织"&gt;
- 第一层：组织
- &lt;a class="anchor" href="#%e7%ac%ac%e4%b8%80%e5%b1%82%e7%bb%84%e7%bb%87"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;Project&lt;/strong&gt; 和 &lt;strong&gt;Application&lt;/strong&gt; 负责&amp;quot;谁拥有什么&amp;quot;。&lt;/p&gt;</description></item><item><title>发布生命周期</title><link>https://devflow.bei.com/document/docs/architecture/lifecycle/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/architecture/lifecycle/</guid><description>&lt;h1 id="-发布生命周期"&gt;
- 🧭 发布生命周期
- &lt;a class="anchor" href="#-%e5%8f%91%e5%b8%83%e7%94%9f%e5%91%bd%e5%91%a8%e6%9c%9f"&gt;#&lt;/a&gt;
-&lt;/h1&gt;
+&lt;h2 id="四个层级"&gt;四个层级&lt;/h2&gt;
+&lt;h3 id="第一层组织"&gt;第一层：组织&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Project&lt;/strong&gt; 和 &lt;strong&gt;Application&lt;/strong&gt; 负责&amp;quot;谁拥有什么&amp;quot;。&lt;/p&gt;</description></item><item><title>发布生命周期</title><link>https://devflow.bei.com/document/docs/architecture/lifecycle/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/architecture/lifecycle/</guid><description>&lt;h1 id="-发布生命周期"&gt;🧭 发布生命周期&lt;/h1&gt;
 &lt;p&gt;&lt;span class="df-badge"&gt;🧩 release-service&lt;/span&gt; &lt;span class="df-badge"&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/tekton.svg" alt="Tekton" loading="lazy" /&gt;
  Tekton&lt;/span&gt; &lt;span class="df-badge"&gt;📦 OCI Registry&lt;/span&gt; &lt;span class="df-badge"&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/argocd.svg" alt="Argo CD" loading="lazy" /&gt;
  Argo CD&lt;/span&gt; &lt;span class="df-badge"&gt;👀 runtime-service&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;在 DevFlow 中发布一个应用，会经历 8 个阶段。理解这个流程，就能理解 DevFlow 是怎么保证发布安全可控的。&lt;/p&gt;
+&lt;p&gt;在 DevFlow 中发布一个应用，会经历 8 个阶段。这个流程由 &lt;code&gt;release-service&lt;/code&gt; 牵头，串起 &lt;code&gt;meta-service&lt;/code&gt;、&lt;code&gt;config-service&lt;/code&gt;、&lt;code&gt;network-service&lt;/code&gt;、Tekton、OCI Registry、Argo CD 和 &lt;code&gt;runtime-service&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;如果发布过程中用户点了取消，&lt;code&gt;release-service&lt;/code&gt; 会尽量把发布停在当前阶段，保留已经创建的快照、执行记录和状态信息，并在可安全停止的边界上终止后续动作。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="-整体流程"&gt;
- 🗺️ 整体流程
- &lt;a class="anchor" href="#-%e6%95%b4%e4%bd%93%e6%b5%81%e7%a8%8b"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="-整体流程"&gt;🗺️ 整体流程&lt;/h2&gt;
 &lt;pre tabindex="0"&gt;&lt;code class="language-mermaid" data-lang="mermaid"&gt;graph LR
  A[&amp;#34;1. 收集信息&amp;#34;] --&amp;gt; B[&amp;#34;2. 冻结构建快照&amp;#34;]
  B --&amp;gt; C[&amp;#34;3. 构建镜像&amp;#34;]
@@ -150,25 +124,17 @@
  E --&amp;gt; F[&amp;#34;6. 推送到仓库&amp;#34;]
  F --&amp;gt; G[&amp;#34;7. 部署到集群&amp;#34;]
  G --&amp;gt; H[&amp;#34;8. 观察状态&amp;#34;]
-&lt;/code&gt;&lt;/pre&gt;&lt;hr&gt;
-&lt;h2 id="-阶段-1收集信息"&gt;
- 📥 阶段 1：收集信息
- &lt;a class="anchor" href="#-%e9%98%b6%e6%ae%b5-1%e6%94%b6%e9%9b%86%e4%bf%a1%e6%81%af"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;谁在干活&lt;/strong&gt;：release-service 问其他服务要资料&lt;/p&gt;
-&lt;p&gt;你在 Console 上点了&amp;quot;发布&amp;quot;，release-service 开始四处打听：&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;&amp;ldquo;meta-service，这个应用叫什么？代码仓库在哪？要发到哪个环境？&amp;rdquo;
-&amp;ldquo;config-service，它的基础配置是什么？目标环境有什么特殊配置？&amp;rdquo;
-&amp;ldquo;network-service，它暴露了哪些端口？外部怎么访问？&amp;rdquo;&lt;/p&gt;</description></item><item><title>meta-service</title><link>https://devflow.bei.com/document/docs/services/meta-service/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/services/meta-service/</guid><description>&lt;h1 id="-meta-service"&gt;
- 📚 meta-service
- &lt;a class="anchor" href="#-meta-service"&gt;#&lt;/a&gt;
-&lt;/h1&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这 8 个阶段不是所有阶段都能随时取消：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;阶段 1-2 取消最容易，只要停止继续收集与创建后续快照&lt;/li&gt;
+&lt;li&gt;阶段 3-6 取消要看外部系统是否已经开始执行，通常是“停止后续推进 + 标记取消”&lt;/li&gt;
+&lt;li&gt;阶段 7-8 取消最敏感，因为可能已经涉及集群同步和流量切换，只能做“安全中止”或“进入回滚”&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="-阶段-1收集发布上下文"&gt;📥 阶段 1：收集发布上下文&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;谁在干活&lt;/strong&gt;：&lt;code&gt;release-service&lt;/code&gt;&lt;/p&gt;</description></item><item><title>meta-service</title><link>https://devflow.bei.com/document/docs/services/meta-service/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/services/meta-service/</guid><description>&lt;h1 id="-meta-service"&gt;📚 meta-service&lt;/h1&gt;
 &lt;p&gt;&lt;strong&gt;档案管理员&lt;/strong&gt; — 所有应用、环境、集群的权威信息库。&lt;/p&gt;
-&lt;h2 id="它是做什么的"&gt;
- 它是做什么的
- &lt;a class="anchor" href="#%e5%ae%83%e6%98%af%e5%81%9a%e4%bb%80%e4%b9%88%e7%9a%84"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="它是做什么的"&gt;它是做什么的&lt;/h2&gt;
 &lt;p&gt;meta-service 管理 DevFlow 中的&amp;quot;户口本信息&amp;quot;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;Project&lt;/strong&gt; — 项目，比如&amp;quot;支付系统&amp;quot;&lt;/li&gt;
@@ -178,26 +144,17 @@
 &lt;li&gt;&lt;strong&gt;ApplicationEnvironment&lt;/strong&gt; — 应用和环境的绑定关系&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;其他服务想要知道&amp;quot;这个应用叫什么名字&amp;quot;、&amp;ldquo;生产环境在哪个集群&amp;rdquo;，都来问 meta-service。&lt;/p&gt;
-&lt;h2 id="一个例子"&gt;
- 一个例子
- &lt;a class="anchor" href="#%e4%b8%80%e4%b8%aa%e4%be%8b%e5%ad%90"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="一个例子"&gt;一个例子&lt;/h2&gt;
 &lt;p&gt;当你在 DevFlow Console 上看到：&lt;/p&gt;
 &lt;pre tabindex="0"&gt;&lt;code&gt;项目：电商中台
  └─ 应用：order-service
  └─ 环境：test → 集群：dev-cluster
  └─ 环境：prod → 集群：prod-cluster
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这些信息全部来自 meta-service。&lt;/p&gt;
-&lt;h2 id="为什么需要它"&gt;
- 为什么需要它
- &lt;a class="anchor" href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e9%9c%80%e8%a6%81%e5%ae%83"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="为什么需要它"&gt;为什么需要它&lt;/h2&gt;
 &lt;p&gt;没有 meta-service 的话，每个服务都要自己维护一份应用列表。改个应用名字，要改 5 个地方。&lt;/p&gt;
 &lt;p&gt;有了 meta-service，所有元数据只有一份&lt;strong&gt;单一真相源&lt;/strong&gt;。改一次，全平台生效。&lt;/p&gt;
-&lt;h2 id="api-入口"&gt;
- API 入口
- &lt;a class="anchor" href="#api-%e5%85%a5%e5%8f%a3"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="api-入口"&gt;API 入口&lt;/h2&gt;
 &lt;p&gt;所有接口以 &lt;code&gt;/api/v1/meta/&lt;/code&gt; 开头：&lt;/p&gt;
 &lt;pre tabindex="0"&gt;&lt;code&gt;GET /api/v1/meta/projects # 项目列表
 GET /api/v1/meta/projects/{id} # 项目详情
@@ -205,27 +162,15 @@ GET /api/v1/meta/applications # 应用列表
 GET /api/v1/meta/applications/{id} # 应用详情
 GET /api/v1/meta/environments # 环境列表
 GET /api/v1/meta/clusters # 集群列表
-&lt;/code&gt;&lt;/pre&gt;&lt;h2 id="关键设计"&gt;
- 关键设计
- &lt;a class="anchor" href="#%e5%85%b3%e9%94%ae%e8%ae%be%e8%ae%a1"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id="关键设计"&gt;关键设计&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;只读为主&lt;/strong&gt; — 大部分场景是其他服务来查询元数据，写入操作相对较少&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;下游服务解耦&lt;/strong&gt; — config-service、network-service 通过 &lt;code&gt;application_environment_id&lt;/code&gt; 关联，不直接依赖 meta-service 的内部结构&lt;/li&gt;
-&lt;/ul&gt;</description></item><item><title>config-service</title><link>https://devflow.bei.com/document/docs/services/config-service/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/services/config-service/</guid><description>&lt;h1 id="-config-service"&gt;
- 🧪 config-service
- &lt;a class="anchor" href="#-config-service"&gt;#&lt;/a&gt;
-&lt;/h1&gt;
+&lt;/ul&gt;</description></item><item><title>config-service</title><link>https://devflow.bei.com/document/docs/services/config-service/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/services/config-service/</guid><description>&lt;h1 id="-config-service"&gt;🧪 config-service&lt;/h1&gt;
 &lt;p&gt;&lt;strong&gt;配置专员&lt;/strong&gt; — 管理应用的运行时配置，确保不同环境的配置不会串台。&lt;/p&gt;
-&lt;h2 id="它是做什么的"&gt;
- 它是做什么的
- &lt;a class="anchor" href="#%e5%ae%83%e6%98%af%e5%81%9a%e4%bb%80%e4%b9%88%e7%9a%84"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="它是做什么的"&gt;它是做什么的&lt;/h2&gt;
 &lt;p&gt;config-service 管理两层配置：&lt;/p&gt;
-&lt;h3 id="workloadconfig--应用级基线"&gt;
- WorkloadConfig — 应用级基线
- &lt;a class="anchor" href="#workloadconfig--%e5%ba%94%e7%94%a8%e7%ba%a7%e5%9f%ba%e7%ba%bf"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;h3 id="workloadconfig--应用级基线"&gt;WorkloadConfig — 应用级基线&lt;/h3&gt;
 &lt;p&gt;定义应用&lt;strong&gt;不随环境变化&lt;/strong&gt;的运行规格：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;副本数&lt;/li&gt;
@@ -234,10 +179,7 @@ GET /api/v1/meta/clusters # 集群列表
 &lt;li&gt;启动命令和环境变量&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;想象成一个应用的&amp;quot;出厂设置&amp;quot;。&lt;/p&gt;
-&lt;h3 id="appconfig--环境级差异"&gt;
- AppConfig — 环境级差异
- &lt;a class="anchor" href="#appconfig--%e7%8e%af%e5%a2%83%e7%ba%a7%e5%b7%ae%e5%bc%82"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;h3 id="appconfig--环境级差异"&gt;AppConfig — 环境级差异&lt;/h3&gt;
 &lt;p&gt;定义应用&lt;strong&gt;在不同环境下&lt;/strong&gt;的特殊配置：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;配置挂载目录&lt;/li&gt;
@@ -245,10 +187,7 @@ GET /api/v1/meta/clusters # 集群列表
 &lt;li&gt;来源配置目录和来源 commit&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;想象成给同一辆车配不同的轮胎：赛道用光头胎，雨天用雨胎。&lt;/p&gt;
-&lt;h2 id="一个例子"&gt;
- 一个例子
- &lt;a class="anchor" href="#%e4%b8%80%e4%b8%aa%e4%be%8b%e5%ad%90"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="一个例子"&gt;一个例子&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;order-service 的基础配置（WorkloadConfig）：&lt;/strong&gt;&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;replicas&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;3&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;resources&lt;/span&gt;:
@@ -270,20 +209,27 @@ GET /api/v1/meta/clusters # 集群列表
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;environment_id&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;prod&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;mount_path&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;/etc/config&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;source_directory&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;ecommerce/order-service/prod&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;发布时，DevFlow 读取同步得到的文件内容，再和基础配置一起进入最终渲染。&lt;/p&gt;</description></item><item><title>network-service</title><link>https://devflow.bei.com/document/docs/services/network-service/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/services/network-service/</guid><description>&lt;h1 id="-network-service"&gt;
- 🌐 network-service
- &lt;a class="anchor" href="#-network-service"&gt;#&lt;/a&gt;
-&lt;/h1&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;发布时，DevFlow 读取同步得到的文件内容，再和基础配置一起进入最终渲染。&lt;/p&gt;
+&lt;h2 id="为什么分层"&gt;为什么分层&lt;/h2&gt;
+&lt;p&gt;如果不分层，所有环境的配置混在一起，很容易出错：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;小明改了测试环境的配置，不小心把生产环境也改了&lt;/li&gt;
+&lt;li&gt;发布时手动挑配置，漏了一个字段&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;分层之后：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;基线变一次，所有环境自动继承&lt;/li&gt;
+&lt;li&gt;环境差异独立管理，互不干扰&lt;/li&gt;
+&lt;li&gt;发布时自动叠加，不会漏配&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="api-入口"&gt;API 入口&lt;/h2&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;GET/POST/PUT/DELETE /api/v1/config/workload-configs
+GET/POST/PUT/DELETE /api/v1/config/app-configs
+&lt;/code&gt;&lt;/pre&gt;</description></item><item><title>network-service</title><link>https://devflow.bei.com/document/docs/services/network-service/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/services/network-service/</guid><description>&lt;h1 id="-network-service"&gt;🌐 network-service&lt;/h1&gt;
 &lt;p&gt;&lt;strong&gt;网络工程师&lt;/strong&gt; — 管理应用的网络拓扑和外部访问入口。&lt;/p&gt;
-&lt;h2 id="它是做什么的"&gt;
- 它是做什么的
- &lt;a class="anchor" href="#%e5%ae%83%e6%98%af%e5%81%9a%e4%bb%80%e4%b9%88%e7%9a%84"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="它是做什么的"&gt;它是做什么的&lt;/h2&gt;
 &lt;p&gt;network-service 管理两层网络定义：&lt;/p&gt;
-&lt;h3 id="service--应用级网络拓扑"&gt;
- Service — 应用级网络拓扑
- &lt;a class="anchor" href="#service--%e5%ba%94%e7%94%a8%e7%ba%a7%e7%bd%91%e7%bb%9c%e6%8b%93%e6%89%91"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;h3 id="service--应用级网络拓扑"&gt;Service — 应用级网络拓扑&lt;/h3&gt;
 &lt;p&gt;定义应用&lt;strong&gt;暴露哪些端口&lt;/strong&gt;、用什么协议：&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;name&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;order-service&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;ports&lt;/span&gt;:
@@ -294,10 +240,7 @@ GET /api/v1/meta/clusters # 集群列表
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;target_port&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;9090&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;protocol&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;GRPC&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;这告诉 Kubernetes：&amp;ldquo;order-service 有两个端口，一个是 HTTP，一个是 GRPC&amp;rdquo;。&lt;/p&gt;
-&lt;h3 id="route--环境级入口规则"&gt;
- Route — 环境级入口规则
- &lt;a class="anchor" href="#route--%e7%8e%af%e5%a2%83%e7%ba%a7%e5%85%a5%e5%8f%a3%e8%a7%84%e5%88%99"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;h3 id="route--环境级入口规则"&gt;Route — 环境级入口规则&lt;/h3&gt;
 &lt;p&gt;定义&lt;strong&gt;外部流量怎么进来&lt;/strong&gt;：&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;host&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;order.example.com&amp;#34;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;path&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;/api/v1&amp;#34;&lt;/span&gt;
@@ -306,10 +249,7 @@ GET /api/v1/meta/clusters # 集群列表
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;tls&lt;/span&gt;:
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;enabled&lt;/span&gt;: &lt;span style="color:#66d9ef"&gt;true&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;这告诉 Istio：&amp;ldquo;凡是访问 order.example.com/api/v1 的请求，都转发到 order-service 的 80 端口&amp;rdquo;。&lt;/p&gt;
-&lt;h2 id="一个例子"&gt;
- 一个例子
- &lt;a class="anchor" href="#%e4%b8%80%e4%b8%aa%e4%be%8b%e5%ad%90"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="一个例子"&gt;一个例子&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;order-service 的应用级网络拓扑（Service）：&lt;/strong&gt;&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;name&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;order-service&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;ports&lt;/span&gt;:
@@ -324,47 +264,36 @@ GET /api/v1/meta/clusters # 集群列表
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;tls&lt;/span&gt;:
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;enabled&lt;/span&gt;: &lt;span style="color:#66d9ef"&gt;true&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;secret_name&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;order-tls&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;order-service 在测试环境的入口（Route）：&lt;/strong&gt;&lt;/p&gt;</description></item><item><title>release-service</title><link>https://devflow.bei.com/document/docs/services/release-service/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/services/release-service/</guid><description>&lt;h1 id="-release-service"&gt;
- 🚀 release-service
- &lt;a class="anchor" href="#-release-service"&gt;#&lt;/a&gt;
-&lt;/h1&gt;
-&lt;p&gt;&lt;strong&gt;发布经理&lt;/strong&gt; — 发布全流程的编排者。从你在 Console 上点&amp;quot;发布&amp;quot;按钮，到应用真正跑在 Kubernetes 上，全是 release-service 在操心。&lt;/p&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;order-service 在测试环境的入口（Route）：&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;host&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;order-test.example.com&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;path&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;/&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;service_name&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;order-service&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;service_port&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;80&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;tls&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;enabled&lt;/span&gt;: &lt;span style="color:#66d9ef"&gt;false&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;同一个应用，测试环境用测试域名且不用 HTTPS，生产环境用正式域名且启用 HTTPS。&lt;/p&gt;</description></item><item><title>release-service</title><link>https://devflow.bei.com/document/docs/services/release-service/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/services/release-service/</guid><description>&lt;h1 id="-release-service"&gt;🚀 release-service&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;发布经理&lt;/strong&gt; — 发布全流程的编排者。从你在 Console 上点&amp;quot;发布&amp;quot;按钮，到应用真正跑在 Kubernetes 上，全是 &lt;code&gt;release-service&lt;/code&gt; 在操心。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="它是做什么的"&gt;
- 它是做什么的
- &lt;a class="anchor" href="#%e5%ae%83%e6%98%af%e5%81%9a%e4%bb%80%e4%b9%88%e7%9a%84"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
-&lt;p&gt;release-service 管理四样东西：&lt;/p&gt;
-&lt;h3 id="manifest--构建前快照"&gt;
- Manifest — 构建前快照
- &lt;a class="anchor" href="#manifest--%e6%9e%84%e5%bb%ba%e5%89%8d%e5%bf%ab%e7%85%a7"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
-&lt;p&gt;发布开始时，release-service 先把当前应用的完整状态冻结成一份不可变的快照（代码版本、镜像、基础配置、网络拓扑）。&lt;/p&gt;
+&lt;h2 id="它是做什么的"&gt;它是做什么的&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;release-service&lt;/code&gt; 管理四样东西：&lt;/p&gt;
+&lt;h3 id="manifest--构建前快照"&gt;Manifest — 构建前快照&lt;/h3&gt;
+&lt;p&gt;发布开始时，&lt;code&gt;release-service&lt;/code&gt; 先把当前应用的完整状态冻结成一份不可变的快照（代码版本、镜像、基础配置、网络拓扑）。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;详细概念见 &lt;a href="../../concepts/manifest-release/"&gt;Manifest 与 Release&lt;/a&gt;。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id="release--部署前快照"&gt;
- Release — 部署前快照
- &lt;a class="anchor" href="#release--%e9%83%a8%e7%bd%b2%e5%89%8d%e5%bf%ab%e7%85%a7"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
-&lt;p&gt;构建成功后，release-service 再创建第二份快照，绑定 Manifest 和目标环境。&lt;/p&gt;
+&lt;h3 id="release--部署前快照"&gt;Release — 部署前快照&lt;/h3&gt;
+&lt;p&gt;构建成功后，&lt;code&gt;release-service&lt;/code&gt; 再创建第二份快照，绑定 Manifest 和目标环境。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;详细概念见 &lt;a href="../../concepts/manifest-release/"&gt;Manifest 与 Release&lt;/a&gt;。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id="intent--执行意图"&gt;
- Intent — 执行意图
- &lt;a class="anchor" href="#intent--%e6%89%a7%e8%a1%8c%e6%84%8f%e5%9b%be"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;h3 id="intent--执行意图"&gt;Intent — 执行意图&lt;/h3&gt;
 &lt;p&gt;记录异步执行流程的运行状态：&lt;/p&gt;
 &lt;pre tabindex="0"&gt;&lt;code&gt;kind: release
 status: Running
 claimed_by: release-worker-1
 attempt_count: 1
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;用于观察 build / release 这类异步执行任务的状态、租约、重试和错误信息。&lt;/p&gt;
-&lt;h3 id="image--镜像信息"&gt;
- Image — 镜像信息
- &lt;a class="anchor" href="#image--%e9%95%9c%e5%83%8f%e4%bf%a1%e6%81%af"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;h3 id="image--镜像信息"&gt;Image — 镜像信息&lt;/h3&gt;
 &lt;p&gt;记录构建产物的元数据：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;镜像 digest（唯一标识）&lt;/li&gt;
@@ -372,66 +301,44 @@ attempt_count: 1
 &lt;li&gt;签名信息&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id="一次发布的完整旅程"&gt;
- 一次发布的完整旅程
- &lt;a class="anchor" href="#%e4%b8%80%e6%ac%a1%e5%8f%91%e5%b8%83%e7%9a%84%e5%ae%8c%e6%95%b4%e6%97%85%e7%a8%8b"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
-&lt;p&gt;你在 Console 上点了&amp;quot;发布 order-service 到生产环境&amp;quot;，接下来 release-service 会：&lt;/p&gt;</description></item><item><title>runtime-service</title><link>https://devflow.bei.com/document/docs/services/runtime-service/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/services/runtime-service/</guid><description>&lt;h1 id="-runtime-service"&gt;
- 🛠️ runtime-service
- &lt;a class="anchor" href="#-runtime-service"&gt;#&lt;/a&gt;
-&lt;/h1&gt;
+&lt;h2 id="一次发布的完整旅程"&gt;一次发布的完整旅程&lt;/h2&gt;
+&lt;p&gt;你在 Console 上点了&amp;quot;发布 order-service 到生产环境&amp;quot;，接下来 &lt;code&gt;release-service&lt;/code&gt; 会：&lt;/p&gt;
+&lt;h3 id="第一步收集信息"&gt;第一步：收集信息&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;release-service&lt;/code&gt; 先去找其他服务打听情况：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&amp;ldquo;meta-service，order-service 的代码仓库在哪？生产环境在哪个集群？&amp;rdquo;
+&amp;ldquo;config-service，order-service 的基础配置是什么？生产环境的特殊配置是什么？&amp;rdquo;
+&amp;ldquo;network-service，order-service 暴露了哪些端口？生产环境的域名是什么？&amp;rdquo;&lt;/p&gt;</description></item><item><title>runtime-service</title><link>https://devflow.bei.com/document/docs/services/runtime-service/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/services/runtime-service/</guid><description>&lt;h1 id="-runtime-service"&gt;🛠️ runtime-service&lt;/h1&gt;
 &lt;p&gt;&lt;strong&gt;运维值班&lt;/strong&gt; — 实时观察 Kubernetes 集群，执行运维操作。&lt;/p&gt;
-&lt;h2 id="它是做什么的"&gt;
- 它是做什么的
- &lt;a class="anchor" href="#%e5%ae%83%e6%98%af%e5%81%9a%e4%bb%80%e4%b9%88%e7%9a%84"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="它是做什么的"&gt;它是做什么的&lt;/h2&gt;
 &lt;p&gt;runtime-service 是 DevFlow 与 Kubernetes 之间的&lt;strong&gt;眼睛和手&lt;/strong&gt;：&lt;/p&gt;
-&lt;h3 id="看--实时观察集群状态"&gt;
- 看 — 实时观察集群状态
- &lt;a class="anchor" href="#%e7%9c%8b--%e5%ae%9e%e6%97%b6%e8%a7%82%e5%af%9f%e9%9b%86%e7%be%a4%e7%8a%b6%e6%80%81"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;h3 id="看--实时观察集群状态"&gt;看 — 实时观察集群状态&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;各个 workload（Deployment / StatefulSet / DaemonSet）跑了多少个 Pod，有多少 Ready&lt;/li&gt;
 &lt;li&gt;每个 Pod 的状态、重启次数、所在节点&lt;/li&gt;
 &lt;li&gt;Pod 日志&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id="动--执行运维操作"&gt;
- 动 — 执行运维操作
- &lt;a class="anchor" href="#%e5%8a%a8--%e6%89%a7%e8%a1%8c%e8%bf%90%e7%bb%b4%e6%93%8d%e4%bd%9c"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;h3 id="动--执行运维操作"&gt;动 — 执行运维操作&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;删除一个卡住的 Pod（让它重新调度）&lt;/li&gt;
 &lt;li&gt;重启一个 workload&lt;/li&gt;
 &lt;li&gt;调整副本数&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id="写--回写发布进度"&gt;
- 写 — 回写发布进度
- &lt;a class="anchor" href="#%e5%86%99--%e5%9b%9e%e5%86%99%e5%8f%91%e5%b8%83%e8%bf%9b%e5%ba%a6"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;h3 id="写--回写发布进度"&gt;写 — 回写发布进度&lt;/h3&gt;
 &lt;p&gt;发布过程中，runtime-service 把 rollout 的实时进度回写给 release-service：&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;&amp;ldquo;新版本 3/10 个 Pod 已经 Ready 了&amp;rdquo;
 &amp;ldquo;Canary 10% 流量阶段已完成&amp;rdquo;&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;Console 上看到的发布进度条，数据来自这里。&lt;/p&gt;
-&lt;h2 id="为什么不用数据库"&gt;
- 为什么不用数据库
- &lt;a class="anchor" href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e4%b8%8d%e7%94%a8%e6%95%b0%e6%8d%ae%e5%ba%93"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
-&lt;p&gt;runtime-service 是 DevFlow 中&lt;strong&gt;唯一不连 PostgreSQL&lt;/strong&gt; 的服务。&lt;/p&gt;</description></item><item><title>Project 与 Application</title><link>https://devflow.bei.com/document/docs/concepts/project-application/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/concepts/project-application/</guid><description>&lt;h1 id="-project-与-application"&gt;
- 📁 Project 与 Application
- &lt;a class="anchor" href="#-project-%e4%b8%8e-application"&gt;#&lt;/a&gt;
-&lt;/h1&gt;
-&lt;h2 id="project--项目"&gt;
- Project — 项目
- &lt;a class="anchor" href="#project--%e9%a1%b9%e7%9b%ae"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="为什么不用数据库"&gt;为什么不用数据库&lt;/h2&gt;
+&lt;p&gt;runtime-service 是 DevFlow 中&lt;strong&gt;唯一不连 PostgreSQL&lt;/strong&gt; 的服务。&lt;/p&gt;
+&lt;p&gt;Kubernetes 的状态变化太快了：Pod 可能在几秒内创建、销毁、重启。如果每个变化都写数据库，数据库会被压垮。&lt;/p&gt;
+&lt;p&gt;runtime-service 的做法是：&lt;/p&gt;</description></item><item><title>Project 与 Application</title><link>https://devflow.bei.com/document/docs/concepts/project-application/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/concepts/project-application/</guid><description>&lt;h1 id="-project-与-application"&gt;📁 Project 与 Application&lt;/h1&gt;
+&lt;h2 id="project--项目"&gt;Project — 项目&lt;/h2&gt;
 &lt;p&gt;Project 是 DevFlow 中最顶层的组织单元。你可以把它理解成一个&lt;strong&gt;文件夹&lt;/strong&gt;，把相关的应用放在一起。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="为什么需要分层"&gt;
- 为什么需要分层
- &lt;a class="anchor" href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e9%9c%80%e8%a6%81%e5%88%86%e5%b1%82"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="为什么需要分层"&gt;为什么需要分层&lt;/h2&gt;
 &lt;p&gt;没有 Project/Application 分层时，你的应用列表可能是这样的：&lt;/p&gt;
 &lt;pre tabindex="0"&gt;&lt;code&gt;payment-gateway
 order-service
@@ -456,10 +363,7 @@ analytics-api
 &lt;blockquote&gt;
 &lt;p&gt;分层不仅是组织问题，更是&lt;strong&gt;权限隔离&lt;/strong&gt;的基础。你可以给&amp;quot;数据中台&amp;quot;团队只开放数据中台的权限，他们看不到电商中台的任何东西。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id="例子"&gt;
- 例子
- &lt;a class="anchor" href="#%e4%be%8b%e5%ad%90"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;h3 id="例子"&gt;例子&lt;/h3&gt;
 &lt;pre tabindex="0"&gt;&lt;code&gt;Project: 电商中台
  ├─ order-service（订单服务）
  ├─ payment-service（支付服务）
@@ -469,33 +373,18 @@ analytics-api
  ├─ data-collector
  ├─ data-processor
  └─ data-api
-&lt;/code&gt;&lt;/pre&gt;&lt;h3 id="什么时候用"&gt;
- 什么时候用
- &lt;a class="anchor" href="#%e4%bb%80%e4%b9%88%e6%97%b6%e5%80%99%e7%94%a8"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id="什么时候用"&gt;什么时候用&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;按业务域划分（电商、支付、数据中台）&lt;/li&gt;
 &lt;li&gt;按团队划分（前端团队、后端团队）&lt;/li&gt;
 &lt;li&gt;按合规要求划分（需要独立权限隔离的业务）&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id="application--应用"&gt;
- Application — 应用
- &lt;a class="anchor" href="#application--%e5%ba%94%e7%94%a8"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
-&lt;p&gt;Application 是 DevFlow 中&lt;strong&gt;最核心的实体&lt;/strong&gt;。它代表一个可独立构建和部署的服务。&lt;/p&gt;</description></item><item><title>Environment 与 Cluster</title><link>https://devflow.bei.com/document/docs/concepts/environment-cluster/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/concepts/environment-cluster/</guid><description>&lt;h1 id="-environment-与-cluster"&gt;
- 🌍 Environment 与 Cluster
- &lt;a class="anchor" href="#-environment-%e4%b8%8e-cluster"&gt;#&lt;/a&gt;
-&lt;/h1&gt;
-&lt;h2 id="cluster--kubernetes-集群"&gt;
- Cluster — Kubernetes 集群
- &lt;a class="anchor" href="#cluster--kubernetes-%e9%9b%86%e7%be%a4"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="application--应用"&gt;Application — 应用&lt;/h2&gt;
+&lt;p&gt;Application 是 DevFlow 中&lt;strong&gt;最核心的实体&lt;/strong&gt;。它代表一个可独立构建和部署的服务。&lt;/p&gt;</description></item><item><title>Environment 与 Cluster</title><link>https://devflow.bei.com/document/docs/concepts/environment-cluster/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/concepts/environment-cluster/</guid><description>&lt;h1 id="-environment-与-cluster"&gt;🌍 Environment 与 Cluster&lt;/h1&gt;
+&lt;h2 id="cluster--kubernetes-集群"&gt;Cluster — Kubernetes 集群&lt;/h2&gt;
 &lt;p&gt;Cluster 就是 Kubernetes 集群，是应用真正跑起来的地方。&lt;/p&gt;
-&lt;h3 id="例子"&gt;
- 例子
- &lt;a class="anchor" href="#%e4%be%8b%e5%ad%90"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;h3 id="例子"&gt;例子&lt;/h3&gt;
 &lt;pre tabindex="0"&gt;&lt;code&gt;Cluster: dev-cluster
  位置: 北京机房
  用途: 开发测试
@@ -505,23 +394,14 @@ Cluster: prod-cluster
  用途: 生产环境
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;DevFlow 支持接入多个集群，你可以把不同环境映射到不同集群，甚至把一个环境的应用分发到多个集群。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="environment--环境"&gt;
- Environment — 环境
- &lt;a class="anchor" href="#environment--%e7%8e%af%e5%a2%83"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="environment--环境"&gt;Environment — 环境&lt;/h2&gt;
 &lt;p&gt;Environment 是一个&lt;strong&gt;逻辑运行环境&lt;/strong&gt;，比如开发、测试、预发布、生产。&lt;/p&gt;
-&lt;h3 id="例子-1"&gt;
- 例子
- &lt;a class="anchor" href="#%e4%be%8b%e5%ad%90-1"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;h3 id="例子-1"&gt;例子&lt;/h3&gt;
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;名称&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;production&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;所在集群&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;prod-cluster&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;名称&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;test&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;所在集群&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;dev-cluster&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="环境隔离"&gt;
- 环境隔离
- &lt;a class="anchor" href="#%e7%8e%af%e5%a2%83%e9%9a%94%e7%a6%bb"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="环境隔离"&gt;环境隔离&lt;/h3&gt;
 &lt;p&gt;Environment 通过三种机制实现隔离：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;&lt;strong&gt;集群绑定隔离&lt;/strong&gt; — 每个 Environment 绑定一个目标 Cluster&lt;/li&gt;
@@ -529,23 +409,20 @@ Cluster: prod-cluster
 &lt;li&gt;&lt;strong&gt;网络隔离&lt;/strong&gt; — 不同环境可以绑定不同的访问入口&lt;/li&gt;
 &lt;/ol&gt;
 &lt;blockquote&gt;
-&lt;p&gt;当前 &lt;code&gt;devflow-service&lt;/code&gt; 实现里，&lt;code&gt;Environment&lt;/code&gt; 本身&lt;strong&gt;不接受用户写入 &lt;code&gt;namespace&lt;/code&gt; 字段&lt;/strong&gt;。&lt;/p&gt;</description></item><item><title>WorkloadConfig</title><link>https://devflow.bei.com/document/docs/concepts/workload-config/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/concepts/workload-config/</guid><description>&lt;h1 id="-workloadconfig"&gt;
- 🧱 WorkloadConfig
- &lt;a class="anchor" href="#-workloadconfig"&gt;#&lt;/a&gt;
-&lt;/h1&gt;
+&lt;p&gt;当前 &lt;code&gt;devflow-service&lt;/code&gt; 实现里，&lt;code&gt;Environment&lt;/code&gt; 本身&lt;strong&gt;不接受用户写入 &lt;code&gt;namespace&lt;/code&gt; 字段&lt;/strong&gt;。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;h2 id="applicationenvironment--应用绑定到环境"&gt;ApplicationEnvironment — 应用绑定到环境&lt;/h2&gt;
+&lt;p&gt;当应用要部署到某个环境时，需要先建立绑定关系。这个绑定关系叫 &lt;strong&gt;ApplicationEnvironment&lt;/strong&gt;。&lt;/p&gt;
+&lt;h3 id="为什么要先绑定"&gt;为什么要先绑定&lt;/h3&gt;
+&lt;p&gt;想象你想把 &lt;code&gt;order-service&lt;/code&gt; 部署到 &lt;code&gt;test&lt;/code&gt; 环境：&lt;/p&gt;</description></item><item><title>WorkloadConfig</title><link>https://devflow.bei.com/document/docs/concepts/workload-config/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/concepts/workload-config/</guid><description>&lt;h1 id="-workloadconfig"&gt;🧱 WorkloadConfig&lt;/h1&gt;
 &lt;p&gt;&lt;strong&gt;WorkloadConfig&lt;/strong&gt; 是应用的&amp;quot;出厂设置&amp;quot;，定义了应用在 Kubernetes 中怎么跑。&lt;/p&gt;
-&lt;h2 id="它回答什么问题"&gt;
- 它回答什么问题
- &lt;a class="anchor" href="#%e5%ae%83%e5%9b%9e%e7%ad%94%e4%bb%80%e4%b9%88%e9%97%ae%e9%a2%98"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="它回答什么问题"&gt;它回答什么问题&lt;/h2&gt;
 &lt;blockquote&gt;
 &lt;p&gt;这个应用默认应该有几个副本？用多少 CPU？怎么知道它是不是挂了？&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;hr&gt;
-&lt;h2 id="为什么需要它"&gt;
- 为什么需要它
- &lt;a class="anchor" href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e9%9c%80%e8%a6%81%e5%ae%83"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="为什么需要它"&gt;为什么需要它&lt;/h2&gt;
 &lt;p&gt;想象一下，每个开发者在各自的 Kubernetes YAML 里写配置：&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 小明的 order-service&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;replicas&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;3&lt;/span&gt;
@@ -565,20 +442,11 @@ Cluster: prod-cluster
 &lt;/ul&gt;
 &lt;p&gt;就像汽车的出厂配置：所有同款车都有相同的发动机参数、轮胎规格，4S 店可以按统一标准维护。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="包含什么"&gt;
- 包含什么
- &lt;a class="anchor" href="#%e5%8c%85%e5%90%ab%e4%bb%80%e4%b9%88"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
-&lt;h3 id="副本数"&gt;
- 副本数
- &lt;a class="anchor" href="#%e5%89%af%e6%9c%ac%e6%95%b0"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;h2 id="包含什么"&gt;包含什么&lt;/h2&gt;
+&lt;h3 id="副本数"&gt;副本数&lt;/h3&gt;
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;replicas&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;3&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;应用跑几个 Pod。这是默认值，实际运行时可以通过 runtime-service 动态调整。&lt;/p&gt;
-&lt;h3 id="资源规格"&gt;
- 资源规格
- &lt;a class="anchor" href="#%e8%b5%84%e6%ba%90%e8%a7%84%e6%a0%bc"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;h3 id="资源规格"&gt;资源规格&lt;/h3&gt;
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;resources&lt;/span&gt;:
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;size_class&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;medium&amp;#34;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;当前实现里，写入时推荐的是 &lt;strong&gt;&lt;code&gt;size_class&lt;/code&gt;&lt;/strong&gt;，例如：&lt;/p&gt;
@@ -589,27 +457,54 @@ Cluster: prod-cluster
 &lt;li&gt;&lt;code&gt;xlarge&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;具体的 &lt;code&gt;requests / limits&lt;/code&gt; 会在下游渲染阶段展开，不建议在这里把它当作主写入接口来理解。&lt;/p&gt;
-&lt;h3 id="健康探针"&gt;
- 健康探针
- &lt;a class="anchor" href="#%e5%81%a5%e5%ba%b7%e6%8e%a2%e9%92%88"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
-&lt;p&gt;K8s 通过探针判断 Pod 是不是健康：&lt;/p&gt;</description></item><item><title>AppConfig</title><link>https://devflow.bei.com/document/docs/concepts/app-config/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/concepts/app-config/</guid><description>&lt;h1 id="-appconfig"&gt;
- 🌱 AppConfig
- &lt;a class="anchor" href="#-appconfig"&gt;#&lt;/a&gt;
-&lt;/h1&gt;
+&lt;h3 id="健康探针"&gt;健康探针&lt;/h3&gt;
+&lt;p&gt;K8s 通过探针判断 Pod 是不是健康：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;probes&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;liveness&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;path&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;/health&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;port&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;http&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;initial_delay_seconds&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;30&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;period_seconds&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;10&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;table&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th&gt;探针&lt;/th&gt;
+ &lt;th&gt;作用&lt;/th&gt;
+ &lt;th&gt;失败会怎样&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;strong&gt;Liveness&lt;/strong&gt;&lt;/td&gt;
+ &lt;td&gt;还活着吗？&lt;/td&gt;
+ &lt;td&gt;不健康就重启容器&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;strong&gt;Readiness&lt;/strong&gt;&lt;/td&gt;
+ &lt;td&gt;能接收流量吗？&lt;/td&gt;
+ &lt;td&gt;不健康就移出负载均衡&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;strong&gt;Startup&lt;/strong&gt;&lt;/td&gt;
+ &lt;td&gt;启动完成了吗？&lt;/td&gt;
+ &lt;td&gt;启动慢的应用用，避免被误杀&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id="环境变量"&gt;环境变量&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;env&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#f92672"&gt;name&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;LOG_LEVEL&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;value&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;info&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#f92672"&gt;name&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;SERVER_PORT&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;value&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;8080&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;当前实现里 &lt;code&gt;env&lt;/code&gt; 是一个有序数组，适合表达稳定的基础环境变量。&lt;/p&gt;</description></item><item><title>AppConfig</title><link>https://devflow.bei.com/document/docs/concepts/app-config/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/concepts/app-config/</guid><description>&lt;h1 id="-appconfig"&gt;🌱 AppConfig&lt;/h1&gt;
 &lt;p&gt;&lt;strong&gt;AppConfig&lt;/strong&gt; 是环境级配置记录，解决“同一套应用在不同环境挂载不同配置内容”的问题。&lt;/p&gt;
-&lt;h2 id="它回答什么问题"&gt;
- 它回答什么问题
- &lt;a class="anchor" href="#%e5%ae%83%e5%9b%9e%e7%ad%94%e4%bb%80%e4%b9%88%e9%97%ae%e9%a2%98"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="它回答什么问题"&gt;它回答什么问题&lt;/h2&gt;
 &lt;blockquote&gt;
 &lt;p&gt;order-service 在测试环境连哪个数据库？在生产环境连哪个数据库？&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;hr&gt;
-&lt;h2 id="为什么需要它"&gt;
- 为什么需要它
- &lt;a class="anchor" href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e9%9c%80%e8%a6%81%e5%ae%83"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="为什么需要它"&gt;为什么需要它&lt;/h2&gt;
 &lt;p&gt;想象一下，你没有 AppConfig，所有环境的配置都写在同一份文件里：&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 测试环境配置&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;database&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;postgres-test.internal&lt;/span&gt;
@@ -626,10 +521,7 @@ Cluster: prod-cluster
 &lt;li&gt;测试环境的改动永远不会影响生产环境&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id="当前实现里包含什么"&gt;
- 当前实现里包含什么
- &lt;a class="anchor" href="#%e5%bd%93%e5%89%8d%e5%ae%9e%e7%8e%b0%e9%87%8c%e5%8c%85%e5%90%ab%e4%bb%80%e4%b9%88"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="当前实现里包含什么"&gt;当前实现里包含什么&lt;/h2&gt;
 &lt;p&gt;当前 &lt;code&gt;devflow-service&lt;/code&gt; 里的 &lt;code&gt;AppConfig&lt;/code&gt; 主要记录：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;application_id&lt;/code&gt;&lt;/li&gt;
@@ -643,10 +535,7 @@ Cluster: prod-cluster
 &lt;/ul&gt;
 &lt;p&gt;它的配置内容不是通过页面上随手写一段 &lt;code&gt;config_data&lt;/code&gt; 保存，而是通过&lt;strong&gt;固定配置仓库同步&lt;/strong&gt;进入当前记录。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="实际例子"&gt;
- 实际例子
- &lt;a class="anchor" href="#%e5%ae%9e%e9%99%85%e4%be%8b%e5%ad%90"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="实际例子"&gt;实际例子&lt;/h2&gt;
 &lt;p&gt;同一个应用，不同环境：&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;测试环境的 AppConfig 记录：&lt;/strong&gt;&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;application_id&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;order-service&lt;/span&gt;
@@ -664,22 +553,13 @@ Cluster: prod-cluster
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;files&lt;/span&gt;:
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#f92672"&gt;name&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;application.yaml&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#f92672"&gt;name&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;feature-flags.yaml&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;发布时，DevFlow 读取这些同步过的文件，再和 WorkloadConfig 一起进入 release render。&lt;/p&gt;</description></item><item><title>Service 与 Route</title><link>https://devflow.bei.com/document/docs/concepts/service-route/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/concepts/service-route/</guid><description>&lt;h1 id="-service-与-route"&gt;
- 🌐 Service 与 Route
- &lt;a class="anchor" href="#-service-%e4%b8%8e-route"&gt;#&lt;/a&gt;
-&lt;/h1&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;发布时，DevFlow 读取这些同步过的文件，再和 WorkloadConfig 一起进入 release render。&lt;/p&gt;</description></item><item><title>Service 与 Route</title><link>https://devflow.bei.com/document/docs/concepts/service-route/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/concepts/service-route/</guid><description>&lt;h1 id="-service-与-route"&gt;🌐 Service 与 Route&lt;/h1&gt;
 &lt;p&gt;&lt;span class="df-badge"&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/kubernetes.svg" alt="Kubernetes" loading="lazy" /&gt;
  Service&lt;/span&gt; &lt;span class="df-badge"&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/istio.svg" alt="Istio" loading="lazy" /&gt;
  Route&lt;/span&gt; &lt;span class="df-badge"&gt;Env Aware&lt;/span&gt;&lt;/p&gt;
-&lt;h2 id="-service--应用的网络拓扑"&gt;
- 🔌 Service — 应用的网络拓扑
- &lt;a class="anchor" href="#-service--%e5%ba%94%e7%94%a8%e7%9a%84%e7%bd%91%e7%bb%9c%e6%8b%93%e6%89%91"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="-service--应用的网络拓扑"&gt;🔌 Service — 应用的网络拓扑&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;Service&lt;/strong&gt; 定义了应用暴露了哪些端口，用什么协议。&lt;/p&gt;
-&lt;h3 id="例子"&gt;
- 例子
- &lt;a class="anchor" href="#%e4%be%8b%e5%ad%90"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;h3 id="例子"&gt;例子&lt;/h3&gt;
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;name&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;order-service&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;ports&lt;/span&gt;:
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#f92672"&gt;name&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;http&lt;/span&gt;
@@ -695,10 +575,7 @@ Cluster: prod-cluster
 &lt;li&gt;HTTP 服务在 80 端口（容器内是 8080）&lt;/li&gt;
 &lt;li&gt;GRPC 服务在 9090 端口&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id="它会映射成什么"&gt;
- 它会映射成什么
- &lt;a class="anchor" href="#%e5%ae%83%e4%bc%9a%e6%98%a0%e5%b0%84%e6%88%90%e4%bb%80%e4%b9%88"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;h3 id="它会映射成什么"&gt;它会映射成什么&lt;/h3&gt;
 &lt;p&gt;DevFlow 会把 Service 定义映射成 Kubernetes Service：&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;apiVersion&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;v1&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;kind&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;Service&lt;/span&gt;
@@ -711,21 +588,17 @@ Cluster: prod-cluster
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#f92672"&gt;port&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;80&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;targetPort&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;8080&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;protocol&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;TCP&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="重要特性不随环境变化"&gt;
- 重要特性：不随环境变化
- &lt;a class="anchor" href="#%e9%87%8d%e8%a6%81%e7%89%b9%e6%80%a7%e4%b8%8d%e9%9a%8f%e7%8e%af%e5%a2%83%e5%8f%98%e5%8c%96"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
-&lt;p&gt;Service 是应用的固有属性。不管部署到测试还是生产，应用暴露的端口是一样的。&lt;/p&gt;</description></item><item><title>Manifest 与 Release</title><link>https://devflow.bei.com/document/docs/concepts/manifest-release/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/concepts/manifest-release/</guid><description>&lt;h1 id="-manifest-与-release"&gt;
- 🧊 Manifest 与 Release
- &lt;a class="anchor" href="#-manifest-%e4%b8%8e-release"&gt;#&lt;/a&gt;
-&lt;/h1&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="重要特性不随环境变化"&gt;重要特性：不随环境变化&lt;/h3&gt;
+&lt;p&gt;Service 是应用的固有属性。不管部署到测试还是生产，应用暴露的端口是一样的。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="-route--环境的入口规则"&gt;🚪 Route — 环境的入口规则&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Route&lt;/strong&gt; 定义了外部流量怎么访问到这个应用的这个环境。&lt;/p&gt;
+&lt;h3 id="例子-1"&gt;例子&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;生产环境的 Route：&lt;/strong&gt;&lt;/p&gt;</description></item><item><title>Manifest 与 Release</title><link>https://devflow.bei.com/document/docs/concepts/manifest-release/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/concepts/manifest-release/</guid><description>&lt;h1 id="-manifest-与-release"&gt;🧊 Manifest 与 Release&lt;/h1&gt;
 &lt;p&gt;&lt;span class="df-badge"&gt;Immutable Snapshot&lt;/span&gt; &lt;span class="df-badge"&gt;Build vs Deploy&lt;/span&gt; &lt;span class="df-badge"&gt;Rollback&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;Manifest 和 Release 是 DevFlow 最核心的设计。理解它们，就理解了 DevFlow 为什么能做到&lt;strong&gt;安全发布、一键回滚&lt;/strong&gt;。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="-问题背景"&gt;
- ❓ 问题背景
- &lt;a class="anchor" href="#-%e9%97%ae%e9%a2%98%e8%83%8c%e6%99%af"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="-问题背景"&gt;❓ 问题背景&lt;/h2&gt;
 &lt;p&gt;传统的发布方式有什么问题？&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;小明在周一发布了 order-service v2.0。周三发现有问题，想回滚。但他发现：&lt;/p&gt;
@@ -738,44 +611,29 @@ Cluster: prod-cluster
 &lt;/blockquote&gt;
 &lt;p&gt;DevFlow 的解决方案是：&lt;strong&gt;发布前冻结两份不可变快照&lt;/strong&gt;。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="-manifest--构建前快照"&gt;
- 🧾 Manifest — 构建前快照
- &lt;a class="anchor" href="#-manifest--%e6%9e%84%e5%bb%ba%e5%89%8d%e5%bf%ab%e7%85%a7"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="-manifest--构建前快照"&gt;🧾 Manifest — 构建前快照&lt;/h2&gt;
 &lt;p&gt;Manifest 记录了&lt;strong&gt;构建时刻&lt;/strong&gt;的应用完整状态。&lt;/p&gt;
-&lt;h3 id="它包含什么"&gt;
- 它包含什么
- &lt;a class="anchor" href="#%e5%ae%83%e5%8c%85%e5%90%ab%e4%bb%80%e4%b9%88"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;h3 id="它包含什么"&gt;它包含什么&lt;/h3&gt;
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;manifest&lt;/span&gt;:
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;应用&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;order-service&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;代码版本&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;main @ a1b2c3d4&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;构建镜像&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;registry.example.com/order-service:a1b2c3d4&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;基础配置快照&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;3&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;副本 / 1Gi 内存 / 健康检查...&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;网络拓扑快照&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;暴露 80 端口(HTTP)...&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="它的特点"&gt;
- 它的特点
- &lt;a class="anchor" href="#%e5%ae%83%e7%9a%84%e7%89%b9%e7%82%b9"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="它的特点"&gt;它的特点&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;构建时创建&lt;/strong&gt; — CI 构建成功后自动生成&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;不可变&lt;/strong&gt; — 创建后不能再改&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;不包含环境信息&lt;/strong&gt; — 同一个 Manifest 可以发到测试、生产任何环境&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id="类比"&gt;
- 类比
- &lt;a class="anchor" href="#%e7%b1%bb%e6%af%94"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
-&lt;p&gt;Manifest 就像一张照片：拍的是应用在某个代码版本的样子。照片不会变，你可以把这张照片给任何人看。&lt;/p&gt;</description></item><item><title>CI 架构</title><link>https://devflow.bei.com/document/docs/ci/architecture/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/ci/architecture/</guid><description>&lt;h1 id="-ci-架构"&gt;
- 🧪 CI 架构
- &lt;a class="anchor" href="#-ci-%e6%9e%b6%e6%9e%84"&gt;#&lt;/a&gt;
-&lt;/h1&gt;
+&lt;h3 id="类比"&gt;类比&lt;/h3&gt;
+&lt;p&gt;Manifest 就像一张照片：拍的是应用在某个代码版本的样子。照片不会变，你可以把这张照片给任何人看。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="-release--部署前快照"&gt;🎫 Release — 部署前快照&lt;/h2&gt;
+&lt;p&gt;Release 记录了&lt;strong&gt;部署时刻&lt;/strong&gt;的完整状态，绑定了一个 Manifest 和一个目标环境。&lt;/p&gt;</description></item><item><title>CI 架构</title><link>https://devflow.bei.com/document/docs/ci/architecture/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/ci/architecture/</guid><description>&lt;h1 id="-ci-架构"&gt;🧪 CI 架构&lt;/h1&gt;
 &lt;p&gt;DevFlow 的 CI 基于 &lt;strong&gt;Tekton&lt;/strong&gt;，一个云原生的 CI/CD 框架。当你发起发布时，release-service 触发 Tekton Pipeline，自动完成从代码到镜像的转换。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="-流水线怎么跑"&gt;
- 🧭 流水线怎么跑
- &lt;a class="anchor" href="#-%e6%b5%81%e6%b0%b4%e7%ba%bf%e6%80%8e%e4%b9%88%e8%b7%91"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="-流水线怎么跑"&gt;🧭 流水线怎么跑&lt;/h2&gt;
 &lt;pre tabindex="0"&gt;&lt;code class="language-mermaid" data-lang="mermaid"&gt;graph LR
  Release[&amp;#34;release-service&amp;lt;br/&amp;gt;发起构建&amp;#34;]
  Trigger[&amp;#34;Tekton Triggers&amp;lt;br/&amp;gt;接收请求&amp;#34;]
@@ -792,10 +650,7 @@ Cluster: prod-cluster
 &lt;li&gt;流水线跑完后，把镜像推送到仓库，再回调通知 release-service&lt;/li&gt;
 &lt;/ol&gt;
 &lt;hr&gt;
-&lt;h2 id="流水线里的-7-个任务"&gt;
- 流水线里的 7 个任务
- &lt;a class="anchor" href="#%e6%b5%81%e6%b0%b4%e7%ba%bf%e9%87%8c%e7%9a%84-7-%e4%b8%aa%e4%bb%bb%e5%8a%a1"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="流水线里的-7-个任务"&gt;流水线里的 7 个任务&lt;/h2&gt;
 &lt;p&gt;一次标准构建要跑 7 个任务，串行执行：&lt;/p&gt;
 &lt;pre tabindex="0"&gt;&lt;code&gt;拉代码 → 扫漏洞 → 跑测试 → 构建镜像 → 生成清单 → 签名 → 再扫一遍
 &lt;/code&gt;&lt;/pre&gt;&lt;table&gt;
@@ -845,26 +700,14 @@ Cluster: prod-cluster
  &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;hr&gt;
-&lt;h2 id="-关键工具"&gt;
- 🧰 关键工具
- &lt;a class="anchor" href="#-%e5%85%b3%e9%94%ae%e5%b7%a5%e5%85%b7"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
-&lt;h3 id="tekton-pipelines--流水线引擎"&gt;
- Tekton Pipelines — 流水线引擎
- &lt;a class="anchor" href="#tekton-pipelines--%e6%b5%81%e6%b0%b4%e7%ba%bf%e5%bc%95%e6%93%8e"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
-&lt;p&gt;定义和执行 CI 流水线的框架。Pipeline 由多个 Task 组成，Task 之间通过共享目录传递数据（比如源码、构建产物）。&lt;/p&gt;</description></item><item><title>标准 CI 流程</title><link>https://devflow.bei.com/document/docs/ci/standard/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/ci/standard/</guid><description>&lt;h1 id="-标准-ci-流程"&gt;
- 🏭 标准 CI 流程
- &lt;a class="anchor" href="#-%e6%a0%87%e5%87%86-ci-%e6%b5%81%e7%a8%8b"&gt;#&lt;/a&gt;
-&lt;/h1&gt;
+&lt;h2 id="-关键工具"&gt;🧰 关键工具&lt;/h2&gt;
+&lt;h3 id="tekton-pipelines--流水线引擎"&gt;Tekton Pipelines — 流水线引擎&lt;/h3&gt;
+&lt;p&gt;定义和执行 CI 流水线的框架。Pipeline 由多个 Task 组成，Task 之间通过共享目录传递数据（比如源码、构建产物）。&lt;/p&gt;</description></item><item><title>标准 CI 流程</title><link>https://devflow.bei.com/document/docs/ci/standard/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/ci/standard/</guid><description>&lt;h1 id="-标准-ci-流程"&gt;🏭 标准 CI 流程&lt;/h1&gt;
 &lt;p&gt;&lt;span class="df-badge"&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/tekton.svg" alt="Tekton" loading="lazy" /&gt;
  Tekton&lt;/span&gt; &lt;span class="df-badge"&gt;📜 SBOM&lt;/span&gt; &lt;span class="df-badge"&gt;✍️ Cosign&lt;/span&gt; &lt;span class="df-badge"&gt;📦 OCI Registry&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;DevFlow 的标准 CI 流水线确保每个镜像在发布前都经过完整的安全和质量检查。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="-流程概览"&gt;
- 🗺️ 流程概览
- &lt;a class="anchor" href="#-%e6%b5%81%e7%a8%8b%e6%a6%82%e8%a7%88"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="-流程概览"&gt;🗺️ 流程概览&lt;/h2&gt;
 &lt;pre tabindex="0"&gt;&lt;code class="language-mermaid" data-lang="mermaid"&gt;graph LR
  A[&amp;#34;拉代码&amp;#34;] --&amp;gt; B[&amp;#34;静态扫描&amp;#34;]
  B --&amp;gt; C[&amp;#34;单元测试&amp;#34;]
@@ -876,82 +719,118 @@ Cluster: prod-cluster
  H --&amp;gt; I[&amp;#34;推送仓库&amp;#34;]
  I --&amp;gt; J[&amp;#34;通知 DevFlow&amp;#34;]
 &lt;/code&gt;&lt;/pre&gt;&lt;hr&gt;
-&lt;h2 id="-各阶段说明"&gt;
- 🔍 各阶段说明
- &lt;a class="anchor" href="#-%e5%90%84%e9%98%b6%e6%ae%b5%e8%af%b4%e6%98%8e"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
-&lt;h3 id="1-拉代码"&gt;
- 1. 拉代码
- &lt;a class="anchor" href="#1-%e6%8b%89%e4%bb%a3%e7%a0%81"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;h2 id="-各阶段说明"&gt;🔍 各阶段说明&lt;/h2&gt;
+&lt;h3 id="1-拉代码"&gt;1. 拉代码&lt;/h3&gt;
 &lt;p&gt;从 Git 仓库拉取指定版本的代码，验证 commit hash 与 Manifest 中记录的是否一致。&lt;/p&gt;
-&lt;p&gt;如果不一致，说明代码在发起发布后被人修改过，构建终止。&lt;/p&gt;</description></item><item><title>CI 组件矩阵</title><link>https://devflow.bei.com/document/docs/ci/component/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/ci/component/</guid><description>&lt;h1 id="-ci-用到哪些工具"&gt;
- 🧰 CI 用到哪些工具
- &lt;a class="anchor" href="#-ci-%e7%94%a8%e5%88%b0%e5%93%aa%e4%ba%9b%e5%b7%a5%e5%85%b7"&gt;#&lt;/a&gt;
-&lt;/h1&gt;
+&lt;p&gt;如果不一致，说明代码在发起发布后被人修改过，构建终止。&lt;/p&gt;
+&lt;h3 id="2-静态扫描"&gt;2. 静态扫描&lt;/h3&gt;
+&lt;p&gt;扫描代码中的安全问题：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;敏感信息泄露&lt;/strong&gt; — 有没有硬编码的密码、Token、密钥&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;依赖漏洞&lt;/strong&gt; — 引用的第三方库有没有已知漏洞&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;代码规范&lt;/strong&gt; — 是否符合团队编码规范&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="3-单元测试"&gt;3. 单元测试&lt;/h3&gt;
+&lt;p&gt;执行项目的单元测试。&lt;/p&gt;</description></item><item><title>CI 组件矩阵</title><link>https://devflow.bei.com/document/docs/ci/component/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/ci/component/</guid><description>&lt;h1 id="-ci-用到哪些工具"&gt;🧰 CI 用到哪些工具&lt;/h1&gt;
 &lt;p&gt;&lt;span class="df-badge"&gt;Pipeline&lt;/span&gt; &lt;span class="df-badge"&gt;Security&lt;/span&gt; &lt;span class="df-badge"&gt;📦 OCI Registry&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;DevFlow 的 CI 流水线依赖以下工具，每个负责一个具体环节。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="-核心工具"&gt;
- 🧱 核心工具
- &lt;a class="anchor" href="#-%e6%a0%b8%e5%bf%83%e5%b7%a5%e5%85%b7"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
-&lt;h3 id="tekton-pipelines--流水线引擎"&gt;
- Tekton Pipelines — 流水线引擎
- &lt;a class="anchor" href="#tekton-pipelines--%e6%b5%81%e6%b0%b4%e7%ba%bf%e5%bc%95%e6%93%8e"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;h2 id="-核心工具"&gt;🧱 核心工具&lt;/h2&gt;
+&lt;h3 id="tekton-pipelines--流水线引擎"&gt;Tekton Pipelines — 流水线引擎&lt;/h3&gt;
 &lt;p&gt;CI 的&amp;quot;骨架&amp;quot;。定义流水线的结构：有哪些步骤、按什么顺序执行、步骤之间怎么共享数据。&lt;/p&gt;
-&lt;h3 id="tekton-triggers--触发器"&gt;
- Tekton Triggers — 触发器
- &lt;a class="anchor" href="#tekton-triggers--%e8%a7%a6%e5%8f%91%e5%99%a8"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;h3 id="tekton-triggers--触发器"&gt;Tekton Triggers — 触发器&lt;/h3&gt;
 &lt;p&gt;接收 release-service 的 HTTP 请求，自动创建流水线执行实例。相当于 CI 的&amp;quot;入口门卫&amp;quot;。&lt;/p&gt;
-&lt;h3 id="-buildah--镜像构建"&gt;
- 🏗️ Buildah — 镜像构建
- &lt;a class="anchor" href="#-buildah--%e9%95%9c%e5%83%8f%e6%9e%84%e5%bb%ba"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;h3 id="-buildah--镜像构建"&gt;🏗️ Buildah — 镜像构建&lt;/h3&gt;
 &lt;p&gt;在容器里构建容器镜像，不需要 Docker Daemon。支持多阶段构建，可以做出很小的最终镜像。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="-安全工具"&gt;
- 🔐 安全工具
- &lt;a class="anchor" href="#-%e5%ae%89%e5%85%a8%e5%b7%a5%e5%85%b7"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
-&lt;h3 id="-syft--sbom-生成"&gt;
- 📜 Syft — SBOM 生成
- &lt;a class="anchor" href="#-syft--sbom-%e7%94%9f%e6%88%90"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;h2 id="-安全工具"&gt;🔐 安全工具&lt;/h2&gt;
+&lt;h3 id="-syft--sbom-生成"&gt;📜 Syft — SBOM 生成&lt;/h3&gt;
 &lt;p&gt;分析镜像里装了什么软件、什么版本，生成&amp;quot;软件物料清单&amp;quot;。出了问题可以追溯：「这个漏洞影响我们吗？影响哪些服务？」&lt;/p&gt;
-&lt;h3 id="-cosign--镜像签名"&gt;
- ✍️ Cosign — 镜像签名
- &lt;a class="anchor" href="#-cosign--%e9%95%9c%e5%83%8f%e7%ad%be%e5%90%8d"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;h3 id="-cosign--镜像签名"&gt;✍️ Cosign — 镜像签名&lt;/h3&gt;
 &lt;p&gt;给镜像做数字签名，防止镜像被替换或篡改。就像给快递包裹贴防伪标签。&lt;/p&gt;
-&lt;h3 id="-trivy--漏洞扫描"&gt;
- 🛡️ Trivy — 漏洞扫描
- &lt;a class="anchor" href="#-trivy--%e6%bc%8f%e6%b4%9e%e6%89%ab%e6%8f%8f"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
-&lt;p&gt;扫描镜像里的已知安全漏洞。发现高危漏洞会直接阻断构建，不让有问题的镜像进入部署环节。&lt;/p&gt;</description></item><item><title>队列与并发控制</title><link>https://devflow.bei.com/document/docs/ci/queue/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/ci/queue/</guid><description>&lt;h1 id="-队列与并发控制"&gt;
- 🧵 队列与并发控制
- &lt;a class="anchor" href="#-%e9%98%9f%e5%88%97%e4%b8%8e%e5%b9%b6%e5%8f%91%e6%8e%a7%e5%88%b6"&gt;#&lt;/a&gt;
-&lt;/h1&gt;
+&lt;h3 id="-trivy--漏洞扫描"&gt;🛡️ Trivy — 漏洞扫描&lt;/h3&gt;
+&lt;p&gt;扫描镜像里的已知安全漏洞。发现高危漏洞会直接阻断构建，不让有问题的镜像进入部署环节。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="-工具清单"&gt;🧰 工具清单&lt;/h2&gt;
+&lt;table&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th&gt;工具&lt;/th&gt;
+ &lt;th&gt;用途&lt;/th&gt;
+ &lt;th&gt;是否必须&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/tekton.svg" alt="Tekton" loading="lazy" /&gt;
+ Tekton Pipelines&lt;/td&gt;
+ &lt;td&gt;流水线编排&lt;/td&gt;
+ &lt;td&gt;✅&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/tekton.svg" alt="Tekton" loading="lazy" /&gt;
+ Tekton Triggers&lt;/td&gt;
+ &lt;td&gt;事件触发&lt;/td&gt;
+ &lt;td&gt;✅&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;Buildah&lt;/td&gt;
+ &lt;td&gt;镜像构建&lt;/td&gt;
+ &lt;td&gt;✅&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;Syft&lt;/td&gt;
+ &lt;td&gt;SBOM 生成&lt;/td&gt;
+ &lt;td&gt;✅&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;Cosign&lt;/td&gt;
+ &lt;td&gt;镜像签名&lt;/td&gt;
+ &lt;td&gt;✅&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;Trivy&lt;/td&gt;
+ &lt;td&gt;漏洞扫描&lt;/td&gt;
+ &lt;td&gt;✅&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/opentelemetry.svg" alt="OpenTelemetry" loading="lazy" /&gt;
+ OpenTelemetry&lt;/td&gt;
+ &lt;td&gt;链路追踪&lt;/td&gt;
+ &lt;td&gt;✅&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/tekton.svg" alt="Tekton Dashboard" loading="lazy" /&gt;
+ Tekton Dashboard&lt;/td&gt;
+ &lt;td&gt;流水线可视化&lt;/td&gt;
+ &lt;td&gt;❌（可选）&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h2 id="-流水线示意图"&gt;🏭 流水线示意图&lt;/h2&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/tekton.svg" alt="Tekton" loading="lazy" /&gt;
+ Tekton Trigger 接收请求
+ ↓
+创建 PipelineRun
+ ↓
+┌─────────────────────────────────────────────┐
+│ 拉代码 → 扫描 → 测试 → 构建 → SBOM → 签名 → 再扫 │
+└─────────────────────────────────────────────┘
+ ↓
+推送镜像到 OCI Registry
+ ↓
+回调 release-service
+&lt;/code&gt;&lt;/pre&gt;</description></item><item><title>队列与并发控制</title><link>https://devflow.bei.com/document/docs/ci/queue/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/ci/queue/</guid><description>&lt;h1 id="-队列与并发控制"&gt;🧵 队列与并发控制&lt;/h1&gt;
 &lt;p&gt;&lt;span class="df-badge"&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/tekton.svg" alt="Tekton" loading="lazy" /&gt;
  Tekton&lt;/span&gt; &lt;span class="df-badge"&gt;⚖️ Priority&lt;/span&gt; &lt;span class="df-badge"&gt;📏 Quota&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;当很多人同时发版时，CI 集群可能会被压垮。DevFlow 提供了几种策略来控制构建的排队和并发。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="-四种排队策略"&gt;
- 🛣️ 四种排队策略
- &lt;a class="anchor" href="#-%e5%9b%9b%e7%a7%8d%e6%8e%92%e9%98%9f%e7%ad%96%e7%95%a5"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
-&lt;h3 id="fifo--先来后到"&gt;
- FIFO — 先来后到
- &lt;a class="anchor" href="#fifo--%e5%85%88%e6%9d%a5%e5%90%8e%e5%88%b0"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;h2 id="-四种排队策略"&gt;🛣️ 四种排队策略&lt;/h2&gt;
+&lt;h3 id="fifo--先来后到"&gt;FIFO — 先来后到&lt;/h3&gt;
 &lt;p&gt;按提交顺序排队，先到先构建。最简单、最公平。&lt;/p&gt;
 &lt;p&gt;适合：资源充足，不需要区分优先级的场景。&lt;/p&gt;
-&lt;h3 id="priority--优先级"&gt;
- Priority — 优先级
- &lt;a class="anchor" href="#priority--%e4%bc%98%e5%85%88%e7%ba%a7"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;h3 id="priority--优先级"&gt;Priority — 优先级&lt;/h3&gt;
 &lt;p&gt;给不同的构建设置优先级：&lt;/p&gt;
 &lt;table&gt;
  &lt;thead&gt;
@@ -976,33 +855,22 @@ Cluster: prod-cluster
  &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;p&gt;生产环境的紧急补丁应该优先构建，内部工具的更新可以等等。&lt;/p&gt;
-&lt;h3 id="per-repo--按仓库限流"&gt;
- Per-Repo — 按仓库限流
- &lt;a class="anchor" href="#per-repo--%e6%8c%89%e4%bb%93%e5%ba%93%e9%99%90%e6%b5%81"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;h3 id="per-repo--按仓库限流"&gt;Per-Repo — 按仓库限流&lt;/h3&gt;
 &lt;p&gt;每个仓库最多同时跑 N 个构建。防止某个仓库的频繁提交独占 CI 资源。&lt;/p&gt;
 &lt;p&gt;适合：多团队共享 CI 集群，需要资源隔离。&lt;/p&gt;
-&lt;h3 id="per-cluster--多集群分流"&gt;
- Per-Cluster — 多集群分流
- &lt;a class="anchor" href="#per-cluster--%e5%a4%9a%e9%9b%86%e7%be%a4%e5%88%86%e6%b5%81"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;h3 id="per-cluster--多集群分流"&gt;Per-Cluster — 多集群分流&lt;/h3&gt;
 &lt;p&gt;构建任务分发到多个 CI 集群执行，水平扩展。&lt;/p&gt;
 &lt;p&gt;适合：超大规模构建，单集群撑不住。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="-kubernetes-里的实现"&gt;
- ☸️ Kubernetes 里的实现
- &lt;a class="anchor" href="#-kubernetes-%e9%87%8c%e7%9a%84%e5%ae%9e%e7%8e%b0"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
-&lt;p&gt;Tekton 跑在 Kubernetes 上，排队和并发控制通过 K8s 原生机制实现：&lt;/p&gt;</description></item><item><title>CD 架构</title><link>https://devflow.bei.com/document/docs/cd/architecture/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/cd/architecture/</guid><description>&lt;h1 id="-cd-架构"&gt;
- 🚀 CD 架构
- &lt;a class="anchor" href="#-cd-%e6%9e%b6%e6%9e%84"&gt;#&lt;/a&gt;
-&lt;/h1&gt;
+&lt;h2 id="-kubernetes-里的实现"&gt;☸️ Kubernetes 里的实现&lt;/h2&gt;
+&lt;p&gt;Tekton 跑在 Kubernetes 上，排队和并发控制通过 K8s 原生机制实现：&lt;/p&gt;
+&lt;h3 id="priorityclass--设置优先级"&gt;PriorityClass — 设置优先级&lt;/h3&gt;
+&lt;p&gt;给 PipelineRun 打上优先级标签，高优先级的任务可以先调度。&lt;/p&gt;
+&lt;h3 id="resourcequota--限制总资源"&gt;ResourceQuota — 限制总资源&lt;/h3&gt;
+&lt;p&gt;限制 CI 命名空间最多能用多少 CPU 和内存，防止构建把集群资源吃光。&lt;/p&gt;</description></item><item><title>CD 架构</title><link>https://devflow.bei.com/document/docs/cd/architecture/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/cd/architecture/</guid><description>&lt;h1 id="-cd-架构"&gt;🚀 CD 架构&lt;/h1&gt;
 &lt;p&gt;DevFlow 的 CD 不直接操作 Kubernetes，而是通过 &lt;strong&gt;GitOps&lt;/strong&gt; 模式工作：release-service 生成部署包，推送到仓库，Argo CD 负责实际部署。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="-为什么用-gitops"&gt;
- 🧠 为什么用 GitOps
- &lt;a class="anchor" href="#-%e4%b8%ba%e4%bb%80%e4%b9%88%e7%94%a8-gitops"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="-为什么用-gitops"&gt;🧠 为什么用 GitOps&lt;/h2&gt;
 &lt;p&gt;传统的部署方式是&amp;quot;告诉 K8s 该怎么做&amp;quot;，DevFlow 的方式是&amp;quot;告诉 Argo CD 期望状态是什么，让它自己同步&amp;quot;。&lt;/p&gt;
 &lt;p&gt;好处：&lt;/p&gt;
 &lt;ul&gt;
@@ -1011,10 +879,7 @@ Cluster: prod-cluster
 &lt;li&gt;&lt;strong&gt;安全&lt;/strong&gt; — DevFlow 不直接操作 K8s，降低了风险&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id="-数据流"&gt;
- 🔄 数据流
- &lt;a class="anchor" href="#-%e6%95%b0%e6%8d%ae%e6%b5%81"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="-数据流"&gt;🔄 数据流&lt;/h2&gt;
 &lt;pre tabindex="0"&gt;&lt;code class="language-mermaid" data-lang="mermaid"&gt;sequenceDiagram
  participant Release as release-service
  participant Registry as OCI Registry
@@ -1034,10 +899,7 @@ Cluster: prod-cluster
  Runtime-&amp;gt;&amp;gt;Release: 回写进度
  Release-&amp;gt;&amp;gt;Release: 更新 Release 状态
 &lt;/code&gt;&lt;/pre&gt;&lt;hr&gt;
-&lt;h2 id="关键组件的分工"&gt;
- 关键组件的分工
- &lt;a class="anchor" href="#%e5%85%b3%e9%94%ae%e7%bb%84%e4%bb%b6%e7%9a%84%e5%88%86%e5%b7%a5"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="关键组件的分工"&gt;关键组件的分工&lt;/h2&gt;
 &lt;table&gt;
  &lt;thead&gt;
  &lt;tr&gt;
@@ -1075,14 +937,8 @@ Cluster: prod-cluster
  &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;hr&gt;
-&lt;h2 id="-与旧架构的区别"&gt;
- 🆚 与旧架构的区别
- &lt;a class="anchor" href="#-%e4%b8%8e%e6%97%a7%e6%9e%b6%e6%9e%84%e7%9a%84%e5%8c%ba%e5%88%ab"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
-&lt;p&gt;DevFlow 早期版本是直接操作 K8s 的，现在改成了 GitOps：&lt;/p&gt;</description></item><item><title>发布策略选型</title><link>https://devflow.bei.com/document/docs/cd/standard/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/cd/standard/</guid><description>&lt;h1 id="-发布策略选型"&gt;
- 🧭 发布策略选型
- &lt;a class="anchor" href="#-%e5%8f%91%e5%b8%83%e7%ad%96%e7%95%a5%e9%80%89%e5%9e%8b"&gt;#&lt;/a&gt;
-&lt;/h1&gt;
+&lt;h2 id="-与旧架构的区别"&gt;🆚 与旧架构的区别&lt;/h2&gt;
+&lt;p&gt;DevFlow 早期版本是直接操作 K8s 的，现在改成了 GitOps：&lt;/p&gt;</description></item><item><title>发布策略选型</title><link>https://devflow.bei.com/document/docs/cd/standard/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/cd/standard/</guid><description>&lt;h1 id="-发布策略选型"&gt;🧭 发布策略选型&lt;/h1&gt;
 &lt;p&gt;&lt;span class="df-badge"&gt;Rolling&lt;/span&gt; &lt;span class="df-badge"&gt;Canary&lt;/span&gt; &lt;span class="df-badge"&gt;Blue-Green&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;选对发布策略，既能保证安全，又不浪费资源。这一页帮你做决定。&lt;/p&gt;
 &lt;blockquote&gt;
@@ -1094,10 +950,7 @@ Cluster: prod-cluster
 &lt;/ul&gt;
 &lt;/blockquote&gt;
 &lt;hr&gt;
-&lt;h2 id="-三种策略对比"&gt;
- 📊 三种策略对比
- &lt;a class="anchor" href="#-%e4%b8%89%e7%a7%8d%e7%ad%96%e7%95%a5%e5%af%b9%e6%af%94"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="-三种策略对比"&gt;📊 三种策略对比&lt;/h2&gt;
 &lt;table&gt;
  &lt;thead&gt;
  &lt;tr&gt;
@@ -1147,10 +1000,7 @@ Cluster: prod-cluster
  &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;hr&gt;
-&lt;h2 id="-选型决策树"&gt;
- 🌲 选型决策树
- &lt;a class="anchor" href="#-%e9%80%89%e5%9e%8b%e5%86%b3%e7%ad%96%e6%a0%91"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="-选型决策树"&gt;🌲 选型决策树&lt;/h2&gt;
 &lt;pre tabindex="0"&gt;&lt;code class="language-mermaid" data-lang="mermaid"&gt;graph TD
  A[&amp;#34;选择发布策略&amp;#34;] --&amp;gt; B{&amp;#34;需要零停机？&amp;#34;}
  B --&amp;gt;|否| C{&amp;#34;资源敏感？&amp;#34;}
@@ -1162,10 +1012,7 @@ Cluster: prod-cluster
  H --&amp;gt;|是| I[&amp;#34;Blue-Green&amp;#34;]
  H --&amp;gt;|否| J[&amp;#34;Canary&amp;#34;]
 &lt;/code&gt;&lt;/pre&gt;&lt;hr&gt;
-&lt;h2 id="-场景化建议"&gt;
- 🎯 场景化建议
- &lt;a class="anchor" href="#-%e5%9c%ba%e6%99%af%e5%8c%96%e5%bb%ba%e8%ae%ae"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="-场景化建议"&gt;🎯 场景化建议&lt;/h2&gt;
 &lt;table&gt;
  &lt;thead&gt;
  &lt;tr&gt;
@@ -1218,34 +1065,19 @@ Cluster: prod-cluster
  &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;hr&gt;
-&lt;h2 id="-真实场景故事"&gt;
- 🧪 真实场景故事
- &lt;a class="anchor" href="#-%e7%9c%9f%e5%ae%9e%e5%9c%ba%e6%99%af%e6%95%85%e4%ba%8b"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
-&lt;h3 id="场景一小明的内部工具"&gt;
- 场景一：小明的内部工具
- &lt;a class="anchor" href="#%e5%9c%ba%e6%99%af%e4%b8%80%e5%b0%8f%e6%98%8e%e7%9a%84%e5%86%85%e9%83%a8%e5%b7%a5%e5%85%b7"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
-&lt;p&gt;小明负责一个内部数据分析工具，只有 20 个同事在用。他选 Rolling 发布：&lt;/p&gt;</description></item><item><title>Rolling 发布</title><link>https://devflow.bei.com/document/docs/cd/rolling/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/cd/rolling/</guid><description>&lt;h1 id="-rolling-发布"&gt;
- 🛞 Rolling 发布
- &lt;a class="anchor" href="#-rolling-%e5%8f%91%e5%b8%83"&gt;#&lt;/a&gt;
-&lt;/h1&gt;
+&lt;h2 id="-真实场景故事"&gt;🧪 真实场景故事&lt;/h2&gt;
+&lt;h3 id="场景一小明的内部工具"&gt;场景一：小明的内部工具&lt;/h3&gt;
+&lt;p&gt;小明负责一个内部数据分析工具，只有 20 个同事在用。他选 Rolling 发布：&lt;/p&gt;</description></item><item><title>Rolling 发布</title><link>https://devflow.bei.com/document/docs/cd/rolling/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/cd/rolling/</guid><description>&lt;h1 id="-rolling-发布"&gt;🛞 Rolling 发布&lt;/h1&gt;
 &lt;p&gt;&lt;strong&gt;Rolling（滚动更新）&lt;/strong&gt; 是最简单的发布方式。Kubernetes 逐步创建新版本 Pod，同时销毁旧版本 Pod，就像换轮胎时一个一个换，车一直在跑。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="-适合什么场景"&gt;
- 🎯 适合什么场景
- &lt;a class="anchor" href="#-%e9%80%82%e5%90%88%e4%bb%80%e4%b9%88%e5%9c%ba%e6%99%af"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="-适合什么场景"&gt;🎯 适合什么场景&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;内部工具、后台管理系统&lt;/li&gt;
 &lt;li&gt;资源敏感、成本优先的服务&lt;/li&gt;
 &lt;li&gt;对短暂波动容忍度较高的应用&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id="-原理"&gt;
- 🧠 原理
- &lt;a class="anchor" href="#-%e5%8e%9f%e7%90%86"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="-原理"&gt;🧠 原理&lt;/h2&gt;
 &lt;pre tabindex="0"&gt;&lt;code class="language-mermaid" data-lang="mermaid"&gt;graph LR
  subgraph &amp;#34;Kubernetes&amp;#34;
  RS1[&amp;#34;旧版本 ReplicaSet&amp;#34;]
@@ -1267,29 +1099,20 @@ Cluster: prod-cluster
  RS1 --&amp;gt; P2
  RS2 --&amp;gt; P3
  RS2 --&amp;gt; P4
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Service 同时指向新旧 Pod，流量自然平滑过渡。K8s 控制每次最多多创建 25% 的新 Pod，最多只允许 25% 的 Pod 不可用。&lt;/p&gt;</description></item><item><title>Canary 发布</title><link>https://devflow.bei.com/document/docs/cd/canary/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/cd/canary/</guid><description>&lt;h1 id="-canary-发布"&gt;
- 🐤 Canary 发布
- &lt;a class="anchor" href="#-canary-%e5%8f%91%e5%b8%83"&gt;#&lt;/a&gt;
-&lt;/h1&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Service 同时指向新旧 Pod，流量自然平滑过渡。K8s 控制每次最多多创建 25% 的新 Pod，最多只允许 25% 的 Pod 不可用。&lt;/p&gt;</description></item><item><title>Canary 发布</title><link>https://devflow.bei.com/document/docs/cd/canary/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/cd/canary/</guid><description>&lt;h1 id="-canary-发布"&gt;🐤 Canary 发布&lt;/h1&gt;
 &lt;p&gt;&lt;span class="df-badge"&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/istio.svg" alt="Istio" loading="lazy" /&gt;
  Weighted Traffic&lt;/span&gt; &lt;span class="df-badge"&gt;📈 Metrics Gate&lt;/span&gt; &lt;span class="df-badge"&gt;⚡ Fast Rollback&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Canary（灰度发布）&lt;/strong&gt; 是 DevFlow 最推荐的发布方式。它的核心思想是：&lt;strong&gt;先让一小部分用户试用新版本，验证没问题后再扩大范围&lt;/strong&gt;。&lt;/p&gt;
 &lt;p&gt;就像餐厅推出新菜品，先给 VIP 客人试吃，反馈好再全员推广。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="-适合什么场景"&gt;
- 🎯 适合什么场景
- &lt;a class="anchor" href="#-%e9%80%82%e5%90%88%e4%bb%80%e4%b9%88%e5%9c%ba%e6%99%af"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="-适合什么场景"&gt;🎯 适合什么场景&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;核心 API、支付系统&lt;/li&gt;
 &lt;li&gt;用户量大的前端服务&lt;/li&gt;
 &lt;li&gt;任何需要风险控制的服务&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id="-原理"&gt;
- 🧠 原理
- &lt;a class="anchor" href="#-%e5%8e%9f%e7%90%86"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="-原理"&gt;🧠 原理&lt;/h2&gt;
 &lt;pre tabindex="0"&gt;&lt;code class="language-mermaid" data-lang="mermaid"&gt;graph TB
  User[&amp;#34;用户流量&amp;#34;]
  GW[&amp;#34;Gateway&amp;#34;]
@@ -1308,27 +1131,18 @@ Cluster: prod-cluster
  User --&amp;gt; GW --&amp;gt; VS
  VS --&amp;gt;|90%| Stable --&amp;gt; OldPod
  VS --&amp;gt;|10%| Canary --&amp;gt; NewPod
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Istio 通过 VirtualService 的权重控制流量分配。Argo Rollouts 管理新版本的 ReplicaSet，逐步调整权重。&lt;/p&gt;</description></item><item><title>Blue-Green 发布</title><link>https://devflow.bei.com/document/docs/cd/blue-green/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/cd/blue-green/</guid><description>&lt;h1 id="-blue-green-发布"&gt;
- 🔵🟢 Blue-Green 发布
- &lt;a class="anchor" href="#-blue-green-%e5%8f%91%e5%b8%83"&gt;#&lt;/a&gt;
-&lt;/h1&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Istio 通过 VirtualService 的权重控制流量分配。Argo Rollouts 管理新版本的 ReplicaSet，逐步调整权重。&lt;/p&gt;</description></item><item><title>Blue-Green 发布</title><link>https://devflow.bei.com/document/docs/cd/blue-green/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/cd/blue-green/</guid><description>&lt;h1 id="-blue-green-发布"&gt;🔵🟢 Blue-Green 发布&lt;/h1&gt;
 &lt;p&gt;&lt;span class="df-badge"&gt;Zero Downtime&lt;/span&gt; &lt;span class="df-badge"&gt;Preview&lt;/span&gt; &lt;span class="df-badge"&gt;Fast Rollback&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Blue-Green（蓝绿部署）&lt;/strong&gt; 是最稳妥的发布方式。它同时维护两套完整实例，验证通过后瞬时切换流量。就像走天桥，旧路和新路同时在，随时可以退回来。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="-适合什么场景"&gt;
- 🎯 适合什么场景
- &lt;a class="anchor" href="#-%e9%80%82%e5%90%88%e4%bb%80%e4%b9%88%e5%9c%ba%e6%99%af"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="-适合什么场景"&gt;🎯 适合什么场景&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;金融核心、关键交易&lt;/li&gt;
 &lt;li&gt;必须零停机的业务&lt;/li&gt;
 &lt;li&gt;数据库 schema 变更&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id="-原理"&gt;
- 🧠 原理
- &lt;a class="anchor" href="#-%e5%8e%9f%e7%90%86"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="-原理"&gt;🧠 原理&lt;/h2&gt;
 &lt;pre tabindex="0"&gt;&lt;code class="language-mermaid" data-lang="mermaid"&gt;graph TB
  User[&amp;#34;用户流量&amp;#34;]
  VS[&amp;#34;VirtualService&amp;#34;]
@@ -1354,139 +1168,85 @@ Cluster: prod-cluster
 &lt;li&gt;&lt;strong&gt;Preview Service&lt;/strong&gt; 接收验证流量，用于测试新版本&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id="-发布过程"&gt;
- 🚦 发布过程
- &lt;a class="anchor" href="#-%e5%8f%91%e5%b8%83%e8%bf%87%e7%a8%8b"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
-&lt;h3 id="阶段-1部署新版本"&gt;
- 阶段 1：部署新版本
- &lt;a class="anchor" href="#%e9%98%b6%e6%ae%b5-1%e9%83%a8%e7%bd%b2%e6%96%b0%e7%89%88%e6%9c%ac"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;h2 id="-发布过程"&gt;🚦 发布过程&lt;/h2&gt;
+&lt;h3 id="阶段-1部署新版本"&gt;阶段 1：部署新版本&lt;/h3&gt;
 &lt;pre tabindex="0"&gt;&lt;code&gt;Active → Blue(旧, 3 Pod) ← 生产流量
 Preview → Green(新, 3 Pod) ← 验证流量
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Green 部署完成，可以通过 Preview Service 访问验证。&lt;/p&gt;</description></item><item><title>CD 组件矩阵</title><link>https://devflow.bei.com/document/docs/cd/component/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/cd/component/</guid><description>&lt;h1 id="-cd-用到哪些工具"&gt;
- 🧰 CD 用到哪些工具
- &lt;a class="anchor" href="#-cd-%e7%94%a8%e5%88%b0%e5%93%aa%e4%ba%9b%e5%b7%a5%e5%85%b7"&gt;#&lt;/a&gt;
-&lt;/h1&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Green 部署完成，可以通过 Preview Service 访问验证。&lt;/p&gt;</description></item><item><title>CD 组件矩阵</title><link>https://devflow.bei.com/document/docs/cd/component/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/cd/component/</guid><description>&lt;h1 id="-cd-用到哪些工具"&gt;🧰 CD 用到哪些工具&lt;/h1&gt;
 &lt;p&gt;&lt;span class="df-badge"&gt;GitOps&lt;/span&gt; &lt;span class="df-badge"&gt;📦 OCI Registry&lt;/span&gt; &lt;span class="df-badge"&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/istio.svg" alt="Istio" loading="lazy" /&gt;
  Istio&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;DevFlow 的 CD 依赖以下几个核心工具，各司其职。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="-核心组件"&gt;
- 🧱 核心组件
- &lt;a class="anchor" href="#-%e6%a0%b8%e5%bf%83%e7%bb%84%e4%bb%b6"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
-&lt;h3 id="argo-cd--gitops-引擎"&gt;
- Argo CD — GitOps 引擎
- &lt;a class="anchor" href="#argo-cd--gitops-%e5%bc%95%e6%93%8e"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;h2 id="-核心组件"&gt;🧱 核心组件&lt;/h2&gt;
+&lt;h3 id="argo-cd--gitops-引擎"&gt;Argo CD — GitOps 引擎&lt;/h3&gt;
 &lt;p&gt;Argo CD 是 CD 的核心。它盯着 OCI Registry 里的部署包，一旦发现新版本，就自动同步到 Kubernetes 集群。&lt;/p&gt;
 &lt;p&gt;你可以把它理解成一个&lt;strong&gt;自动同步器&lt;/strong&gt;：你更新了仓库里的配置，它自动帮你 apply 到集群。&lt;/p&gt;
-&lt;h3 id="-argo-rollouts--高级发布控制器"&gt;
- 🚦 Argo Rollouts — 高级发布控制器
- &lt;a class="anchor" href="#-argo-rollouts--%e9%ab%98%e7%ba%a7%e5%8f%91%e5%b8%83%e6%8e%a7%e5%88%b6%e5%99%a8"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;h3 id="-argo-rollouts--高级发布控制器"&gt;🚦 Argo Rollouts — 高级发布控制器&lt;/h3&gt;
 &lt;p&gt;原生 Kubernetes 只支持简单的 Rolling Update。Argo Rollouts 扩展了这个能力，支持：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;Canary&lt;/strong&gt; — 按权重逐步切流量&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;Blue-Green&lt;/strong&gt; — 两套实例并行，瞬时切换&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;Analysis&lt;/strong&gt; — 自动基于指标判断要不要继续&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id="istio--流量指挥官"&gt;
- Istio — 流量指挥官
- &lt;a class="anchor" href="#istio--%e6%b5%81%e9%87%8f%e6%8c%87%e6%8c%a5%e5%ae%98"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;h3 id="istio--流量指挥官"&gt;Istio — 流量指挥官&lt;/h3&gt;
 &lt;p&gt;Istio 负责控制流量怎么分配：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;VirtualService&lt;/strong&gt; — 定义流量路由规则（权重、匹配条件）&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;DestinationRule&lt;/strong&gt; — 定义 Pod 分组（stable / canary）&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;Gateway&lt;/strong&gt; — 外部流量入口&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;没有 Istio，Canary 和 Blue-Green 就做不了流量控制。&lt;/p&gt;</description></item><item><title>可观测性技术栈与组件矩阵</title><link>https://devflow.bei.com/document/docs/observability/component/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/observability/component/</guid><description>&lt;h1 id="-可观测性技术栈与组件矩阵"&gt;
- 📡 可观测性技术栈与组件矩阵
- &lt;a class="anchor" href="#-%e5%8f%af%e8%a7%82%e6%b5%8b%e6%80%a7%e6%8a%80%e6%9c%af%e6%a0%88%e4%b8%8e%e7%bb%84%e4%bb%b6%e7%9f%a9%e9%98%b5"&gt;#&lt;/a&gt;
-&lt;/h1&gt;
+&lt;p&gt;没有 Istio，Canary 和 Blue-Green 就做不了流量控制。&lt;/p&gt;</description></item><item><title>可观测性技术栈与组件矩阵</title><link>https://devflow.bei.com/document/docs/observability/component/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/observability/component/</guid><description>&lt;h1 id="-可观测性技术栈与组件矩阵"&gt;📡 可观测性技术栈与组件矩阵&lt;/h1&gt;
 &lt;p&gt;&lt;span class="df-badge"&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/prometheus.svg" alt="Prometheus" loading="lazy" /&gt;
  Metrics&lt;/span&gt; &lt;span class="df-badge"&gt;📜 Logs&lt;/span&gt; &lt;span class="df-badge"&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/opentelemetry.svg" alt="OpenTelemetry" loading="lazy" /&gt;
  Traces&lt;/span&gt; &lt;span class="df-badge"&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/grafana.svg" alt="Grafana" loading="lazy" /&gt;
  Grafana&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;DevFlow 的可观测性由三个支柱组成：Metrics（指标）、Logs（日志）、Traces（链路）。每个支柱有专门的工具负责采集、存储和展示。&lt;/p&gt;
+&lt;p&gt;DevFlow 的可观测性不是“堆几个监控组件”这么简单，它要服务于三类真实问题：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;五个服务自己的 API 和异步任务是否正常&lt;/li&gt;
+&lt;li&gt;一次发布从入口到回写是否能串成同一条排障链路&lt;/li&gt;
+&lt;li&gt;线上 runtime 异常时能否快速定位到具体 workload、pod 和阶段&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;所以这里不仅要看工具，还要看这些工具在 DevFlow 里的分工。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="-metrics--系统的体检报告"&gt;
- 📈 Metrics — 系统的体检报告
- &lt;a class="anchor" href="#-metrics--%e7%b3%bb%e7%bb%9f%e7%9a%84%e4%bd%93%e6%a3%80%e6%8a%a5%e5%91%8a"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/prometheus.svg" alt="Prometheus" loading="lazy" /&gt;
- Prometheus&lt;/strong&gt; 负责采集和存储指标。DevFlow 所有服务都暴露 &lt;code&gt;/metrics&lt;/code&gt; 端点，Prometheus 定期来&amp;quot;查房&amp;quot;。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/grafana.svg" alt="Grafana" loading="lazy" /&gt;
- Grafana&lt;/strong&gt; 负责展示。预置了 10+ 个仪表盘：&lt;/p&gt;
+&lt;h2 id="devflow-里的三条主观测路径"&gt;DevFlow 里的三条主观测路径&lt;/h2&gt;
+&lt;h3 id="路径-1服务-api-入口"&gt;路径 1：服务 API 入口&lt;/h3&gt;
+&lt;p&gt;主要覆盖：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;服务概览（QPS、延迟、错误率）&lt;/li&gt;
-&lt;li&gt;发布流水线（构建、渲染、部署各阶段耗时）&lt;/li&gt;
-&lt;li&gt;运行时状态（Pod 状态、资源使用）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;meta-service&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;config-service&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;network-service&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;release-service&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;runtime-service&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id="metrics-组件矩阵"&gt;
- Metrics 组件矩阵
- &lt;a class="anchor" href="#metrics-%e7%bb%84%e4%bb%b6%e7%9f%a9%e9%98%b5"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
-&lt;table&gt;
- &lt;thead&gt;
- &lt;tr&gt;
- &lt;th&gt;组件&lt;/th&gt;
- &lt;th&gt;领域&lt;/th&gt;
- &lt;th&gt;解决的问题&lt;/th&gt;
- &lt;th&gt;定位&lt;/th&gt;
- &lt;th&gt;是否必选&lt;/th&gt;
- &lt;th&gt;替代方案&lt;/th&gt;
- &lt;/tr&gt;
- &lt;/thead&gt;
- &lt;tbody&gt;
- &lt;tr&gt;
- &lt;td&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/prometheus.svg" alt="Prometheus" loading="lazy" /&gt;
- Prometheus&lt;/td&gt;
- &lt;td&gt;Metrics&lt;/td&gt;
- &lt;td&gt;指标采集与查询&lt;/td&gt;
- &lt;td&gt;指标引擎&lt;/td&gt;
- &lt;td&gt;✅&lt;/td&gt;
- &lt;td&gt;VictoriaMetrics&lt;/td&gt;
- &lt;/tr&gt;
- &lt;tr&gt;
- &lt;td&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/prometheus.svg" alt="Prometheus Operator" loading="lazy" /&gt;
- Prometheus Operator&lt;/td&gt;
- &lt;td&gt;运维自动化&lt;/td&gt;
- &lt;td&gt;Prometheus 生命周期管理&lt;/td&gt;
- &lt;td&gt;控制器&lt;/td&gt;
- &lt;td&gt;❌&lt;/td&gt;
- &lt;td&gt;手动部署&lt;/td&gt;
- &lt;/tr&gt;
- &lt;tr&gt;
- &lt;td&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/kubernetes.svg" alt="Kubernetes" loading="lazy" /&gt;
- kube-state-metrics&lt;/td&gt;
- &lt;td&gt;K8s Metrics&lt;/td&gt;
- &lt;td&gt;Kubernetes 状态指标&lt;/td&gt;
- &lt;td&gt;指标源&lt;/td&gt;
- &lt;td&gt;✅&lt;/td&gt;
- &lt;td&gt;无&lt;/td&gt;
- &lt;/tr&gt;
- &lt;tr&gt;
- &lt;td&gt;node-exporter&lt;/td&gt;
- &lt;td&gt;主机监控&lt;/td&gt;
- &lt;td&gt;Node 资源指标&lt;/td&gt;
- &lt;td&gt;指标采集器&lt;/td&gt;
- &lt;td&gt;✅&lt;/td&gt;
- &lt;td&gt;无&lt;/td&gt;
- &lt;/tr&gt;
- &lt;/tbody&gt;
-&lt;/table&gt;
-&lt;hr&gt;
-&lt;h2 id="-logs--系统的日记"&gt;
- 📜 Logs — 系统的日记
- &lt;a class="anchor" href="#-logs--%e7%b3%bb%e7%bb%9f%e7%9a%84%e6%97%a5%e8%ae%b0"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;📘 Loki&lt;/strong&gt; 负责存储和查询日志。不像传统 ELK 那么重，Loki 只索引标签，不索引日志内容，更省资源。&lt;/p&gt;</description></item><item><title>字段命名与来源边界</title><link>https://devflow.bei.com/document/docs/observability/attributes/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/observability/attributes/</guid><description>&lt;h1 id="字段命名与来源边界"&gt;
- 字段命名与来源边界
- &lt;a class="anchor" href="#%e5%ad%97%e6%ae%b5%e5%91%bd%e5%90%8d%e4%b8%8e%e6%9d%a5%e6%ba%90%e8%be%b9%e7%95%8c"&gt;#&lt;/a&gt;
-&lt;/h1&gt;
+&lt;p&gt;主要回答：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;哪个接口慢了&lt;/li&gt;
+&lt;li&gt;哪个接口错误率升高&lt;/li&gt;
+&lt;li&gt;哪个请求对应哪条日志和 Trace&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="路径-2发布编排链路"&gt;路径 2：发布编排链路&lt;/h3&gt;
+&lt;p&gt;主要覆盖：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;release-service&lt;/code&gt; 收集上下文&lt;/li&gt;
+&lt;li&gt;触发 Tekton 构建&lt;/li&gt;
+&lt;li&gt;渲染部署包&lt;/li&gt;
+&lt;li&gt;推送 OCI bundle&lt;/li&gt;
+&lt;li&gt;创建或更新 Argo CD / Rollout 相关资源&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;主要回答：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;这次发布卡在哪一阶段&lt;/li&gt;
+&lt;li&gt;是构建慢、渲染慢，还是部署反馈慢&lt;/li&gt;
+&lt;li&gt;是否能按 &lt;code&gt;devflow.release.id&lt;/code&gt; 把整次发布查完整&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="路径-3运行时状态回写"&gt;路径 3：运行时状态回写&lt;/h3&gt;
+&lt;p&gt;主要覆盖：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;runtime-service&lt;/code&gt; 观察 workload / pod&lt;/li&gt;
+&lt;li&gt;rollout 进度回写&lt;/li&gt;
+&lt;li&gt;运维操作执行结果&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;主要回答：&lt;/p&gt;</description></item><item><title>字段命名与来源边界</title><link>https://devflow.bei.com/document/docs/observability/contracts/attributes/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/observability/contracts/attributes/</guid><description>&lt;h1 id="字段命名与来源边界"&gt;字段命名与来源边界&lt;/h1&gt;
 &lt;p&gt;&lt;span class="df-badge"&gt;Attributes&lt;/span&gt; &lt;span class="df-badge"&gt;Naming&lt;/span&gt; &lt;span class="df-badge"&gt;Ownership&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;DevFlow 的 Metrics、Logs、Traces 需要能关联，但三者不应该机械地重复同一份字段。
 这页定义的是“公共命名和来源边界”，不是要求每种信号都带完全一样的属性。&lt;/p&gt;
@@ -1495,10 +1255,7 @@ Preview → Green(新, 3 Pod) ← 验证流量
 &lt;p&gt;&lt;strong&gt;同一个字段到底该叫什么，以及它该由哪一层负责提供。&lt;/strong&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;hr&gt;
-&lt;h2 id="为什么要统一"&gt;
- 为什么要统一
- &lt;a class="anchor" href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e8%a6%81%e7%bb%9f%e4%b8%80"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="为什么要统一"&gt;为什么要统一&lt;/h2&gt;
 &lt;p&gt;假设 meta-service 的一个请求出错了：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Metrics 里记录了这个接口的延迟&lt;/li&gt;
@@ -1516,10 +1273,7 @@ Metrics 发现问题，通过 exemplar 跳到 Trace，再按 &lt;code&gt;trace_i
 &lt;li&gt;Logs：看错误文本、业务事件、panic 细节&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id="服务相关-attributes"&gt;
- 服务相关 Attributes
- &lt;a class="anchor" href="#%e6%9c%8d%e5%8a%a1%e7%9b%b8%e5%85%b3-attributes"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="服务相关-attributes"&gt;服务相关 Attributes&lt;/h2&gt;
 &lt;table&gt;
  &lt;thead&gt;
  &lt;tr&gt;
@@ -1568,10 +1322,33 @@ Metrics 发现问题，通过 exemplar 跳到 Trace，再按 &lt;code&gt;trace_i
  &lt;/tr&gt;
  &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;说明：&lt;/p&gt;</description></item><item><title>信号字段契约</title><link>https://devflow.bei.com/document/docs/observability/standard/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/observability/standard/</guid><description>&lt;h1 id="信号字段契约"&gt;
- 信号字段契约
- &lt;a class="anchor" href="#%e4%bf%a1%e5%8f%b7%e5%ad%97%e6%ae%b5%e5%a5%91%e7%ba%a6"&gt;#&lt;/a&gt;
-&lt;/h1&gt;
+&lt;p&gt;说明：&lt;/p&gt;</description></item><item><title>HTTP 字段边界</title><link>https://devflow.bei.com/document/docs/observability/signals/http/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/observability/signals/http/</guid><description>&lt;h1 id="http-字段边界"&gt;HTTP 字段边界&lt;/h1&gt;
+&lt;p&gt;&lt;span class="df-badge"&gt;HTTP&lt;/span&gt; &lt;span class="df-badge"&gt;Logs&lt;/span&gt; &lt;span class="df-badge"&gt;Metrics&lt;/span&gt; &lt;span class="df-badge"&gt;Traces&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;这页是 &lt;code&gt;contracts/&lt;/code&gt; 通用字段契约在 &lt;strong&gt;HTTP request boundary&lt;/strong&gt; 上的目标态细化页。
+&lt;code&gt;contracts/&lt;/code&gt; 负责给出 canonical naming 和通用基线；这页不重写那套基线，而是把现有基线落实到 HTTP 请求这一类高频入口信号上，明确：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;HTTP 相关字段该放在哪种 signal&lt;/li&gt;
+&lt;li&gt;这些字段该由谁负责&lt;/li&gt;
+&lt;li&gt;哪些字段在 HTTP 场景下是 required / optional / forbidden&lt;/li&gt;
+&lt;li&gt;哪些字段不该在高频请求信号里默认重复&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这页主要解决四个执行层问题：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;同一个 HTTP 请求在 Metrics、Logs、Traces 里各自最少要保留什么&lt;/li&gt;
+&lt;li&gt;哪些字段必须出现，哪些字段只能按需出现，哪些字段默认不要重复&lt;/li&gt;
+&lt;li&gt;字段最终该由框架 / middleware、服务、SDK / 当前 span context、Resource、Collector 还是 Prometheus 负责&lt;/li&gt;
+&lt;li&gt;值班工程师如何从一个 HTTP 请求稳定完成 Metrics -&amp;gt; Trace -&amp;gt; Log 的关联闭环&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;这里的约束延续 &lt;code&gt;signals/&lt;/code&gt; 的定位：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;这是目标态规范页，不是实现说明页&lt;/li&gt;
+&lt;li&gt;canonical naming 仍以 &lt;code&gt;contracts/&lt;/code&gt; 中的字段契约为准&lt;/li&gt;
+&lt;li&gt;这页明确 HTTP 请求边界上的 ownership、placement 和字段等级&lt;/li&gt;
+&lt;li&gt;owner 以“最早且最稳定能确定该字段的一层”为准&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="同一个-http-请求在三种信号里的职责分工"&gt;同一个 HTTP 请求在三种信号里的职责分工&lt;/h2&gt;
+&lt;p&gt;假设同一条请求命中了 &lt;code&gt;GET /api/v1/releases/:id&lt;/code&gt;：&lt;/p&gt;</description></item><item><title>信号字段契约</title><link>https://devflow.bei.com/document/docs/observability/contracts/standard/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/observability/contracts/standard/</guid><description>&lt;h1 id="信号字段契约"&gt;信号字段契约&lt;/h1&gt;
 &lt;p&gt;&lt;span class="df-badge"&gt;Metrics&lt;/span&gt; &lt;span class="df-badge"&gt;Traces&lt;/span&gt; &lt;span class="df-badge"&gt;Logs&lt;/span&gt; &lt;span class="df-badge"&gt;Contract&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;DevFlow 的 Metrics、Traces、Logs 需要能关联，但它们不是同一种信号，也不应该承载同一份字段集合。&lt;/p&gt;
 &lt;p&gt;本文档定义三种信号的标准 labels / attributes，并明确哪些字段适合做
@@ -1583,15 +1360,9 @@ metrics label，哪些字段只能留在 trace 或 log 中。&lt;/p&gt;
 &lt;p&gt;如果你只想快速查“每种信号最少必须带什么字段”，优先看
 &lt;a href="../signal-label-matrix/"&gt;信号标签矩阵&lt;/a&gt;；这页保留的是完整字段契约。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="metrics指标标签"&gt;
- Metrics（指标）标签
- &lt;a class="anchor" href="#metrics%e6%8c%87%e6%a0%87%e6%a0%87%e7%ad%be"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="metrics指标标签"&gt;Metrics（指标）标签&lt;/h2&gt;
 &lt;p&gt;Metrics 用于统计、聚合、告警、SLO，是主事实源。&lt;/p&gt;
-&lt;h3 id="高频-http-metrics-推荐-labels"&gt;
- 高频 HTTP metrics 推荐 labels
- &lt;a class="anchor" href="#%e9%ab%98%e9%a2%91-http-metrics-%e6%8e%a8%e8%8d%90-labels"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;h3 id="高频-http-metrics-必带-labels"&gt;高频 HTTP metrics 必带 labels&lt;/h3&gt;
 &lt;table&gt;
  &lt;thead&gt;
  &lt;tr&gt;
@@ -1602,18 +1373,6 @@ metrics label，哪些字段只能留在 trace 或 log 中。&lt;/p&gt;
  &lt;/tr&gt;
  &lt;/thead&gt;
  &lt;tbody&gt;
- &lt;tr&gt;
- &lt;td&gt;&lt;code&gt;service_name&lt;/code&gt;&lt;/td&gt;
- &lt;td&gt;string&lt;/td&gt;
- &lt;td&gt;服务名称&lt;/td&gt;
- &lt;td&gt;&lt;code&gt;release-service&lt;/code&gt;&lt;/td&gt;
- &lt;/tr&gt;
- &lt;tr&gt;
- &lt;td&gt;&lt;code&gt;service_namespace&lt;/code&gt;&lt;/td&gt;
- &lt;td&gt;string&lt;/td&gt;
- &lt;td&gt;服务命名空间&lt;/td&gt;
- &lt;td&gt;&lt;code&gt;devflow&lt;/code&gt;&lt;/td&gt;
- &lt;/tr&gt;
  &lt;tr&gt;
  &lt;td&gt;&lt;code&gt;http_request_method&lt;/code&gt;&lt;/td&gt;
  &lt;td&gt;string&lt;/td&gt;
@@ -1632,27 +1391,74 @@ metrics label，哪些字段只能留在 trace 或 log 中。&lt;/p&gt;
  &lt;td&gt;HTTP 状态码&lt;/td&gt;
  &lt;td&gt;&lt;code&gt;200&lt;/code&gt;&lt;/td&gt;
  &lt;/tr&gt;
- &lt;tr&gt;
- &lt;td&gt;&lt;code&gt;http_response_status_class&lt;/code&gt;&lt;/td&gt;
- &lt;td&gt;string&lt;/td&gt;
- &lt;td&gt;HTTP 状态码段&lt;/td&gt;
- &lt;td&gt;&lt;code&gt;2xx&lt;/code&gt; / &lt;code&gt;4xx&lt;/code&gt; / &lt;code&gt;5xx&lt;/code&gt;&lt;/td&gt;
- &lt;/tr&gt;
  &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;p&gt;说明：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;code&gt;http_response_status_class&lt;/code&gt; 是当前 DevFlow HTTP 高频 metrics 的必需 label，SLO、错误率和平台仪表盘都依赖它。&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;deployment_environment_name&lt;/code&gt; 不是所有高频 HTTP metrics 的必选 label，是否暴露取决于当前采集实现和成本控制。&lt;/li&gt;
+&lt;li&gt;这是 &lt;code&gt;devflow-service&lt;/code&gt; 当前 HTTP server metrics 的真实低基数标签集合。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;http_route&lt;/code&gt; 必须是路由模板，不是包含资源 ID 的原始路径。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;service_name&lt;/code&gt;、&lt;code&gt;service_namespace&lt;/code&gt;、&lt;code&gt;deployment_environment_name&lt;/code&gt; 这类身份字段应来自 scrape target metadata、OTel Resource 或 Collector enrichment，而不是复制进每条 HTTP 应用指标。&lt;/li&gt;
+&lt;li&gt;如果仪表盘要按 &lt;code&gt;2xx&lt;/code&gt; / &lt;code&gt;4xx&lt;/code&gt; / &lt;code&gt;5xx&lt;/code&gt; 聚合，应在查询层通过 &lt;code&gt;http_response_status_code&lt;/code&gt; 归并，或者由平台侧派生，不要默认要求服务代码额外打一层状态码段 label。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id="低频或场景化-labels"&gt;
- 低频或场景化 labels
- &lt;a class="anchor" href="#%e4%bd%8e%e9%a2%91%e6%88%96%e5%9c%ba%e6%99%af%e5%8c%96-labels"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
-&lt;p&gt;这些字段只有在基数受控、业务确实需要聚合时才考虑使用：&lt;/p&gt;</description></item><item><title>信号标签矩阵</title><link>https://devflow.bei.com/document/docs/observability/signal-label-matrix/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/observability/signal-label-matrix/</guid><description>&lt;h1 id="信号标签矩阵"&gt;
- 信号标签矩阵
- &lt;a class="anchor" href="#%e4%bf%a1%e5%8f%b7%e6%a0%87%e7%ad%be%e7%9f%a9%e9%98%b5"&gt;#&lt;/a&gt;
-&lt;/h1&gt;
+&lt;h3 id="低频或场景化可选-labels"&gt;低频或场景化可选 labels&lt;/h3&gt;
+&lt;p&gt;这些字段只有在基数受控、业务确实需要聚合时才考虑使用：&lt;/p&gt;</description></item><item><title>Metrics 字段规范</title><link>https://devflow.bei.com/document/docs/observability/signals/metrics/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/observability/signals/metrics/</guid><description>&lt;h1 id="metrics-字段规范"&gt;Metrics 字段规范&lt;/h1&gt;
+&lt;p&gt;&lt;span class="df-badge"&gt;Metrics&lt;/span&gt; &lt;span class="df-badge"&gt;Prometheus&lt;/span&gt; &lt;span class="df-badge"&gt;OpenTelemetry&lt;/span&gt; &lt;span class="df-badge"&gt;SRE&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;这页是 &lt;code&gt;contracts/&lt;/code&gt; 通用字段契约在 &lt;strong&gt;Metrics&lt;/strong&gt; 这一类信号上的目标态细化页。
+它只回答运维、平台、SRE 在执行层真正要统一的几件事：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;哪些指标标签是必需、可选、禁止&lt;/li&gt;
+&lt;li&gt;高频 HTTP 指标和低频业务/平台指标应如何分层&lt;/li&gt;
+&lt;li&gt;服务、OTel SDK、OTel Collector、Prometheus 各自负责什么&lt;/li&gt;
+&lt;li&gt;环境与服务身份字段应由哪一层提供，哪些不应复制进每条应用指标&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这页不是实现教程，也不重写 &lt;code&gt;contracts/&lt;/code&gt; 中的完整字段字典。
+canonical naming 仍以 &lt;a href="../../observability/contracts/attributes/"&gt;字段命名与来源边界&lt;/a&gt; 和 &lt;a href="../../observability/contracts/standard/"&gt;信号字段契约&lt;/a&gt; 为准；这里负责把那套命名落实成 Metrics 的 target-state ownership 规则。&lt;/p&gt;
+&lt;p&gt;如果你当前关心的是 &lt;strong&gt;HTTP request boundary&lt;/strong&gt; 上哪些字段该落到 Metrics / Logs / Traces、以及 HTTP 入口字段该由谁注入，优先看 &lt;a href="../http/"&gt;HTTP 字段边界&lt;/a&gt;；这页只保留 Metrics 全局规则、label policy 和平台 ownership。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="1-metrics-的用途与分层"&gt;1. Metrics 的用途与分层&lt;/h2&gt;
+&lt;p&gt;Metrics 只服务于四类问题：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;趋势是否变坏&lt;/li&gt;
+&lt;li&gt;聚合后哪一类流量或任务在恶化&lt;/li&gt;
+&lt;li&gt;告警是否应触发&lt;/li&gt;
+&lt;li&gt;SLO / 容量 / 错误预算是否被消耗&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;因此，Metrics 的 target state 必须先分层，而不是所有指标共用同一套标签策略。&lt;/p&gt;
+&lt;table&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th&gt;指标层&lt;/th&gt;
+ &lt;th&gt;典型对象&lt;/th&gt;
+ &lt;th&gt;频率&lt;/th&gt;
+ &lt;th&gt;标签策略&lt;/th&gt;
+ &lt;th&gt;默认 owner&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td&gt;高频 HTTP 指标&lt;/td&gt;
+ &lt;td&gt;request count / error / latency / size&lt;/td&gt;
+ &lt;td&gt;高&lt;/td&gt;
+ &lt;td&gt;严格低基数，默认只保留请求聚合必需标签&lt;/td&gt;
+ &lt;td&gt;框架、指标 SDK、Prometheus、Collector&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;低频业务指标&lt;/td&gt;
+ &lt;td&gt;release、pipeline、callback、observer、task&lt;/td&gt;
+ &lt;td&gt;中低&lt;/td&gt;
+ &lt;td&gt;允许有限业务维度，但必须是稳定、有限集合&lt;/td&gt;
+ &lt;td&gt;服务&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;平台/运行时指标&lt;/td&gt;
+ &lt;td&gt;process、runtime、collector、自身导出器、平台组件&lt;/td&gt;
+ &lt;td&gt;中低&lt;/td&gt;
+ &lt;td&gt;以平台与运行时维度为主，不承载业务对象 ID&lt;/td&gt;
+ &lt;td&gt;平台、SDK、Collector、Prometheus&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;默认规则：&lt;/p&gt;</description></item><item><title>信号标签矩阵</title><link>https://devflow.bei.com/document/docs/observability/contracts/signal-label-matrix/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/observability/contracts/signal-label-matrix/</guid><description>&lt;h1 id="信号标签矩阵"&gt;信号标签矩阵&lt;/h1&gt;
 &lt;p&gt;&lt;span class="df-badge"&gt;Metrics&lt;/span&gt; &lt;span class="df-badge"&gt;Traces&lt;/span&gt; &lt;span class="df-badge"&gt;Logs&lt;/span&gt; &lt;span class="df-badge"&gt;Label Matrix&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;这页回答两个问题：&lt;/p&gt;
 &lt;ol&gt;
@@ -1670,10 +1476,7 @@ metrics label，哪些字段只能留在 trace 或 log 中。&lt;/p&gt;
 &lt;li&gt;日志分类和 &lt;code&gt;logger.name&lt;/code&gt; / &lt;code&gt;caller&lt;/code&gt; 细节看 &lt;a href="../logging/"&gt;结构化日志规范&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id="先记总原则"&gt;
- 先记总原则
- &lt;a class="anchor" href="#%e5%85%88%e8%ae%b0%e6%80%bb%e5%8e%9f%e5%88%99"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="先记总原则"&gt;先记总原则&lt;/h2&gt;
 &lt;p&gt;三种信号的职责不同：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;Metrics&lt;/strong&gt;：看趋势、做聚合，最怕高基数&lt;/li&gt;
@@ -1682,10 +1485,7 @@ metrics label，哪些字段只能留在 trace 或 log 中。&lt;/p&gt;
 &lt;/ul&gt;
 &lt;p&gt;所以三者不应该机械地带完全一样的标签。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="1-先看统一基线"&gt;
- 1. 先看统一基线
- &lt;a class="anchor" href="#1-%e5%85%88%e7%9c%8b%e7%bb%9f%e4%b8%80%e5%9f%ba%e7%ba%bf"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="1-先看统一基线"&gt;1. 先看统一基线&lt;/h2&gt;
 &lt;p&gt;如果只想回答“&lt;strong&gt;三种信号各自必须带什么标签&lt;/strong&gt;”，先看这张表：&lt;/p&gt;
 &lt;table&gt;
  &lt;thead&gt;
@@ -1697,7 +1497,7 @@ metrics label，哪些字段只能留在 trace 或 log 中。&lt;/p&gt;
  &lt;tbody&gt;
  &lt;tr&gt;
  &lt;td&gt;Metrics&lt;/td&gt;
- &lt;td&gt;&lt;code&gt;service_name&lt;/code&gt;、&lt;code&gt;http_request_method&lt;/code&gt;、&lt;code&gt;http_route&lt;/code&gt;、&lt;code&gt;http_response_status_code&lt;/code&gt;、&lt;code&gt;http_response_status_class&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;&lt;code&gt;http_request_method&lt;/code&gt;、&lt;code&gt;http_route&lt;/code&gt;、&lt;code&gt;http_response_status_code&lt;/code&gt;&lt;/td&gt;
  &lt;/tr&gt;
  &lt;tr&gt;
  &lt;td&gt;Traces&lt;/td&gt;
@@ -1713,38 +1513,26 @@ metrics label，哪些字段只能留在 trace 或 log 中。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Metrics 里的 &lt;code&gt;trace_id&lt;/code&gt; / &lt;code&gt;span_id&lt;/code&gt; 仍然&lt;strong&gt;禁止&lt;/strong&gt;作为 label，只能通过 exemplar 关联&lt;/li&gt;
 &lt;li&gt;Logs 里的 &lt;code&gt;trace_id&lt;/code&gt; / &lt;code&gt;span_id&lt;/code&gt; 是 Trace -&amp;gt; Log 关联主键，不再只是“推荐有”&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;http_response_status_class&lt;/code&gt; 是 DevFlow HTTP metrics 查询和仪表盘的必需维度，不应再视为可有可无&lt;/li&gt;
+&lt;li&gt;服务身份、环境、集群等字段应优先来自 Resource、scrape target metadata 或 Collector enrichment，而不是默认复制进每条 HTTP 应用指标&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id="2-metrics-最少需要什么标签"&gt;
- 2. Metrics 最少需要什么标签
- &lt;a class="anchor" href="#2-metrics-%e6%9c%80%e5%b0%91%e9%9c%80%e8%a6%81%e4%bb%80%e4%b9%88%e6%a0%87%e7%ad%be"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
-&lt;h3 id="必备"&gt;
- 必备
- &lt;a class="anchor" href="#%e5%bf%85%e5%a4%87"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;h2 id="2-metrics-最少需要什么标签"&gt;2. Metrics 最少需要什么标签&lt;/h2&gt;
+&lt;h3 id="必备"&gt;必备&lt;/h3&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;code&gt;service_name&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;http_request_method&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;http_route&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;http_response_status_code&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;http_response_status_class&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id="强烈建议"&gt;
- 强烈建议
- &lt;a class="anchor" href="#%e5%bc%ba%e7%83%88%e5%bb%ba%e8%ae%ae"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;h3 id="强烈建议"&gt;强烈建议&lt;/h3&gt;
 &lt;ul&gt;
+&lt;li&gt;&lt;code&gt;service_name&lt;/code&gt;（仅当该类指标确实需要由应用侧直接区分）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;service_namespace&lt;/code&gt;（仅当该类指标确实需要）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;deployment_environment_name&lt;/code&gt;（仅当该类指标确实需要）&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;service_version&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;service_namespace&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;result&lt;/code&gt;（仅低基数工作流/依赖类指标）&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;action&lt;/code&gt;（仅低基数场景）&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id="不建议放进-metrics-labels"&gt;
- 不建议放进 Metrics labels
- &lt;a class="anchor" href="#%e4%b8%8d%e5%bb%ba%e8%ae%ae%e6%94%be%e8%bf%9b-metrics-labels"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;h3 id="不建议放进-metrics-labels"&gt;不建议放进 Metrics labels&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;devflow.release.id&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;devflow.manifest.id&lt;/code&gt;&lt;/li&gt;
@@ -1757,14 +1545,70 @@ metrics label，哪些字段只能留在 trace 或 log 中。&lt;/p&gt;
 &lt;li&gt;原始 URL / query string&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;error.message&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id="metrics-的核心目标"&gt;
- Metrics 的核心目标
- &lt;a class="anchor" href="#metrics-%e7%9a%84%e6%a0%b8%e5%bf%83%e7%9b%ae%e6%a0%87"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
-&lt;p&gt;Metrics 应该优先回答：&lt;/p&gt;</description></item><item><title>OTel Collector 配置模板</title><link>https://devflow.bei.com/document/docs/observability/collector/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/observability/collector/</guid><description>&lt;h1 id="-otel-collector-配置模板"&gt;
- 🧰 OTel Collector 配置模板
- &lt;a class="anchor" href="#-otel-collector-%e9%85%8d%e7%bd%ae%e6%a8%a1%e6%9d%bf"&gt;#&lt;/a&gt;
-&lt;/h1&gt;
+&lt;h3 id="metrics-的核心目标"&gt;Metrics 的核心目标&lt;/h3&gt;
+&lt;p&gt;Metrics 应该优先回答：&lt;/p&gt;</description></item><item><title>Logs 字段规范</title><link>https://devflow.bei.com/document/docs/observability/signals/logs/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/observability/signals/logs/</guid><description>&lt;h1 id="logs-字段规范"&gt;Logs 字段规范&lt;/h1&gt;
+&lt;p&gt;&lt;span class="df-badge"&gt;Logs&lt;/span&gt; &lt;span class="df-badge"&gt;Loki&lt;/span&gt; &lt;span class="df-badge"&gt;OpenTelemetry&lt;/span&gt; &lt;span class="df-badge"&gt;Platform&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;这页是 &lt;code&gt;contracts/&lt;/code&gt; 通用日志契约在 &lt;strong&gt;Logs&lt;/strong&gt; 这一类信号上的目标态细化页。
+它面向运维、平台、SRE，重点只回答执行层真正要统一的几件事：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;结构化日志最小字段集是什么&lt;/li&gt;
+&lt;li&gt;不同日志类别各自必须补哪些字段&lt;/li&gt;
+&lt;li&gt;哪些字段由服务负责，哪些字段由平台或 Collector 注入&lt;/li&gt;
+&lt;li&gt;Loki 的 label 应如何严格收敛&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这页不是实现教程，也不重写 &lt;code&gt;contracts/&lt;/code&gt; 中的完整字段字典。
+canonical naming 仍以 &lt;a href="../../observability/contracts/attributes/"&gt;字段命名与来源边界&lt;/a&gt;、&lt;a href="../../observability/contracts/standard/"&gt;信号字段契约&lt;/a&gt; 和 &lt;a href="../../observability/contracts/logging/"&gt;结构化日志规范&lt;/a&gt; 为准；这里负责把那套命名落实成 Logs 的 target-state ownership 规则。&lt;/p&gt;
+&lt;p&gt;如果你当前关心的是 &lt;strong&gt;HTTP request boundary&lt;/strong&gt; 上字段该如何在 Metrics / Logs / Traces 间拆分，优先看 &lt;a href="../http/"&gt;HTTP 字段边界&lt;/a&gt;；这页只保留 Logs 全局规则，不重复展开每个 HTTP 字段的边界解释。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="1-共享基础日志字段"&gt;1. 共享基础日志字段&lt;/h2&gt;
+&lt;p&gt;所有进入目标态的结构化日志都共享同一组 base fields。缺少这组字段的日志，不满足 DevFlow 当前 Logs baseline。&lt;/p&gt;
+&lt;table&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th&gt;字段&lt;/th&gt;
+ &lt;th&gt;作用&lt;/th&gt;
+ &lt;th&gt;默认 owner&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;timestamp&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;事件发生时间&lt;/td&gt;
+ &lt;td&gt;日志 SDK / encoder&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;severity_text&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;严重级别&lt;/td&gt;
+ &lt;td&gt;服务日志库&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;logger.name&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;日志分类主键&lt;/td&gt;
+ &lt;td&gt;服务&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;message&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;稳定的人类可读事件文本&lt;/td&gt;
+ &lt;td&gt;服务&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;caller&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;回到源码位置的调试字段&lt;/td&gt;
+ &lt;td&gt;日志 SDK / encoder&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;trace_id&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;Trace -&amp;gt; Log 主关联键&lt;/td&gt;
+ &lt;td&gt;SDK / 当前 span context&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;span_id&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;当前 span 关联键&lt;/td&gt;
+ &lt;td&gt;SDK / 当前 span context&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;强约束：&lt;/p&gt;</description></item><item><title>OTel Collector 配置模板</title><link>https://devflow.bei.com/document/docs/observability/collector/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/observability/collector/</guid><description>&lt;h1 id="-otel-collector-配置模板"&gt;🧰 OTel Collector 配置模板&lt;/h1&gt;
 &lt;p&gt;&lt;span class="df-badge"&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/opentelemetry.svg" alt="OpenTelemetry" loading="lazy" /&gt;
  Collector&lt;/span&gt; &lt;span class="df-badge"&gt;k8sattributes&lt;/span&gt; &lt;span class="df-badge"&gt;resource processor&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;这一页解决一个落地问题：&lt;/p&gt;
@@ -1778,10 +1622,7 @@ metrics label，哪些字段只能留在 trace 或 log 中。&lt;/p&gt;
 &lt;li&gt;给所有 telemetry 统一补充环境与集群级 Resource Attributes&lt;/li&gt;
 &lt;/ol&gt;
 &lt;hr&gt;
-&lt;h2 id="-这个模板负责什么"&gt;
- 🎯 这个模板负责什么
- &lt;a class="anchor" href="#-%e8%bf%99%e4%b8%aa%e6%a8%a1%e6%9d%bf%e8%b4%9f%e8%b4%a3%e4%bb%80%e4%b9%88"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="-这个模板负责什么"&gt;🎯 这个模板负责什么&lt;/h2&gt;
 &lt;p&gt;Collector 这一层，建议只做&lt;strong&gt;运行环境增强&lt;/strong&gt;和&lt;strong&gt;统一转发&lt;/strong&gt;：&lt;/p&gt;
 &lt;table&gt;
  &lt;thead&gt;
@@ -1816,10 +1657,15 @@ metrics label，哪些字段只能留在 trace 或 log 中。&lt;/p&gt;
 &lt;li&gt;拼接复杂业务语义&lt;/li&gt;
 &lt;li&gt;从日志正文里猜业务字段&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;这些还是应该由服务代码自己设置。&lt;/p&gt;</description></item><item><title>Go 服务最小 OTel 接入示例</title><link>https://devflow.bei.com/document/docs/observability/go-example/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/observability/go-example/</guid><description>&lt;h1 id="-go-服务最小-otel-接入示例"&gt;
- 🧪 Go 服务最小 OTel 接入示例
- &lt;a class="anchor" href="#-go-%e6%9c%8d%e5%8a%a1%e6%9c%80%e5%b0%8f-otel-%e6%8e%a5%e5%85%a5%e7%a4%ba%e4%be%8b"&gt;#&lt;/a&gt;
-&lt;/h1&gt;
+&lt;p&gt;这些还是应该由服务代码自己设置。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="-最小推荐架构"&gt;🧱 最小推荐架构&lt;/h2&gt;
+&lt;pre tabindex="0"&gt;&lt;code class="language-mermaid" data-lang="mermaid"&gt;graph LR
+ App[DevFlow Services] --&amp;gt;|OTLP gRPC/HTTP| Collector
+ Collector --&amp;gt; Metrics[Prometheus / Remote Write]
+ Collector --&amp;gt; Logs[Loki / OTLP Logs Backend]
+ Collector --&amp;gt; Traces[Tempo / OTLP Traces Backend]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Collector 作为统一入口：&lt;/p&gt;</description></item><item><title>Go 服务最小 OTel 接入示例</title><link>https://devflow.bei.com/document/docs/observability/go-example/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/observability/go-example/</guid><description>&lt;h1 id="-go-服务最小-otel-接入示例"&gt;🧪 Go 服务最小 OTel 接入示例&lt;/h1&gt;
 &lt;p&gt;&lt;span class="df-badge"&gt;Go&lt;/span&gt; &lt;span class="df-badge"&gt;OTLP&lt;/span&gt; &lt;span class="df-badge"&gt;Gin&lt;/span&gt; &lt;span class="df-badge"&gt;devflow.*&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;如果前面几页回答的是：&lt;/p&gt;
 &lt;ul&gt;
@@ -1839,10 +1685,7 @@ metrics label，哪些字段只能留在 trace 或 log 中。&lt;/p&gt;
 &lt;li&gt;把数据通过 OTLP 发给 OTel Collector&lt;/li&gt;
 &lt;/ol&gt;
 &lt;hr&gt;
-&lt;h2 id="-最小接入目标"&gt;
- 🎯 最小接入目标
- &lt;a class="anchor" href="#-%e6%9c%80%e5%b0%8f%e6%8e%a5%e5%85%a5%e7%9b%ae%e6%a0%87"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="-最小接入目标"&gt;🎯 最小接入目标&lt;/h2&gt;
 &lt;p&gt;接入完成后，一个请求至少应该具备这些信息：&lt;/p&gt;
 &lt;table&gt;
  &lt;thead&gt;
@@ -1872,14 +1715,36 @@ metrics label，哪些字段只能留在 trace 或 log 中。&lt;/p&gt;
 &lt;/table&gt;
 &lt;p&gt;如果这几组字段都齐了，Grafana / Tempo / Loki 里的关联基本就能跑通。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="-建议依赖"&gt;
- 📦 建议依赖
- &lt;a class="anchor" href="#-%e5%bb%ba%e8%ae%ae%e4%be%9d%e8%b5%96"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
-&lt;p&gt;下面示例假设你使用：&lt;/p&gt;</description></item><item><title>OTel 接入检查清单</title><link>https://devflow.bei.com/document/docs/observability/onboarding-checklist/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/observability/onboarding-checklist/</guid><description>&lt;h1 id="-otel-接入检查清单"&gt;
- ✅ OTel 接入检查清单
- &lt;a class="anchor" href="#-otel-%e6%8e%a5%e5%85%a5%e6%a3%80%e6%9f%a5%e6%b8%85%e5%8d%95"&gt;#&lt;/a&gt;
-&lt;/h1&gt;
+&lt;h2 id="-建议依赖"&gt;📦 建议依赖&lt;/h2&gt;
+&lt;p&gt;下面示例假设你使用：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;gin&lt;/code&gt; 作为 HTTP 框架&lt;/li&gt;
+&lt;li&gt;OpenTelemetry Go SDK&lt;/li&gt;
+&lt;li&gt;OTLP gRPC exporter&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;go get go.opentelemetry.io/otel
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;go get go.opentelemetry.io/otel/sdk/resource
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;go get go.opentelemetry.io/otel/sdk/trace
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;go get go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;go get go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;h2 id="-第一步deployment-环境变量"&gt;⚙️ 第一步：Deployment 环境变量&lt;/h2&gt;
+&lt;p&gt;先把“服务是谁”这组字段在启动时配好。&lt;/p&gt;</description></item><item><title>Traces 字段规范</title><link>https://devflow.bei.com/document/docs/observability/signals/traces/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/observability/signals/traces/</guid><description>&lt;h1 id="traces-字段规范"&gt;Traces 字段规范&lt;/h1&gt;
+&lt;p&gt;&lt;span class="df-badge"&gt;Traces&lt;/span&gt; &lt;span class="df-badge"&gt;OpenTelemetry&lt;/span&gt; &lt;span class="df-badge"&gt;Span&lt;/span&gt; &lt;span class="df-badge"&gt;Platform&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;这页是 &lt;code&gt;contracts/&lt;/code&gt; 通用字段契约在 &lt;strong&gt;Traces&lt;/strong&gt; 这一类信号上的目标态细化页。
+它面向运维、平台、SRE，重点只回答执行层真正要统一的几件事：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;一条 Trace 最少必须具备哪些 identity、span 和 Resource 语义&lt;/li&gt;
+&lt;li&gt;哪些字段属于根 span、内部 span、下游 client span、异步/后台 span&lt;/li&gt;
+&lt;li&gt;哪些字段应由框架、服务、SDK / 当前 span context、Resource、Collector 负责&lt;/li&gt;
+&lt;li&gt;平台在查询和排障时，应该从 Trace 稳定读到哪些跨环境身份&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这页不是实现教程，也不重写 &lt;code&gt;contracts/&lt;/code&gt; 的完整字段字典。
+canonical naming 仍以 &lt;a href="../contracts/attributes/"&gt;字段命名与来源边界&lt;/a&gt;、&lt;a href="../contracts/standard/"&gt;信号字段契约&lt;/a&gt; 和 &lt;a href="../release-trace-example/"&gt;发布链路 Trace 示例&lt;/a&gt; 为准；这里负责把那套命名落实成 Traces 的 target-state ownership 规则。&lt;/p&gt;
+&lt;p&gt;如果你当前关心的是 &lt;strong&gt;HTTP request boundary&lt;/strong&gt; 上入口 span 该如何映射 method / route / status，优先看 &lt;a href="../http/"&gt;HTTP 字段边界&lt;/a&gt;；这页只保留 Traces 全局规则，不重复展开整套 HTTP server 映射。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="1-request--trace-identity-与-root-span-规则"&gt;1. request / trace identity 与 root span 规则&lt;/h2&gt;
+&lt;p&gt;Trace 的目标不是“记录很多 span”，而是稳定回答两件事：&lt;/p&gt;</description></item><item><title>OTel 接入检查清单</title><link>https://devflow.bei.com/document/docs/observability/onboarding-checklist/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/observability/onboarding-checklist/</guid><description>&lt;h1 id="-otel-接入检查清单"&gt;✅ OTel 接入检查清单&lt;/h1&gt;
 &lt;p&gt;&lt;span class="df-badge"&gt;Onboarding&lt;/span&gt; &lt;span class="df-badge"&gt;Metrics&lt;/span&gt; &lt;span class="df-badge"&gt;Logs&lt;/span&gt; &lt;span class="df-badge"&gt;Traces&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;这页给的是一份&lt;strong&gt;新服务接入 observability 时可直接照着走的检查清单&lt;/strong&gt;。&lt;/p&gt;
 &lt;p&gt;适合的读者：&lt;/p&gt;
@@ -1894,16 +1759,13 @@ metrics label，哪些字段只能留在 trace 或 log 中。&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;这页是验收清单，不重复定义完整规范：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;字段命名和来源边界看 &lt;a href="../attributes/"&gt;字段命名与来源边界&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;完整字段契约看 &lt;a href="../standard/"&gt;信号字段契约&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;最小必需字段速查看 &lt;a href="../signal-label-matrix/"&gt;信号标签矩阵&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;日志字段和 &lt;code&gt;logger.name&lt;/code&gt; / &lt;code&gt;caller&lt;/code&gt; 规则看 &lt;a href="../logging/"&gt;结构化日志规范&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;字段命名和来源边界看 &lt;a href="../contracts/attributes/"&gt;字段命名与来源边界&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;完整字段契约看 &lt;a href="../contracts/standard/"&gt;信号字段契约&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;最小必需字段速查看 &lt;a href="../contracts/signal-label-matrix/"&gt;信号标签矩阵&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;日志字段和 &lt;code&gt;logger.name&lt;/code&gt; / &lt;code&gt;caller&lt;/code&gt; 规则看 &lt;a href="../contracts/logging/"&gt;结构化日志规范&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id="-先看完成标准"&gt;
- 🧭 先看完成标准
- &lt;a class="anchor" href="#-%e5%85%88%e7%9c%8b%e5%ae%8c%e6%88%90%e6%a0%87%e5%87%86"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="-先看完成标准"&gt;🧭 先看完成标准&lt;/h2&gt;
 &lt;p&gt;只要下面 4 组都具备，这个服务就算“最小可用”：&lt;/p&gt;
 &lt;table&gt;
  &lt;thead&gt;
@@ -1933,28 +1795,644 @@ metrics label，哪些字段只能留在 trace 或 log 中。&lt;/p&gt;
 &lt;/table&gt;
 &lt;p&gt;如果缺少其中任何一组，排障链路都会断。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="-启动配置检查"&gt;
- ① 启动配置检查
- &lt;a class="anchor" href="#-%e5%90%af%e5%8a%a8%e9%85%8d%e7%bd%ae%e6%a3%80%e6%9f%a5"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
-&lt;h3 id="必查项"&gt;
- 必查项
- &lt;a class="anchor" href="#%e5%bf%85%e6%9f%a5%e9%a1%b9"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;h2 id="-启动配置检查"&gt;① 启动配置检查&lt;/h2&gt;
+&lt;h3 id="必查项"&gt;必查项&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 服务配置了 &lt;code&gt;SERVICE_NAME&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 服务配置了 &lt;code&gt;OTEL_SERVICE_NAMESPACE&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 服务配置了 &lt;code&gt;SERVICE_VERSION&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 服务配置了 &lt;code&gt;OTEL_EXPORTER_OTLP_ENDPOINT&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id="通过标准"&gt;
- 通过标准
- &lt;a class="anchor" href="#%e9%80%9a%e8%bf%87%e6%a0%87%e5%87%86"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
-&lt;p&gt;你应该能明确回答：&lt;/p&gt;</description></item><item><title>结构化日志规范</title><link>https://devflow.bei.com/document/docs/observability/logging/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/observability/logging/</guid><description>&lt;h1 id="结构化日志规范"&gt;
- 结构化日志规范
- &lt;a class="anchor" href="#%e7%bb%93%e6%9e%84%e5%8c%96%e6%97%a5%e5%bf%97%e8%a7%84%e8%8c%83"&gt;#&lt;/a&gt;
-&lt;/h1&gt;
+&lt;h3 id="通过标准"&gt;通过标准&lt;/h3&gt;
+&lt;p&gt;你应该能明确回答：&lt;/p&gt;</description></item><item><title>Signals 运维验收表</title><link>https://devflow.bei.com/document/docs/observability/signals/validation/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/observability/signals/validation/</guid><description>&lt;h1 id="signals-运维验收表"&gt;Signals 运维验收表&lt;/h1&gt;
+&lt;p&gt;&lt;span class="df-badge"&gt;Signals&lt;/span&gt; &lt;span class="df-badge"&gt;Validation&lt;/span&gt; &lt;span class="df-badge"&gt;Platform&lt;/span&gt; &lt;span class="df-badge"&gt;SRE&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;这页不是“如何接入”的开发清单，而是一份给运维、平台、SRE 直接使用的 &lt;strong&gt;signals target-state 验收表&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;它主要回答 4 个问题：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;当前服务或平台输出的 Metrics / Logs / Traces 是否符合统一规范&lt;/li&gt;
+&lt;li&gt;哪些字段是框架写进去的，哪些字段必须由服务补，哪些字段应由 Resource / Collector / Prometheus 提供&lt;/li&gt;
+&lt;li&gt;哪些标签必须存在，哪些只能按需出现，哪些必须禁止&lt;/li&gt;
+&lt;li&gt;一次验收时应该先查什么，再查什么&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;如果你当前做的是：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;新服务接入，请先看 &lt;a href="../../observability/onboarding-checklist/"&gt;OTel 接入检查清单&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;按服务查漏补缺，请看 &lt;a href="../../observability/service-checklist/"&gt;现有服务字段清单&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;统一字段命名和 canonical baseline，请回到 &lt;a href="../../observability/contracts/"&gt;字段契约&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这页只做一件事：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;把 &lt;code&gt;signals/&lt;/code&gt; 里的规范压缩成一张可以逐项打勾的运维验收表。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;h2 id="1-验收使用方式"&gt;1. 验收使用方式&lt;/h2&gt;
+&lt;p&gt;建议按下面顺序执行：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;先验 Metrics，确认聚合和告警面没有高基数问题&lt;/li&gt;
+&lt;li&gt;再验 Traces，确认链路入口、阶段、下游依赖和业务身份完整&lt;/li&gt;
+&lt;li&gt;最后验 Logs，确认单请求和单业务事件可以补足细节&lt;/li&gt;
+&lt;li&gt;最后再验 owner，确认没有把服务字段、Collector 字段、Prometheus 字段写乱&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;执行原则：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;先验“必需字段是否存在”&lt;/li&gt;
+&lt;li&gt;再验“可选字段是否有边界”&lt;/li&gt;
+&lt;li&gt;最后验“禁止字段是否被错误使用”&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="2-metrics-验收表"&gt;2. Metrics 验收表&lt;/h2&gt;
+&lt;h3 id="21-必须通过"&gt;2.1 必须通过&lt;/h3&gt;
+&lt;table&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th&gt;检查项&lt;/th&gt;
+ &lt;th&gt;验收标准&lt;/th&gt;
+ &lt;th&gt;默认 owner&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td&gt;HTTP 高频指标存在&lt;/td&gt;
+ &lt;td&gt;至少有 request rate / error rate / latency&lt;/td&gt;
+ &lt;td&gt;框架 / 指标 SDK&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;http_request_method&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;必须存在&lt;/td&gt;
+ &lt;td&gt;框架 / middleware 或指标 SDK&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;http_route&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;必须存在，且是模板路由&lt;/td&gt;
+ &lt;td&gt;框架 / middleware 或指标 SDK&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;http_response_status_code&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;必须存在&lt;/td&gt;
+ &lt;td&gt;框架 / middleware 或指标 SDK&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;服务身份可切片&lt;/td&gt;
+ &lt;td&gt;能按服务区分，但优先来自 Resource / scrape metadata，而不是应用侧重复 label&lt;/td&gt;
+ &lt;td&gt;Resource / Prometheus&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;环境身份可切片&lt;/td&gt;
+ &lt;td&gt;能按环境区分，但优先来自 Resource / Collector / scrape metadata&lt;/td&gt;
+ &lt;td&gt;Resource / Collector / Prometheus&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;exemplar 跳 Trace&lt;/td&gt;
+ &lt;td&gt;若平台启用 exemplar，应能从聚合点跳到 Trace&lt;/td&gt;
+ &lt;td&gt;Metrics SDK / OTel pipeline&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id="22-允许但要受控"&gt;2.2 允许但要受控&lt;/h3&gt;
+&lt;table&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th&gt;检查项&lt;/th&gt;
+ &lt;th&gt;通过条件&lt;/th&gt;
+ &lt;th&gt;默认 owner&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;service_name&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;仅在平台侧暂时不能稳定侧带时才作为应用 label&lt;/td&gt;
+ &lt;td&gt;Resource&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;service_namespace&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;同上&lt;/td&gt;
+ &lt;td&gt;Resource&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;deployment_environment_name&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;仅在查询系统无法稳定侧带环境身份时显式加 label&lt;/td&gt;
+ &lt;td&gt;Resource / Collector&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;service_version&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;优先通过 &lt;code&gt;build_info&lt;/code&gt; 类低频指标暴露；只有高频指标确有版本切片需求时才允许&lt;/td&gt;
+ &lt;td&gt;Resource&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;result&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;仅低频业务指标允许，且值集合稳定&lt;/td&gt;
+ &lt;td&gt;服务&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;action&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;仅动作集合有限时允许&lt;/td&gt;
+ &lt;td&gt;服务&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;strategy&lt;/code&gt; / &lt;code&gt;task_name&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;仅工作流或后台指标允许，且必须低基数&lt;/td&gt;
+ &lt;td&gt;服务&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id="23-必须判失败"&gt;2.3 必须判失败&lt;/h3&gt;
+&lt;table&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th&gt;检查项&lt;/th&gt;
+ &lt;th&gt;为什么失败&lt;/th&gt;
+ &lt;th&gt;更合适的位置&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;trace_id&lt;/code&gt; 作为 label&lt;/td&gt;
+ &lt;td&gt;基数无限&lt;/td&gt;
+ &lt;td&gt;exemplar / Trace / Log&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;span_id&lt;/code&gt; 作为 label&lt;/td&gt;
+ &lt;td&gt;基数无限&lt;/td&gt;
+ &lt;td&gt;Trace / Log&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;request_id&lt;/code&gt; 作为 label&lt;/td&gt;
+ &lt;td&gt;高基数且常与 &lt;code&gt;trace_id&lt;/code&gt; 重叠&lt;/td&gt;
+ &lt;td&gt;Log / Trace&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;url.path&lt;/code&gt; 作为 label&lt;/td&gt;
+ &lt;td&gt;原始路径基数不可控&lt;/td&gt;
+ &lt;td&gt;Log / Trace&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;url.query&lt;/code&gt; 作为 label&lt;/td&gt;
+ &lt;td&gt;高基数且可能含敏感数据&lt;/td&gt;
+ &lt;td&gt;Log&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;error.message&lt;/code&gt; 作为 label&lt;/td&gt;
+ &lt;td&gt;自由文本不可聚合&lt;/td&gt;
+ &lt;td&gt;Log &lt;code&gt;message&lt;/code&gt; / Trace&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;devflow.release.id&lt;/code&gt; 作为高频指标 label&lt;/td&gt;
+ &lt;td&gt;业务对象 ID 高基数&lt;/td&gt;
+ &lt;td&gt;Trace / 业务日志&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;devflow.application.id&lt;/code&gt; 作为高频指标 label&lt;/td&gt;
+ &lt;td&gt;同上&lt;/td&gt;
+ &lt;td&gt;Trace / 业务日志&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;k8s.pod.name&lt;/code&gt; 作为默认高频切片&lt;/td&gt;
+ &lt;td&gt;Pod 滚动导致序列爆炸&lt;/td&gt;
+ &lt;td&gt;Resource / target metadata&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id="24-metrics-一眼通过标准"&gt;2.4 Metrics 一眼通过标准&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 高频 HTTP 指标只保留低基数标签&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; &lt;code&gt;http_route&lt;/code&gt; 是模板路由，不是原始动态路径&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 服务与环境身份可稳定切片，但没有长期双写同义 label&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; &lt;code&gt;service.version&lt;/code&gt; 如需进入 Metrics，优先通过 &lt;code&gt;build_info&lt;/code&gt; 一类低频指标表达，而不是默认进入高频 HTTP 指标&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 请求主键、对象 ID、自由文本都没有进高频指标标签&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="3-traces-验收表"&gt;3. Traces 验收表&lt;/h2&gt;
+&lt;h3 id="31-必须通过"&gt;3.1 必须通过&lt;/h3&gt;
+&lt;table&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th&gt;检查项&lt;/th&gt;
+ &lt;th&gt;验收标准&lt;/th&gt;
+ &lt;th&gt;默认 owner&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;trace_id&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;每条 Trace 必须存在&lt;/td&gt;
+ &lt;td&gt;SDK / 当前 span context&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;span_id&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;每个 span 必须存在&lt;/td&gt;
+ &lt;td&gt;SDK / 当前 span context&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;span.name&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;必须稳定，不带动态对象 ID&lt;/td&gt;
+ &lt;td&gt;框架 / middleware 或服务&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;span.kind&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;必须正确表达 &lt;code&gt;server&lt;/code&gt; / &lt;code&gt;client&lt;/code&gt; / &lt;code&gt;internal&lt;/code&gt; / &lt;code&gt;consumer&lt;/code&gt; 等语义&lt;/td&gt;
+ &lt;td&gt;SDK / instrumentation&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;service.name&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;必须可见&lt;/td&gt;
+ &lt;td&gt;Resource&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;service.namespace&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;必须可见&lt;/td&gt;
+ &lt;td&gt;Resource&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;入口边界 span&lt;/td&gt;
+ &lt;td&gt;HTTP / consumer / callback / job 入口必须存在&lt;/td&gt;
+ &lt;td&gt;框架 / middleware / SDK / 服务&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;下游 client span&lt;/td&gt;
+ &lt;td&gt;外部依赖调用必须可见&lt;/td&gt;
+ &lt;td&gt;instrumentation / 服务&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;失败边界清晰&lt;/td&gt;
+ &lt;td&gt;失败必须能落在具体失败 span 上&lt;/td&gt;
+ &lt;td&gt;服务&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id="32-发布链路必须额外检查"&gt;3.2 发布链路必须额外检查&lt;/h3&gt;
+&lt;table&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th&gt;检查项&lt;/th&gt;
+ &lt;th&gt;验收标准&lt;/th&gt;
+ &lt;th&gt;默认 owner&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;devflow.release.id&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;发布关键阶段必须可见&lt;/td&gt;
+ &lt;td&gt;服务&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;devflow.application.id&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;发布入口和关键阶段必须可见&lt;/td&gt;
+ &lt;td&gt;服务&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;devflow.environment.id&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;部署与回写阶段必须可见&lt;/td&gt;
+ &lt;td&gt;服务&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;devflow.manifest.id&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;manifest / render / build 相关阶段必须可见&lt;/td&gt;
+ &lt;td&gt;服务&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;devflow.intent.kind&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;异步或后台执行意图清晰&lt;/td&gt;
+ &lt;td&gt;服务&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;runtime-service.WatchReleaseStatus&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;runtime 观察边界可见&lt;/td&gt;
+ &lt;td&gt;服务&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;release.CreateManifest&lt;/code&gt; 等 canonical naming&lt;/td&gt;
+ &lt;td&gt;span naming 与文档示例一致&lt;/td&gt;
+ &lt;td&gt;服务&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id="33-允许但要受控"&gt;3.3 允许但要受控&lt;/h3&gt;
+&lt;table&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th&gt;检查项&lt;/th&gt;
+ &lt;th&gt;通过条件&lt;/th&gt;
+ &lt;th&gt;默认 owner&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;deployment.environment.name&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;作为 recommended trace-visible context 稳定可查&lt;/td&gt;
+ &lt;td&gt;Resource / Collector&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;service.version&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;灰度、版本排障时应可见&lt;/td&gt;
+ &lt;td&gt;Resource&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;service.instance.id&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;单实例排障时应可见&lt;/td&gt;
+ &lt;td&gt;Resource / SDK&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;k8s.*&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;平台落点字段可查，但不由业务代码手写&lt;/td&gt;
+ &lt;td&gt;Collector&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;error.type&lt;/code&gt; / &lt;code&gt;error.message&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;仅失败 span 才出现&lt;/td&gt;
+ &lt;td&gt;服务&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id="34-必须判失败"&gt;3.4 必须判失败&lt;/h3&gt;
+&lt;table&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th&gt;检查项&lt;/th&gt;
+ &lt;th&gt;为什么失败&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td&gt;root span 带动态 ID 或原始 URL&lt;/td&gt;
+ &lt;td&gt;span 名称高基数、不可聚合&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;internal span 等于函数调用栈镜像&lt;/td&gt;
+ &lt;td&gt;噪声过大，失去阶段语义&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;外部依赖失败只挂在父 span&lt;/td&gt;
+ &lt;td&gt;无法区分内部失败还是依赖失败&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;devflow.*.id&lt;/code&gt; 被写入 Resource&lt;/td&gt;
+ &lt;td&gt;进程级污染业务对象身份&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;Collector 猜 &lt;code&gt;devflow.release.id&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;平台越界且语义不稳定&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;大体积 payload / header / query 原文进入 span&lt;/td&gt;
+ &lt;td&gt;成本高且易泄漏敏感信息&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id="35-traces-一眼通过标准"&gt;3.5 Traces 一眼通过标准&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 任意请求都能看到明确入口 span&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 任意失败都能定位到具体失败边界 span&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 发布链路能按 &lt;code&gt;devflow.release.id&lt;/code&gt; 串起关键阶段&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 运行落点与服务身份可查，但业务对象身份没有污染到 Resource&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="4-logs-验收表"&gt;4. Logs 验收表&lt;/h2&gt;
+&lt;h3 id="41-必须通过"&gt;4.1 必须通过&lt;/h3&gt;
+&lt;table&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th&gt;检查项&lt;/th&gt;
+ &lt;th&gt;验收标准&lt;/th&gt;
+ &lt;th&gt;默认 owner&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;timestamp&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;必须存在&lt;/td&gt;
+ &lt;td&gt;日志 SDK / encoder&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;severity_text&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;必须存在&lt;/td&gt;
+ &lt;td&gt;服务日志库&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;logger.name&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;必须存在，且使用稳定分类&lt;/td&gt;
+ &lt;td&gt;服务&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;message&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;必须存在，且能直接表达事件含义&lt;/td&gt;
+ &lt;td&gt;服务&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;caller&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;必须存在&lt;/td&gt;
+ &lt;td&gt;日志 SDK / encoder&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;trace_id&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;必须存在&lt;/td&gt;
+ &lt;td&gt;SDK / 当前 span context&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;span_id&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;必须存在&lt;/td&gt;
+ &lt;td&gt;SDK / 当前 span context&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id="42-http-access--error-log-专项"&gt;4.2 HTTP access / error log 专项&lt;/h3&gt;
+&lt;table&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th&gt;检查项&lt;/th&gt;
+ &lt;th&gt;验收标准&lt;/th&gt;
+ &lt;th&gt;默认 owner&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;http.request.method&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;&lt;code&gt;http.access&lt;/code&gt; 必须存在&lt;/td&gt;
+ &lt;td&gt;框架 / middleware&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;http.route&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;&lt;code&gt;http.access&lt;/code&gt; 必须存在，且为模板路由&lt;/td&gt;
+ &lt;td&gt;框架 / middleware&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;url.path&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;&lt;code&gt;http.access&lt;/code&gt; 必须存在，用于单请求排障&lt;/td&gt;
+ &lt;td&gt;框架 / middleware&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;http.response.status_code&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;&lt;code&gt;http.access&lt;/code&gt; 必须存在&lt;/td&gt;
+ &lt;td&gt;框架 / middleware&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;logger.name=http.access&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;普通入口访问日志固定分类&lt;/td&gt;
+ &lt;td&gt;服务&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;logger.name=http.error&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;入口错误日志固定分类&lt;/td&gt;
+ &lt;td&gt;服务&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;message&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;&lt;code&gt;http.error&lt;/code&gt; 必须能表达具体失败文本或 panic 摘要&lt;/td&gt;
+ &lt;td&gt;服务&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;http.response.body.size&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;稳定可得时推荐保留&lt;/td&gt;
+ &lt;td&gt;框架 / middleware&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id="43-业务--生命周期日志专项"&gt;4.3 业务 / 生命周期日志专项&lt;/h3&gt;
+&lt;table&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th&gt;检查项&lt;/th&gt;
+ &lt;th&gt;验收标准&lt;/th&gt;
+ &lt;th&gt;默认 owner&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;operation&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;业务动作明确&lt;/td&gt;
+ &lt;td&gt;服务&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;resource&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;资源类型明确&lt;/td&gt;
+ &lt;td&gt;服务&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;result&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;成功 / 失败 / 跳过等结果明确&lt;/td&gt;
+ &lt;td&gt;服务&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;devflow.*.id&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;仅在确有业务语义的日志中出现&lt;/td&gt;
+ &lt;td&gt;服务&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;release.lifecycle&lt;/code&gt; / &lt;code&gt;runtime.state&lt;/code&gt; 等稳定分类&lt;/td&gt;
+ &lt;td&gt;日志分类统一&lt;/td&gt;
+ &lt;td&gt;服务&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id="44-必须判失败"&gt;4.4 必须判失败&lt;/h3&gt;
+&lt;table&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th&gt;检查项&lt;/th&gt;
+ &lt;th&gt;为什么失败&lt;/th&gt;
+ &lt;th&gt;更合适的位置&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;trace_id&lt;/code&gt; 做 Loki label&lt;/td&gt;
+ &lt;td&gt;label 爆炸&lt;/td&gt;
+ &lt;td&gt;JSON 字段 / Trace 关联&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;span_id&lt;/code&gt; 做 Loki label&lt;/td&gt;
+ &lt;td&gt;同上&lt;/td&gt;
+ &lt;td&gt;JSON 字段 / Trace 关联&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;url.path&lt;/code&gt; 做 Loki label&lt;/td&gt;
+ &lt;td&gt;高基数&lt;/td&gt;
+ &lt;td&gt;JSON 字段&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;message&lt;/code&gt; 做 Loki label&lt;/td&gt;
+ &lt;td&gt;自由文本不可作为稳定流切分&lt;/td&gt;
+ &lt;td&gt;日志正文&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;任意 &lt;code&gt;devflow.*.id&lt;/code&gt; 做 Loki label&lt;/td&gt;
+ &lt;td&gt;业务对象 ID 高基数&lt;/td&gt;
+ &lt;td&gt;JSON 字段 / Trace&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;每条 &lt;code&gt;http.access&lt;/code&gt; 都手工重复 &lt;code&gt;service.*&lt;/code&gt;、&lt;code&gt;k8s.*&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;高频日志被平台元数据淹没&lt;/td&gt;
+ &lt;td&gt;Resource / Collector&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id="45-logs-一眼通过标准"&gt;4.5 Logs 一眼通过标准&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; HTTP access log 只保留请求边界最小事实&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; HTTP error log 能直接看懂失败原因&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 业务 / 生命周期日志能带稳定业务对象身份&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; &lt;code&gt;trace_id&lt;/code&gt; 能从日志反查 Trace，且没有被升级成 Loki label&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="5-owner-验收表"&gt;5. Owner 验收表&lt;/h2&gt;
+&lt;h3 id="51-框架--middleware-应负责"&gt;5.1 框架 / middleware 应负责&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; &lt;code&gt;http.request.method&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; &lt;code&gt;http.route&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; &lt;code&gt;url.path&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; &lt;code&gt;http.response.status_code&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 基础请求耗时边界&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="52-服务代码应负责"&gt;5.2 服务代码应负责&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; &lt;code&gt;devflow.project.id&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; &lt;code&gt;devflow.application.id&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; &lt;code&gt;devflow.environment.id&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; &lt;code&gt;devflow.manifest.id&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; &lt;code&gt;devflow.release.id&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; &lt;code&gt;devflow.intent.kind&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; &lt;code&gt;devflow.intent.status&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; &lt;code&gt;operation&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; &lt;code&gt;resource&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; &lt;code&gt;result&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 业务错误语义和稳定 span naming&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="53-otel-sdk--resource-应负责"&gt;5.3 OTel SDK / Resource 应负责&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; &lt;code&gt;trace_id&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; &lt;code&gt;span_id&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; &lt;code&gt;service.name&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; &lt;code&gt;service.namespace&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; &lt;code&gt;service.version&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; &lt;code&gt;service.instance.id&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; &lt;code&gt;build_info&lt;/code&gt; 或等价版本常量指标&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="54-collector-应负责"&gt;5.4 Collector 应负责&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; &lt;code&gt;deployment.environment.name&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; &lt;code&gt;k8s.cluster.name&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; &lt;code&gt;k8s.namespace.name&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; &lt;code&gt;k8s.pod.name&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; &lt;code&gt;k8s.container.name&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; &lt;code&gt;k8s.node.name&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; &lt;code&gt;cloud.region&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; &lt;code&gt;host.name&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="55-prometheus-应负责"&gt;5.5 Prometheus 应负责&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; &lt;code&gt;job&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; &lt;code&gt;instance&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; scrape target metadata&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="56-owner-一眼失败信号"&gt;5.6 Owner 一眼失败信号&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; Collector 在推断 &lt;code&gt;devflow.*&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; Prometheus label 在承载业务对象 ID&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 服务代码在手工双写 &lt;code&gt;k8s.*&lt;/code&gt;、&lt;code&gt;cloud.*&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 平台改写了服务已经确定的 &lt;code&gt;operation&lt;/code&gt;、&lt;code&gt;resource&lt;/code&gt;、&lt;code&gt;result&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="6-最小验收流程"&gt;6. 最小验收流程&lt;/h2&gt;
+&lt;p&gt;建议值班或平台验收时至少跑完下面 8 步：&lt;/p&gt;</description></item><item><title>结构化日志规范</title><link>https://devflow.bei.com/document/docs/observability/contracts/logging/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/observability/contracts/logging/</guid><description>&lt;h1 id="结构化日志规范"&gt;结构化日志规范&lt;/h1&gt;
 &lt;p&gt;&lt;span class="df-badge"&gt;Logs&lt;/span&gt; &lt;span class="df-badge"&gt;logger.name&lt;/span&gt; &lt;span class="df-badge"&gt;caller&lt;/span&gt; &lt;span class="df-badge"&gt;Contract&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;这页给文档读者一个当前可执行的日志契约，而不是理想化的大而全字段表。&lt;/p&gt;
 &lt;p&gt;这页主要解决一个问题：&lt;/p&gt;
@@ -1968,11 +2446,14 @@ metrics label，哪些字段只能留在 trace 或 log 中。&lt;/p&gt;
 &lt;li&gt;服务、环境、Kubernetes 资源信息优先作为 Resource Attributes 或 Collector enrichment，不要在每条请求日志里手工重复。&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;这里的约束再说一次：&lt;code&gt;trace_id&lt;/code&gt; / &lt;code&gt;span_id&lt;/code&gt; 不是“有最好”，而是新日志契约里的必需字段。&lt;/p&gt;
+&lt;p&gt;另外一条当前实现层面的边界也需要明确：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;HTTP request 的服务身份、环境、Kubernetes 落点不应手工复制进每条请求日志&lt;/li&gt;
+&lt;li&gt;这类字段应优先来自 OTel Resource Attributes 或 Collector enrichment&lt;/li&gt;
+&lt;li&gt;请求日志只保留 request 自身事实和 Trace 关联键&lt;/li&gt;
+&lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id="最小日志基线"&gt;
- 最小日志基线
- &lt;a class="anchor" href="#%e6%9c%80%e5%b0%8f%e6%97%a5%e5%bf%97%e5%9f%ba%e7%ba%bf"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="最小日志基线"&gt;最小日志基线&lt;/h2&gt;
 &lt;p&gt;所有结构化日志共享这组基础字段：&lt;/p&gt;
 &lt;table&gt;
  &lt;thead&gt;
@@ -2020,51 +2501,37 @@ metrics label，哪些字段只能留在 trace 或 log 中。&lt;/p&gt;
 &lt;li&gt;&lt;code&gt;trace_id&lt;/code&gt; 和 &lt;code&gt;span_id&lt;/code&gt; 必须来自当前 span context；缺少它们的日志不满足当前 DevFlow 结构化日志基线。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id="字段等级"&gt;
- 字段等级
- &lt;a class="anchor" href="#%e5%ad%97%e6%ae%b5%e7%ad%89%e7%ba%a7"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
-&lt;p&gt;先把最容易混淆的两类字段拆开：&lt;/p&gt;</description></item><item><title>现有服务字段清单</title><link>https://devflow.bei.com/document/docs/observability/service-checklist/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/observability/service-checklist/</guid><description>&lt;h1 id="-现有服务字段清单"&gt;
- 🧾 现有服务字段清单
- &lt;a class="anchor" href="#-%e7%8e%b0%e6%9c%89%e6%9c%8d%e5%8a%a1%e5%ad%97%e6%ae%b5%e6%b8%85%e5%8d%95"&gt;#&lt;/a&gt;
-&lt;/h1&gt;
+&lt;h2 id="字段等级"&gt;字段等级&lt;/h2&gt;
+&lt;p&gt;先把最容易混淆的两类字段拆开：&lt;/p&gt;</description></item><item><title>现有服务字段清单</title><link>https://devflow.bei.com/document/docs/observability/service-checklist/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/observability/service-checklist/</guid><description>&lt;h1 id="-现有服务字段清单"&gt;🧾 现有服务字段清单&lt;/h1&gt;
 &lt;p&gt;&lt;span class="df-badge"&gt;meta-service&lt;/span&gt; &lt;span class="df-badge"&gt;config-service&lt;/span&gt; &lt;span class="df-badge"&gt;network-service&lt;/span&gt; &lt;span class="df-badge"&gt;release-service&lt;/span&gt; &lt;span class="df-badge"&gt;runtime-service&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;这页把“原则”进一步落到每个服务应该重点打哪些字段。&lt;/p&gt;
-&lt;p&gt;目标不是要求每条日志/每个 Span 都完全一样，而是给每个服务一份&lt;strong&gt;最小但够用&lt;/strong&gt;的观测清单。&lt;/p&gt;
+&lt;p&gt;这页把“原则”进一步落到 DevFlow 五个服务应该重点打哪些字段、日志和指标。&lt;/p&gt;
+&lt;p&gt;目标不是要求每条日志或每个 Span 都完全一样，而是给每个服务一份&lt;strong&gt;最小但够用&lt;/strong&gt;的观测清单。&lt;/p&gt;
 &lt;p&gt;这页不重复定义通用规范：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;命名和来源边界看 &lt;a href="../attributes/"&gt;字段命名与来源边界&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;完整字段契约看 &lt;a href="../standard/"&gt;信号字段契约&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;最小必需字段看 &lt;a href="../signal-label-matrix/"&gt;信号标签矩阵&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;日志专属规则看 &lt;a href="../logging/"&gt;结构化日志规范&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;命名和来源边界看 &lt;a href="../contracts/attributes/"&gt;字段命名与来源边界&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;完整字段契约看 &lt;a href="../contracts/standard/"&gt;信号字段契约&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;最小必需字段看 &lt;a href="../contracts/signal-label-matrix/"&gt;信号标签矩阵&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;日志专属规则看 &lt;a href="../contracts/logging/"&gt;结构化日志规范&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id="-所有服务共同必备"&gt;
- 🧭 所有服务共同必备
- &lt;a class="anchor" href="#-%e6%89%80%e6%9c%89%e6%9c%8d%e5%8a%a1%e5%85%b1%e5%90%8c%e5%bf%85%e5%a4%87"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
-&lt;h3 id="启动层"&gt;
- 启动层
- &lt;a class="anchor" href="#%e5%90%af%e5%8a%a8%e5%b1%82"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;h2 id="-所有服务共同必备"&gt;🧭 所有服务共同必备&lt;/h2&gt;
+&lt;h3 id="启动层"&gt;启动层&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;service.name&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;service.version&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id="collector-层"&gt;
- Collector 层
- &lt;a class="anchor" href="#collector-%e5%b1%82"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;h3 id="版本指标层"&gt;版本指标层&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;build_info&lt;/code&gt; 或等价版本常量指标&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="collector-层"&gt;Collector 层&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;deployment.environment.name&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;k8s.cluster.name&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;k8s.namespace.name&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;k8s.pod.name&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id="请求层"&gt;
- 请求层
- &lt;a class="anchor" href="#%e8%af%b7%e6%b1%82%e5%b1%82"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;h3 id="请求层"&gt;请求层&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;trace_id&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;span_id&lt;/code&gt;&lt;/li&gt;
@@ -2073,14 +2540,14 @@ metrics label，哪些字段只能留在 trace 或 log 中。&lt;/p&gt;
 &lt;li&gt;&lt;code&gt;http.response.status_code&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id="-meta-service"&gt;
- 📚 meta-service
- &lt;a class="anchor" href="#-meta-service"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
-&lt;h3 id="建议重点字段"&gt;
- 建议重点字段
- &lt;a class="anchor" href="#%e5%bb%ba%e8%ae%ae%e9%87%8d%e7%82%b9%e5%ad%97%e6%ae%b5"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;h2 id="-meta-service"&gt;📚 meta-service&lt;/h2&gt;
+&lt;h3 id="这个服务最值得观测什么"&gt;这个服务最值得观测什么&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;元数据创建、更新、绑定是否成功&lt;/li&gt;
+&lt;li&gt;哪类对象最常失败&lt;/li&gt;
+&lt;li&gt;下游服务查询元数据时是否变慢&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="建议重点字段"&gt;建议重点字段&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;devflow.project.id&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;devflow.application.id&lt;/code&gt;&lt;/li&gt;
@@ -2088,69 +2555,81 @@ metrics label，哪些字段只能留在 trace 或 log 中。&lt;/p&gt;
 &lt;li&gt;&lt;code&gt;devflow.cluster.id&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;devflow.user.id&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id="典型观测场景"&gt;
- 典型观测场景
- &lt;a class="anchor" href="#%e5%85%b8%e5%9e%8b%e8%a7%82%e6%b5%8b%e5%9c%ba%e6%99%af"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;h3 id="建议关键指标"&gt;建议关键指标&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;项目、应用、环境相关 API 的请求量、错误率、延迟&lt;/li&gt;
+&lt;li&gt;绑定类操作的成功率&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="典型观测场景"&gt;典型观测场景&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;创建/更新项目&lt;/li&gt;
 &lt;li&gt;注册应用&lt;/li&gt;
 &lt;li&gt;创建环境&lt;/li&gt;
 &lt;li&gt;绑定应用到环境&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id="推荐日志消息"&gt;
- 推荐日志消息
- &lt;a class="anchor" href="#%e6%8e%a8%e8%8d%90%e6%97%a5%e5%bf%97%e6%b6%88%e6%81%af"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;h3 id="推荐日志消息"&gt;推荐日志消息&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;project created&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;project updated&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;application registered&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;environment created&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;application environment binding created&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
+&lt;h3 id="推荐关键-span"&gt;推荐关键 Span&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;meta.CreateProject&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;meta.CreateApplication&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;meta.BindApplicationEnvironment&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id="-config-service"&gt;
- 🧩 config-service
- &lt;a class="anchor" href="#-config-service"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
-&lt;h3 id="建议重点字段-1"&gt;
- 建议重点字段
- &lt;a class="anchor" href="#%e5%bb%ba%e8%ae%ae%e9%87%8d%e7%82%b9%e5%ad%97%e6%ae%b5-1"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;h2 id="-config-service"&gt;🧩 config-service&lt;/h2&gt;
+&lt;h3 id="这个服务最值得观测什么-1"&gt;这个服务最值得观测什么&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;渲染前读取配置是否稳定&lt;/li&gt;
+&lt;li&gt;环境差异配置是否同步成功&lt;/li&gt;
+&lt;li&gt;配置来源是否清晰到应用和环境&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="建议重点字段-1"&gt;建议重点字段&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;devflow.application.id&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;devflow.environment.id&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;devflow.config.kind&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;devflow.config.mount_path&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id="典型观测场景-1"&gt;
- 典型观测场景
- &lt;a class="anchor" href="#%e5%85%b8%e5%9e%8b%e8%a7%82%e6%b5%8b%e5%9c%ba%e6%99%af-1"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;h3 id="建议关键指标-1"&gt;建议关键指标&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;workload-config&lt;/code&gt; / &lt;code&gt;app-config&lt;/code&gt; 相关 API 的请求量、错误率、延迟&lt;/li&gt;
+&lt;li&gt;配置同步任务成功率和耗时&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="典型观测场景-1"&gt;典型观测场景&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;AppConfig 创建/更新&lt;/li&gt;
 &lt;li&gt;配置仓库同步&lt;/li&gt;
 &lt;li&gt;渲染前配置读取&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id="推荐日志消息-1"&gt;
- 推荐日志消息
- &lt;a class="anchor" href="#%e6%8e%a8%e8%8d%90%e6%97%a5%e5%bf%97%e6%b6%88%e6%81%af-1"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;h3 id="推荐日志消息-1"&gt;推荐日志消息&lt;/h3&gt;
 &lt;ul&gt;
+&lt;li&gt;&lt;code&gt;workload config saved&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;app config created&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;config sync started&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;config sync completed&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;config read for rendering&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
+&lt;h3 id="推荐关键-span-1"&gt;推荐关键 Span&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;config.ListWorkloadConfigs&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;config.ListAppConfigs&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;config.SyncConfigSource&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id="-network-service"&gt;
- 🌐 network-service
- &lt;a class="anchor" href="#-network-service"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
-&lt;h3 id="建议重点字段-2"&gt;
- 建议重点字段
- &lt;a class="anchor" href="#%e5%bb%ba%e8%ae%ae%e9%87%8d%e7%82%b9%e5%ad%97%e6%ae%b5-2"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;h2 id="-network-service"&gt;🌐 network-service&lt;/h2&gt;
+&lt;h3 id="这个服务最值得观测什么-2"&gt;这个服务最值得观测什么&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;网络拓扑定义是否完整&lt;/li&gt;
+&lt;li&gt;Route 是否能稳定按环境读取&lt;/li&gt;
+&lt;li&gt;发布渲染阶段拿到的端口和入口是否符合预期&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="建议重点字段-2"&gt;建议重点字段&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;devflow.application.id&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;devflow.environment.id&lt;/code&gt;&lt;/li&gt;
@@ -2158,33 +2637,38 @@ metrics label，哪些字段只能留在 trace 或 log 中。&lt;/p&gt;
 &lt;li&gt;&lt;code&gt;devflow.route.path&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;devflow.service.port&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id="典型观测场景-2"&gt;
- 典型观测场景
- &lt;a class="anchor" href="#%e5%85%b8%e5%9e%8b%e8%a7%82%e6%b5%8b%e5%9c%ba%e6%99%af-2"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;h3 id="建议关键指标-2"&gt;建议关键指标&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Service / Route 相关 API 的请求量、错误率、延迟&lt;/li&gt;
+&lt;li&gt;发布读取网络定义的失败率&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="典型观测场景-2"&gt;典型观测场景&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;Service 定义变更&lt;/li&gt;
 &lt;li&gt;Route 定义变更&lt;/li&gt;
 &lt;li&gt;发布阶段网络配置读取&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id="推荐日志消息-2"&gt;
- 推荐日志消息
- &lt;a class="anchor" href="#%e6%8e%a8%e8%8d%90%e6%97%a5%e5%bf%97%e6%b6%88%e6%81%af-2"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;h3 id="推荐日志消息-2"&gt;推荐日志消息&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;service spec saved&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;route spec saved&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;network spec loaded for release&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
+&lt;h3 id="推荐关键-span-2"&gt;推荐关键 Span&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;network.GetServices&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;network.GetRoutes&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;network.ResolveRouteForEnvironment&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id="-release-service"&gt;
- 🚀 release-service
- &lt;a class="anchor" href="#-release-service"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
-&lt;h3 id="建议重点字段-3"&gt;
- 建议重点字段
- &lt;a class="anchor" href="#%e5%bb%ba%e8%ae%ae%e9%87%8d%e7%82%b9%e5%ad%97%e6%ae%b5-3"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;h2 id="-release-service"&gt;🚀 release-service&lt;/h2&gt;
+&lt;h3 id="这个服务最值得观测什么-3"&gt;这个服务最值得观测什么&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;一次发布卡在哪个阶段&lt;/li&gt;
+&lt;li&gt;异步意图是否被领取、重试、失败&lt;/li&gt;
+&lt;li&gt;构建、渲染、部署、回写是否都能串到同一条链路&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="建议重点字段-3"&gt;建议重点字段&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;devflow.project.id&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;devflow.application.id&lt;/code&gt;&lt;/li&gt;
@@ -2195,10 +2679,13 @@ metrics label，哪些字段只能留在 trace 或 log 中。&lt;/p&gt;
 &lt;li&gt;&lt;code&gt;devflow.intent.status&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;devflow.cluster.id&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id="典型观测场景-3"&gt;
- 典型观测场景
- &lt;a class="anchor" href="#%e5%85%b8%e5%9e%8b%e8%a7%82%e6%b5%8b%e5%9c%ba%e6%99%af-3"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;h3 id="建议关键指标-3"&gt;建议关键指标&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;创建 Release、查询 Release、回滚操作的请求量、错误率、延迟&lt;/li&gt;
+&lt;li&gt;发布阶段耗时分布：创建 Manifest、触发构建、渲染、发布、部署、回写&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;intent&lt;/code&gt; 执行成功率、重试次数、失败率&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="典型观测场景-3"&gt;典型观测场景&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;创建 Manifest&lt;/li&gt;
 &lt;li&gt;创建 Release&lt;/li&gt;
@@ -2208,24 +2695,21 @@ metrics label，哪些字段只能留在 trace 或 log 中。&lt;/p&gt;
 &lt;li&gt;创建 Argo CD Application&lt;/li&gt;
 &lt;li&gt;回滚&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id="推荐日志消息-3"&gt;
- 推荐日志消息
- &lt;a class="anchor" href="#%e6%8e%a8%e8%8d%90%e6%97%a5%e5%bf%97%e6%b6%88%e6%81%af-3"&gt;#&lt;/a&gt;
-&lt;/h3&gt;
+&lt;h3 id="推荐日志消息-3"&gt;推荐日志消息&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;manifest created&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;release created&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;build triggered&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;intent claimed&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;release rendering started&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;release rendering completed&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;release bundle published&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;argo application created&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;release deployment status updated&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;release rollback started&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;blockquote&gt;
-&lt;p&gt;release-service 是 observability 字段最重的服务，因为它串起了完整发布链路。&lt;/p&gt;</description></item><item><title>发布链路 Trace 示例</title><link>https://devflow.bei.com/document/docs/observability/release-trace-example/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/observability/release-trace-example/</guid><description>&lt;h1 id="-发布链路-trace-示例"&gt;
- 🧵 发布链路 Trace 示例
- &lt;a class="anchor" href="#-%e5%8f%91%e5%b8%83%e9%93%be%e8%b7%af-trace-%e7%a4%ba%e4%be%8b"&gt;#&lt;/a&gt;
-&lt;/h1&gt;
+&lt;p&gt;release-service 是 observability 字段最重的服务，因为它串起了完整发布链路。&lt;/p&gt;</description></item><item><title>发布链路 Trace 示例</title><link>https://devflow.bei.com/document/docs/observability/release-trace-example/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/observability/release-trace-example/</guid><description>&lt;h1 id="-发布链路-trace-示例"&gt;🧵 发布链路 Trace 示例&lt;/h1&gt;
 &lt;p&gt;&lt;span class="df-badge"&gt;release-service&lt;/span&gt; &lt;span class="df-badge"&gt;runtime-service&lt;/span&gt; &lt;span class="df-badge"&gt;trace_id&lt;/span&gt; &lt;span class="df-badge"&gt;devflow.release.id&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;这页不是讲概念，而是回答一个更实际的问题：&lt;/p&gt;
 &lt;blockquote&gt;
@@ -2242,23 +2726,32 @@ metrics label，哪些字段只能留在 trace 或 log 中。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;对照一条发布 Trace，判断自己的发布链路字段是否足够支撑排障。&lt;/strong&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;hr&gt;
-&lt;h2 id="-先看一条理想的发布链路"&gt;
- 🧭 先看一条理想的发布链路
- &lt;a class="anchor" href="#-%e5%85%88%e7%9c%8b%e4%b8%80%e6%9d%a1%e7%90%86%e6%83%b3%e7%9a%84%e5%8f%91%e5%b8%83%e9%93%be%e8%b7%af"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="-先看-devflow-里的真实发布责任分界"&gt;🧭 先看 DevFlow 里的真实发布责任分界&lt;/h2&gt;
+&lt;p&gt;一次发布不是单服务动作，而是 &lt;code&gt;release-service&lt;/code&gt; 牵头，跨过这些责任边界：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;release-service&lt;/code&gt; 负责收集上下文、冻结快照、推进状态机&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;meta-service&lt;/code&gt; 提供项目、应用、环境等元数据&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;config-service&lt;/code&gt; 提供 WorkloadConfig 和 AppConfig&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;network-service&lt;/code&gt; 提供 Service 和 Route&lt;/li&gt;
+&lt;li&gt;Tekton 负责构建&lt;/li&gt;
+&lt;li&gt;OCI Registry 负责存储 bundle&lt;/li&gt;
+&lt;li&gt;Argo CD 负责把 bundle 同步到集群&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;runtime-service&lt;/code&gt; 负责 rollout 观察和运行时回写&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;如果 Trace 只能看到 &lt;code&gt;release-service&lt;/code&gt; 自己，排障价值其实很有限。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="-再看一条理想的发布链路"&gt;🧭 再看一条理想的发布链路&lt;/h2&gt;
 &lt;p&gt;一次典型发布，链路通常会跨过这些阶段：&lt;/p&gt;
 &lt;pre tabindex="0"&gt;&lt;code class="language-mermaid" data-lang="mermaid"&gt;graph LR
- A[API: Create Release] --&amp;gt; B[Load App Context]
+ A[Create Release] --&amp;gt; B[Load Context from meta/config/network]
  B --&amp;gt; C[Create Manifest]
  C --&amp;gt; D[Trigger Tekton]
- D --&amp;gt; E[Render Bundle]
- E --&amp;gt; F[Push OCI Bundle]
- F --&amp;gt; G[Create Argo Application]
- G --&amp;gt; H[Observe Runtime Status]
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;如果 observability 接得足够完整，这些阶段应该出现在&lt;strong&gt;同一条 Trace&lt;/strong&gt;里，而不是散落在多个互不关联的日志里。&lt;/p&gt;</description></item><item><title>Collector 生产排障 Runbook</title><link>https://devflow.bei.com/document/docs/observability/collector-runbook/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/observability/collector-runbook/</guid><description>&lt;h1 id="-collector-生产排障-runbook"&gt;
- 🛠️ Collector 生产排障 Runbook
- &lt;a class="anchor" href="#-collector-%e7%94%9f%e4%ba%a7%e6%8e%92%e9%9a%9c-runbook"&gt;#&lt;/a&gt;
-&lt;/h1&gt;
+ D --&amp;gt; E[Create Release Snapshot]
+ E --&amp;gt; F[Render Bundle]
+ F --&amp;gt; G[Push OCI Bundle]
+ G --&amp;gt; H[Create or Sync Argo Application]
+ H --&amp;gt; I[Observe Runtime Status]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;如果 observability 接得足够完整，这些阶段应该出现在&lt;strong&gt;同一条 Trace&lt;/strong&gt;里，而不是散落在多个互不关联的日志里。&lt;/p&gt;</description></item><item><title>Collector 生产排障 Runbook</title><link>https://devflow.bei.com/document/docs/observability/collector-runbook/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/observability/collector-runbook/</guid><description>&lt;h1 id="-collector-生产排障-runbook"&gt;🛠️ Collector 生产排障 Runbook&lt;/h1&gt;
 &lt;p&gt;&lt;span class="df-badge"&gt;Runbook&lt;/span&gt; &lt;span class="df-badge"&gt;OTel Collector&lt;/span&gt; &lt;span class="df-badge"&gt;Oncall&lt;/span&gt; &lt;span class="df-badge"&gt;SRE&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;这页不是讲“Collector 应该怎么配置”，而是讲：&lt;/p&gt;
 &lt;blockquote&gt;
@@ -2275,10 +2768,7 @@ metrics label，哪些字段只能留在 trace 或 log 中。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;在 5~10 分钟内判断问题更可能出在服务侧、Collector 侧，还是后端存储侧。&lt;/strong&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;hr&gt;
-&lt;h2 id="-先记排障总原则"&gt;
- 🧭 先记排障总原则
- &lt;a class="anchor" href="#-%e5%85%88%e8%ae%b0%e6%8e%92%e9%9a%9c%e6%80%bb%e5%8e%9f%e5%88%99"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="-先记排障总原则"&gt;🧭 先记排障总原则&lt;/h2&gt;
 &lt;p&gt;Collector 在整条链路里的位置很特殊：&lt;/p&gt;
 &lt;pre tabindex="0"&gt;&lt;code class="language-mermaid" data-lang="mermaid"&gt;graph LR
  App[Service SDK] --&amp;gt; Collector
@@ -2291,19 +2781,13 @@ metrics label，哪些字段只能留在 trace 或 log 中。&lt;/p&gt;
 &lt;li&gt;&lt;strong&gt;收到了但没转发出去&lt;/strong&gt; — 问题更可能在 Collector 自身&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;转发出去了但查询不到&lt;/strong&gt; — 问题更可能在后端存储 / 查询侧&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;先判断属于哪一类，效率最高。&lt;/p&gt;</description></item><item><title>部署步骤</title><link>https://devflow.bei.com/document/docs/deployment/guide/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/deployment/guide/</guid><description>&lt;h1 id="部署步骤"&gt;
- 部署步骤
- &lt;a class="anchor" href="#%e9%83%a8%e7%bd%b2%e6%ad%a5%e9%aa%a4"&gt;#&lt;/a&gt;
-&lt;/h1&gt;
+&lt;p&gt;先判断属于哪一类，效率最高。&lt;/p&gt;</description></item><item><title>部署步骤</title><link>https://devflow.bei.com/document/docs/deployment/guide/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/deployment/guide/</guid><description>&lt;h1 id="部署步骤"&gt;部署步骤&lt;/h1&gt;
 &lt;p&gt;把 DevFlow 部署到自己的 Kubernetes 集群，总共需要 11 步。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;如果你只是想&lt;strong&gt;体验&lt;/strong&gt; DevFlow，建议先用 Docker Compose 或 Kind 搭一个最小环境，不用一上来就生产级部署。&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;hr&gt;
-&lt;h2 id="先看这页怎么用"&gt;
- 先看这页怎么用
- &lt;a class="anchor" href="#%e5%85%88%e7%9c%8b%e8%bf%99%e9%a1%b5%e6%80%8e%e4%b9%88%e7%94%a8"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="先看这页怎么用"&gt;先看这页怎么用&lt;/h2&gt;
 &lt;p&gt;这页有两种读法：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;&lt;strong&gt;体验路径&lt;/strong&gt;：先看“部署前检查表”，再直接跳到每一步里的安装命令，最后执行“验证端到端流程”&lt;/li&gt;
@@ -2311,10 +2795,7 @@ metrics label，哪些字段只能留在 trace 或 log 中。&lt;/p&gt;
 &lt;/ol&gt;
 &lt;p&gt;如果你只想验证 &lt;strong&gt;Rolling&lt;/strong&gt; 发布，可以跳过 Argo Rollouts；如果你要验证 &lt;strong&gt;Canary&lt;/strong&gt;，还必须安装 Istio。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="部署前检查表"&gt;
- 部署前检查表
- &lt;a class="anchor" href="#%e9%83%a8%e7%bd%b2%e5%89%8d%e6%a3%80%e6%9f%a5%e8%a1%a8"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="部署前检查表"&gt;部署前检查表&lt;/h2&gt;
 &lt;p&gt;在动手之前，至少确认下面这些输入已经准备好：&lt;/p&gt;
 &lt;table&gt;
  &lt;thead&gt;
@@ -2356,10 +2837,7 @@ metrics label，哪些字段只能留在 trace 或 log 中。&lt;/p&gt;
 &lt;li&gt;我需要 Canary 和 Blue-Green 吗？如果只需要 Rolling，可以跳过 Argo Rollouts 和 Istio 的部分步骤。&lt;/li&gt;
 &lt;li&gt;我的镜像仓库准备好了吗？DevFlow 需要同时存镜像和部署包（OCI artifact）。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;想清楚这些问题，部署过程会顺畅很多。&lt;/p&gt;</description></item><item><title>发布失败排障剧本</title><link>https://devflow.bei.com/document/docs/observability/release-failure-playbook/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/observability/release-failure-playbook/</guid><description>&lt;h1 id="-发布失败排障剧本"&gt;
- 🚨 发布失败排障剧本
- &lt;a class="anchor" href="#-%e5%8f%91%e5%b8%83%e5%a4%b1%e8%b4%a5%e6%8e%92%e9%9a%9c%e5%89%a7%e6%9c%ac"&gt;#&lt;/a&gt;
-&lt;/h1&gt;
+&lt;p&gt;想清楚这些问题，部署过程会顺畅很多。&lt;/p&gt;</description></item><item><title>发布失败排障剧本</title><link>https://devflow.bei.com/document/docs/observability/release-failure-playbook/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/observability/release-failure-playbook/</guid><description>&lt;h1 id="-发布失败排障剧本"&gt;🚨 发布失败排障剧本&lt;/h1&gt;
 &lt;p&gt;&lt;span class="df-badge"&gt;Release&lt;/span&gt; &lt;span class="df-badge"&gt;Tekton&lt;/span&gt; &lt;span class="df-badge"&gt;Argo CD&lt;/span&gt; &lt;span class="df-badge"&gt;Runtime&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;这页不是讲“发布流程是什么”，而是讲：&lt;/p&gt;
 &lt;blockquote&gt;
@@ -2368,7 +2846,7 @@ metrics label，哪些字段只能留在 trace 或 log 中。&lt;/p&gt;
 &lt;p&gt;适合的读者：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;值班工程师&lt;/li&gt;
-&lt;li&gt;release-service 维护者&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;release-service&lt;/code&gt; 维护者&lt;/li&gt;
 &lt;li&gt;平台工程师 / SRE&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;读完后，你应该能完成一件事：&lt;/p&gt;
@@ -2376,10 +2854,7 @@ metrics label，哪些字段只能留在 trace 或 log 中。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;把一次失败发布快速归类到 Tekton / Render / OCI / Argo CD / Runtime 五段中的某一段。&lt;/strong&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;hr&gt;
-&lt;h2 id="-先把失败分成-5-段"&gt;
- 🧭 先把失败分成 5 段
- &lt;a class="anchor" href="#-%e5%85%88%e6%8a%8a%e5%a4%b1%e8%b4%a5%e5%88%86%e6%88%90-5-%e6%ae%b5"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="-先把失败分成-5-段"&gt;🧭 先把失败分成 5 段&lt;/h2&gt;
 &lt;p&gt;一次发布失败，通常不会“整个流程一起坏掉”，而是坏在某一段：&lt;/p&gt;
 &lt;pre tabindex="0"&gt;&lt;code class="language-mermaid" data-lang="mermaid"&gt;graph LR
  A[Tekton 构建] --&amp;gt; B[Render 配置]
@@ -2393,10 +2868,7 @@ metrics label，哪些字段只能留在 trace 或 log 中。&lt;/p&gt;
 &lt;li&gt;最后结合 Trace / Log / 状态字段收敛到根因&lt;/li&gt;
 &lt;/ol&gt;
 &lt;hr&gt;
-&lt;h2 id="-先按现象分流"&gt;
- 🚦 先按现象分流
- &lt;a class="anchor" href="#-%e5%85%88%e6%8c%89%e7%8e%b0%e8%b1%a1%e5%88%86%e6%b5%81"&gt;#&lt;/a&gt;
-&lt;/h2&gt;
+&lt;h2 id="-先按现象分流"&gt;🚦 先按现象分流&lt;/h2&gt;
 &lt;table&gt;
  &lt;thead&gt;
  &lt;tr&gt;
@@ -2428,6 +2900,10 @@ metrics label，哪些字段只能留在 trace 或 log 中。&lt;/p&gt;
  &lt;tr&gt;
  &lt;td&gt;Canary / Blue-Green 卡在观察期&lt;/td&gt;
  &lt;td&gt;Runtime / Metrics Gate&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;用户主动点了取消&lt;/td&gt;
+ &lt;td&gt;Cancel / Rollback&lt;/td&gt;
  &lt;/tr&gt;
  &lt;/tbody&gt;
 &lt;/table&gt;
