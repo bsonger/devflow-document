@@ -23,19 +23,35 @@ weight: 80
 
 ---
 
-## 🧭 先看一条理想的发布链路
+## 🧭 先看 DevFlow 里的真实发布责任分界
+
+一次发布并不是一个单服务动作，而是至少跨过这些责任边界：
+
+- `release-service` 负责收集上下文、创建快照、推进状态机
+- `meta-service` 提供项目、应用、环境、集群等元数据
+- `config-service` 提供 WorkloadConfig 和 AppConfig
+- `network-service` 提供 Service 和 Route
+- `runtime-service` 提供 rollout 观察和运行时回写
+- Tekton、Registry、Argo CD 负责构建和部署外部动作
+
+如果 Trace 只能看到 `release-service` 自己，排障价值其实很有限。
+
+---
+
+## 🧭 再看一条理想的发布链路
 
 一次典型发布，链路通常会跨过这些阶段：
 
 ```mermaid
 graph LR
-    A[API: Create Release] --> B[Load App Context]
+    A[API: Create Release] --> B[Load Context from meta/config/network]
     B --> C[Create Manifest]
     C --> D[Trigger Tekton]
-    D --> E[Render Bundle]
-    E --> F[Push OCI Bundle]
-    F --> G[Create Argo Application]
-    G --> H[Observe Runtime Status]
+    D --> E[Create Release Snapshot]
+    E --> F[Render Bundle]
+    F --> G[Push OCI Bundle]
+    G --> H[Create or Sync Argo Application]
+    H --> I[Observe Runtime Status]
 ```
 
 如果 observability 接得足够完整，这些阶段应该出现在**同一条 Trace**里，而不是散落在多个互不关联的日志里。
@@ -84,12 +100,17 @@ graph LR
 
 ```text
 POST /api/v1/release/releases
-├── meta-service.GetApplication
-├── meta-service.GetEnvironment
-├── config-service.ListAppConfigs
-├── network-service.GetRoutes
+├── release.LoadApplicationContext
+│   ├── meta-service.GetProject
+│   ├── meta-service.GetApplication
+│   ├── meta-service.GetEnvironment
+│   ├── config-service.GetWorkloadConfig
+│   ├── config-service.ListAppConfigs
+│   ├── network-service.GetServices
+│   └── network-service.GetRoutes
 ├── release.CreateManifest
 ├── tekton.TriggerPipelineRun
+├── release.CreateReleaseSnapshot
 ├── release.RenderBundle
 ├── registry.PushBundle
 ├── argocd.CreateApplication
@@ -113,8 +134,10 @@ POST /api/v1/release/releases
 | Span | 建议字段 |
 |------|----------|
 | 入口 API Span | `devflow.project.id` `devflow.application.id` `devflow.environment.id` `devflow.release.id` |
+| `release.LoadApplicationContext` | `devflow.project.id` `devflow.application.id` `devflow.environment.id` |
 | `release.CreateManifest` | `devflow.manifest.id` `devflow.application.id` |
 | `tekton.TriggerPipelineRun` | `devflow.manifest.id` `devflow.release.id` `devflow.intent.kind=build` |
+| `release.CreateReleaseSnapshot` | `devflow.release.id` `devflow.environment.id` |
 | `release.RenderBundle` | `devflow.manifest.id` `devflow.release.id` |
 | `registry.PushBundle` | `devflow.release.id` |
 | `argocd.CreateApplication` | `devflow.release.id` `devflow.environment.id` |
@@ -125,6 +148,7 @@ POST /api/v1/release/releases
 - **定位发布对象**靠 `devflow.release.id`
 - **定位构建快照**靠 `devflow.manifest.id`
 - **定位目标环境**靠 `devflow.environment.id`
+- **定位编排阶段**靠稳定的 span name 和生命周期日志
 
 ---
 
@@ -157,6 +181,30 @@ Trace 只是骨架，日志负责补细节。
 - 从 Trace 能跳到这条日志
 - 从日志也能反查这条 Trace
 - 不看代码也知道失败发生在 Argo CD 创建阶段
+
+---
+
+## 🧪 一条“卡在 runtime 回写”的 Trace 应该长什么样
+
+发布失败不一定发生在创建资源阶段，也可能发生在“资源已经下发，但 runtime 迟迟没有回写完成”。
+
+这种情况下，更有价值的链路通常会长这样：
+
+```text
+POST /api/v1/release/releases
+└── runtime-service.WatchReleaseStatus
+    ├── runtime.ListWorkloads
+    ├── runtime.ListPods
+    ├── runtime.CheckRolloutProgress
+    └── runtime.WriteReleaseStatusBack
+```
+
+如果这里看不到 `runtime-service` 的细分步骤，你通常只能知道“发布卡住了”，但不知道是：
+
+- workload 还没更新
+- Pod 没 Ready
+- rollout condition 没达标
+- 还是回写动作本身失败
 
 ---
 
@@ -220,11 +268,23 @@ Trace 只是骨架，日志负责补细节。
 
 - 无法判断时间真正耗在哪个下游步骤
 
+### 4. 只有外部系统 Span，没有 DevFlow 内部阶段 Span
+
+现象：
+
+- 能看到 Tekton、Registry、Argo CD
+- 看不到 `release.CreateManifest`、`release.RenderBundle`、`runtime-service.WatchReleaseStatus`
+
+后果：
+
+- 只能知道外部依赖慢
+- 不能判断 DevFlow 自己的编排逻辑慢在哪里
+
 ---
 
 ## 🧪 最小验收方式
 
-如果你想确认发布链路已经“能排障”，建议至少验这 5 步：
+如果你想确认发布链路已经“能排障”，建议至少验这 6 步：
 
 1. 发起一次真实 Release
 2. 在 Trace 后端按 `service.name=release-service` 找入口 Span
@@ -232,13 +292,20 @@ Trace 只是骨架，日志负责补细节。
    - `devflow.application.id`
    - `devflow.environment.id`
    - `devflow.release.id`
-4. 确认能看到至少 3 个关键子 Span：
+4. 确认能看到至少 5 个关键子 Span：
+   - `release.LoadApplicationContext`
+   - `release.CreateManifest`
    - `tekton.TriggerPipelineRun`
    - `argocd.CreateApplication`
    - `runtime-service.WatchReleaseStatus`
 5. 随机点一个失败或慢 Span，确认能按 `trace_id` 找到对应日志
+6. 确认至少一个阶段性错误日志同时带有：
+   - `trace_id`
+   - `span_id`
+   - `devflow.release.id`
+   - `message`
 
-如果这 5 步都能完成，这条链路就已经具备很强的排障价值。
+如果这 6 步都能完成，这条链路就已经具备很强的排障价值。
 
 ---
 
