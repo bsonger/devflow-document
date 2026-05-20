@@ -53,6 +53,7 @@ graph LR
 | Argo CD 创建了，但一直不同步 | Argo CD 同步阶段 |
 | Pod 拉起来了，但状态迟迟不 Ready | Runtime |
 | Canary / Blue-Green 卡在观察期 | Runtime / Metrics Gate |
+| 用户主动点了取消 | Cancel / Rollback |
 
 先定位大段，后面排查就会快很多。
 
@@ -212,12 +213,41 @@ graph LR
 
 ---
 
+## ⑥ 取消发布剧本
+
+### 典型现象
+
+- 用户点击取消后，Release 不再往后推进
+- 状态从 `Running` 进入 `Canceling`
+- 如果尚未切流，最后停在 `Canceled`
+- 如果已经进入同步或切流，最后可能进入 `RollingBack`
+
+### 先查什么
+
+- [ ] 取消发生时，当前还在哪个阶段
+- [ ] 是否已经触发 Tekton / Argo CD / Runtime 的外部动作
+- [ ] 是否只是停止内部推进，还是已经需要回滚
+- [ ] 最后一条日志是否记录了取消人和取消原因
+
+### 常见处理方式
+
+- 还没进外部系统动作：直接取消完成
+- 已经触发构建但还没切流：停止后续推进，必要时取消构建结果的继续发布
+- 已经进入部署或切流：不要把它当成简单取消，优先回滚
+
+### 最小判断标准
+
+- **只是内部排队或收集阶段** → 可以直接取消
+- **已经同步到集群或部分切流** → 按安全中止 / 回滚处理
+
+---
+
 ## 🔍 Trace / Log / 状态 应该怎么一起看
 
 排障顺序建议固定如下：
 
 1. **先看 Release 当前状态**
-   - Pending / Rendering / Publishing / Deploying / Running / Failed
+   - Pending / Rendering / Publishing / Deploying / Running / Failed / Canceling / Canceled / RollingBack / RolledBack
 2. **再看对应关键 Span**
    - `tekton.TriggerPipelineRun`
    - `release.RenderBundle`

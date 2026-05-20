@@ -208,6 +208,14 @@ POST /api/v1/release/releases
 - rollout condition 没达标
 - 还是回写动作本身失败
 
+如果这是主动取消而不是失败，Trace 里通常会多出 `release.CancelRelease`、`release.StopReleaseProgress` 之类的取消边界 Span，或者至少会在最后一个有效 Span 上记录取消原因和发起人。
+
+取消时重点不是“后面都没了”，而是：
+
+- 取消发生在哪一步
+- 当时是否已经触发外部系统动作
+- 是否需要回滚，而不是只停掉内部状态机
+
 ---
 
 ## 📈 一条异常 Trace 应该怎样联动指标
@@ -282,6 +290,19 @@ POST /api/v1/release/releases
 - 只能知道外部依赖慢
 - 不能判断 DevFlow 自己的编排逻辑慢在哪里
 
+### 5. 取消了，但 Trace 里看不出是取消还是失败
+
+现象：
+
+- 最后一个 Span 只是结束了
+- 没有取消原因、取消人、取消时间
+- 状态看起来像失败，也可能像成功
+
+后果：
+
+- 值班无法判断是否需要回滚
+- 审计无法区分“自动失败”和“人为取消”
+
 ---
 
 ## 🧪 最小验收方式
@@ -306,6 +327,12 @@ POST /api/v1/release/releases
    - `span_id`
    - `devflow.release.id`
    - `message`
+
+如果你也要验证取消流程，再加 3 步：
+
+7. 发起一次真实发布后主动取消
+8. 确认 Release 最终状态是 `Canceled` 或 `RolledBack`
+9. 确认最后一条日志能说明取消发生在哪一阶段、由谁触发、是否已经进入外部同步
 
 如果这 6 步都能完成，这条链路就已经具备很强的排障价值。
 
