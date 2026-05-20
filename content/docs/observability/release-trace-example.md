@@ -25,14 +25,16 @@ weight: 80
 
 ## 🧭 先看 DevFlow 里的真实发布责任分界
 
-一次发布并不是一个单服务动作，而是至少跨过这些责任边界：
+一次发布不是单服务动作，而是 `release-service` 牵头，跨过这些责任边界：
 
-- `release-service` 负责收集上下文、创建快照、推进状态机
-- `meta-service` 提供项目、应用、环境、集群等元数据
+- `release-service` 负责收集上下文、冻结快照、推进状态机
+- `meta-service` 提供项目、应用、环境等元数据
 - `config-service` 提供 WorkloadConfig 和 AppConfig
 - `network-service` 提供 Service 和 Route
-- `runtime-service` 提供 rollout 观察和运行时回写
-- Tekton、Registry、Argo CD 负责构建和部署外部动作
+- Tekton 负责构建
+- OCI Registry 负责存储 bundle
+- Argo CD 负责把 bundle 同步到集群
+- `runtime-service` 负责 rollout 观察和运行时回写
 
 如果 Trace 只能看到 `release-service` 自己，排障价值其实很有限。
 
@@ -44,7 +46,7 @@ weight: 80
 
 ```mermaid
 graph LR
-    A[API: Create Release] --> B[Load Context from meta/config/network]
+    A[Create Release] --> B[Load Context from meta/config/network]
     B --> C[Create Manifest]
     C --> D[Trigger Tekton]
     D --> E[Create Release Snapshot]

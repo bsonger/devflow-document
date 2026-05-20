@@ -5,23 +5,23 @@ weight: 34
 
 # 🚀 release-service
 
-**发布经理** — 发布全流程的编排者。从你在 Console 上点"发布"按钮，到应用真正跑在 Kubernetes 上，全是 release-service 在操心。
+**发布经理** — 发布全流程的编排者。从你在 Console 上点"发布"按钮，到应用真正跑在 Kubernetes 上，全是 `release-service` 在操心。
 
 ---
 
 ## 它是做什么的
 
-release-service 管理四样东西：
+`release-service` 管理四样东西：
 
 ### Manifest — 构建前快照
 
-发布开始时，release-service 先把当前应用的完整状态冻结成一份不可变的快照（代码版本、镜像、基础配置、网络拓扑）。
+发布开始时，`release-service` 先把当前应用的完整状态冻结成一份不可变的快照（代码版本、镜像、基础配置、网络拓扑）。
 
 > 详细概念见 [Manifest 与 Release](../../concepts/manifest-release/)。
 
 ### Release — 部署前快照
 
-构建成功后，release-service 再创建第二份快照，绑定 Manifest 和目标环境。
+构建成功后，`release-service` 再创建第二份快照，绑定 Manifest 和目标环境。
 
 > 详细概念见 [Manifest 与 Release](../../concepts/manifest-release/)。
 
@@ -50,11 +50,11 @@ attempt_count: 1
 
 ## 一次发布的完整旅程
 
-你在 Console 上点了"发布 order-service 到生产环境"，接下来 release-service 会：
+你在 Console 上点了"发布 order-service 到生产环境"，接下来 `release-service` 会：
 
 ### 第一步：收集信息
 
-release-service 先去找其他服务打听情况：
+`release-service` 先去找其他服务打听情况：
 
 > "meta-service，order-service 的代码仓库在哪？生产环境在哪个集群？"
 > "config-service，order-service 的基础配置是什么？生产环境的特殊配置是什么？"
@@ -68,13 +68,13 @@ release-service 先去找其他服务打听情况：
 
 ### 第三步：触发构建
 
-release-service 通知 Tekton："去构建 order-service 的 a1b2c3d4 版本"。
+`release-service` 通知 Tekton："去构建 order-service 的 a1b2c3d4 版本"。
 
 Tekton 开始跑流水线：拉代码 → 跑测试 → 扫漏洞 → 构建镜像 → 推送到镜像仓库。
 
 ### 第四步：冻结 Release
 
-构建成功后，release-service 创建第二份快照（Release）：
+构建成功后，`release-service` 创建第二份快照（Release）：
 
 ```
 关联的 Manifest: m-001（order-service @ a1b2c3d4）
@@ -85,7 +85,7 @@ Tekton 开始跑流水线：拉代码 → 跑测试 → 扫漏洞 → 构建镜�
 
 ### 第五步：渲染部署包
 
-release-service 把所有配置叠加在一起，生成最终的 Kubernetes 配置：
+`release-service` 把所有配置叠加在一起，生成最终的 Kubernetes 配置：
 
 ```
 WorkloadConfig（3 副本、1Gi 内存）
@@ -109,7 +109,7 @@ WorkloadConfig（3 副本、1Gi 内存）
 
 ### 第七步：等反馈
 
-runtime-service 盯着 Kubernetes，实时把发布进度回写给 release-service：
+`runtime-service` 盯着 Kubernetes，实时把发布进度回写给 `release-service`：
 
 > "新版本 3/10 个 Pod 已经 Ready"
 > "Canary 10% 流量切换完成"

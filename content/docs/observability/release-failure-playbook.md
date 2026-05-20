@@ -14,7 +14,7 @@ weight: 82
 适合的读者：
 
 - 值班工程师
-- release-service 维护者
+- `release-service` 维护者
 - 平台工程师 / SRE
 
 读完后，你应该能完成一件事：
@@ -72,7 +72,7 @@ graph LR
 - [ ] PipelineRun 是否真的被创建
 - [ ] 失败发生在 clone / test / build / push 哪一步
 - [ ] `devflow.manifest.id` 是否和本次发布一致
-- [ ] release-service 日志里是否记录了 Tekton 回调错误
+- [ ] `release-service` 日志里是否记录了 Tekton 回调错误
 
 ### 常见根因
 
@@ -84,7 +84,7 @@ graph LR
 
 ### 最小判断标准
 
-- **PipelineRun 没创建** → 更像 release-service 到 Tekton 的触发问题
+- **PipelineRun 没创建** → 更像 `release-service` 到 Tekton 的触发问题
 - **PipelineRun 创建了但 Task 失败** → 更像 Tekton 构建链路问题
 
 ---
@@ -175,7 +175,7 @@ graph LR
 
 ### 最小判断标准
 
-- **Application 都没建起来** → 更像 release-service 调 Argo CD API 问题
+- **Application 都没建起来** → 更像 `release-service` 调 Argo CD API 问题
 - **Application 建起来了但 Sync 失败** → 更像 Argo CD / K8s 资源问题
 
 ---

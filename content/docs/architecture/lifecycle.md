@@ -7,7 +7,7 @@ weight: 23
 
 <span class="df-badge">🧩 release-service</span> <span class="df-badge">{{< brand-icon name="tekton" alt="Tekton" >}} Tekton</span> <span class="df-badge">📦 OCI Registry</span> <span class="df-badge">{{< brand-icon name="argocd" alt="Argo CD" >}} Argo CD</span> <span class="df-badge">👀 runtime-service</span>
 
-在 DevFlow 中发布一个应用，会经历 8 个阶段。理解这个流程，就能理解 DevFlow 是怎么保证发布安全可控的。
+在 DevFlow 中发布一个应用，会经历 8 个阶段。这个流程由 `release-service` 牵头，串起 `meta-service`、`config-service`、`network-service`、Tekton、OCI Registry、Argo CD 和 `runtime-service`。
 
 ---
 
@@ -26,23 +26,23 @@ graph LR
 
 ---
 
-## 📥 阶段 1：收集信息
+## 📥 阶段 1：收集发布上下文
 
-**谁在干活**：release-service 问其他服务要资料
+**谁在干活**：`release-service`
 
-你在 Console 上点了"发布"，release-service 开始四处打听：
+你在 Console 上点了"发布"后，`release-service` 先去收集这次发布需要的上下文：
 
-> "meta-service，这个应用叫什么？代码仓库在哪？要发到哪个环境？"
-> "config-service，它的基础配置是什么？目标环境有什么特殊配置？"
-> "network-service，它暴露了哪些端口？外部怎么访问？"
+> "meta-service，这个应用属于哪个项目，目标环境是谁？"
+> "config-service，这个应用和环境的工作负载配置是什么？"
+> "network-service，这个应用暴露哪些 Service 和 Route？"
 
-**输出**：一份完整的应用上下文
+**输出**：一份完整的发布上下文
 
 ---
 
 ## 🧊 阶段 2：冻结构建快照（Manifest）
 
-**谁在干活**：release-service
+**谁在干活**：`release-service`
 
 release-service 把阶段 1 收集到的信息打包成第一份快照，叫 **Manifest**：
 
@@ -59,11 +59,11 @@ Manifest 一旦创建就**不能再改**。它记录了"这个应用在构建时
 
 ---
 
-## 🏗️ 阶段 3：构建镜像
+## 🏗️ 阶段 3：触发构建
 
-**谁在干活**：Tekton Pipeline
+**谁在干活**：`release-service` 触发 Tekton Pipeline
 
-release-service 通知 Tekton："去构建这个版本的镜像"。
+`release-service` 通知 Tekton："去构建这个版本的镜像"。
 
 Tekton 开始跑标准流水线：
 
@@ -80,7 +80,7 @@ Tekton 开始跑标准流水线：
 
 ## 🎫 阶段 4：冻结部署快照（Release）
 
-**谁在干活**：release-service
+**谁在干活**：`release-service`
 
 构建成功后，release-service 创建第二份快照，叫 **Release**：
 
@@ -98,9 +98,9 @@ Release 也**不能再改**。它记录了"这次发布要部署到哪、用什�
 
 ---
 
-## 📦 阶段 5：打包配置
+## 📦 阶段 5：渲染部署包
 
-**谁在干活**：release-service
+**谁在干活**：`release-service`
 
 release-service 把所有配置叠加起来，生成最终的 Kubernetes 部署包：
 
@@ -126,7 +126,7 @@ WorkloadConfig（基础运行规格）
 
 ## 📤 阶段 6：推送到仓库
 
-**谁在干活**：release-service → OCI Registry
+**谁在干活**：`release-service` → OCI Registry
 
 release-service 把渲染好的部署包打包成 OCI artifact，推送到 OCI Registry。
 
@@ -138,9 +138,9 @@ release-service 把渲染好的部署包打包成 OCI artifact，推送到 OCI R
 
 ## 🚀 阶段 7：部署到集群
 
-**谁在干活**：Argo CD
+**谁在干活**：`release-service` 触发 Argo CD，Argo CD 执行同步
 
-release-service 创建 Argo CD Application，告诉它："去这个仓库拉取部署包，同步到生产集群"。
+`release-service` 创建 Argo CD Application，告诉它："去这个仓库拉取部署包，同步到生产集群"。
 
 Argo CD 开始干活：
 
@@ -157,9 +157,9 @@ Argo CD 开始干活：
 
 ## 👀 阶段 8：观察状态
 
-**谁在干活**：runtime-service
+**谁在干活**：`runtime-service`
 
-runtime-service 盯着 Kubernetes，实时看 Pod 的状态变化，然后回写给 release-service：
+`runtime-service` 盯着 Kubernetes，实时看 Pod 的状态变化，然后回写给 `release-service`：
 
 > "新版本 3/10 个 Pod 已经 Ready"
 > "Canary 10% 流量切换完成，正在观察指标"
