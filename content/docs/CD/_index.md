@@ -108,6 +108,7 @@ graph TD
 
 | 📄 文档 | 📝 内容 |
 |------|------|
+| [发布生命周期](../architecture/lifecycle/) | 发布全过程的原理、失败、取消和回滚 |
 | [CD 架构](architecture/) | DevFlow 怎么和 Argo CD、Istio 配合 |
 | [发布策略选型](standard/) | 三种策略的深度对比 |
 | [Rolling 发布](rolling/) | 原理图 + 详细流程 |

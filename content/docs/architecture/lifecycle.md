@@ -7,281 +7,266 @@ weight: 23
 
 <span class="df-badge">🧩 release-service</span> <span class="df-badge">{{< brand-icon name="tekton" alt="Tekton" >}} Tekton</span> <span class="df-badge">📦 OCI Registry</span> <span class="df-badge">{{< brand-icon name="argocd" alt="Argo CD" >}} Argo CD</span> <span class="df-badge">👀 runtime-service</span>
 
-在 DevFlow 中发布一个应用，会经历 8 个阶段。这个流程由 `release-service` 牵头，串起 `meta-service`、`config-service`、`network-service`、Tekton、OCI Registry、Argo CD 和 `runtime-service`。
+DevFlow 的发布，本质上是一条“冻结事实 -> 渲染部署 -> 交给集群执行 -> 观察结果 -> 收尾或回滚”的流水线。
+它不是一串临时操作，而是一套可追踪、可取消、可回滚的生命周期。
 
-如果发布过程中用户点了取消，`release-service` 会尽量把发布停在当前阶段，保留已经创建的快照、执行记录和状态信息，并在可安全停止的边界上终止后续动作。
+这篇文档按原理来讲：先看整条链路怎么分层，再看每一层失败、取消和回滚该怎么处理。
 
 ---
 
-## 🗺️ 整体流程
+## 一句话理解
+
+一次发布会经历 6 个大层：
+
+1. 收集并冻结输入
+2. 构建并冻结镜像侧事实
+3. 渲染并发布部署包
+4. 创建部署对象并交给 Argo CD
+5. 由 `runtime-service` 观察集群真实状态
+6. 根据结果完成、失败、取消或回滚
+
+核心原则只有三个：
+
+- **快照不可变**: `Manifest` 和 `Release` 都是冻结点，创建后不应随意改写
+- **责任分离**: `release-service` 负责发布事实，`runtime-service` 负责观察事实，Argo CD 负责集群执行
+- **结果优先于意图**: 取消只是一个意图，真正的结果要看当前阶段是否已经进入不可逆动作
+
+---
+
+## 整体结构
 
 ```mermaid
 graph LR
-    A["1. 收集信息"] --> B["2. 冻结构建快照"]
-    B --> C["3. 构建镜像"]
-    C --> D["4. 冻结部署快照"]
-    D --> E["5. 打包配置"]
-    E --> F["6. 推送到仓库"]
-    F --> G["7. 部署到集群"]
-    G --> H["8. 观察状态"]
+    A["1. 收集输入"] --> B["2. 冻结 Manifest"]
+    B --> C["3. 渲染并发布 bundle"]
+    C --> D["4. 创建 Release + Argo handoff"]
+    D --> E["5. runtime-service 观察真实状态"]
+    E --> F["6. 完成 / 失败 / 取消 / 回滚"]
 ```
 
-这 8 个阶段不是所有阶段都能随时取消：
-
-- 阶段 1-2 取消最容易，只要停止继续收集与创建后续快照
-- 阶段 3-6 取消要看外部系统是否已经开始执行，通常是“停止后续推进 + 标记取消”
-- 阶段 7-8 取消最敏感，因为可能已经涉及集群同步和流量切换，只能做“安全中止”或“进入回滚”
+这条链路里，越往后越接近真实集群状态，也越不适合“直接撤销”。
 
 ---
 
-## 📥 阶段 1：收集发布上下文
+## 1. 收集输入
 
-**谁在干活**：`release-service`
+这一层做的是“把发布所需的事实收齐”。
 
-你在 Console 上点了"发布"后，`release-service` 先去收集这次发布需要的上下文：
+输入通常来自：
 
-> "meta-service，这个应用属于哪个项目，目标环境是谁？"
-> "config-service，这个应用和环境的工作负载配置是什么？"
-> "network-service，这个应用暴露哪些 Service 和 Route？"
+- `meta-service`：应用、环境、集群
+- `config-service`：工作负载配置、应用配置
+- `network-service`：Service、Route
 
-**输出**：一份完整的发布上下文
+这一层本身不应该产出可执行的发布结果，它只负责把后面冻结要用的事实准备好。
 
----
+### 失败怎么处理
 
-## 🧊 阶段 2：冻结构建快照（Manifest）
+- 元数据缺失: 直接失败，不进入后续阶段
+- 配置不一致: 返回错误，让用户先修复配置
+- 目标环境不存在: 停止本次发布
 
-**谁在干活**：`release-service`
+### 取消怎么处理
 
-release-service 把阶段 1 收集到的信息打包成第一份快照，叫 **Manifest**：
+- 这一层最容易取消
+- 取消后只需要停止继续收集，不创建快照
+- 取消不应留下半成品部署对象
 
-```
-应用: order-service
-代码版本: main @ a1b2c3d4
-基础配置: 3 副本 / 1Gi 内存 / 健康检查...
-网络拓扑: 暴露 80 端口...
-```
+### 回滚怎么处理
 
-Manifest 一旦创建就**不能再改**。它记录了"这个应用在构建时刻长什么样"。
-
-**输出**：Manifest ID
+- 这一层通常不需要回滚
+- 因为还没有进入不可逆的集群动作
 
 ---
 
-## 🏗️ 阶段 3：触发构建
+## 2. 冻结 Manifest
 
-**谁在干活**：`release-service` 触发 Tekton Pipeline
+`Manifest` 是 build-side freeze point。
+它记录“这次构建到底基于什么事实”。
 
-`release-service` 通知 Tekton："去构建这个版本的镜像"。
+冻结内容通常包括：
 
-Tekton 开始跑标准流水线：
+- 代码版本
+- workload 基线
+- service 基线
+- build 触发信息
 
-```
-拉代码 → 静态扫描 → 跑测试 → 构建镜像
-→ 生成 SBOM → 签名镜像 → 漏洞扫描 → 推送镜像仓库
-```
+`Manifest` 一旦创建，就应视为不可变。
 
-构建完成后，release-service 把镜像地址更新到 Manifest 里。
+### 失败怎么处理
 
-**输出**：镜像 digest、SBOM、签名证明
+- 构建失败: 保留 `Manifest`，不创建后续 `Release`
+- 依赖构建失败: 标记本次构建失败，保留诊断信息
+- 镜像产物不存在: 仍然停在 Manifest 层
 
----
+### 取消怎么处理
 
-## 🎫 阶段 4：冻结部署快照（Release）
+- 如果取消发生在 Manifest 之后、Release 之前，保留 Manifest
+- 不要删除 Manifest，因为它是可追踪证据
+- 不要伪装成成功
 
-**谁在干活**：`release-service`
+### 回滚怎么处理
 
-构建成功后，release-service 创建第二份快照，叫 **Release**：
-
-```
-关联的构建: Manifest m-001
-目标环境: production
-环境配置: DB_HOST=prod-db, LOG_LEVEL=warn...
-网络规则: host=order.example.com, TLS=true...
-发布策略: Canary
-```
-
-Release 也**不能再改**。它记录了"这次发布要部署到哪、用什么配置"。
-
-**输出**：Release ID
+- 这一层通常不做回滚
+- 只需要在下一次发布时选用旧 Manifest
 
 ---
 
-## 📦 阶段 5：渲染部署包
+## 3. 渲染并发布 bundle
 
-**谁在干活**：`release-service`
+这一层把冻结后的事实叠加成“可部署内容”。
 
-release-service 把所有配置叠加起来，生成最终的 Kubernetes 部署包：
+可以理解为：
 
-```
-WorkloadConfig（基础运行规格）
-+ AppConfig（环境特殊配置）
-+ Service（网络端口）
-+ Route（外部访问规则）
-= 完整的 K8s manifest
-```
+`Manifest` + `Release` 的环境输入 + 发布策略 = 最终部署 bundle
 
-不同的发布策略会生成不同的资源：
+然后 bundle 会被发布到 OCI。
 
-| 策略 | 生成什么 |
-|------|---------|
-| Rolling | Deployment + Service |
-| Canary | Rollout + VirtualService + DestinationRule |
-| Blue-Green | Rollout + Active Service + Preview Service |
+### 失败怎么处理
 
-**输出**：完整的 K8s manifest bundle
+- 渲染失败: 停在当前 `Release`，标记失败
+- OCI 发布失败: 保留 bundle 事实，等待重试或人工修复
+- bundle 内容不合法: 不进入 Argo handoff
 
----
+### 取消怎么处理
 
-## 📤 阶段 6：推送到仓库
+- 如果 bundle 还没发布，取消比较安全
+- 如果已经发布到 OCI，取消不能当成“没发生过”
+- 取消后仍要保留 bundle 事实
 
-**谁在干活**：`release-service` → OCI Registry
+### 回滚怎么处理
 
-release-service 把渲染好的部署包打包成 OCI artifact，推送到 OCI Registry。
-
-这样做的好处是：部署包和镜像放在一起，Argo CD 从一个地方就能拉齐所有东西。
-
-**输出**：OCI artifact URL
+- 如果 bundle 已经发布，但还没交给 Argo，通常不需要回滚
+- 只需停止后续 handoff
 
 ---
 
-## 🚀 阶段 7：部署到集群
+## 4. 创建 Release + Argo handoff
 
-**谁在干活**：`release-service` 触发 Argo CD，Argo CD 执行同步
+`Release` 是 deploy-side freeze point。
+它记录“这次要部署到哪里、用什么策略、由谁执行”。
 
-`release-service` 创建 Argo CD Application，告诉它："去这个仓库拉取部署包，同步到生产集群"。
+这一层之后，发布已经不是纯粹的本地操作，而是进入集群执行阶段。
 
-Argo CD 开始干活：
+### 失败怎么处理
 
-```
-拉取 bundle → 解析 K8s 资源 → 同步到集群
-→ Rolling: 逐步替换 Pod
-→ Canary: 先给 10% 流量
-→ Blue-Green: 先部署到 Preview
-```
+- `Release` 创建失败: 停止，不进入 Argo handoff
+- Argo Application 创建失败: 保留 `Release`，标记 handoff 失败
+- 目标集群或命名空间异常: 不继续推进
 
-**输出**：Argo CD Application 状态
+### 取消怎么处理
 
-### 可以在哪些时点取消
+- 如果还没创建 Argo Application，可以直接取消
+- 如果 Argo Application 已创建，取消只能标记并停止后续推进
+- 不要因为“取消”就把已经创建的部署对象粗暴删掉
 
-- 在创建 Release 之前取消：直接结束本次发布，不进入后续阶段
-- 在 Manifest 创建后取消：保留 Manifest，Release 不再创建
-- 在 Release 创建后、部署前取消：保留快照，但不再触发后续部署
-- 在部署中取消：停止继续推进，必要时转入回滚
-- 在观察期取消：停止继续观测或流量推进，按当前状态冻结并回滚
+### 回滚怎么处理
 
----
-
-## 👀 阶段 8：观察状态
-
-**谁在干活**：`runtime-service`
-
-`runtime-service` 盯着 Kubernetes，实时看 Pod 的状态变化，然后回写给 `release-service`：
-
-> "新版本 3/10 个 Pod 已经 Ready"
-> "Canary 10% 流量切换完成，正在观察指标"
-
-你在 Console 上看到的发布进度条、Pod 状态、流量切换百分比，全部来自这里。
-
-**输出**：实时发布状态
-
-### 取消时怎么处理
-
-- 如果还没触发后续同步，就直接停止继续观察
-- 如果已经进入集群同步，就先标记取消，再判断是否需要中止或回滚
-- 如果已经切流到生产，就不能当成“简单取消”，而要按回滚处理
+- 如果 handoff 已经成功，取消后是否回滚取决于集群是否开始执行
+- 一旦已经开始切流或替换 Pod，优先按回滚处理
 
 ---
 
-## 🔄 Release 状态机
+## 5. runtime-service 观察真实状态
 
-Release 从创建到完成，会经历以下状态：
+这一步开始，系统不再只看“想要什么”，而是看“集群现在到底是什么”。
 
-```mermaid
-stateDiagram-v2
-    [*] --> Pending: 创建 Release
-    Pending --> Rendering: 开始打包配置
-    Rendering --> Publishing: 打包完成
-    Publishing --> Deploying: 推送到仓库
-    Deploying --> Running: Argo CD 开始部署
-    Running --> Completed: 发布成功
-    Running --> Failed: 超时或异常
-    Running --> Canceling: 主动取消
-    Canceling --> Canceled: 取消完成
-    Failed --> RollingBack: 触发回滚
-    RollingBack --> RolledBack: 回滚完成
-    Completed --> [*]
-    RolledBack --> [*]
-    Canceled --> [*]
-```
+`runtime-service` 会观察：
 
-### 状态说明
+- workload 是否 Ready
+- Pod 是否健康
+- rollout 是否推进
+- release 状态是否需要回写
 
-| 状态 | 含义 | 对应阶段 |
-|------|------|---------|
-| Pending | 刚创建，等待开始 | 阶段 4 |
-| Rendering | 正在叠加配置生成 K8s manifest | 阶段 5 |
-| Publishing | 正在把包推送到镜像仓库 | 阶段 6 |
-| Deploying | Argo CD 正在同步资源 | 阶段 7 |
-| Running | 正在执行发布策略 | 阶段 7 |
-| Completed | 发布成功 | 阶段 8 |
-| Failed | 发布失败 | — |
-| Canceling | 正在主动取消 | — |
-| Canceled | 取消完成 | — |
-| RollingBack | 正在回滚 | — |
-| RolledBack | 回滚完成 | — |
+### 失败怎么处理
+
+- 观察不到目标: 说明 identity 或 label 链路有问题
+- 状态无法判断: 说明不能盲目推进
+- 回写失败: 说明 release 侧同步出了问题
+
+### 取消怎么处理
+
+- 观察阶段的取消不是“立刻结束”
+- 它通常意味着停止继续推进，并等待当前真实状态收敛
+- 如果已经切流，取消要上升为回滚语义
+
+### 回滚怎么处理
+
+- 如果集群已经开始实际替换资源，回滚是正确的失败处理方式
+- 回滚不是删除记录，而是把运行态恢复到上一个可用快照
 
 ---
 
-## 🧠 关键设计
+## 6. 完成、失败、取消、回滚
 
-### 为什么先冻结 Manifest，再冻结 Release？
+### 完成
 
-因为构建和部署是两个独立的过程：
+当渲染、发布、handoff、观察都成功，发布才算完成。
 
-- **Manifest** 在构建前创建，记录"要构建什么"
-- **Release** 在构建成功后创建，记录"要部署到哪"
+### 失败
 
-如果构建失败，Manifest 已经存在但 Release 不会创建。你可以修复问题后重新构建，不用从头再收集信息。
+失败分三类：
 
-### 为什么两份快照都要不可变？
+- 冻结前失败: 直接终止
+- Handoff 前失败: 保留快照，等待修复或重试
+- 集群执行中失败: 进入回滚或失败终态
 
-假设发布后出了问题，你想回滚。如果快照是可变的，回滚时你可能会意外拿到一个"被同事改过"的配置，导致回滚也失败。
+### 取消
 
-不可变快照保证了：**回滚到什么时刻，就精确恢复到那个时刻的状态**。
+取消是主动意图，不等于回滚。
+
+- 早期阶段: 可以直接停止
+- 中期阶段: 需要标记取消并停止后续推进
+- 后期阶段: 往往必须回滚
+
+### 回滚
+
+回滚只在“已经影响真实运行”之后才有意义。
+
+回滚通常会：
+
+- 回到上一个稳定 `Release`
+- 保留当前失败/取消证据
+- 不抹掉本次发布痕迹
 
 ---
 
-## ❌ 取消发布时应该怎么做
+## 状态理解
 
-取消不是“把记录删掉”，而是“停止继续推进并保留可追溯证据”。
+可以把发布状态理解成四类：
 
-### 取消原则
+| 类别 | 含义 |
+|---|---|
+| Pending | 还在准备或等待执行 |
+| Running | 已进入执行或观察中 |
+| Failed | 发生不可忽略的错误 |
+| Canceled / RolledBack | 发布被主动中止或安全恢复 |
 
-- 能停就停，但不破坏已创建的快照
-- 不删除 Manifest / Release / Intent 记录
-- 不把取消伪装成成功
-- 如果已经进入集群同步或切流，优先保证安全，再决定是取消还是回滚
+关键点是：
 
-### 取消后的推荐结果
+- `Canceled` 不是 `Succeeded`
+- `Failed` 不一定立刻等于 `RolledBack`
+- `RolledBack` 说明系统已经把发布影响收回去了
 
-| 当前阶段 | 推荐动作 | 结果状态 |
-|----------|----------|----------|
-| 收集上下文 / 创建 Manifest | 直接中止 | Canceled |
-| 触发构建 / 渲染前 | 停止继续推进 | Canceled |
-| 渲染 / 推送中 | 标记取消，等待当前动作收敛 | Canceling → Canceled |
-| 已进入 Argo CD 同步 | 先停止后续推进，再视情况中止或回滚 | Canceling → Canceled / RollingBack |
-| 已切流 / 已观察中 | 不建议只做取消，优先走回滚 | RollingBack → RolledBack |
+---
 
-### 取消后系统应保留什么
+## 为什么要这样设计
 
-- 这次发布的 `release_id`
-- 关联的 `manifest_id`
-- 当前阶段和最后一次状态
-- 取消发起人和取消时间
-- 最后一个可用的 Trace / Log / Event
+因为发布的风险分布不均匀。
 
-### 取消后不应该做什么
+- 越早阶段越容易取消
+- 越靠后阶段越需要回滚语义
+- 只保留“成功/失败”太粗糙，不能准确反映真实过程
 
-- 不要直接删除发布记录
-- 不要把 `Failed` 误写成 `Completed`
-- 不要在已经切流后只做“取消”，不做回滚
+所以 DevFlow 把发布拆成“冻结、渲染、发布、handoff、观察、收尾”几层，让每一层都能独立失败、独立取消、独立回滚。
+
+---
+
+## 相关文档
+
+- [CD 总览](../CD/)
+- [Rolling 发布](../CD/rolling/)
+- [Canary 发布](../CD/canary/)
+- [Blue-Green 发布](../CD/blue-green/)
+- [release-service](../services/release-service.md)
+- [runtime-service](../services/runtime-service.md)
