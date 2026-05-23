@@ -50,91 +50,47 @@ attempt_count: 1
 
 ## 一次发布的完整旅程
 
-你在 Console 上点了"发布 order-service 到生产环境"，接下来 `release-service` 会：
+在当前两段式模型里，`release-service` 的职责分成两步：
 
-### 第一步：收集信息
+### 第一步：Freeze to OCI
 
 `release-service` 先去找其他服务打听情况：
 
-> "meta-service，order-service 的代码仓库在哪？生产环境在哪个集群？"
-> "config-service，order-service 的基础配置是什么？生产环境的特殊配置是什么？"
-> "network-service，order-service 暴露了哪些端口？生产环境的域名是什么？"
+> "meta-service，order-service 的代码仓库在哪？"
+> "config-service，order-service 的基础配置和环境差异是什么？"
+> "network-service，这个应用暴露哪些端口和路由？"
 
-### 第二步：冻结 Manifest
+然后它：
 
-把收集到的信息打包成第一份快照（Manifest）。
+1. 冻结 `Manifest`
+2. 渲染 release bundle
+3. 发布 OCI artifact
 
-这时候镜像还没构建，Manifest 里只记录了代码版本和配置。等构建完成后，再把镜像地址补进去。
+这一步结束时，系统已经知道“要发什么”，但还没有真正进入集群执行。
 
-### 第三步：触发构建
+### 第二步：Deploy from OCI
 
-`release-service` 通知 Tekton："去构建 order-service 的 a1b2c3d4 版本"。
+当 OCI 产物准备好后，`release-service` 再从这个产物开始真正部署：
 
-Tekton 开始跑流水线：拉代码 → 跑测试 → 扫漏洞 → 构建镜像 → 推送到镜像仓库。
+1. 创建 `Release`
+2. 创建 Argo CD Application
+3. 触发同步
+4. 交给 `runtime-service` 观察真实状态并回写
 
-### 第四步：冻结 Release
-
-构建成功后，`release-service` 创建第二份快照（Release）：
-
-```
-关联的 Manifest: m-001（order-service @ a1b2c3d4）
-目标环境: production
-环境配置: DB_HOST=prod-db, LOG_LEVEL=warn...
-发布策略: Canary
-```
-
-### 第五步：渲染部署包
-
-`release-service` 把所有配置叠加在一起，生成最终的 Kubernetes 配置：
-
-```
-WorkloadConfig（3 副本、1Gi 内存）
-+ AppConfig（生产数据库地址）
-+ Service（暴露 80 端口）
-+ Route（order.example.com）
-= 完整的 K8s manifest
-```
-
-不同的发布策略会生成不同的资源：
-
-| 策略 | 生成的资源 |
-|------|-----------|
-| Rolling | Deployment + Service |
-| Canary | Rollout + VirtualService + DestinationRule |
-| Blue-Green | Rollout + Active Service + Preview Service |
-
-### 第六步：推送并部署
-
-把渲染好的包推送到 OCI Registry，然后通知 Argo CD："去部署这个包到生产集群"。
-
-### 第七步：等反馈
-
-`runtime-service` 盯着 Kubernetes，实时把发布进度回写给 `release-service`：
-
-> "新版本 3/10 个 Pod 已经 Ready"
-> "Canary 10% 流量切换完成"
-
-你在 Console 上看到的进度条，数据来源就是这里。
+这一步结束时，系统才真正开始回答“有没有发成功、需不需要回滚”。
 
 ### 如果中途点了取消
 
-`release-service` 不会假装这次发布没发生，而是：
+取消也分两类：
 
-1. 先把这次发布标成取消中
-2. 停止继续往后推进后续阶段
-3. 如果还没进入集群同步，就直接结束为取消
-4. 如果已经进入部署或切流，就改走安全中止或回滚
-
-可理解为：
-
-- **早期取消**：停止后续执行，保留快照和执行记录
-- **晚期取消**：先保护集群状态，再决定是取消完成还是回滚
+- **Freeze 阶段取消**：直接停止冻结和上传，保留证据，不进入发布执行
+- **Deploy 阶段取消**：停止继续推进；如果已经开始影响集群，就必须按回滚语义处理
 
 ---
 
 ## 三种发布策略
 
-release-service 支持三种发布策略，在 Release 创建时确定：
+release-service 支持三种发布策略，在 Deploy from OCI 阶段确定：
 
 ### Rolling — 滚动更新
 
@@ -162,15 +118,15 @@ release-service 支持三种发布策略，在 Release 创建时确定：
 
 ### 快照 = 可追溯
 
-传统发布最大的痛点是"不知道当时到底发了什么"。DevFlow 通过两份不可变快照解决这个问题。详情见 [Manifest 与 Release](../../concepts/manifest-release/)。
+传统发布最大的痛点是"不知道当时到底发了什么"。DevFlow 通过 Freeze to OCI 解决这个问题。详情见 [Manifest 与 Release](../../concepts/manifest-release/)。
 
 ### 异步 = 不卡主流程
 
-构建可能要 10 分钟，部署可能要 5 分钟。release-service 不会傻等，而是：
+Freeze 可能要 10 分钟，Deploy 可能要 5 分钟。release-service 不会傻等，而是：
 
-1. 先创建 Manifest，触发构建
-2. 再基于 Manifest 创建 Release
-3. 每个阶段的状态都写到 Release 记录里
+1. 先冻结并上传 OCI
+2. 再从 OCI 触发发布
+3. 每个阶段的状态都写到对应记录里
 
 你可以随时查询进度，不用守着屏幕等。
 

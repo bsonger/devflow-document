@@ -7,7 +7,7 @@ weight: 23
 
 <span class="df-badge">🧩 release-service</span> <span class="df-badge">{{< brand-icon name="tekton" alt="Tekton" >}} Tekton</span> <span class="df-badge">📦 OCI Registry</span> <span class="df-badge">{{< brand-icon name="argocd" alt="Argo CD" >}} Argo CD</span> <span class="df-badge">👀 runtime-service</span>
 
-DevFlow 的发布，本质上是一条“冻结事实 -> 渲染部署 -> 交给集群执行 -> 观察结果 -> 收尾或回滚”的流水线。
+DevFlow 的发布，本质上是一条“先冻结并上传 OCI，再从 OCI 执行发布”的流水线。
 它不是一串临时操作，而是一套可追踪、可取消、可回滚的生命周期。
 
 这篇文档按原理来讲：先看整条链路怎么分层，再看每一层失败、取消和回滚该怎么处理。
@@ -16,19 +16,15 @@ DevFlow 的发布，本质上是一条“冻结事实 -> 渲染部署 -> 交给�
 
 ## 一句话理解
 
-一次发布会经历 6 个大层：
+一次发布会经历 2 个大层：
 
-1. 收集并冻结输入
-2. 构建并冻结镜像侧事实
-3. 渲染并发布部署包
-4. 创建部署对象并交给 Argo CD
-5. 由 `runtime-service` 观察集群真实状态
-6. 根据结果完成、失败、取消或回滚
+1. `Freeze to OCI`
+2. `Deploy from OCI`
 
 核心原则只有三个：
 
 - **快照不可变**: `Manifest` 和 `Release` 都是冻结点，创建后不应随意改写
-- **责任分离**: `release-service` 负责发布事实，`runtime-service` 负责观察事实，Argo CD 负责集群执行
+- **责任分离**: `release-service` 先负责冻结与上传，再负责从 OCI 驱动发布，`runtime-service` 负责观察事实，Argo CD 负责集群执行
 - **结果优先于意图**: 取消只是一个意图，真正的结果要看当前阶段是否已经进入不可逆动作
 
 ---
@@ -37,137 +33,90 @@ DevFlow 的发布，本质上是一条“冻结事实 -> 渲染部署 -> 交给�
 
 ```mermaid
 graph LR
-    A["1. 收集输入"] --> B["2. 冻结 Manifest"]
-    B --> C["3. 渲染并发布 bundle"]
-    C --> D["4. 创建 Release + Argo handoff"]
-    D --> E["5. runtime-service 观察真实状态"]
-    E --> F["6. 完成 / 失败 / 取消 / 回滚"]
+    A["Freeze to OCI"] --> B["Deploy from OCI"]
+    B --> C["runtime-service 观察"]
+    C --> D["完成 / 失败 / 取消 / 回滚"]
 ```
 
-这条链路里，越往后越接近真实集群状态，也越不适合“直接撤销”。
+这条链路里，冻结和发布不再混在一个入口里，失败和取消语义会更干净。
 
 ---
 
-## 1. 收集输入
+## 1. Freeze to OCI
 
-这一层做的是“把发布所需的事实收齐”。
+这一层做的是“把将要发布的东西固定下来”。
 
 输入通常来自：
 
 - `meta-service`：应用、环境、集群
 - `config-service`：工作负载配置、应用配置
 - `network-service`：Service、Route
+- 代码仓库和版本信息
 
-这一层本身不应该产出可执行的发布结果，它只负责把后面冻结要用的事实准备好。
+这一层的输出是：
+
+- `Manifest`
+- 冻结后的镜像/Bundle 事实
+- 不可变 OCI artifact
 
 ### 失败怎么处理
 
 - 元数据缺失: 直接失败，不进入后续阶段
 - 配置不一致: 返回错误，让用户先修复配置
 - 目标环境不存在: 停止本次发布
+- 任何 freeze 失败都不应该触发集群发布
 
 ### 取消怎么处理
 
 - 这一层最容易取消
-- 取消后只需要停止继续收集，不创建快照
-- 取消不应留下半成品部署对象
+- 取消后只需要停止继续冻结和上传
+- 可以保留 Manifest 作为证据，但不应该进入发布执行
 
 ### 回滚怎么处理
 
 - 这一层通常不需要回滚
-- 因为还没有进入不可逆的集群动作
+- 因为还没有进入真实集群动作
 
 ---
 
-## 2. 冻结 Manifest
+## 2. Deploy from OCI
 
-`Manifest` 是 build-side freeze point。
-它记录“这次构建到底基于什么事实”。
+这一层从已经冻结好的 OCI artifact 开始，负责真正发布。
 
-冻结内容通常包括：
+这一层会：
 
-- 代码版本
-- workload 基线
-- service 基线
-- build 触发信息
+- 创建 `Release`
+- 渲染部署上下文
+- 创建 Argo CD Application
+- 让 `runtime-service` 观察执行结果
 
-`Manifest` 一旦创建，就应视为不可变。
+输入通常包括：
+
+- OCI artifact
+- 目标环境
+- 发布策略
+- runtime / release 观察与回写链路
 
 ### 失败怎么处理
 
-- 构建失败: 保留 `Manifest`，不创建后续 `Release`
-- 依赖构建失败: 标记本次构建失败，保留诊断信息
-- 镜像产物不存在: 仍然停在 Manifest 层
+- Argo handoff 失败: 保留 OCI 产物，标记发布失败
+- 集群同步失败: 进入失败或回滚
+- runtime 回写失败: 继续保留发布事实，等待重试或补偿
 
 ### 取消怎么处理
 
-- 如果取消发生在 Manifest 之后、Release 之前，保留 Manifest
-- 不要删除 Manifest，因为它是可追踪证据
-- 不要伪装成成功
+- 如果还没进入集群执行，取消可以直接停掉
+- 如果已经进入部署或切流，取消要按回滚语义处理
+- 取消不等于删除 OCI 产物
 
 ### 回滚怎么处理
 
-- 这一层通常不做回滚
-- 只需要在下一次发布时选用旧 Manifest
+- 如果已经影响集群，就要回到上一个稳定 OCI artifact 对应的 Release
+- 回滚不删除冻结事实，只恢复运行态
 
 ---
 
-## 3. 渲染并发布 bundle
-
-这一层把冻结后的事实叠加成“可部署内容”。
-
-可以理解为：
-
-`Manifest` + `Release` 的环境输入 + 发布策略 = 最终部署 bundle
-
-然后 bundle 会被发布到 OCI。
-
-### 失败怎么处理
-
-- 渲染失败: 停在当前 `Release`，标记失败
-- OCI 发布失败: 保留 bundle 事实，等待重试或人工修复
-- bundle 内容不合法: 不进入 Argo handoff
-
-### 取消怎么处理
-
-- 如果 bundle 还没发布，取消比较安全
-- 如果已经发布到 OCI，取消不能当成“没发生过”
-- 取消后仍要保留 bundle 事实
-
-### 回滚怎么处理
-
-- 如果 bundle 已经发布，但还没交给 Argo，通常不需要回滚
-- 只需停止后续 handoff
-
----
-
-## 4. 创建 Release + Argo handoff
-
-`Release` 是 deploy-side freeze point。
-它记录“这次要部署到哪里、用什么策略、由谁执行”。
-
-这一层之后，发布已经不是纯粹的本地操作，而是进入集群执行阶段。
-
-### 失败怎么处理
-
-- `Release` 创建失败: 停止，不进入 Argo handoff
-- Argo Application 创建失败: 保留 `Release`，标记 handoff 失败
-- 目标集群或命名空间异常: 不继续推进
-
-### 取消怎么处理
-
-- 如果还没创建 Argo Application，可以直接取消
-- 如果 Argo Application 已创建，取消只能标记并停止后续推进
-- 不要因为“取消”就把已经创建的部署对象粗暴删掉
-
-### 回滚怎么处理
-
-- 如果 handoff 已经成功，取消后是否回滚取决于集群是否开始执行
-- 一旦已经开始切流或替换 Pod，优先按回滚处理
-
----
-
-## 5. runtime-service 观察真实状态
+## 3. runtime-service 观察真实状态
 
 这一步开始，系统不再只看“想要什么”，而是看“集群现在到底是什么”。
 
@@ -197,7 +146,7 @@ graph LR
 
 ---
 
-## 6. 完成、失败、取消、回滚
+## 4. 完成、失败、取消、回滚
 
 ### 完成
 
@@ -228,6 +177,15 @@ graph LR
 - 回到上一个稳定 `Release`
 - 保留当前失败/取消证据
 - 不抹掉本次发布痕迹
+
+### 一眼看懂差异
+
+| 结果 | 发生了什么 | 还能继续吗 | 需要保留什么 |
+|---|---|---|---|
+| 完成 | OCI 已冻结并成功发布，集群已收敛 | 不需要 | 最终发布记录 |
+| 失败 | Freeze 或 Deploy 任何一侧失败 | 取决于失败层级 | 冻结元数据、OCI 证据、状态、错误证据 |
+| 取消 | 用户主动停止继续推进 | Freeze 阶段可以，Deploy 阶段通常不行 | 当前阶段、取消时间、证据 |
+| 回滚 | 系统把已生效的变更收回 | 结束后重新开始新版本发布 | 失败版本和回滚证据 |
 
 ---
 

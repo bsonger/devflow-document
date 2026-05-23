@@ -7,7 +7,7 @@ weight: 50
 
 <span class="df-badge">🏗️ Build</span> <span class="df-badge">🔐 Supply Chain</span> <span class="df-badge">📦 OCI Registry</span>
 
-DevFlow 的 CI 基于 **Tekton Pipeline**。当你发起一次发布时，release-service 会自动触发构建流水线，把代码变成可信的容器镜像。
+DevFlow 的 CI 基于 **Tekton Pipeline**。当你发起一次发布时，release-service 会先把代码和配置冻结成可追踪的 OCI 产物，后续 CD 再从这个产物继续发布。
 
 ---
 
@@ -18,11 +18,11 @@ graph LR
     A["收集信息"] --> B["冻结构建快照"]
     B --> C["触发 CI 构建"]
     C --> D["构建成功?"]
-    D -->|是| E["冻结部署快照"]
-    D -->|否| F["发布失败"]
+    D -->|是| E["产出 OCI 产物"]
+    D -->|否| F["冻结失败"]
 ```
 
-CI 是发布流程的第 3 步。只有构建成功，才会继续创建 Release 并部署。
+CI 是第一段，只负责把“将要发布什么”固定下来。发布执行本身属于 CD。
 
 ---
 
@@ -71,7 +71,7 @@ graph LR
 把镜像、SBOM、签名一起推送到 OCI Registry。
 
 ### 10. 通知 DevFlow
-构建完成后，回调 release-service。成功就继续创建 Release，失败就标记发布失败。
+构建完成后，回调 release-service，写入 OCI 产物和冻结结果。后续是否真正部署，由 CD 阶段显式触发。
 
 ---
 

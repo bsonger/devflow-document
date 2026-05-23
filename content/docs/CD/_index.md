@@ -7,7 +7,7 @@ weight: 60
 
 <span class="df-badge">GitOps</span> <span class="df-badge">📦 OCI Bundle</span> <span class="df-badge">{{< brand-icon name="istio" alt="Istio" >}} Traffic Control</span>
 
-代码构建成镜像后，怎么安全地部署到生产环境？DevFlow 提供了三种发布策略，让你根据业务重要程度选择合适的方式。
+OCI 产物冻结完成后，怎么安全地部署到生产环境？DevFlow 提供了三种发布策略，让你根据业务重要程度选择合适的方式。
 
 ---
 
@@ -108,7 +108,7 @@ graph TD
 
 | 📄 文档 | 📝 内容 |
 |------|------|
-| [发布生命周期](../architecture/lifecycle/) | 发布全过程的原理、失败、取消和回滚 |
+| [发布生命周期](../architecture/lifecycle/) | 冻结到 OCI，再从 OCI 发布的全过程总览 |
 | [CD 架构](architecture/) | DevFlow 怎么和 Argo CD、Istio 配合 |
 | [发布策略选型](standard/) | 三种策略的深度对比 |
 | [Rolling 发布](rolling/) | 原理图 + 详细流程 |
