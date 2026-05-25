@@ -112,27 +112,32 @@
 &lt;p&gt;&lt;span class="df-badge"&gt;🧩 release-service&lt;/span&gt; &lt;span class="df-badge"&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/tekton.svg" alt="Tekton" loading="lazy" /&gt;
  Tekton&lt;/span&gt; &lt;span class="df-badge"&gt;📦 OCI Registry&lt;/span&gt; &lt;span class="df-badge"&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/argocd.svg" alt="Argo CD" loading="lazy" /&gt;
  Argo CD&lt;/span&gt; &lt;span class="df-badge"&gt;👀 runtime-service&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;在 DevFlow 中发布一个应用，会经历 8 个阶段。这个流程由 &lt;code&gt;release-service&lt;/code&gt; 牵头，串起 &lt;code&gt;meta-service&lt;/code&gt;、&lt;code&gt;config-service&lt;/code&gt;、&lt;code&gt;network-service&lt;/code&gt;、Tekton、OCI Registry、Argo CD 和 &lt;code&gt;runtime-service&lt;/code&gt;。&lt;/p&gt;
-&lt;p&gt;如果发布过程中用户点了取消，&lt;code&gt;release-service&lt;/code&gt; 会尽量把发布停在当前阶段，保留已经创建的快照、执行记录和状态信息，并在可安全停止的边界上终止后续动作。&lt;/p&gt;
+&lt;p&gt;DevFlow 的发布，本质上是一条“先冻结并上传 OCI，再从 OCI 执行发布”的流水线。
+它不是一串临时操作，而是一套可追踪、可取消、可回滚的生命周期。
+更重要的是，发布步骤本身是由 Tekton pipeline task 组合出来的，所以 operator 可以通过调整 task 来改变发布动作，而不需要改 release-service 的核心代码。&lt;/p&gt;
+&lt;p&gt;这篇文档按原理来讲：先看整条链路怎么分层，再看每一层失败、取消和回滚该怎么处理。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="-整体流程"&gt;🗺️ 整体流程&lt;/h2&gt;
-&lt;pre tabindex="0"&gt;&lt;code class="language-mermaid" data-lang="mermaid"&gt;graph LR
- A[&amp;#34;1. 收集信息&amp;#34;] --&amp;gt; B[&amp;#34;2. 冻结构建快照&amp;#34;]
- B --&amp;gt; C[&amp;#34;3. 构建镜像&amp;#34;]
- C --&amp;gt; D[&amp;#34;4. 冻结部署快照&amp;#34;]
- D --&amp;gt; E[&amp;#34;5. 打包配置&amp;#34;]
- E --&amp;gt; F[&amp;#34;6. 推送到仓库&amp;#34;]
- F --&amp;gt; G[&amp;#34;7. 部署到集群&amp;#34;]
- G --&amp;gt; H[&amp;#34;8. 观察状态&amp;#34;]
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这 8 个阶段不是所有阶段都能随时取消：&lt;/p&gt;
+&lt;h2 id="一句话理解"&gt;一句话理解&lt;/h2&gt;
+&lt;p&gt;一次发布会经历 2 个大层：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;Freeze to OCI&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Deploy from OCI&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;核心原则只有三个：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;阶段 1-2 取消最容易，只要停止继续收集与创建后续快照&lt;/li&gt;
-&lt;li&gt;阶段 3-6 取消要看外部系统是否已经开始执行，通常是“停止后续推进 + 标记取消”&lt;/li&gt;
-&lt;li&gt;阶段 7-8 取消最敏感，因为可能已经涉及集群同步和流量切换，只能做“安全中止”或“进入回滚”&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;快照不可变&lt;/strong&gt;: &lt;code&gt;Manifest&lt;/code&gt; 和 &lt;code&gt;Release&lt;/code&gt; 都是冻结点，创建后不应随意改写&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;责任分离&lt;/strong&gt;: &lt;code&gt;release-service&lt;/code&gt; 先负责冻结与上传，再负责从 OCI 驱动发布，&lt;code&gt;runtime-service&lt;/code&gt; 负责观察事实，Argo CD 负责集群执行&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;结果优先于意图&lt;/strong&gt;: 取消只是一个意图，真正的结果要看当前阶段是否已经进入不可逆动作&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;步骤可编排&lt;/strong&gt;: 发布步骤由 pipeline task 组合，步骤变化优先通过配置和 task 复用实现&lt;/li&gt;
 &lt;/ul&gt;
+&lt;p&gt;这也是为什么同一套 release 流程可以在不改代码的前提下，插入审批、扫描、验证或回滚前置检查。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="-阶段-1收集发布上下文"&gt;📥 阶段 1：收集发布上下文&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;谁在干活&lt;/strong&gt;：&lt;code&gt;release-service&lt;/code&gt;&lt;/p&gt;</description></item><item><title>meta-service</title><link>https://devflow.bei.com/document/docs/services/meta-service/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/services/meta-service/</guid><description>&lt;h1 id="-meta-service"&gt;📚 meta-service&lt;/h1&gt;
+&lt;h2 id="整体结构"&gt;整体结构&lt;/h2&gt;
+&lt;pre tabindex="0"&gt;&lt;code class="language-mermaid" data-lang="mermaid"&gt;graph LR
+ A[&amp;#34;Freeze to OCI&amp;#34;] --&amp;gt; B[&amp;#34;Deploy from OCI&amp;#34;]
+ B --&amp;gt; C[&amp;#34;runtime-service 观察&amp;#34;]
+ C --&amp;gt; D[&amp;#34;完成 / 失败 / 取消 / 回滚&amp;#34;]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这条链路里，冻结和发布不再混在一个入口里，失败和取消语义会更干净。&lt;/p&gt;</description></item><item><title>meta-service</title><link>https://devflow.bei.com/document/docs/services/meta-service/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/services/meta-service/</guid><description>&lt;h1 id="-meta-service"&gt;📚 meta-service&lt;/h1&gt;
 &lt;p&gt;&lt;strong&gt;档案管理员&lt;/strong&gt; — 所有应用、环境、集群的权威信息库。&lt;/p&gt;
 &lt;h2 id="它是做什么的"&gt;它是做什么的&lt;/h2&gt;
 &lt;p&gt;meta-service 管理 DevFlow 中的&amp;quot;户口本信息&amp;quot;：&lt;/p&gt;
@@ -302,13 +307,15 @@ attempt_count: 1
 &lt;/ul&gt;
 &lt;hr&gt;
 &lt;h2 id="一次发布的完整旅程"&gt;一次发布的完整旅程&lt;/h2&gt;
-&lt;p&gt;你在 Console 上点了&amp;quot;发布 order-service 到生产环境&amp;quot;，接下来 &lt;code&gt;release-service&lt;/code&gt; 会：&lt;/p&gt;
-&lt;h3 id="第一步收集信息"&gt;第一步：收集信息&lt;/h3&gt;
+&lt;p&gt;在当前两段式模型里，&lt;code&gt;release-service&lt;/code&gt; 的职责分成两步：&lt;/p&gt;
+&lt;h3 id="第一步freeze-to-oci"&gt;第一步：Freeze to OCI&lt;/h3&gt;
 &lt;p&gt;&lt;code&gt;release-service&lt;/code&gt; 先去找其他服务打听情况：&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;&amp;ldquo;meta-service，order-service 的代码仓库在哪？生产环境在哪个集群？&amp;rdquo;
-&amp;ldquo;config-service，order-service 的基础配置是什么？生产环境的特殊配置是什么？&amp;rdquo;
-&amp;ldquo;network-service，order-service 暴露了哪些端口？生产环境的域名是什么？&amp;rdquo;&lt;/p&gt;</description></item><item><title>runtime-service</title><link>https://devflow.bei.com/document/docs/services/runtime-service/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/services/runtime-service/</guid><description>&lt;h1 id="-runtime-service"&gt;🛠️ runtime-service&lt;/h1&gt;
+&lt;p&gt;&amp;ldquo;meta-service，order-service 的代码仓库在哪？&amp;rdquo;
+&amp;ldquo;config-service，order-service 的基础配置和环境差异是什么？&amp;rdquo;
+&amp;ldquo;network-service，这个应用暴露哪些端口和路由？&amp;rdquo;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;然后它：&lt;/p&gt;</description></item><item><title>runtime-service</title><link>https://devflow.bei.com/document/docs/services/runtime-service/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/services/runtime-service/</guid><description>&lt;h1 id="-runtime-service"&gt;🛠️ runtime-service&lt;/h1&gt;
 &lt;p&gt;&lt;strong&gt;运维值班&lt;/strong&gt; — 实时观察 Kubernetes 集群，执行运维操作。&lt;/p&gt;
 &lt;h2 id="它是做什么的"&gt;它是做什么的&lt;/h2&gt;
 &lt;p&gt;runtime-service 是 DevFlow 与 Kubernetes 之间的&lt;strong&gt;眼睛和手&lt;/strong&gt;：&lt;/p&gt;
@@ -632,6 +639,8 @@ Cluster: prod-cluster
 &lt;h2 id="-release--部署前快照"&gt;🎫 Release — 部署前快照&lt;/h2&gt;
 &lt;p&gt;Release 记录了&lt;strong&gt;部署时刻&lt;/strong&gt;的完整状态，绑定了一个 Manifest 和一个目标环境。&lt;/p&gt;</description></item><item><title>CI 架构</title><link>https://devflow.bei.com/document/docs/ci/architecture/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/ci/architecture/</guid><description>&lt;h1 id="-ci-架构"&gt;🧪 CI 架构&lt;/h1&gt;
 &lt;p&gt;DevFlow 的 CI 基于 &lt;strong&gt;Tekton&lt;/strong&gt;，一个云原生的 CI/CD 框架。当你发起发布时，release-service 触发 Tekton Pipeline，自动完成从代码到镜像的转换。&lt;/p&gt;
+&lt;p&gt;它最大的优势是：&lt;strong&gt;发布步骤不是写死在业务代码里的，而是由 Pipeline Task 组合出来的。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;这意味着 operator 可以通过新增、调整或重排 task 来改变发布步骤，而不需要改 release-service 的核心逻辑。&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id="-流水线怎么跑"&gt;🧭 流水线怎么跑&lt;/h2&gt;
 &lt;pre tabindex="0"&gt;&lt;code class="language-mermaid" data-lang="mermaid"&gt;graph LR
@@ -649,63 +658,19 @@ Cluster: prod-cluster
 &lt;li&gt;Tekton 创建一个 PipelineRun，开始跑流水线&lt;/li&gt;
 &lt;li&gt;流水线跑完后，把镜像推送到仓库，再回调通知 release-service&lt;/li&gt;
 &lt;/ol&gt;
-&lt;hr&gt;
-&lt;h2 id="流水线里的-7-个任务"&gt;流水线里的 7 个任务&lt;/h2&gt;
-&lt;p&gt;一次标准构建要跑 7 个任务，串行执行：&lt;/p&gt;
-&lt;pre tabindex="0"&gt;&lt;code&gt;拉代码 → 扫漏洞 → 跑测试 → 构建镜像 → 生成清单 → 签名 → 再扫一遍
-&lt;/code&gt;&lt;/pre&gt;&lt;table&gt;
- &lt;thead&gt;
- &lt;tr&gt;
- &lt;th&gt;任务&lt;/th&gt;
- &lt;th&gt;做什么&lt;/th&gt;
- &lt;th&gt;失败了会怎样&lt;/th&gt;
- &lt;/tr&gt;
- &lt;/thead&gt;
- &lt;tbody&gt;
- &lt;tr&gt;
- &lt;td&gt;源码获取&lt;/td&gt;
- &lt;td&gt;从 Git 拉代码&lt;/td&gt;
- &lt;td&gt;构建终止&lt;/td&gt;
- &lt;/tr&gt;
- &lt;tr&gt;
- &lt;td&gt;静态扫描&lt;/td&gt;
- &lt;td&gt;检查敏感信息和依赖漏洞&lt;/td&gt;
- &lt;td&gt;构建终止&lt;/td&gt;
- &lt;/tr&gt;
- &lt;tr&gt;
- &lt;td&gt;测试&lt;/td&gt;
- &lt;td&gt;跑单元测试和集成测试&lt;/td&gt;
- &lt;td&gt;构建终止&lt;/td&gt;
- &lt;/tr&gt;
- &lt;tr&gt;
- &lt;td&gt;镜像构建&lt;/td&gt;
- &lt;td&gt;用 Buildah 构建容器镜像&lt;/td&gt;
- &lt;td&gt;构建终止&lt;/td&gt;
- &lt;/tr&gt;
- &lt;tr&gt;
- &lt;td&gt;SBOM 生成&lt;/td&gt;
- &lt;td&gt;记录镜像里有什么组件&lt;/td&gt;
- &lt;td&gt;继续（警告）&lt;/td&gt;
- &lt;/tr&gt;
- &lt;tr&gt;
- &lt;td&gt;镜像签名&lt;/td&gt;
- &lt;td&gt;用 Cosign 给镜像签名&lt;/td&gt;
- &lt;td&gt;继续（警告）&lt;/td&gt;
- &lt;/tr&gt;
- &lt;tr&gt;
- &lt;td&gt;漏洞扫描&lt;/td&gt;
- &lt;td&gt;用 Trivy 扫最终镜像&lt;/td&gt;
- &lt;td&gt;发现严重漏洞则终止&lt;/td&gt;
- &lt;/tr&gt;
- &lt;/tbody&gt;
-&lt;/table&gt;
-&lt;hr&gt;
-&lt;h2 id="-关键工具"&gt;🧰 关键工具&lt;/h2&gt;
-&lt;h3 id="tekton-pipelines--流水线引擎"&gt;Tekton Pipelines — 流水线引擎&lt;/h3&gt;
-&lt;p&gt;定义和执行 CI 流水线的框架。Pipeline 由多个 Task 组成，Task 之间通过共享目录传递数据（比如源码、构建产物）。&lt;/p&gt;</description></item><item><title>标准 CI 流程</title><link>https://devflow.bei.com/document/docs/ci/standard/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/ci/standard/</guid><description>&lt;h1 id="-标准-ci-流程"&gt;🏭 标准 CI 流程&lt;/h1&gt;
+&lt;h3 id="这套设计为什么强"&gt;这套设计为什么强&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;新步骤可以通过新增 task 注入&lt;/li&gt;
+&lt;li&gt;现有步骤可以通过调整 task 顺序或参数扩展&lt;/li&gt;
+&lt;li&gt;回滚、暂停、审批、观测这类变体也可以做成 pipeline 级能力&lt;/li&gt;
+&lt;li&gt;release-service 只负责状态机和契约，不需要把每一种步骤变化硬编码进去&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;前提是 task 的输入输出契约必须稳定，否则流水线会变成不可维护的“脚本堆”。&lt;/p&gt;</description></item><item><title>标准 CI 流程</title><link>https://devflow.bei.com/document/docs/ci/standard/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/ci/standard/</guid><description>&lt;h1 id="-标准-ci-流程"&gt;🏭 标准 CI 流程&lt;/h1&gt;
 &lt;p&gt;&lt;span class="df-badge"&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/tekton.svg" alt="Tekton" loading="lazy" /&gt;
  Tekton&lt;/span&gt; &lt;span class="df-badge"&gt;📜 SBOM&lt;/span&gt; &lt;span class="df-badge"&gt;✍️ Cosign&lt;/span&gt; &lt;span class="df-badge"&gt;📦 OCI Registry&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;DevFlow 的标准 CI 流水线确保每个镜像在发布前都经过完整的安全和质量检查。&lt;/p&gt;
+&lt;p&gt;这套 CI/CD 的一个核心优势是：&lt;strong&gt;operator 可以通过增减 Tekton task 改变发布步骤，而不需要改 release-service 代码。&lt;/strong&gt;
+release-service 负责发起和记录状态，真正可变的执行细节放在 pipeline 里。&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id="-流程概览"&gt;🗺️ 流程概览&lt;/h2&gt;
 &lt;pre tabindex="0"&gt;&lt;code class="language-mermaid" data-lang="mermaid"&gt;graph LR
@@ -721,17 +686,7 @@ Cluster: prod-cluster
 &lt;/code&gt;&lt;/pre&gt;&lt;hr&gt;
 &lt;h2 id="-各阶段说明"&gt;🔍 各阶段说明&lt;/h2&gt;
 &lt;h3 id="1-拉代码"&gt;1. 拉代码&lt;/h3&gt;
-&lt;p&gt;从 Git 仓库拉取指定版本的代码，验证 commit hash 与 Manifest 中记录的是否一致。&lt;/p&gt;
-&lt;p&gt;如果不一致，说明代码在发起发布后被人修改过，构建终止。&lt;/p&gt;
-&lt;h3 id="2-静态扫描"&gt;2. 静态扫描&lt;/h3&gt;
-&lt;p&gt;扫描代码中的安全问题：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;敏感信息泄露&lt;/strong&gt; — 有没有硬编码的密码、Token、密钥&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;依赖漏洞&lt;/strong&gt; — 引用的第三方库有没有已知漏洞&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;代码规范&lt;/strong&gt; — 是否符合团队编码规范&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id="3-单元测试"&gt;3. 单元测试&lt;/h3&gt;
-&lt;p&gt;执行项目的单元测试。&lt;/p&gt;</description></item><item><title>CI 组件矩阵</title><link>https://devflow.bei.com/document/docs/ci/component/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/ci/component/</guid><description>&lt;h1 id="-ci-用到哪些工具"&gt;🧰 CI 用到哪些工具&lt;/h1&gt;
+&lt;p&gt;从 Git 仓库拉取指定版本的代码，验证 commit hash 与 Manifest 中记录的是否一致。&lt;/p&gt;</description></item><item><title>CI 组件矩阵</title><link>https://devflow.bei.com/document/docs/ci/component/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/ci/component/</guid><description>&lt;h1 id="-ci-用到哪些工具"&gt;🧰 CI 用到哪些工具&lt;/h1&gt;
 &lt;p&gt;&lt;span class="df-badge"&gt;Pipeline&lt;/span&gt; &lt;span class="df-badge"&gt;Security&lt;/span&gt; &lt;span class="df-badge"&gt;📦 OCI Registry&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;DevFlow 的 CI 流水线依赖以下工具，每个负责一个具体环节。&lt;/p&gt;
 &lt;hr&gt;
@@ -869,6 +824,9 @@ Cluster: prod-cluster
 &lt;h3 id="resourcequota--限制总资源"&gt;ResourceQuota — 限制总资源&lt;/h3&gt;
 &lt;p&gt;限制 CI 命名空间最多能用多少 CPU 和内存，防止构建把集群资源吃光。&lt;/p&gt;</description></item><item><title>CD 架构</title><link>https://devflow.bei.com/document/docs/cd/architecture/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/cd/architecture/</guid><description>&lt;h1 id="-cd-架构"&gt;🚀 CD 架构&lt;/h1&gt;
 &lt;p&gt;DevFlow 的 CD 不直接操作 Kubernetes，而是通过 &lt;strong&gt;GitOps&lt;/strong&gt; 模式工作：release-service 生成部署包，推送到仓库，Argo CD 负责实际部署。&lt;/p&gt;
+&lt;p&gt;CD 这一层的另一个关键设计是：&lt;strong&gt;发布步骤本身不是写死在 release-service 代码里的，而是由 Tekton task 和发布流水线配置组合出来的。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;这意味着 operator 可以通过增减 task、调整 task 顺序、插入校验或观测步骤，去改变整个发布过程，而不必改 release-service 的核心实现。
+release-service 负责的主要是状态机、冻结事实和回写契约，真正“怎么发布”尽量交给流水线编排。&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id="-为什么用-gitops"&gt;🧠 为什么用 GitOps&lt;/h2&gt;
 &lt;p&gt;传统的部署方式是&amp;quot;告诉 K8s 该怎么做&amp;quot;，DevFlow 的方式是&amp;quot;告诉 Argo CD 期望状态是什么，让它自己同步&amp;quot;。&lt;/p&gt;

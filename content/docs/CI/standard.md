@@ -9,6 +9,9 @@ weight: 52
 
 DevFlow 的标准 CI 流水线确保每个镜像在发布前都经过完整的安全和质量检查。
 
+这套 CI/CD 的一个核心优势是：**operator 可以通过增减 Tekton task 改变发布步骤，而不需要改 release-service 代码。**
+release-service 负责发起和记录状态，真正可变的执行细节放在 pipeline 里。
+
 ---
 
 ## 🗺️ 流程概览
@@ -99,6 +102,14 @@ graph LR
 
 - **成功** — 继续创建 Release，进入部署流程
 - **失败** — 更新 Manifest 状态为 Failed，发布终止
+
+如果要新增一个步骤，优先把它做成新的 task 或在现有 pipeline 中插入 task。
+这样做的好处是：
+
+- 步骤变化不需要改业务代码
+- 不同服务或不同环境可以复用同一套 pipeline 骨架
+- 每个步骤的输入输出都更容易审计和回放
+- operator 可以用流水线配置而不是代码变更来调整发布链路
 
 ---
 

@@ -7,6 +7,11 @@ weight: 61
 
 DevFlow 的 CD 不直接操作 Kubernetes，而是通过 **GitOps** 模式工作：release-service 生成部署包，推送到仓库，Argo CD 负责实际部署。
 
+CD 这一层的另一个关键设计是：**发布步骤本身不是写死在 release-service 代码里的，而是由 Tekton task 和发布流水线配置组合出来的。**
+
+这意味着 operator 可以通过增减 task、调整 task 顺序、插入校验或观测步骤，去改变整个发布过程，而不必改 release-service 的核心实现。
+release-service 负责的主要是状态机、冻结事实和回写契约，真正“怎么发布”尽量交给流水线编排。
+
 ---
 
 ## 🧠 为什么用 GitOps

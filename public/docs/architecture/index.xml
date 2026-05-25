@@ -112,24 +112,29 @@
 &lt;p&gt;&lt;span class="df-badge"&gt;🧩 release-service&lt;/span&gt; &lt;span class="df-badge"&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/tekton.svg" alt="Tekton" loading="lazy" /&gt;
  Tekton&lt;/span&gt; &lt;span class="df-badge"&gt;📦 OCI Registry&lt;/span&gt; &lt;span class="df-badge"&gt;&lt;img class="df-inline-icon" src="https://devflow.bei.com/document/icons/brands/argocd.svg" alt="Argo CD" loading="lazy" /&gt;
  Argo CD&lt;/span&gt; &lt;span class="df-badge"&gt;👀 runtime-service&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;在 DevFlow 中发布一个应用，会经历 8 个阶段。这个流程由 &lt;code&gt;release-service&lt;/code&gt; 牵头，串起 &lt;code&gt;meta-service&lt;/code&gt;、&lt;code&gt;config-service&lt;/code&gt;、&lt;code&gt;network-service&lt;/code&gt;、Tekton、OCI Registry、Argo CD 和 &lt;code&gt;runtime-service&lt;/code&gt;。&lt;/p&gt;
-&lt;p&gt;如果发布过程中用户点了取消，&lt;code&gt;release-service&lt;/code&gt; 会尽量把发布停在当前阶段，保留已经创建的快照、执行记录和状态信息，并在可安全停止的边界上终止后续动作。&lt;/p&gt;
+&lt;p&gt;DevFlow 的发布，本质上是一条“先冻结并上传 OCI，再从 OCI 执行发布”的流水线。
+它不是一串临时操作，而是一套可追踪、可取消、可回滚的生命周期。
+更重要的是，发布步骤本身是由 Tekton pipeline task 组合出来的，所以 operator 可以通过调整 task 来改变发布动作，而不需要改 release-service 的核心代码。&lt;/p&gt;
+&lt;p&gt;这篇文档按原理来讲：先看整条链路怎么分层，再看每一层失败、取消和回滚该怎么处理。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="-整体流程"&gt;🗺️ 整体流程&lt;/h2&gt;
-&lt;pre tabindex="0"&gt;&lt;code class="language-mermaid" data-lang="mermaid"&gt;graph LR
- A[&amp;#34;1. 收集信息&amp;#34;] --&amp;gt; B[&amp;#34;2. 冻结构建快照&amp;#34;]
- B --&amp;gt; C[&amp;#34;3. 构建镜像&amp;#34;]
- C --&amp;gt; D[&amp;#34;4. 冻结部署快照&amp;#34;]
- D --&amp;gt; E[&amp;#34;5. 打包配置&amp;#34;]
- E --&amp;gt; F[&amp;#34;6. 推送到仓库&amp;#34;]
- F --&amp;gt; G[&amp;#34;7. 部署到集群&amp;#34;]
- G --&amp;gt; H[&amp;#34;8. 观察状态&amp;#34;]
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这 8 个阶段不是所有阶段都能随时取消：&lt;/p&gt;
+&lt;h2 id="一句话理解"&gt;一句话理解&lt;/h2&gt;
+&lt;p&gt;一次发布会经历 2 个大层：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;Freeze to OCI&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Deploy from OCI&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;核心原则只有三个：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;阶段 1-2 取消最容易，只要停止继续收集与创建后续快照&lt;/li&gt;
-&lt;li&gt;阶段 3-6 取消要看外部系统是否已经开始执行，通常是“停止后续推进 + 标记取消”&lt;/li&gt;
-&lt;li&gt;阶段 7-8 取消最敏感，因为可能已经涉及集群同步和流量切换，只能做“安全中止”或“进入回滚”&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;快照不可变&lt;/strong&gt;: &lt;code&gt;Manifest&lt;/code&gt; 和 &lt;code&gt;Release&lt;/code&gt; 都是冻结点，创建后不应随意改写&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;责任分离&lt;/strong&gt;: &lt;code&gt;release-service&lt;/code&gt; 先负责冻结与上传，再负责从 OCI 驱动发布，&lt;code&gt;runtime-service&lt;/code&gt; 负责观察事实，Argo CD 负责集群执行&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;结果优先于意图&lt;/strong&gt;: 取消只是一个意图，真正的结果要看当前阶段是否已经进入不可逆动作&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;步骤可编排&lt;/strong&gt;: 发布步骤由 pipeline task 组合，步骤变化优先通过配置和 task 复用实现&lt;/li&gt;
 &lt;/ul&gt;
+&lt;p&gt;这也是为什么同一套 release 流程可以在不改代码的前提下，插入审批、扫描、验证或回滚前置检查。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id="-阶段-1收集发布上下文"&gt;📥 阶段 1：收集发布上下文&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;谁在干活&lt;/strong&gt;：&lt;code&gt;release-service&lt;/code&gt;&lt;/p&gt;</description></item></channel></rss>
+&lt;h2 id="整体结构"&gt;整体结构&lt;/h2&gt;
+&lt;pre tabindex="0"&gt;&lt;code class="language-mermaid" data-lang="mermaid"&gt;graph LR
+ A[&amp;#34;Freeze to OCI&amp;#34;] --&amp;gt; B[&amp;#34;Deploy from OCI&amp;#34;]
+ B --&amp;gt; C[&amp;#34;runtime-service 观察&amp;#34;]
+ C --&amp;gt; D[&amp;#34;完成 / 失败 / 取消 / 回滚&amp;#34;]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这条链路里，冻结和发布不再混在一个入口里，失败和取消语义会更干净。&lt;/p&gt;</description></item></channel></rss>

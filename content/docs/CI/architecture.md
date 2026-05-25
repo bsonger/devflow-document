@@ -7,6 +7,10 @@ weight: 51
 
 DevFlow 的 CI 基于 **Tekton**，一个云原生的 CI/CD 框架。当你发起发布时，release-service 触发 Tekton Pipeline，自动完成从代码到镜像的转换。
 
+它最大的优势是：**发布步骤不是写死在业务代码里的，而是由 Pipeline Task 组合出来的。**
+
+这意味着 operator 可以通过新增、调整或重排 task 来改变发布步骤，而不需要改 release-service 的核心逻辑。
+
 ---
 
 ## 🧭 流水线怎么跑
@@ -27,6 +31,15 @@ graph LR
 1. release-service 发一个 HTTP 请求给 Tekton Triggers
 2. Tekton 创建一个 PipelineRun，开始跑流水线
 3. 流水线跑完后，把镜像推送到仓库，再回调通知 release-service
+
+### 这套设计为什么强
+
+- 新步骤可以通过新增 task 注入
+- 现有步骤可以通过调整 task 顺序或参数扩展
+- 回滚、暂停、审批、观测这类变体也可以做成 pipeline 级能力
+- release-service 只负责状态机和契约，不需要把每一种步骤变化硬编码进去
+
+前提是 task 的输入输出契约必须稳定，否则流水线会变成不可维护的“脚本堆”。
 
 ---
 
