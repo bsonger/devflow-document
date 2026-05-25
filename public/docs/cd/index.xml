@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>持续交付 on DevFlow</title><link>https://devflow.bei.com/document/docs/cd/</link><description>Recent content in 持续交付 on DevFlow</description><generator>Hugo</generator><language>zh-cn</language><atom:link href="https://devflow.bei.com/document/docs/cd/index.xml" rel="self" type="application/rss+xml"/><item><title>CD 架构</title><link>https://devflow.bei.com/document/docs/cd/architecture/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/cd/architecture/</guid><description>&lt;h1 id="-cd-架构"&gt;🚀 CD 架构&lt;/h1&gt;
 &lt;p&gt;DevFlow 的 CD 不直接操作 Kubernetes，而是通过 &lt;strong&gt;GitOps&lt;/strong&gt; 模式工作：release-service 生成部署包，推送到仓库，Argo CD 负责实际部署。&lt;/p&gt;
+&lt;p&gt;CD 这一层的另一个关键设计是：&lt;strong&gt;发布步骤本身不是写死在 release-service 代码里的，而是由 Tekton task 和发布流水线配置组合出来的。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;这意味着 operator 可以通过增减 task、调整 task 顺序、插入校验或观测步骤，去改变整个发布过程，而不必改 release-service 的核心实现。
+release-service 负责的主要是状态机、冻结事实和回写契约，真正“怎么发布”尽量交给流水线编排。&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id="-为什么用-gitops"&gt;🧠 为什么用 GitOps&lt;/h2&gt;
 &lt;p&gt;传统的部署方式是&amp;quot;告诉 K8s 该怎么做&amp;quot;，DevFlow 的方式是&amp;quot;告诉 Argo CD 期望状态是什么，让它自己同步&amp;quot;。&lt;/p&gt;
