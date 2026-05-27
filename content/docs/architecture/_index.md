@@ -126,3 +126,14 @@ DevFlow 不会直接把数据库里的配置发到 Kubernetes。而是：
 runtime-service 是唯一个**不用 PostgreSQL** 的服务。它直接从 Kubernetes API 读状态，存在内存里。
 
 为什么？因为 Kubernetes 的状态变化太快了，写数据库会拖慢查询。内存索引可以毫秒级响应，适合 Console 的实时刷新。
+
+---
+
+## 📚 继续阅读
+
+如果你想继续从代码组织角度理解 DevFlow，推荐顺着读：
+
+1. [五大微服务](services/)
+2. [领域模型](domain-model/)
+3. [发布生命周期](lifecycle/)
+4. [devflow-service 目录结构](devflow-service-layout/)

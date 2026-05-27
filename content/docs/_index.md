@@ -60,6 +60,8 @@ DevFlow 把发布过程中所有容易出错的地方都标准化了：配置管
 | [服务详解](services/) | 想深入了解某个服务 | meta-service、config-service、network-service、release-service、runtime-service |
 | [核心概念](concepts/) | 对领域模型有疑问 | Project、Application、Manifest、Release 等概念解释 |
 
+如果你想从代码组织本身入手理解后端仓库，可以直接看 [devflow-service 目录结构](architecture/devflow-service-layout/)。
+
 ### 使用指南
 
 | 章节 | 适合谁 | 内容 |

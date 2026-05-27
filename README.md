@@ -7,7 +7,7 @@ DevFlow 官方文档站点，使用 [Hugo](https://gohugo.io/) + [hugo-book](htt
 本文档站介绍 [devflow-service](https://github.com/bsonger/devflow-service) 云原生应用交付平台，涵盖：
 
 - **平台概览** — DevFlow 定位、核心能力、技术栈
-- **架构设计** — 五大微服务、领域模型、发布生命周期
+- **架构设计** — 五大微服务、领域模型、发布生命周期、`devflow-service` 目录结构
 - **服务详解** — meta-service、config-service、network-service、release-service、runtime-service
 - **核心概念** — Project、Application、Manifest、Release 等领域概念
 - **持续集成** — Tekton Pipeline CI 流程
@@ -46,7 +46,8 @@ content/docs/
 ├── architecture/          # 架构设计
 │   ├── services.md        # 五大微服务
 │   ├── domain-model.md    # 领域模型
-│   └── lifecycle.md       # 发布生命周期
+│   ├── lifecycle.md       # 发布生命周期
+│   └── devflow-service-layout.md  # devflow-service 目录结构
 ├── services/              # 服务详解
 │   ├── meta-service.md
 │   ├── config-service.md

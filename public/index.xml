@@ -137,7 +137,61 @@
  A[&amp;#34;Freeze to OCI&amp;#34;] --&amp;gt; B[&amp;#34;Deploy from OCI&amp;#34;]
  B --&amp;gt; C[&amp;#34;runtime-service 观察&amp;#34;]
  C --&amp;gt; D[&amp;#34;完成 / 失败 / 取消 / 回滚&amp;#34;]
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这条链路里，冻结和发布不再混在一个入口里，失败和取消语义会更干净。&lt;/p&gt;</description></item><item><title>meta-service</title><link>https://devflow.bei.com/document/docs/services/meta-service/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/services/meta-service/</guid><description>&lt;h1 id="-meta-service"&gt;📚 meta-service&lt;/h1&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这条链路里，冻结和发布不再混在一个入口里，失败和取消语义会更干净。&lt;/p&gt;</description></item><item><title>devflow-service 目录结构</title><link>https://devflow.bei.com/document/docs/architecture/devflow-service-layout/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/architecture/devflow-service-layout/</guid><description>&lt;h1 id="-devflow-service-目录结构"&gt;🗂️ devflow-service 目录结构&lt;/h1&gt;
+&lt;p&gt;这篇文档专门回答一个很实际的问题：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;打开 &lt;code&gt;devflow-service&lt;/code&gt; 仓库后，每一个目录到底是干什么的？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;这里描述的是当前仓库的真实结构，不是未来规划图，也不是已经废弃的旧 layout。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="一句话先看懂"&gt;一句话先看懂&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;devflow-service&lt;/code&gt; 是一个 Go monorepo，核心结构可以先记成这 4 层：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;cmd/&lt;/code&gt; 放可运行服务入口&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;internal/&lt;/code&gt; 放业务实现&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;api/&lt;/code&gt; 放对外契约&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;docs/&lt;/code&gt; 放当前实现文档和规则&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;如果你第一次进仓库，优先看：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;AGENTS.md&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;README.md&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;cmd/&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;internal/&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;docs/system/&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h2 id="顶层目录总览"&gt;顶层目录总览&lt;/h2&gt;
+&lt;p&gt;当前仓库根目录主要包含这些内容：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;devflow-service/
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;├── AGENTS.md
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;├── Dockerfile
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;├── Makefile
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;├── README.md
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;├── api/
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;├── bin/
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;├── cmd/
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;├── docker/
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;├── docs/
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;├── gateway/
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;├── internal/
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;├── scripts/
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;├── test/
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;├── go.mod
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;└── go.sum
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;下面按目录逐个介绍。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="根目录文件"&gt;根目录文件&lt;/h2&gt;
+&lt;h3 id="agentsmd"&gt;&lt;code&gt;AGENTS.md&lt;/code&gt;&lt;/h3&gt;
+&lt;p&gt;这是仓库的启动契约文档。&lt;/p&gt;
+&lt;p&gt;它定义了：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;进入仓库后优先读哪些文档&lt;/li&gt;
+&lt;li&gt;当前仓库的权威来源顺序&lt;/li&gt;
+&lt;li&gt;哪些名字是当前事实，哪些只是未来边界名词&lt;/li&gt;
+&lt;li&gt;修改 API、目录结构、迁移边界时的约束&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;如果是 AI Agent 或第一次接手这个仓库的工程师，先读它最省时间。&lt;/p&gt;</description></item><item><title>meta-service</title><link>https://devflow.bei.com/document/docs/services/meta-service/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://devflow.bei.com/document/docs/services/meta-service/</guid><description>&lt;h1 id="-meta-service"&gt;📚 meta-service&lt;/h1&gt;
 &lt;p&gt;&lt;strong&gt;档案管理员&lt;/strong&gt; — 所有应用、环境、集群的权威信息库。&lt;/p&gt;
 &lt;h2 id="它是做什么的"&gt;它是做什么的&lt;/h2&gt;
 &lt;p&gt;meta-service 管理 DevFlow 中的&amp;quot;户口本信息&amp;quot;：&lt;/p&gt;
